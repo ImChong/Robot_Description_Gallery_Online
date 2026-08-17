@@ -33,7 +33,15 @@
   --warn: #ffc857;
   --radius: 8px;
   --radius-sm: 6px;
-  --header-h: 56px;
+  /* What the fixed bar occupies: .header-inner is min-height 56px — padding
+     included, since the reset makes everything border-box — plus its 1px
+     bottom border. The views keep exactly this much clear beneath it, so the
+     sticky filter bar meets the header with no gap for cards to show through. */
+  --header-h: 57px;
+  --header-bg: #222222;
+  --header-border: #3d3d3d;
+  /* Header, page and footer all share one measure, so the three stay aligned. */
+  --content-w: 1320px;
   --font-sans:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'Noto Sans SC',
     'PingFang SC', 'Microsoft YaHei', sans-serif;
@@ -60,6 +68,8 @@
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 12px 28px -14px rgba(0, 0, 0, 0.22);
   --code-bg: #f7f6f3;
+  --header-bg: #fafafa;
+  --header-border: #e8e8e4;
 }
 
 /* Same reset as the reference site: zeroing margins matters here because
@@ -94,85 +104,108 @@ a:hover { color: var(--accent-hover); }
 h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
 .muted { color: var(--text-muted); }
 
-/* ── Header ─────────────────────────────────────────────── */
+/* ── Header ─────────────────────────────────────────────────
+   Structure and controls follow Humanoid_Robot_Learning_Paper_Notebooks:
+   a fixed bar whose inner row is centred on the content measure, the site
+   title bilingual on the left, and a right-hand group of a plain-text
+   GitHub link plus 30px bordered toggles. The palette stays this site's. */
 
-.topbar {
-  position: sticky;
+.site-header {
+  position: fixed;
   top: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  height: var(--header-h);
-  padding: 8px clamp(16px, 4vw, 40px);
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
+  right: 0;
+  left: 0;
+  z-index: 1200;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--header-border);
+  backdrop-filter: blur(8px);
+  padding-top: env(safe-area-inset-top, 0px);
   transition: background var(--transition), border-color var(--transition);
 }
 
-.brand {
+.header-inner {
+  max-width: var(--content-w);
+  margin: 0 auto;
+  padding: 8px clamp(16px, 4vw, 40px);
+  min-height: 56px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  text-decoration: none;
-  color: inherit;
-  margin-right: auto;
+  gap: 16px;
+}
+
+.site-title {
   min-width: 0;
-}
-.brand:hover { color: inherit; }
-
-.brand-mark {
-  font-family: var(--font-mono);
-  font-size: 11.5px;
+  font-size: 1.15rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
-  color: #fff;
-  background: var(--accent);
-  padding: 5px 8px;
-  border-radius: var(--radius-sm);
-  flex-shrink: 0;
+  color: var(--text);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+.site-title:hover { color: var(--accent); }
 
-.brand-text { display: flex; flex-direction: column; line-height: 1.3; min-width: 0; }
-.brand-text strong { font-size: 14.5px; }
-.brand-text small { color: var(--text-muted); font-size: 11.5px; }
+/* Never shrinks: the title beside it is the flexible half of the row. */
+.header-right { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
 
-.topbar-actions { display: flex; align-items: center; gap: 8px; }
-
+/* The search field is this site's own addition; it borrows the toggles'
+ * height and radius so the row still reads as one set of controls. */
 .search {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--bg-alt);
+  min-width: 0;
+  background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 0 13px;
-  height: 34px;
+  border-radius: var(--radius-sm);
+  padding: 0 10px;
+  height: 30px;
   transition: border-color var(--transition), box-shadow var(--transition);
 }
 .search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 .search svg { width: 14px; height: 14px; fill: none; stroke: var(--text-faint); stroke-width: 1.9; flex-shrink: 0; }
 .search input {
-  background: none; border: 0; outline: 0; color: var(--text);
-  width: clamp(110px, 20vw, 230px); font: inherit; font-size: 13.5px;
+  background: none; border: 0; outline: 0; color: var(--text); min-width: 0;
+  width: clamp(110px, 18vw, 220px); font: inherit; font-size: 0.85rem;
 }
 
-.seg-toggle {
-  display: flex;
-  background: var(--bg-alt);
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 2px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.github-link:hover { color: var(--accent); }
+
+.lang-toggle, .theme-toggle {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 30px;
+  padding: 0 0.6rem;
+  background: none;
   border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 2px;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  transition: color var(--transition), border-color var(--transition), background var(--transition);
 }
-.seg-toggle button {
-  border: 0; background: none; color: var(--text-muted);
-  font: inherit; font-size: 12px; padding: 4px 11px; border-radius: 20px; cursor: pointer;
-  transition: background var(--transition), color var(--transition);
-}
-.seg-toggle button:hover { color: var(--text); }
-.seg-toggle button[aria-pressed='true'] { background: var(--surface); color: var(--text); box-shadow: var(--shadow-sm); }
+.lang-toggle { font-size: 0.78rem; font-weight: 700; }
+.lang-toggle:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+.theme-toggle { font-size: 0.85rem; }
+.theme-toggle:hover { border-color: var(--accent); }
 
-.icon-btn, .ghost-btn {
+.ghost-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
   height: 34px; padding: 0 13px;
   border: 1px solid var(--border); border-radius: 20px;
@@ -180,12 +213,16 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
   font: inherit; font-size: 13px; text-decoration: none; cursor: pointer;
   transition: color var(--transition), border-color var(--transition), background var(--transition);
 }
-.icon-btn { width: 34px; padding: 0; font-size: 15px; }
-.icon-btn:hover, .ghost-btn:hover { color: var(--text); border-color: var(--text-faint); }
+.ghost-btn:hover { color: var(--text); border-color: var(--text-faint); }
 
 /* ── Hero ───────────────────────────────────────────────── */
 
-.view { padding: 0 clamp(16px, 4vw, 40px) 56px; max-width: 1320px; margin: 0 auto; }
+/* The header is fixed, so every view opens below its full height. */
+.view {
+  padding: calc(var(--header-h) + env(safe-area-inset-top, 0px)) clamp(16px, 4vw, 40px) 40px;
+  max-width: var(--content-w);
+  margin: 0 auto;
+}
 
 .hero { padding: clamp(32px, 5vw, 60px) 0 22px; max-width: 760px; }
 .hero h1 { font-size: clamp(28px, 4.4vw, 40px); line-height: 1.15; }
@@ -199,7 +236,7 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
 
 .filters {
   position: sticky;
-  top: var(--header-h);
+  top: calc(var(--header-h) + env(safe-area-inset-top, 0px));
   z-index: 20;
   display: flex; flex-wrap: wrap; gap: 8px;
   padding: 14px 0;
@@ -292,12 +329,51 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
 
 .empty { text-align: center; color: var(--text-muted); padding: 56px 0; }
 
+/* ── Footer ─────────────────────────────────────────────────
+   Same shape as the reference site: a full-width rule, then centred
+   small print on the content measure, in the reader's language. */
+
 .site-footer {
-  margin-top: 48px; padding-top: 20px;
+  margin-top: 1rem;
+  padding: 24px 0 20px;
+  padding-bottom: max(20px, env(safe-area-inset-bottom, 0px));
   border-top: 1px solid var(--border);
-  color: var(--text-muted); font-size: 12.5px;
 }
-.site-footer p { margin: 0 0 4px; }
+
+.footer-inner {
+  max-width: var(--content-w);
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 40px);
+  text-align: center;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.footer-text { margin: 0; }
+.footer-text a, .footer-author-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--transition), border-color var(--transition);
+}
+.footer-text a:hover, .footer-author-link:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.footer-generated {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-faint);
+}
+
+/* One paragraph per language, switched by the <html lang> the language
+ * toggle writes — the credit lines carry links, so they cannot go through
+ * the textContent-based i18n pass. */
+.footer-text-zh { display: none; }
+html[lang^='zh'] .footer-text-en { display: none; }
+html[lang^='zh'] .footer-text-zh { display: block; }
 
 /* ── Detail header ──────────────────────────────────────── */
 
@@ -528,13 +604,21 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
 }
 
 @media (max-width: 720px) {
-  .topbar { height: auto; flex-wrap: wrap; gap: 10px; padding-bottom: 10px; }
-  .brand-text small { display: none; }
-  .topbar-actions { width: 100%; }
-  .search { flex: 1; }
-  .search input { width: 100%; }
-  #repo-link { display: none; }
-  .filters { top: 0; }
+  /* The bar stays one row at every width — a wrapping header would no longer
+   * match the space `.view` reserves for the fixed bar. The title truncates
+   * and the GitHub link drops out to make room. */
+  .header-inner { gap: 0.6rem; padding-left: 16px; padding-right: 16px; }
+  .site-title { font-size: 1rem; }
+  .header-right { gap: 0.4rem; }
+  .github-link { display: none; }
+  /* A search field wide enough to type in leaves the bilingual title with a
+   * few characters, so on phones it collapses to its icon — the whole label
+   * is the hit area — and expands again while it has focus. */
+  .search { padding: 0 7px; gap: 0; }
+  .search input { width: 0; transition: width var(--transition); }
+  .search:focus-within { gap: 7px; }
+  .search:focus-within input { width: clamp(110px, 42vw, 200px); }
+  .lang-toggle, .theme-toggle { min-width: 32px; padding: 0 0.45rem; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 12px; }
   .hero-stats { gap: 20px; }
   .hero-stats dd { font-size: 20px; }
