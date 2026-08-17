@@ -58,6 +58,7 @@ try {
   viewer.renderer.render(viewer.scene, viewer.camera);
 
   state.meshes = viewer.stats?.visual ?? 0;
+  state.stripped = viewer.stats?.stripped ?? 0;
   state.measured = viewer.measured;
   state.clip = viewer.screenBounds(0.04);
   state.ready = true;

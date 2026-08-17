@@ -250,10 +250,18 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
   display: grid; place-items: center;
   overflow: hidden;
 }
+/* Absolutely positioned, not just `width/height: 100%`: the figure's height
+ * comes from `aspect-ratio`, which browsers treat as an indefinite height, so a
+ * percentage height on an in-flow child collapses to `auto`. A humanoid card
+ * image (roughly 1:3) then laid itself out three cards tall and `object-fit`
+ * never applied — the robot was cropped to whatever band of the image happened
+ * to sit in the square. Against `inset: 0` the box is definite, so tall and wide
+ * thumbnails alike are contained and centred. */
 .card-figure img {
+  position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: contain;
-  padding: 11% 9% 7%;
+  padding: 9%;
   transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 .card:hover .card-figure img { transform: scale(1.04); }
@@ -450,19 +458,39 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
 .joint-head { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; }
 .joint-name { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .joint-value { font-family: var(--font-mono); font-size: 11.5px; color: var(--accent); font-variant-numeric: tabular-nums; }
+/* The groove reads as 3px, but a 3px-tall <input> is a 3px-tall hit area — a
+ * fingertip cannot land on it, and even a mouse has to be precise. So the input
+ * itself is a finger-sized transparent strip and the groove is painted on the
+ * track pseudo-element instead. `touch-action: pan-y` completes it: a sideways
+ * drag belongs to the thumb, while a vertical swipe still scrolls the joint
+ * list rather than being swallowed by the slider. */
 .joint input[type='range'] {
   -webkit-appearance: none; appearance: none;
-  width: 100%; height: 3px; margin: 7px 0 1px;
-  background: var(--border); border-radius: 20px; outline: none;
+  display: block; width: 100%; height: 26px; margin: 0;
+  background: transparent; border-radius: 20px; outline: none;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+.joint input[type='range']::-webkit-slider-runnable-track {
+  height: 3px; border-radius: 20px; background: var(--border);
+}
+.joint input[type='range']::-moz-range-track {
+  height: 3px; border-radius: 20px; background: var(--border);
 }
 .joint input[type='range']::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%;
+  -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
   background: var(--accent); cursor: pointer; border: 2px solid var(--surface);
+  margin-top: -6.5px; /* centre the 16px thumb on the 3px track */
 }
 .joint input[type='range']::-moz-range-thumb {
-  width: 12px; height: 12px; border-radius: 50%; background: var(--accent);
+  width: 16px; height: 16px; border-radius: 50%; background: var(--accent);
   cursor: pointer; border: 2px solid var(--surface);
 }
+.joint input[type='range']:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+}
+.joint input[type='range']:active::-webkit-slider-thumb { background: var(--accent-hover); }
+.joint input[type='range']:active::-moz-range-thumb { background: var(--accent-hover); }
 
 /* ── Resources & snippets ───────────────────────────────── */
 

@@ -31,6 +31,7 @@ import json
 import os
 import posixpath
 import sys
+import time
 import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -172,21 +173,35 @@ class Http:
         self.head_path.write_text(json.dumps(self.heads))
         self._dirty = 0
 
-    def head(self, url: str) -> tuple[int, int]:
-        """Return ``(status, content_length)``, cached across runs."""
+    # A HEAD answers one question: does this path exist at this commit? 200 and
+    # 404 answer it for good; a 429, a 5xx or a timeout is the CDN having a
+    # moment. Those are retried and never cached, because one cached flake makes
+    # a mesh "unresolved" and silently drops the whole robot from the registry on
+    # this run and every later one.
+    CONCLUSIVE = (200, 404)
+
+    def head(self, url: str, attempts: int = 3) -> tuple[int, int]:
+        """Return ``(status, content_length)``; conclusive answers are cached."""
         if url in self.heads:
             status, size = self.heads[url]
             return status, size
         if self.offline:
             return 0, 0
         request = urllib.request.Request(url, method="HEAD", headers=UA)
-        try:
-            with urllib.request.urlopen(request, timeout=60) as response:
-                result = (response.status, int(response.headers.get("Content-Length") or 0))
-        except urllib.error.HTTPError as exc:
-            result = (exc.code, 0)
-        except Exception:  # noqa: BLE001 - network flake, treated as "unknown"
-            result = (0, 0)
+        for attempt in range(attempts):
+            try:
+                with urllib.request.urlopen(request, timeout=60) as response:
+                    result = (response.status, int(response.headers.get("Content-Length") or 0))
+            except urllib.error.HTTPError as exc:
+                result = (exc.code, 0)
+            except Exception:  # noqa: BLE001 - network flake, treated as "unknown"
+                result = (0, 0)
+            if result[0] in self.CONCLUSIVE:
+                break
+            if attempt + 1 < attempts:
+                time.sleep(2**attempt)
+        if result[0] not in self.CONCLUSIVE:
+            return result
         self.heads[url] = list(result)
         self._dirty += 1
         if self._dirty >= 200:

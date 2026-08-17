@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-08-17T11:52:58Z",
+ "generated": "2026-08-17T16:31:13Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -144,7 +144,7 @@
      "h1_description": "robots/h1_description"
     },
     "mesh_files": 21,
-    "mesh_bytes": 19881792,
+    "mesh_bytes": 20187637,
     "mesh_formats": [
      ".dae"
     ]
@@ -746,7 +746,7 @@
      "val_description": "val_description"
     },
     "mesh_files": 56,
-    "mesh_bytes": 924511,
+    "mesh_bytes": 897272,
     "mesh_formats": [
      ".dae"
     ]
@@ -808,7 +808,7 @@
      "r2_description": "r2_description"
     },
     "mesh_files": 30,
-    "mesh_bytes": 10622593,
+    "mesh_bytes": 7015443,
     "mesh_formats": [
      ".dae"
     ]
@@ -868,7 +868,7 @@
      "jvrc_description": ""
     },
     "mesh_files": 35,
-    "mesh_bytes": 483567,
+    "mesh_bytes": 680150,
     "mesh_formats": [
      ".dae"
     ]
@@ -990,7 +990,7 @@
      "multisense_sl_description": "roboschool/models_robot/multisense_sl_description"
     },
     "mesh_files": 23,
-    "mesh_bytes": 2355807,
+    "mesh_bytes": 1907007,
     "mesh_formats": [
      ".dae"
     ]
@@ -1237,7 +1237,7 @@
      "jaxon_description": ""
     },
     "mesh_files": 39,
-    "mesh_bytes": 20741687,
+    "mesh_bytes": 10774595,
     "mesh_formats": [
      ".dae"
     ]
@@ -1298,7 +1298,7 @@
      "romeo_description": "romeo_description"
     },
     "mesh_files": 93,
-    "mesh_bytes": 8875360,
+    "mesh_bytes": 5194172,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -1372,7 +1372,7 @@
      "go2_description": "robots/go2_description"
     },
     "mesh_files": 7,
-    "mesh_bytes": 21541369,
+    "mesh_bytes": 2250974,
     "mesh_formats": [
      ".dae"
     ]
@@ -1447,7 +1447,7 @@
      "b2_description": "robots/b2_description"
     },
     "mesh_files": 13,
-    "mesh_bytes": 13186006,
+    "mesh_bytes": 7409215,
     "mesh_formats": [
      ".dae"
     ]
@@ -1522,7 +1522,7 @@
      "a1_description": "robots/a1_description"
     },
     "mesh_files": 5,
-    "mesh_bytes": 7254591,
+    "mesh_bytes": 668998,
     "mesh_formats": [
      ".dae"
     ]
@@ -1596,7 +1596,7 @@
      "aliengo_description": "robots/aliengo_description"
     },
     "mesh_files": 5,
-    "mesh_bytes": 4638590,
+    "mesh_bytes": 741600,
     "mesh_formats": [
      ".dae"
     ]
@@ -1698,14 +1698,23 @@
    ],
    "notes": null,
    "notes_zh": null,
-   "pose": null,
+   "pose": {
+    "LF_HFE": 0.4,
+    "LF_KFE": -0.8,
+    "RF_HFE": 0.4,
+    "RF_KFE": -0.8,
+    "LH_HFE": -0.4,
+    "LH_KFE": 0.8,
+    "RH_HFE": -0.4,
+    "RH_KFE": 0.8
+   },
    "measured": {
     "size": {
-     "x": 0.966,
-     "y": 0.8603,
+     "x": 0.984,
+     "y": 0.7877,
      "z": 0.568
     },
-    "height_m": 0.8603
+    "height_m": 0.7877
    },
    "urdf": {
     "xml_name": "anymal",
@@ -1727,7 +1736,7 @@
      "anymal_b_simple_description": ""
     },
     "mesh_files": 8,
-    "mesh_bytes": 3533208,
+    "mesh_bytes": 5772713,
     "mesh_formats": [
      ".dae"
     ]
@@ -1760,14 +1769,23 @@
    ],
    "notes": null,
    "notes_zh": null,
-   "pose": null,
+   "pose": {
+    "LF_HFE": 0.4,
+    "LF_KFE": -0.8,
+    "RF_HFE": 0.4,
+    "RF_KFE": -0.8,
+    "LH_HFE": -0.4,
+    "LH_KFE": 0.8,
+    "RH_HFE": -0.4,
+    "RH_KFE": 0.8
+   },
    "measured": {
     "size": {
      "x": 1.0516,
-     "y": 0.9164,
+     "y": 0.8469,
      "z": 0.6779
     },
-    "height_m": 0.9164
+    "height_m": 0.8469
    },
    "urdf": {
     "xml_name": "anymal",
@@ -1789,7 +1807,7 @@
      "anymal_c_simple_description": ""
     },
     "mesh_files": 19,
-    "mesh_bytes": 2227137,
+    "mesh_bytes": 1720723,
     "mesh_formats": [
      ".dae"
     ]
@@ -1822,14 +1840,23 @@
    ],
    "notes": null,
    "notes_zh": null,
-   "pose": null,
+   "pose": {
+    "LF_HFE": 0.4,
+    "LF_KFE": -0.8,
+    "RF_HFE": 0.4,
+    "RF_KFE": -0.8,
+    "LH_HFE": -0.4,
+    "LH_KFE": 0.8,
+    "RH_HFE": -0.4,
+    "RH_KFE": 0.8
+   },
    "measured": {
     "size": {
-     "x": 1.0132,
-     "y": 1.0195,
+     "x": 1.079,
+     "y": 0.9399,
      "z": 0.6804
     },
-    "height_m": 1.0195
+    "height_m": 0.9399
    },
    "urdf": {
     "xml_name": "anymal",
@@ -1851,7 +1878,7 @@
      "anymal_d_simple_description": ""
     },
     "mesh_files": 17,
-    "mesh_bytes": 950219,
+    "mesh_bytes": 1456440,
     "mesh_formats": [
      ".dae"
     ]
@@ -1884,14 +1911,23 @@
    ],
    "notes": null,
    "notes_zh": null,
-   "pose": null,
+   "pose": {
+    "lf_hfe_joint": 0.5,
+    "lf_kfe_joint": -1.1,
+    "rf_hfe_joint": 0.5,
+    "rf_kfe_joint": -1.1,
+    "lh_hfe_joint": -0.5,
+    "lh_kfe_joint": 1.1,
+    "rh_hfe_joint": -0.5,
+    "rh_kfe_joint": 1.1
+   },
    "measured": {
     "size": {
-     "x": 1.4786,
-     "y": 0.7855,
+     "x": 1.2898,
+     "y": 0.9729,
      "z": 0.5954
     },
-    "height_m": 0.7855
+    "height_m": 0.9729
    },
    "urdf": {
     "xml_name": "hyq",
@@ -1913,7 +1949,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 4,
-    "mesh_bytes": 463734,
+    "mesh_bytes": 38852,
     "mesh_formats": [
      ".dae"
     ]
@@ -1944,14 +1980,23 @@
    ],
    "notes": null,
    "notes_zh": null,
-   "pose": null,
+   "pose": {
+    "FL_HFE": 0.6,
+    "FL_KFE": -1.2,
+    "FR_HFE": 0.6,
+    "FR_KFE": -1.2,
+    "HL_HFE": -0.6,
+    "HL_KFE": 1.2,
+    "HR_HFE": -0.6,
+    "HR_KFE": 1.2
+   },
    "measured": {
     "size": {
      "x": 0.4482,
-     "y": 0.364,
+     "y": 0.3143,
      "z": 0.3208
     },
-    "height_m": 0.364
+    "height_m": 0.3143
    },
    "urdf": {
     "xml_name": "solo",
@@ -2159,7 +2204,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 19,
-    "mesh_bytes": 3821529,
+    "mesh_bytes": 4568875,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -2193,14 +2238,18 @@
    ],
    "notes": null,
    "notes_zh": null,
-   "pose": null,
+   "pose": {
+    "iiwa_joint_2": 0.5,
+    "iiwa_joint_4": -1.3,
+    "iiwa_joint_6": 0.6
+   },
    "measured": {
     "size": {
-     "x": 0.2572,
-     "y": 1.306,
+     "x": 0.8502,
+     "y": 0.8208,
      "z": 0.2535
     },
-    "height_m": 1.306
+    "height_m": 0.8208
    },
    "urdf": {
     "xml_name": "iiwa14",
@@ -2255,14 +2304,19 @@
    ],
    "notes": null,
    "notes_zh": null,
-   "pose": null,
+   "pose": {
+    "j2s6s200_joint_2": 2.6,
+    "j2s6s200_joint_3": 4.7,
+    "j2s6s200_joint_4": 1.0,
+    "j2s6s200_joint_5": 3.1
+   },
    "measured": {
     "size": {
-     "x": 0.2228,
-     "y": 1.2701,
-     "z": 0.0889
+     "x": 0.1393,
+     "y": 0.6877,
+     "z": 0.8186
     },
-    "height_m": 1.2701
+    "height_m": 0.6877
    },
    "urdf": {
     "xml_name": "kinova",
@@ -2285,7 +2339,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 11,
-    "mesh_bytes": 4776521,
+    "mesh_bytes": 3998080,
     "mesh_formats": [
      ".dae"
     ]
@@ -2376,14 +2430,18 @@
    ],
    "notes": null,
    "notes_zh": null,
-   "pose": null,
+   "pose": {
+    "joint_2": 0.6,
+    "joint_3": 1.0,
+    "joint_5": 0.6
+   },
    "measured": {
     "size": {
      "x": 0.5381,
-     "y": 0.9752,
-     "z": 0.4719
+     "y": 0.5969,
+     "z": 0.7879
     },
-    "height_m": 0.9752
+    "height_m": 0.5969
    },
    "urdf": {
     "xml_name": "edo_sim",
@@ -2856,14 +2914,18 @@
    ],
    "notes": null,
    "notes_zh": null,
-   "pose": null,
+   "pose": {
+    "joint2": 0.7,
+    "joint3": 1.0,
+    "joint4": 0.6
+   },
    "measured": {
     "size": {
-     "x": 0.17,
-     "y": 0.792,
+     "x": 0.6041,
+     "y": 0.4179,
      "z": 0.306
     },
-    "height_m": 0.792
+    "height_m": 0.4179
    },
    "urdf": {
     "xml_name": "omy_3m",
@@ -2916,14 +2978,18 @@
    ],
    "notes": null,
    "notes_zh": null,
-   "pose": null,
+   "pose": {
+    "joint2": 0.7,
+    "joint3": 1.0,
+    "joint4": 0.6
+   },
    "measured": {
     "size": {
-     "x": 0.17,
-     "y": 0.8575,
+     "x": 0.6537,
+     "y": 0.4179,
      "z": 0.447
     },
-    "height_m": 0.8575
+    "height_m": 0.4179
    },
    "urdf": {
     "xml_name": "omy_f3m",
@@ -2976,14 +3042,18 @@
    ],
    "notes": null,
    "notes_zh": null,
-   "pose": null,
+   "pose": {
+    "joint2": 0.7,
+    "joint3": 1.0,
+    "joint4": 0.6
+   },
    "measured": {
     "size": {
-     "x": 0.25,
-     "y": 0.6411,
+     "x": 0.635,
+     "y": 0.3338,
      "z": 0.2806
     },
-    "height_m": 0.6411
+    "height_m": 0.3338
    },
    "urdf": {
     "xml_name": "omy_l100",
@@ -3065,7 +3135,7 @@
      "poppy_ergo_jr_description": ""
     },
     "mesh_files": 6,
-    "mesh_bytes": 6775607,
+    "mesh_bytes": 592437,
     "mesh_formats": [
      ".dae"
     ]
@@ -3463,14 +3533,23 @@
    ],
    "notes": null,
    "notes_zh": null,
-   "pose": null,
+   "pose": {
+    "LeftHipPitch": 0.3,
+    "LeftKneePitch": -1.1,
+    "LeftTarsusPitch": 1.3,
+    "LeftFootPitch": -1.6,
+    "RightHipPitch": 0.3,
+    "RightKneePitch": -1.1,
+    "RightTarsusPitch": 1.3,
+    "RightFootPitch": -1.6
+   },
    "measured": {
     "size": {
-     "x": 0.8447,
-     "y": 0.7953,
+     "x": 0.5536,
+     "y": 1.2768,
      "z": 0.4825
     },
-    "height_m": 0.7953
+    "height_m": 1.2768
    },
    "urdf": {
     "xml_name": "cassie_v4",
@@ -3675,7 +3754,7 @@
     "urdf": "urdf/rhea.urdf",
     "packages": {},
     "mesh_files": 7,
-    "mesh_bytes": 7291011,
+    "mesh_bytes": 4523777,
     "mesh_formats": [
      ".dae"
     ]
@@ -3798,7 +3877,7 @@
      "baxter_description": "baxter_description"
     },
     "mesh_files": 13,
-    "mesh_bytes": 10392061,
+    "mesh_bytes": 5331836,
     "mesh_formats": [
      ".dae"
     ]
@@ -3859,7 +3938,7 @@
     "urdf": "urdfs/robots/pr2/pr2.urdf",
     "packages": {},
     "mesh_files": 31,
-    "mesh_bytes": 645787,
+    "mesh_bytes": 362548,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -3919,7 +3998,7 @@
      "nextage_description": "nextage_description"
     },
     "mesh_files": 16,
-    "mesh_bytes": 1053565,
+    "mesh_bytes": 62795,
     "mesh_formats": [
      ".dae"
     ]
@@ -4105,7 +4184,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 34,
-    "mesh_bytes": 4817477,
+    "mesh_bytes": 4808689,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -4169,7 +4248,7 @@
      "pepper_description": ""
     },
     "mesh_files": 99,
-    "mesh_bytes": 9813919,
+    "mesh_bytes": 9204466,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -4230,7 +4309,7 @@
     "urdf": "models/rby1a/urdf/model.urdf",
     "packages": {},
     "mesh_files": 29,
-    "mesh_bytes": 12951929,
+    "mesh_bytes": 3818080,
     "mesh_formats": [
      ".dae"
     ]
