@@ -275,6 +275,16 @@
       "category": "quadruped",
       "links": {
         "official": "https://www.anybotics.com/robotics/anymal/"
+      },
+      "pose": {
+        "LF_HFE": 0.4,
+        "LF_KFE": -0.8,
+        "RF_HFE": 0.4,
+        "RF_KFE": -0.8,
+        "LH_HFE": -0.4,
+        "LH_KFE": 0.8,
+        "RH_HFE": -0.4,
+        "RH_KFE": 0.8
       }
     },
     {
@@ -282,6 +292,16 @@
       "category": "quadruped",
       "links": {
         "official": "https://www.anybotics.com/robotics/anymal/"
+      },
+      "pose": {
+        "LF_HFE": 0.4,
+        "LF_KFE": -0.8,
+        "RF_HFE": 0.4,
+        "RF_KFE": -0.8,
+        "LH_HFE": -0.4,
+        "LH_KFE": 0.8,
+        "RH_HFE": -0.4,
+        "RH_KFE": 0.8
       }
     },
     {
@@ -289,17 +309,47 @@
       "category": "quadruped",
       "links": {
         "official": "https://www.anybotics.com/robotics/anymal/"
+      },
+      "pose": {
+        "LF_HFE": 0.4,
+        "LF_KFE": -0.8,
+        "RF_HFE": 0.4,
+        "RF_KFE": -0.8,
+        "LH_HFE": -0.4,
+        "LH_KFE": 0.8,
+        "RH_HFE": -0.4,
+        "RH_KFE": 0.8
       }
     },
     {
       "description": "hyq_description",
-      "category": "quadruped"
+      "category": "quadruped",
+      "pose": {
+        "lf_hfe_joint": 0.5,
+        "lf_kfe_joint": -1.1,
+        "rf_hfe_joint": 0.5,
+        "rf_kfe_joint": -1.1,
+        "lh_hfe_joint": -0.5,
+        "lh_kfe_joint": 1.1,
+        "rh_hfe_joint": -0.5,
+        "rh_kfe_joint": 1.1
+      }
     },
     {
       "description": "solo_description",
       "category": "quadruped",
       "links": {
         "official": "https://open-dynamic-robot-initiative.github.io/"
+      },
+      "pose": {
+        "FL_HFE": 0.6,
+        "FL_KFE": -1.2,
+        "FR_HFE": 0.6,
+        "FR_KFE": -1.2,
+        "HL_HFE": -0.6,
+        "HL_KFE": 1.2,
+        "HR_HFE": -0.6,
+        "HR_KFE": 1.2
       }
     },
     {
@@ -322,11 +372,22 @@
       "category": "arm",
       "links": {
         "official": "https://www.kuka.com/en-de/products/robot-systems/industrial-robots/lbr-iiwa"
+      },
+      "pose": {
+        "iiwa_joint_2": 0.5,
+        "iiwa_joint_4": -1.3,
+        "iiwa_joint_6": 0.6
       }
     },
     {
       "description": "gen2_description",
-      "category": "arm"
+      "category": "arm",
+      "pose": {
+        "j2s6s200_joint_2": 2.6,
+        "j2s6s200_joint_3": 4.7,
+        "j2s6s200_joint_4": 1.0,
+        "j2s6s200_joint_5": 3.1
+      }
     },
     {
       "description": "fanuc_m710ic_description",
@@ -336,7 +397,12 @@
     },
     {
       "description": "edo_description",
-      "category": "arm"
+      "category": "arm",
+      "pose": {
+        "joint_2": 0.6,
+        "joint_3": 1.0,
+        "joint_5": 0.6
+      }
     },
     {
       "description": "piper_description",
@@ -377,15 +443,30 @@
     },
     {
       "description": "omy_3m_description",
-      "category": "arm"
+      "category": "arm",
+      "pose": {
+        "joint2": 0.7,
+        "joint3": 1.0,
+        "joint4": 0.6
+      }
     },
     {
       "description": "omy_f3m_description",
-      "category": "arm"
+      "category": "arm",
+      "pose": {
+        "joint2": 0.7,
+        "joint3": 1.0,
+        "joint4": 0.6
+      }
     },
     {
       "description": "omy_l100_description",
-      "category": "arm"
+      "category": "arm",
+      "pose": {
+        "joint2": 0.7,
+        "joint3": 1.0,
+        "joint4": 0.6
+      }
     },
     {
       "description": "poppy_ergo_jr_description",
@@ -441,6 +522,16 @@
       "category": "biped",
       "links": {
         "official": "https://agilityrobotics.com/"
+      },
+      "pose": {
+        "LeftHipPitch": 0.3,
+        "LeftKneePitch": -1.1,
+        "LeftTarsusPitch": 1.3,
+        "LeftFootPitch": -1.6,
+        "RightHipPitch": 0.3,
+        "RightKneePitch": -1.1,
+        "RightTarsusPitch": 1.3,
+        "RightFootPitch": -1.6
       }
     },
     {

@@ -93,7 +93,8 @@ for (const robot of targets) {
   const seconds = ((Date.now() - started) / 1000).toFixed(1);
   console.log(
     `  ✓ ${robot.id.padEnd(26)} ${String(state.meshes).padStart(3)} meshes  ` +
-      `${String(state.measured?.height_m?.toFixed(2) ?? '?').padStart(5)} m  ${seconds}s`,
+      `${String(state.measured?.height_m?.toFixed(2) ?? '?').padStart(5)} m  ` +
+      `${state.stripped ? `· stripped ${state.stripped} light/camera  ` : ''}${seconds}s`,
   );
 }
 

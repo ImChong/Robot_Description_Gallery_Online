@@ -33,6 +33,55 @@ export const THEME = {
   axis: 0x7ee787,
 };
 
+/**
+ * Mesh files are not always only geometry. Several Collada exports still carry
+ * the authoring scene around them — the Unitree A1 and Aliengo trunks ship
+ * Blender's default lamp at `color 1000 1000 1000` plus its camera — and
+ * ColladaLoader faithfully instantiates both. One such lamp inside a link lights
+ * the whole scene and burns the robot out to a flat white silhouette, so
+ * everything that is not geometry is dropped on the way in.
+ *
+ * @returns {number} how many objects were removed
+ */
+function stripNonGeometry(object) {
+  if (!object) return 0;
+  const doomed = [];
+  object.traverse?.((child) => {
+    if (child.isLight || child.isCamera) doomed.push(child);
+  });
+  for (const child of doomed) child.removeFromParent();
+  return doomed.length;
+}
+
+/**
+ * Rewrite `<color rgba="...">` from sRGB into linear-sRGB before parsing.
+ *
+ * urdf-loader assigns those channels with a bare `setRGB`, which lands them in
+ * three.js' working colour space — linear-sRGB — while every other tool that
+ * reads a URDF (RViz, Gazebo, MuJoCo) treats them as ordinary sRGB. The gap is
+ * not subtle: the ROS orange `1 0.42 0.04` renders as #ffae38 gold instead of
+ * #ff6c0a, so LimX's orange robots come out looking gold-plated and every
+ * authored colour reads washed out. Converting the text is the one place where
+ * the fix applies to exactly the URDF's own colours and leaves colours that came
+ * out of a mesh file — where Collada's linear channels are already right — alone.
+ *
+ * A few descriptions also write 0-255 channels where the spec asks for 0-1
+ * (LimX: `rgba="255 108 10 255"`); those are rescaled on the way through.
+ */
+function urdfColorsToLinear(xml, scratch = new THREE.Color()) {
+  return xml.replace(/(<color\b[^>]*\brgba\s*=\s*(["']))(.*?)(\2)/g, (whole, head, _q, body, tail) => {
+    const channels = body.trim().split(/[\s,]+/).map(Number);
+    if (channels.length < 3 || channels.some((v) => !Number.isFinite(v))) return whole;
+    let [r, g, b, a = 1] = channels;
+    if (Math.max(r, g, b) > 1) {
+      [r, g, b] = [r / 255, g / 255, b / 255];
+      if (a > 1) a /= 255;
+    }
+    scratch.setRGB(r, g, b, THREE.SRGBColorSpace);
+    return `${head}${scratch.r} ${scratch.g} ${scratch.b} ${a}${tail}`;
+  });
+}
+
 /** True only if the object and every ancestor up to the root is visible. */
 function effectivelyVisible(object, root) {
   for (let node = object; node && node !== root.parent; node = node.parent) {
@@ -259,6 +308,7 @@ export class RobotViewer {
     // measure half a model.
     let total = 0;
     let done = 0;
+    let stripped = 0;
     let parsed = false;
     let markSettled;
     const settled = new Promise((resolve) => (markSettled = resolve));
@@ -272,6 +322,7 @@ export class RobotViewer {
       tick();
       const finish = (obj, err) => {
         done += 1;
+        stripped += stripNonGeometry(obj);
         tick();
         try {
           onComplete(obj, err);
@@ -292,7 +343,7 @@ export class RobotViewer {
       return r.text();
     });
 
-    const robot = loader.parse(text);
+    const robot = loader.parse(urdfColorsToLinear(text));
     parsed = true;
     this.robot = robot;
     this.world.add(robot);
@@ -309,7 +360,7 @@ export class RobotViewer {
     this.loadedMeshes = { done, total };
     this._styleAll();
     this._applyOverlays();
-    this.stats = this.meshStats();
+    this.stats = { ...this.meshStats(), stripped };
     this.frameCamera();
     return robot;
   }
@@ -361,11 +412,16 @@ export class RobotViewer {
       return;
     }
     // Keep authored colours where the URDF or mesh provides them, but give
-    // untextured grey meshes a consistent studio look.
+    // untextured grey meshes a consistent studio look. A white base colour on a
+    // textured mesh is the usual way of saying "the texture is the colour", so
+    // that case keeps its material instead of being painted over.
     const untouched =
       !material ||
       !material.color ||
-      (material.color.r === 1 && material.color.g === 1 && material.color.b === 1);
+      (material.color.r === 1 &&
+        material.color.g === 1 &&
+        material.color.b === 1 &&
+        !material.map);
     if (untouched) {
       mesh.material = new THREE.MeshStandardMaterial({
         color: THEME.visual,

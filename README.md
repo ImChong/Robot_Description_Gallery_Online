@@ -120,6 +120,9 @@ npm run check:downloads -- --all     # 全部 70 个
    用 `--candidates` 确认网格可解析；
 2. 在 `data/curation.json` 的 `robots` 数组里加一条，至少填 `description` 和
    `category`，可选 `name` / `maker` / `dof` / `notes` / `notes_zh` / `links`；
+   如果零位姿态不像个能站住的机器人（四足腿伸直、机械臂笔直朝天、Cassie 整个躺平），
+   再加一个 `pose`（关节名 → 弧度/米），卡片和详情页都会用它作为初始姿态；
+   关节名会在生成注册表时对着 URDF 校验，写错直接报错；
 3. `npm run registry && npm run thumbs -- --robot <id> && npm run registry`
    （第二次 `registry` 是为了把刚测出的尺寸并进注册表），最后
    `npm run smoke -- --robot <id>` 确认真的渲染出来了。
