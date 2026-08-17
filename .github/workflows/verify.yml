@@ -1,0 +1,86 @@
+name: Verify registry
+
+# Every entry points at someone else's repository, so the gallery rots when an
+# upstream moves a mesh, rewrites history, or takes a repo private. This job
+# rebuilds the registry from robot_descriptions.py and loads every robot in a
+# real browser, weekly and on any change to the pipeline.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/**'
+      - 'scripts/**'
+      - 'web/**'
+      - '.github/workflows/verify.yml'
+  pull_request:
+    paths:
+      - 'data/**'
+      - 'scripts/**'
+      - 'web/**'
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: pip install -r scripts/requirements.txt
+      - run: npm ci
+
+      # Regenerating in CI is the actual check: build_registry.py HEAD-probes
+      # every mesh, so an upstream that moved files fails here.
+      - name: Rebuild registry
+        run: python3 scripts/build_registry.py --out /tmp/robots.json
+
+      - name: Compare against the committed registry
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          committed = json.load(open('data/robots.json'))
+          fresh = json.load(open('/tmp/robots.json'))
+          drifted = False
+          fresh_by_id = {r['id']: r for r in fresh['robots']}
+          for robot in committed['robots']:
+              new = fresh_by_id.get(robot['id'])
+              if new is None:
+                  print(f"::error::{robot['id']} no longer resolves upstream")
+                  drifted = True
+                  continue
+              for key in ('assets', 'urdf', 'source'):
+                  if robot[key] != new[key]:
+                      print(f"::warning::{robot['id']} {key} changed — re-run `npm run registry`")
+                      drifted = True
+          missing = set(fresh_by_id) - {r['id'] for r in committed['robots']}
+          if missing:
+              print(f"::notice::curated but not committed: {sorted(missing)}")
+          sys.exit(1 if drifted else 0)
+          PY
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Render check
+        run: |
+          node scripts/serve.mjs &
+          npx wait-on http://localhost:8080/web/ --timeout 30000
+          node scripts/smoke.mjs --all
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: failure-screenshots
+          path: .cache/smoke/
+          if-no-files-found: ignore

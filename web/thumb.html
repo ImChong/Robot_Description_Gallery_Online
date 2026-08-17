@@ -1,0 +1,70 @@
+<!doctype html>
+<!--
+  Offscreen renderer used by scripts/render_thumbnails.mjs.
+
+  Open with ?robot=<id> (plus optional &w=&h=&azimuth=&elevation=), wait for
+  window.__thumb.ready, then screenshot the canvas. Kept separate from the
+  gallery page so a card image never depends on the site's chrome or layout.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>thumbnail renderer</title>
+<style>
+  /* Transparent so the rendered card image carries an alpha channel and the
+     gallery's own card background shows through behind the robot. */
+  html, body { margin: 0; background: transparent; overflow: hidden; }
+  #host { position: fixed; inset: 0; }
+  #host canvas { display: block; }
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three/three.module.min.js",
+    "three/addons/": "./vendor/three/jsm/",
+    "three/examples/jsm/": "./vendor/three/jsm/",
+    "urdf-loader": "./vendor/urdf-loader/URDFLoader.js"
+  }
+}
+</script>
+</head>
+<body>
+<div id="host"></div>
+<script type="module">
+import { RobotViewer } from './js/viewer.js';
+import { loadRegistry, byId } from './js/registry.js';
+
+const params = new URLSearchParams(location.search);
+const state = { ready: false, error: null, meshes: 0, measured: null };
+window.__thumb = state;
+
+try {
+  const data = await loadRegistry('../data/robots.json');
+  const robot = byId(data, params.get('robot'));
+  if (!robot) throw new Error(`unknown robot: ${params.get('robot')}`);
+
+  const viewer = new RobotViewer(document.getElementById('host'), {
+    grid: false,
+    shadows: false, // a cast shadow floating on transparency reads as a smudge
+    alpha: true,
+  });
+  await viewer.load(robot);
+  viewer.poseForPortrait(robot.pose);
+  viewer.frameCamera(
+    Number(params.get('azimuth') ?? Math.PI * 0.22),
+    Number(params.get('elevation') ?? 0.16),
+    Number(params.get('padding') ?? 1.04), // cards are cropped tight
+  );
+  viewer.renderer.render(viewer.scene, viewer.camera);
+
+  state.meshes = viewer.stats?.visual ?? 0;
+  state.measured = viewer.measured;
+  state.clip = viewer.screenBounds(0.04);
+  state.ready = true;
+} catch (err) {
+  state.error = String(err && err.message ? err.message : err);
+  state.ready = true;
+}
+</script>
+</body>
+</html>

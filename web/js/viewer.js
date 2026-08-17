@@ -13,13 +13,21 @@ import URDFLoader from 'urdf-loader';
 
 const UP_Z = -Math.PI / 2; // URDF is Z-up, three.js is Y-up.
 
+/**
+ * Joints that take more than one value. urdf-loader expects every component to
+ * be passed at once — `setJointValue(name, 0)` on a floating joint leaves five
+ * arguments undefined and turns the entire subtree's transform into NaN — and
+ * they describe a free-floating base rather than something to actuate, so the
+ * viewer sets them to zero once and keeps them out of the joint sliders.
+ */
+const MULTI_DOF = { floating: 6, planar: 3 };
+
 export const THEME = {
   background: 0x0e1116,
   grid: 0x2a3340,
   gridAccent: 0x3d4a5c,
   visual: 0xb9c2cf,
   collision: 0x4ac3ff,
-  frameScale: 0.12,
   com: 0xffc857,
   inertia: 0xff6b9d,
   axis: 0x7ee787,
@@ -252,24 +260,40 @@ export class RobotViewer {
     });
 
     const robot = loader.parse(text);
-    robot.traverse((child) => {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-        this._styleMesh(child);
-      }
-    });
-
     this.robot = robot;
     this.world.add(robot);
     this.entry = entry;
+    // Primitive geometry (<box>, <cylinder>, <sphere>) exists immediately;
+    // mesh files arrive over the network, so styling runs again after they land.
+    this._styleAll();
     this._applyOverlays();
 
     // Meshes stream in asynchronously; frame the camera once they settle.
     await this._settle();
+    this._styleAll();
+    this._applyOverlays();
     this.stats = this.meshStats();
     this.frameCamera();
     return robot;
+  }
+
+  /** Apply the studio look to every mesh that has not been styled yet. */
+  _styleAll() {
+    this.robot?.traverse((child) => {
+      if (!child.isMesh || child.userData.styled) return;
+      child.userData.styled = true;
+      child.castShadow = true;
+      child.receiveShadow = true;
+      this._styleMesh(child, this._isCollision(child));
+    });
+  }
+
+  /** Collision geometry can sit several groups below its URDFCollider. */
+  _isCollision(object) {
+    for (let node = object; node && node !== this.robot?.parent; node = node.parent) {
+      if (node.type === 'URDFCollider') return true;
+    }
+    return false;
   }
 
   /** Count the meshes that arrived, split by visual vs collision geometry. */
@@ -277,11 +301,7 @@ export class RobotViewer {
     const stats = { visual: 0, collision: 0, textured: 0 };
     this.robot?.traverse((child) => {
       if (!child.isMesh) return;
-      let kind = 'visual';
-      for (let node = child; node && node !== this.robot.parent; node = node.parent) {
-        if (node.type === 'URDFCollider') kind = 'collision';
-      }
-      stats[kind] += 1;
+      stats[this._isCollision(child) ? 'collision' : 'visual'] += 1;
       const material = Array.isArray(child.material) ? child.material[0] : child.material;
       if (material?.map) stats.textured += 1;
     });
@@ -311,10 +331,11 @@ export class RobotViewer {
     });
   }
 
-  _styleMesh(mesh) {
-    const isCollision = !!mesh.parent && mesh.parent.type === 'URDFCollider';
+  _styleMesh(mesh, isCollision) {
     const material = Array.isArray(mesh.material) ? mesh.material[0] : mesh.material;
     if (isCollision) {
+      mesh.castShadow = false;
+      mesh.receiveShadow = false;
       mesh.material = new THREE.MeshBasicMaterial({
         color: THEME.collision,
         wireframe: true,
@@ -625,7 +646,7 @@ export class RobotViewer {
   jointList() {
     if (!this.robot) return [];
     return Object.values(this.robot.joints)
-      .filter((j) => j.jointType !== 'fixed')
+      .filter((j) => j.jointType !== 'fixed' && !(j.jointType in MULTI_DOF))
       .map((j) => ({
         name: j.name,
         type: j.jointType,
@@ -637,17 +658,33 @@ export class RobotViewer {
   }
 
   setJoint(name, value) {
-    this.robot?.setJointValue(name, value);
+    const joint = this.robot?.joints[name];
+    if (!joint || joint.jointType in MULTI_DOF || !Number.isFinite(value)) return;
+    this.robot.setJointValue(name, value);
     this.invalidate();
   }
 
+  /**
+   * Put every joint at its neutral position: zero when the limits allow it,
+   * otherwise the middle of the range, so a joint whose range excludes zero does
+   * not sit against a hard stop.
+   */
   resetJoints() {
     if (!this.robot) return;
     for (const joint of Object.values(this.robot.joints)) {
-      const rest = joint.limit && joint.limit.lower <= 0 && joint.limit.upper >= 0
-        ? 0
-        : ((joint.limit?.lower ?? 0) + (joint.limit?.upper ?? 0)) / 2;
-      this.robot.setJointValue(joint.name, joint.jointType === 'continuous' ? 0 : rest);
+      const arity = MULTI_DOF[joint.jointType];
+      if (arity) {
+        this.robot.setJointValue(joint.name, ...new Array(arity).fill(0));
+        continue;
+      }
+      if (joint.jointType === 'fixed') continue;
+      const lower = Number.isFinite(joint.limit?.lower) ? joint.limit.lower : null;
+      const upper = Number.isFinite(joint.limit?.upper) ? joint.limit.upper : null;
+      let rest = 0;
+      if (joint.jointType !== 'continuous' && lower !== null && upper !== null) {
+        rest = lower <= 0 && upper >= 0 ? 0 : (lower + upper) / 2;
+      }
+      this.robot.setJointValue(joint.name, rest);
     }
     this.invalidate();
   }
@@ -662,7 +699,7 @@ export class RobotViewer {
   applyPose(pose) {
     if (!this.robot || !pose) return;
     for (const [name, value] of Object.entries(pose)) {
-      if (this.robot.joints[name]) this.robot.setJointValue(name, value);
+      this.setJoint(name, value);
     }
     this.invalidate();
   }

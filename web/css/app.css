@@ -187,16 +187,20 @@ h1, h2, h3 { font-weight: 620; letter-spacing: -0.02em; margin: 0; }
 .card:hover { transform: translateY(-3px); border-color: #2d3949; box-shadow: var(--shadow); }
 .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
+/* Square, because the thumbnails are cropped to the robot: a humanoid arrives
+ * tall and narrow, a quadruped wide and short, and a square box gives both the
+ * most room while keeping every card the same size. */
 .card-figure {
   position: relative;
-  aspect-ratio: 4 / 3;
-  background:
-    radial-gradient(120% 90% at 50% 8%, #1b2230 0%, #0f131a 70%);
+  aspect-ratio: 1 / 1;
+  background: radial-gradient(115% 85% at 50% 12%, #202836 0%, #10141b 72%);
   display: grid; place-items: center;
   overflow: hidden;
 }
 .card-figure img {
-  width: 100%; height: 100%; object-fit: contain;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  padding: 11% 9% 7%;
   transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 .card:hover .card-figure img { transform: scale(1.045); }
