@@ -133,9 +133,15 @@ export class RobotViewer {
     this.scene.add(key);
     this.keyLight = key;
 
-    const fill = new THREE.DirectionalLight(0x9fb6d4, 0.55);
+    const fill = new THREE.DirectionalLight(0x9fb6d4, 0.8);
     fill.position.set(-2.5, 1.6, -2.0);
     this.scene.add(fill);
+
+    // Rim light from behind: several of these robots are matte black (H1, Atlas)
+    // and would otherwise read as a flat silhouette on a dark stage.
+    const rim = new THREE.DirectionalLight(0xdce8ff, 1.6);
+    rim.position.set(-1.8, 2.4, -3.4);
+    this.scene.add(rim);
 
     this.ground = new THREE.Mesh(
       new THREE.PlaneGeometry(40, 40),

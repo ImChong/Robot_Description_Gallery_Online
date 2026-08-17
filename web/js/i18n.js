@@ -18,6 +18,14 @@ const STRINGS = {
     'panel.specs': 'Specs',
     'panel.joints': 'Joints',
     'panel.resetAll': 'reset all',
+    'panel.download': 'Download',
+    'dl.bundle': 'URDF + meshes',
+    'dl.bundleSub': 'zip, ready to load',
+    'dl.urdf': 'URDF only',
+    'dl.urdfSub': 'the .urdf file alone',
+    'dl.working': 'Preparing…',
+    'dl.failed': 'Download failed',
+    'theme.toggle': 'Switch theme',
     'panel.resources': 'Resources',
     'panel.reuse': 'Use this model',
     'panel.copy': 'copy',
@@ -79,6 +87,14 @@ const STRINGS = {
     'panel.specs': '参数',
     'panel.joints': '关节',
     'panel.resetAll': '全部复位',
+    'panel.download': '下载',
+    'dl.bundle': 'URDF + 网格',
+    'dl.bundleSub': 'zip，可直接加载',
+    'dl.urdf': '仅 URDF',
+    'dl.urdfSub': '只有 .urdf 文件',
+    'dl.working': '正在准备…',
+    'dl.failed': '下载失败',
+    'theme.toggle': '切换主题',
     'panel.resources': '资源链接',
     'panel.reuse': '如何使用',
     'panel.copy': '复制',
@@ -143,7 +159,7 @@ export const LANGS = ['zh', 'en'];
 let current = 'zh';
 
 export function detectLang() {
-  const stored = localStorage.getItem('rug.lang');
+  const stored = localStorage.getItem('cl-lang');
   if (stored && LANGS.includes(stored)) return stored;
   const nav = (navigator.languages || [navigator.language || 'en']).join(',');
   return /\bzh\b|zh-/i.test(nav) ? 'zh' : 'en';
@@ -151,8 +167,8 @@ export function detectLang() {
 
 export function setLang(lang) {
   current = LANGS.includes(lang) ? lang : 'en';
-  localStorage.setItem('rug.lang', current);
-  document.documentElement.lang = current;
+  localStorage.setItem('cl-lang', current);
+  document.documentElement.lang = current === 'zh' ? 'zh-CN' : 'en';
   return current;
 }
 

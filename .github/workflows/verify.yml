@@ -107,6 +107,11 @@ jobs:
           done
           node scripts/smoke.mjs --all
 
+      # The zip writer is hand-rolled, so the archives get unpacked and their
+      # CRCs verified rather than trusted.
+      - name: Download check
+        run: node scripts/check_downloads.mjs
+
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

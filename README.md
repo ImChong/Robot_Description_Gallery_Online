@@ -20,7 +20,13 @@ robot_descriptions.py  ──┐
                        web/  三 .js + urdf-loader 的静态站点（无构建步骤）
                        · 画廊网格（离线渲染的缩略图）
                        · 详情页：关节滑块 / 碰撞体 / 关节轴 / 坐标系 / 质心 / 惯量
+                       · 一键下载：URDF 单文件，或 URDF + 全部网格的 zip
 ```
+
+界面配色沿用 [imchong.github.io](https://imchong.github.io/) 的设计语言：Notion 风格
+的暖灰、8px 圆角、胶囊标签，深色为默认并可切换浅色（`data-theme`，与那边共用
+`cl-theme` / `cl-lang` 两个 localStorage 键名）。3D 区域在两种主题下都保持深色影棚——
+这里近一半机器人是白色的，放在白底上就看不见了。
 
 ## 目前收录
 
@@ -74,6 +80,25 @@ npm run smoke -- --all         # 逐个打开 70 个模型，断言真的渲染�
 `npm run registry` 合并进注册表，所以卡片和参数表里的"模型高度"来自网格本身，而不是
 手抄的产品参数。因此完整的更新顺序是 **thumbs → registry**。
 
+### 一键下载
+
+详情页有两个下载按钮，都在浏览器里完成，没有后端：
+
+- **URDF + 网格（zip）**——URDF 原文加它引用的全部网格，文件按上游仓库里的相对路径
+  存放，因此把包目录放进 ROS package path 后 `package://` 仍然能解析；附带的
+  `NOTICE.txt` 记录来源仓库、commit、许可与包路径映射。
+- **仅 URDF**——只有那一个 `.urdf` 文件，与上游逐字节一致。
+
+zip 是手写的（store 方式 + CRC-32），所以专门有一个检查脚本把产物解包验证：
+
+```bash
+npm run check:downloads              # 每种网格格式组合各取一个最小模型
+npm run check:downloads -- --all     # 全部 70 个
+```
+
+它会用系统 `unzip -t` 校验每个条目的 CRC、比对条目数与注册表记录的网格数，并确认
+包内 URDF 与上游逐字节相同。
+
 ## 部署到 GitHub Pages
 
 线上地址：<https://imchong.github.io/Robot_URDF_Gallery/>
@@ -108,8 +133,11 @@ data/curation.json     手写：收录哪些机器人、归到哪一类、官方
 data/robots.json       生成：完整注册表（站点唯一的数据来源）
 data/measured.json     生成：各模型的包围盒尺寸
 scripts/build_registry.py   注册表生成与上游校验
-scripts/render_thumbnails.mjs / smoke.mjs / serve.mjs / vendor.mjs
+scripts/render_thumbnails.mjs / smoke.mjs / check_downloads.mjs
+scripts/check_registry.mjs / serve.mjs / vendor.mjs / browser.mjs
 web/js/viewer.js       three.js 场景 + URDF 加载 + 各种可视化叠加层
+web/js/download.js     一键下载：手写 zip（store + CRC-32）与 NOTICE 生成
+web/js/theme-init.js   首屏前应用主题，避免闪一下深色
 web/js/gallery.js      卡片网格、类别筛选、搜索
 web/js/detail.js       详情页：参数表、关节滑块、资源链接、代码片段
 web/js/registry.js     注册表加载与筛选
@@ -175,10 +203,18 @@ static-parsing the description modules, downloading only the URDF, and verifying
 `package://` mesh reference with a HEAD request — a broken entry fails the build rather
 than the visitor. `data/curation.json` is the only hand-written file.
 
+Each robot can be downloaded in one click, in the browser: the `.urdf` on its own, or a
+zip holding the URDF plus every mesh it references at their upstream repository paths
+(so `package://` still resolves) with a NOTICE.txt recording the source commit and
+licence. Colours follow [imchong.github.io](https://imchong.github.io/) — Notion-ish warm
+neutrals, dark by default with a light theme — while the 3D areas stay a dark studio in
+both themes, since half of these robots are white.
+
 ```bash
 npm install && npm run vendor && npm run dev   # → http://localhost:8080/web/
 pip install -r scripts/requirements.txt && npm run registry
-npm run thumbs && npm run smoke -- --all       # headless render + render assertions
+npm run thumbs && npm run registry             # card images + measured sizes
+npm run smoke -- --all && npm run check:downloads
 ```
 
 Code is MIT; every robot model keeps its own upstream licence, some of which are

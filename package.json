@@ -12,7 +12,8 @@
     "candidates": "python3 scripts/build_registry.py --candidates",
     "thumbs": "node scripts/render_thumbnails.mjs",
     "smoke": "node scripts/smoke.mjs",
-    "check": "node scripts/check_registry.mjs"
+    "check": "node scripts/check_registry.mjs",
+    "check:downloads": "node scripts/check_downloads.mjs"
   },
   "devDependencies": {
     "playwright": "^1.49.0",

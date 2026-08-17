@@ -32,10 +32,35 @@ function writeHash({ robot, category, q }) {
   }
 }
 
+/**
+ * Theme is stamped on <html> before first paint by js/theme-init.js; this only
+ * handles the toggle. Same storage key as imchong.github.io.
+ */
+function setupTheme() {
+  const root = document.documentElement;
+  const icon = document.getElementById('theme-icon');
+  const render = () => {
+    // Show the theme you would switch *to*.
+    icon.textContent = root.getAttribute('data-theme') === 'light' ? '☾' : '☀';
+  };
+  render();
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    root.setAttribute('data-theme', next);
+    try {
+      localStorage.setItem('cl-theme', next);
+    } catch {
+      /* private mode — the choice just will not persist */
+    }
+    render();
+  });
+}
+
 async function main() {
+  setupTheme();
   setLang(detectLang());
   applyStatic();
-  for (const button of document.querySelectorAll('.lang-toggle button')) {
+  for (const button of document.querySelectorAll('.seg-toggle button')) {
     button.setAttribute('aria-pressed', String(button.dataset.lang === lang()));
     button.addEventListener('click', () => {
       setLang(button.dataset.lang);

@@ -2,6 +2,7 @@
 import { RobotViewer, THEME } from './viewer.js';
 import { formatBytes, urdfUrl } from './registry.js';
 import { categoryLabel, lang, t } from './i18n.js';
+import { downloadBundle, downloadUrdf } from './download.js';
 
 const el = (id) => document.getElementById(id);
 
@@ -98,6 +99,72 @@ export class Detail {
       this.snippetKind = button.dataset.kind;
       this.renderSnippet();
     });
+
+    el('d-downloads').addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-download]');
+      if (button) this.runDownload(button);
+    });
+  }
+
+  /**
+   * Fetch and save a model. Both variants stream from the CDN in the visitor's
+   * browser — there is no server here to zip anything up — so the button doubles
+   * as the progress indicator.
+   */
+  async runDownload(button) {
+    const kind = button.dataset.download;
+    const robot = this.robot;
+    const label = button.querySelector('.dl-main');
+    const sub = button.querySelector('.dl-sub');
+    const fill = button.querySelector('.dl-fill');
+    const original = { label: label.textContent, sub: sub.textContent };
+
+    button.disabled = true;
+    sub.textContent = t('dl.working');
+    try {
+      if (kind === 'bundle') {
+        await downloadBundle(robot, (done, total) => {
+          const pct = total ? Math.round((done / total) * 100) : 0;
+          fill.style.width = `${pct}%`;
+          sub.textContent = `${done}/${total} · ${pct}%`;
+        });
+      } else {
+        await downloadUrdf(robot);
+      }
+      sub.textContent = original.sub;
+    } catch (err) {
+      sub.textContent = `${t('dl.failed')}: ${err.message || err}`;
+    } finally {
+      button.disabled = false;
+      if (fill) fill.style.width = '0';
+    }
+  }
+
+  renderDownloads() {
+    const r = this.robot;
+    const meshes = r.assets.mesh_files;
+    const bundleSize = formatBytes(r.assets.mesh_bytes + r.urdf.bytes);
+    el('d-downloads').innerHTML = `
+      <button class="dl-btn primary" data-download="bundle">
+        <i class="dl-fill"></i>
+        <span class="dl-icon" aria-hidden="true">⬇</span>
+        <span class="dl-text">
+          <span class="dl-main">${t('dl.bundle')}</span>
+          <span class="dl-sub">${t('dl.bundleSub')} · ${meshes} ${
+            meshes === 1 ? 'mesh' : 'meshes'
+          }</span>
+        </span>
+        <span class="dl-size">${bundleSize}</span>
+      </button>
+      <button class="dl-btn" data-download="urdf">
+        <i class="dl-fill"></i>
+        <span class="dl-icon" aria-hidden="true">⬇</span>
+        <span class="dl-text">
+          <span class="dl-main">${t('dl.urdf')}</span>
+          <span class="dl-sub">${t('dl.urdfSub')}</span>
+        </span>
+        <span class="dl-size">${formatBytes(r.urdf.bytes)}</span>
+      </button>`;
   }
 
   download() {
@@ -127,6 +194,7 @@ export class Detail {
     document.title = `${robot.name} · Robot URDF Gallery`;
 
     this.renderSpecs();
+    this.renderDownloads();
     this.renderResources();
     this.renderSnippet();
     el('d-joints').innerHTML = '';
