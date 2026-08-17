@@ -1,6 +1,6 @@
-# Robot URDF Gallery · 机器人 URDF 画廊
+# Robot URDF Gallery · 机器人 URDF 合集
 
-一个可浏览、可交互的机器人模型画廊：人形、四足、机械臂、灵巧手等 **70 个**开源机器人
+一个可浏览、可交互的机器人模型合集：人形、四足、机械臂、灵巧手等 **70 个**开源机器人
 描述文件，直接在浏览器里加载、拖关节、看碰撞体和惯量。灵感来自
 [All Hands Up](https://allhandsup.org/)，但对象从机械手扩展到所有常见机器人。
 
@@ -18,7 +18,7 @@ robot_descriptions.py  ──┐
                                           │
                                           ▼
                        web/  三 .js + urdf-loader 的静态站点（无构建步骤）
-                       · 画廊网格（离线渲染的缩略图）
+                       · 合集网格（离线渲染的缩略图）
                        · 详情页：关节滑块 / 碰撞体 / 关节轴 / 坐标系 / 质心 / 惯量
                        · 一键下载：URDF 单文件，或 URDF + 全部网格的 zip
 ```
@@ -166,7 +166,7 @@ web/vendor/            已提交的 three.js 与 urdf-loader（无构建步骤�
 ## 已知限制
 
 - **xacro 模型暂不支持。** UR 系列、Shadow Hand、Fetch 等在上游只提供 xacro，需要
-  在构建阶段展开后才能进画廊（见 Roadmap）。
+  在构建阶段展开后才能进合集（见 Roadmap）。
 - 少量上游模型的网格缺失或路径含空格（Go1、iiwa7、mini cheetah、Reachy 等），
   `--candidates` 会把它们标为不可加载。
 - 个别模型的 `mass_kg` 明显是上游笔误（例如 BarrettHand 的 264 t）。界面照实显示，
