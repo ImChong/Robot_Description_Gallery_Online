@@ -1,0 +1,13 @@
+Third-party code vendored into this directory
+==========================================
+
+three (three.module.min.js, three.core.min.js, jsm/*)
+  MIT License — see three/LICENSE
+  https://github.com/mrdoob/three.js
+
+urdf-loader (URDFLoader.js, URDFClasses.js)
+  Apache License 2.0
+  https://github.com/gkjohnson/urdf-loaders
+
+Both are unmodified copies of the published npm packages; see VERSIONS.json
+for the exact versions and regenerate with `npm run vendor`.
