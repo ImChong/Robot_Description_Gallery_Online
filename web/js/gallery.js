@@ -90,7 +90,7 @@ export class Gallery {
     return `<a class="card" href="#robot=${robot.id}" data-id="${robot.id}">
       <figure class="card-figure">
         <img src="${thumb}" alt="${robot.name}" loading="lazy" decoding="async"
-             onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'placeholder',textContent:'🤖'}))">
+             onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'placeholder',textContent:'🦾'}))">
         <span class="card-cat">${categoryLabel(robot.category, this.data.categories)}</span>
       </figure>
       <div class="card-body">
