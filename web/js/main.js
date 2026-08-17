@@ -108,7 +108,7 @@ async function main() {
     if (!id) {
       views.detail.hidden = true;
       views.gallery.hidden = false;
-      document.title = 'Robot URDF Gallery · 机器人 URDF 画廊';
+      document.title = 'Robot URDF Gallery · 机器人 URDF 合集';
       writeHash(gallery.state);
       return;
     }

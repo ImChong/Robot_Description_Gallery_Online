@@ -69,7 +69,7 @@ const STRINGS = {
     'height.measured': 'measured from meshes',
   },
   zh: {
-    'hero.title': '机器人 URDF 画廊',
+    'hero.title': '机器人 URDF 合集',
     'hero.lede':
       '浏览、查看并对比开源机器人模型——人形、四足、机械臂与灵巧手。每个模型都从上游仓库的固定 commit 直接加载，本站不二次托管任何模型文件。',
     'search.placeholder': '搜索机器人、厂商、类别…',
@@ -79,7 +79,7 @@ const STRINGS = {
     'stats.sources': '上游仓库',
     'gallery.empty': '没有符合条件的机器人。',
     'filters.all': '全部',
-    'detail.back': '返回画廊',
+    'detail.back': '返回合集',
     'panel.specs': '参数',
     'panel.joints': '关节',
     'panel.resetAll': '全部复位',
