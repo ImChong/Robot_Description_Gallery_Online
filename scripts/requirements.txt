@@ -1,0 +1,4 @@
+# Metadata source for the registry. The package is only imported for its
+# description tables — build_registry.py static-parses the description modules
+# rather than importing them, so no model repository is ever cloned.
+robot_descriptions==3.1.0

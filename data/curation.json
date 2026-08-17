@@ -1,0 +1,518 @@
+{
+  "_comment": [
+    "The hand-maintained layer of the registry. Everything else in data/robots.json",
+    "is generated: scripts/build_registry.py reads upstream metadata from",
+    "robot_descriptions.py, parses each URDF, and verifies every mesh on the CDN.",
+    "",
+    "To add a robot: find its description key in robot_descriptions.py (see",
+    "`python3 scripts/build_registry.py --candidates` for the ones whose URDF and",
+    "meshes fully resolve), add an entry below with the gallery category you want",
+    "it filed under, then re-run the build. Optional per-robot keys: id, name,",
+    "maker, dof, notes, notes_zh, links{official,docs,paper}, and pose (joint",
+    "name -> position, used for card renders when the zero pose looks broken).",
+    "Pose joint names are validated against the URDF at build time."
+  ],
+  "categories": [
+    {
+      "id": "humanoid",
+      "label": "Humanoid",
+      "label_zh": "人形"
+    },
+    {
+      "id": "quadruped",
+      "label": "Quadruped",
+      "label_zh": "四足"
+    },
+    {
+      "id": "arm",
+      "label": "Arm",
+      "label_zh": "机械臂"
+    },
+    {
+      "id": "hand",
+      "label": "Hand / Gripper",
+      "label_zh": "灵巧手 / 夹爪"
+    },
+    {
+      "id": "biped",
+      "label": "Biped",
+      "label_zh": "双足"
+    },
+    {
+      "id": "dual_arm",
+      "label": "Dual arm",
+      "label_zh": "双臂"
+    },
+    {
+      "id": "mobile",
+      "label": "Mobile manipulator",
+      "label_zh": "移动操作"
+    }
+  ],
+  "robots": [
+    {
+      "description": "g1_description",
+      "category": "humanoid",
+      "links": {
+        "official": "https://www.unitree.com/g1"
+      },
+      "notes": "The 29-DOF variant; upstream also ships 12/23-DOF and dexterous-hand versions.",
+      "notes_zh": "此处为 29 自由度版本；上游仓库还提供 12/23 自由度以及带灵巧手的版本。"
+    },
+    {
+      "description": "h1_description",
+      "category": "humanoid",
+      "links": {
+        "official": "https://www.unitree.com/h1"
+      }
+    },
+    {
+      "description": "h1_2_description",
+      "category": "humanoid",
+      "links": {
+        "official": "https://www.unitree.com/h1"
+      },
+      "notes": "H1-2 includes the three-finger hands, hence the high joint count.",
+      "notes_zh": "H1-2 含三指手，因此关节数较多。"
+    },
+    {
+      "description": "gr1_description",
+      "category": "humanoid",
+      "links": {
+        "official": "https://www.fftai.com/products-gr1"
+      }
+    },
+    {
+      "description": "n1_description",
+      "category": "humanoid"
+    },
+    {
+      "description": "booster_t1_description",
+      "category": "humanoid"
+    },
+    {
+      "description": "elf2_description",
+      "category": "humanoid"
+    },
+    {
+      "description": "gene01_description",
+      "category": "humanoid"
+    },
+    {
+      "description": "berkeley_humanoid_description",
+      "category": "humanoid",
+      "links": {
+        "official": "https://berkeley-humanoid.com/"
+      }
+    },
+    {
+      "description": "toddlerbot_description",
+      "category": "humanoid",
+      "links": {
+        "official": "https://toddlerbot.github.io/"
+      }
+    },
+    {
+      "description": "talos_description",
+      "category": "humanoid",
+      "links": {
+        "official": "https://pal-robotics.com/robot/talos/"
+      }
+    },
+    {
+      "description": "valkyrie_description",
+      "category": "humanoid",
+      "links": {
+        "official": "https://www.nasa.gov/robotics/"
+      }
+    },
+    {
+      "description": "r2_description",
+      "category": "humanoid"
+    },
+    {
+      "description": "jvrc_description",
+      "category": "humanoid"
+    },
+    {
+      "description": "atlas_drc_description",
+      "category": "humanoid",
+      "links": {
+        "official": "https://bostondynamics.com/atlas/"
+      }
+    },
+    {
+      "description": "atlas_v4_description",
+      "category": "humanoid",
+      "links": {
+        "official": "https://bostondynamics.com/atlas/"
+      }
+    },
+    {
+      "description": "icub_description",
+      "category": "humanoid",
+      "links": {
+        "official": "https://icub.iit.it/"
+      }
+    },
+    {
+      "description": "ergocub_description",
+      "category": "humanoid",
+      "links": {
+        "official": "https://ergocub.eu/"
+      }
+    },
+    {
+      "description": "draco3_description",
+      "category": "humanoid"
+    },
+    {
+      "description": "jaxon_description",
+      "category": "humanoid"
+    },
+    {
+      "description": "romeo_description",
+      "category": "humanoid"
+    },
+    {
+      "description": "go2_description",
+      "category": "quadruped",
+      "links": {
+        "official": "https://www.unitree.com/go2"
+      },
+      "pose": {
+        "FL_hip_joint": 0.0,
+        "FL_thigh_joint": 0.78,
+        "FL_calf_joint": -1.55,
+        "FR_hip_joint": 0.0,
+        "FR_thigh_joint": 0.78,
+        "FR_calf_joint": -1.55,
+        "RL_hip_joint": 0.0,
+        "RL_thigh_joint": 0.78,
+        "RL_calf_joint": -1.55,
+        "RR_hip_joint": 0.0,
+        "RR_thigh_joint": 0.78,
+        "RR_calf_joint": -1.55
+      }
+    },
+    {
+      "description": "b2_description",
+      "category": "quadruped",
+      "links": {
+        "official": "https://www.unitree.com/b2"
+      },
+      "pose": {
+        "FL_hip_joint": 0.0,
+        "FL_thigh_joint": 0.72,
+        "FL_calf_joint": -1.45,
+        "FR_hip_joint": 0.0,
+        "FR_thigh_joint": 0.72,
+        "FR_calf_joint": -1.45,
+        "RL_hip_joint": 0.0,
+        "RL_thigh_joint": 0.72,
+        "RL_calf_joint": -1.45,
+        "RR_hip_joint": 0.0,
+        "RR_thigh_joint": 0.72,
+        "RR_calf_joint": -1.45
+      }
+    },
+    {
+      "description": "a1_description",
+      "category": "quadruped",
+      "pose": {
+        "FL_hip_joint": 0.0,
+        "FL_thigh_joint": 0.78,
+        "FL_calf_joint": -1.55,
+        "FR_hip_joint": 0.0,
+        "FR_thigh_joint": 0.78,
+        "FR_calf_joint": -1.55,
+        "RL_hip_joint": 0.0,
+        "RL_thigh_joint": 0.78,
+        "RL_calf_joint": -1.55,
+        "RR_hip_joint": 0.0,
+        "RR_thigh_joint": 0.78,
+        "RR_calf_joint": -1.55
+      }
+    },
+    {
+      "description": "aliengo_description",
+      "category": "quadruped",
+      "pose": {
+        "FL_hip_joint": 0.0,
+        "FL_thigh_joint": 0.78,
+        "FL_calf_joint": -1.55,
+        "FR_hip_joint": 0.0,
+        "FR_thigh_joint": 0.78,
+        "FR_calf_joint": -1.55,
+        "RL_hip_joint": 0.0,
+        "RL_thigh_joint": 0.78,
+        "RL_calf_joint": -1.55,
+        "RR_hip_joint": 0.0,
+        "RR_thigh_joint": 0.78,
+        "RR_calf_joint": -1.55
+      }
+    },
+    {
+      "description": "laikago_description",
+      "category": "quadruped",
+      "pose": {
+        "FL_hip_joint": 0.0,
+        "FL_thigh_joint": 0.7,
+        "FL_calf_joint": -1.4,
+        "FR_hip_joint": 0.0,
+        "FR_thigh_joint": 0.7,
+        "FR_calf_joint": -1.4,
+        "RL_hip_joint": 0.0,
+        "RL_thigh_joint": 0.7,
+        "RL_calf_joint": -1.4,
+        "RR_hip_joint": 0.0,
+        "RR_thigh_joint": 0.7,
+        "RR_calf_joint": -1.4
+      }
+    },
+    {
+      "description": "anymal_b_description",
+      "category": "quadruped",
+      "links": {
+        "official": "https://www.anybotics.com/robotics/anymal/"
+      }
+    },
+    {
+      "description": "anymal_c_description",
+      "category": "quadruped",
+      "links": {
+        "official": "https://www.anybotics.com/robotics/anymal/"
+      }
+    },
+    {
+      "description": "anymal_d_description",
+      "category": "quadruped",
+      "links": {
+        "official": "https://www.anybotics.com/robotics/anymal/"
+      }
+    },
+    {
+      "description": "hyq_description",
+      "category": "quadruped"
+    },
+    {
+      "description": "solo_description",
+      "category": "quadruped",
+      "links": {
+        "official": "https://open-dynamic-robot-initiative.github.io/"
+      }
+    },
+    {
+      "description": "wl_p311d_description",
+      "category": "quadruped"
+    },
+    {
+      "description": "wl_p311e_description",
+      "category": "quadruped"
+    },
+    {
+      "description": "panda_description",
+      "category": "arm",
+      "links": {
+        "official": "https://franka.de/"
+      }
+    },
+    {
+      "description": "iiwa14_description",
+      "category": "arm",
+      "links": {
+        "official": "https://www.kuka.com/en-de/products/robot-systems/industrial-robots/lbr-iiwa"
+      }
+    },
+    {
+      "description": "gen2_description",
+      "category": "arm"
+    },
+    {
+      "description": "fanuc_m710ic_description",
+      "category": "arm",
+      "notes": "Visual-only description: no inertial parameters upstream.",
+      "notes_zh": "仅含可视化几何，上游未提供惯性参数。"
+    },
+    {
+      "description": "edo_description",
+      "category": "arm"
+    },
+    {
+      "description": "piper_description",
+      "category": "arm",
+      "links": {
+        "official": "https://global.agilex.ai/products/piper"
+      }
+    },
+    {
+      "description": "yam_description",
+      "category": "arm"
+    },
+    {
+      "description": "so_arm100_description",
+      "category": "arm",
+      "links": {
+        "official": "https://github.com/TheRobotStudio/SO-ARM100"
+      }
+    },
+    {
+      "description": "so_arm101_description",
+      "category": "arm"
+    },
+    {
+      "description": "open_manipulator_x_description",
+      "category": "arm",
+      "links": {
+        "docs": "https://emanual.robotis.com/docs/en/platform/openmanipulator_x/overview/"
+      }
+    },
+    {
+      "description": "omx_f_description",
+      "category": "arm"
+    },
+    {
+      "description": "omx_l_description",
+      "category": "arm"
+    },
+    {
+      "description": "omy_3m_description",
+      "category": "arm"
+    },
+    {
+      "description": "omy_f3m_description",
+      "category": "arm"
+    },
+    {
+      "description": "omy_l100_description",
+      "category": "arm"
+    },
+    {
+      "description": "poppy_ergo_jr_description",
+      "category": "arm",
+      "links": {
+        "official": "https://www.poppy-project.org/en/robots/poppy-ergo-jr/"
+      }
+    },
+    {
+      "description": "leap_hand_v1_description",
+      "category": "hand",
+      "links": {
+        "official": "https://leaphand.com/",
+        "paper": "https://arxiv.org/abs/2309.06440"
+      }
+    },
+    {
+      "description": "allegro_hand_description",
+      "category": "hand",
+      "links": {
+        "official": "https://www.wonikrobotics.com/research-robot-hand"
+      },
+      "notes": "Left hand; the same package also ships the right hand.",
+      "notes_zh": "此处为左手，同一目录下还有右手模型。"
+    },
+    {
+      "description": "ability_hand_description",
+      "category": "hand",
+      "links": {
+        "official": "https://www.psyonic.io/"
+      }
+    },
+    {
+      "description": "aero_hand_open_description",
+      "category": "hand"
+    },
+    {
+      "description": "robotiq_2f85_description",
+      "category": "hand",
+      "links": {
+        "official": "https://robotiq.com/products/adaptive-grippers"
+      }
+    },
+    {
+      "description": "barrett_hand_description",
+      "category": "hand",
+      "links": {
+        "official": "https://barrett.com/barretthand/"
+      }
+    },
+    {
+      "description": "cassie_description",
+      "category": "biped",
+      "links": {
+        "official": "https://agilityrobotics.com/"
+      }
+    },
+    {
+      "description": "upkie_description",
+      "category": "biped",
+      "links": {
+        "official": "https://upkie.github.io/"
+      }
+    },
+    {
+      "description": "bolt_description",
+      "category": "biped"
+    },
+    {
+      "description": "rhea_description",
+      "category": "biped"
+    },
+    {
+      "description": "yumi_description",
+      "category": "dual_arm",
+      "links": {
+        "official": "https://new.abb.com/products/robotics/robots/collaborative-robots/yumi"
+      }
+    },
+    {
+      "description": "baxter_description",
+      "category": "dual_arm"
+    },
+    {
+      "description": "pr2_description",
+      "category": "dual_arm"
+    },
+    {
+      "description": "nextage_description",
+      "category": "dual_arm"
+    },
+    {
+      "description": "poppy_torso_description",
+      "category": "dual_arm"
+    },
+    {
+      "description": "stretch_description",
+      "category": "mobile",
+      "links": {
+        "official": "https://hello-robot.com/"
+      }
+    },
+    {
+      "description": "tiago_description",
+      "category": "mobile",
+      "links": {
+        "official": "https://pal-robotics.com/robot/tiago/"
+      }
+    },
+    {
+      "description": "pepper_description",
+      "category": "mobile"
+    },
+    {
+      "description": "rby1_description",
+      "category": "mobile",
+      "links": {
+        "official": "https://www.rainbowrobotics.com/rby1/"
+      }
+    },
+    {
+      "description": "ginger_description",
+      "category": "mobile"
+    },
+    {
+      "description": "bambot_description",
+      "category": "mobile"
+    }
+  ]
+}

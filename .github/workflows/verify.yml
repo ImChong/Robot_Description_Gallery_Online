@@ -1,0 +1,120 @@
+name: Verify registry
+
+# Every entry points at someone else's repository, so the gallery rots when an
+# upstream moves a mesh, rewrites history, or takes a repo private. This job
+# rebuilds the registry from robot_descriptions.py and loads every robot in a
+# real browser, weekly and on any change to the pipeline.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/**'
+      - 'scripts/**'
+      - 'web/**'
+      - '.github/workflows/verify.yml'
+  pull_request:
+    paths:
+      - 'data/**'
+      - 'scripts/**'
+      - 'web/**'
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: pip install -r scripts/requirements.txt
+      - run: npm ci
+
+      # Regenerating in CI is the actual check: build_registry.py HEAD-probes
+      # every mesh, so an upstream that moved files fails here.
+      - name: Rebuild registry
+        run: python3 scripts/build_registry.py --out /tmp/robots.json
+
+      - name: Compare against the committed registry
+        run: |
+          python3 - <<'PY'
+          import json, sys
+
+          committed = json.load(open('data/robots.json'))
+          fresh = json.load(open('/tmp/robots.json'))
+          fresh_by_id = {r['id']: r for r in fresh['robots']}
+
+          # Fields that change what the browser loads. Byte counts are reported
+          # but never fail the job: a CDN can legitimately report a different
+          # Content-Length (compressed variants, for one) without the assets
+          # themselves having moved.
+          STRUCTURAL = [
+              ('source', 'commit'), ('source', 'github'),
+              ('assets', 'base'), ('assets', 'urdf'), ('assets', 'packages'),
+              ('assets', 'mesh_files'), ('assets', 'mesh_formats'),
+              ('urdf', 'links'), ('urdf', 'joints'), ('urdf', 'moving_joints'),
+          ]
+          INFORMATIONAL = [('assets', 'mesh_bytes'), ('urdf', 'mass_kg'), ('urdf', 'bytes')]
+
+          drifted = False
+          for robot in committed['robots']:
+              new = fresh_by_id.get(robot['id'])
+              if new is None:
+                  print(f"::error::{robot['id']} no longer resolves upstream")
+                  drifted = True
+                  continue
+              for section, key in STRUCTURAL:
+                  was, now = robot[section].get(key), new[section].get(key)
+                  if was != now:
+                      print(
+                          f"::error::{robot['id']} {section}.{key} drifted: "
+                          f"{was!r} -> {now!r} — re-run `npm run registry`"
+                      )
+                      drifted = True
+              for section, key in INFORMATIONAL:
+                  was, now = robot[section].get(key), new[section].get(key)
+                  if was != now:
+                      print(f"::notice::{robot['id']} {section}.{key}: {was!r} -> {now!r}")
+
+          extra = sorted(set(fresh_by_id) - {r['id'] for r in committed['robots']})
+          if extra:
+              print(f"::notice::curated but not committed: {extra}")
+          sys.exit(1 if drifted else 0)
+          PY
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      # Loads all 70 robots from the CDN in a real browser, so it is the slow
+      # step; it is also the only one that catches a robot that silently stopped
+      # rendering.
+      - name: Render check
+        run: |
+          node scripts/serve.mjs &
+          for i in $(seq 1 30); do
+            curl -sfo /dev/null http://localhost:8080/web/ && break
+            sleep 1
+          done
+          node scripts/smoke.mjs --all
+
+      # The zip writer is hand-rolled, so the archives get unpacked and their
+      # CRCs verified rather than trusted.
+      - name: Download check
+        run: node scripts/check_downloads.mjs
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: failure-screenshots
+          path: .cache/smoke/
+          if-no-files-found: ignore

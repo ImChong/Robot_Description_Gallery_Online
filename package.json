@@ -1,0 +1,23 @@
+{
+  "name": "robot-urdf-gallery",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A browsable 3D gallery of common robot URDF descriptions",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "vendor": "node scripts/vendor.mjs",
+    "dev": "node scripts/serve.mjs",
+    "registry": "python3 scripts/build_registry.py",
+    "candidates": "python3 scripts/build_registry.py --candidates",
+    "thumbs": "node scripts/render_thumbnails.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "check": "node scripts/check_registry.mjs",
+    "check:downloads": "node scripts/check_downloads.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.49.0",
+    "three": "0.180.0",
+    "urdf-loader": "0.12.6"
+  }
+}
