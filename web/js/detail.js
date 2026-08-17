@@ -175,7 +175,9 @@ export class Detail {
     const joints = Object.entries(r.urdf.joints || {})
       .map(([type, n]) => `${n}×${type}`)
       .join(', ');
-    const measured = this.viewer.measured;
+    // Prefer the live measurement; fall back to the value recorded at build time
+    // so the panel is populated before the meshes arrive.
+    const measured = this.viewer.measured || r.measured;
     const rows = [
       [t('spec.maker'), r.maker || '—'],
       [t('spec.category'), categoryLabel(r.category, this.data.categories)],

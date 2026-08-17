@@ -49,23 +49,46 @@ jobs:
         run: |
           python3 - <<'PY'
           import json, sys
+
           committed = json.load(open('data/robots.json'))
           fresh = json.load(open('/tmp/robots.json'))
-          drifted = False
           fresh_by_id = {r['id']: r for r in fresh['robots']}
+
+          # Fields that change what the browser loads. Byte counts are reported
+          # but never fail the job: a CDN can legitimately report a different
+          # Content-Length (compressed variants, for one) without the assets
+          # themselves having moved.
+          STRUCTURAL = [
+              ('source', 'commit'), ('source', 'github'),
+              ('assets', 'base'), ('assets', 'urdf'), ('assets', 'packages'),
+              ('assets', 'mesh_files'), ('assets', 'mesh_formats'),
+              ('urdf', 'links'), ('urdf', 'joints'), ('urdf', 'moving_joints'),
+          ]
+          INFORMATIONAL = [('assets', 'mesh_bytes'), ('urdf', 'mass_kg'), ('urdf', 'bytes')]
+
+          drifted = False
           for robot in committed['robots']:
               new = fresh_by_id.get(robot['id'])
               if new is None:
                   print(f"::error::{robot['id']} no longer resolves upstream")
                   drifted = True
                   continue
-              for key in ('assets', 'urdf', 'source'):
-                  if robot[key] != new[key]:
-                      print(f"::warning::{robot['id']} {key} changed — re-run `npm run registry`")
+              for section, key in STRUCTURAL:
+                  was, now = robot[section].get(key), new[section].get(key)
+                  if was != now:
+                      print(
+                          f"::error::{robot['id']} {section}.{key} drifted: "
+                          f"{was!r} -> {now!r} — re-run `npm run registry`"
+                      )
                       drifted = True
-          missing = set(fresh_by_id) - {r['id'] for r in committed['robots']}
-          if missing:
-              print(f"::notice::curated but not committed: {sorted(missing)}")
+              for section, key in INFORMATIONAL:
+                  was, now = robot[section].get(key), new[section].get(key)
+                  if was != now:
+                      print(f"::notice::{robot['id']} {section}.{key}: {was!r} -> {now!r}")
+
+          extra = sorted(set(fresh_by_id) - {r['id'] for r in committed['robots']})
+          if extra:
+              print(f"::notice::curated but not committed: {extra}")
           sys.exit(1 if drifted else 0)
           PY
 

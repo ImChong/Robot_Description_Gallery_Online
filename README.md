@@ -66,10 +66,13 @@ npm run thumbs                 # 无头 Chromium 渲染 web/thumbs/<id>.webp
 npm run smoke -- --all         # 逐个打开 70 个模型，断言真的渲染出了几何体
 ```
 
-两个脚本都跑在真实的 WebGL 上下文里，用的是详情页同一份 `viewer.js`。冒烟测试会检查
-"URDF 加载成功但网格 404" 这种静默失败——上游改动路径时它会先于访客发现问题。
-`npm run thumbs` 还会把每个模型的包围盒尺寸写进 `data/measured.json`，站点上显示的
-"模型高度"就来自这里（而不是手抄的产品参数）。
+两个脚本都跑在真实的 WebGL 上下文里，用的是详情页同一份 `viewer.js`。冒烟测试专门盯
+两类静默失败：URDF 加载成功但网格 404（场景空的），以及网格加载了却量不出尺寸（变换
+被 NaN 污染）——上游改动路径时它会先于访客发现问题。
+
+`npm run thumbs` 还会把每个模型的包围盒尺寸写进 `data/measured.json`，再由
+`npm run registry` 合并进注册表，所以卡片和参数表里的"模型高度"来自网格本身，而不是
+手抄的产品参数。因此完整的更新顺序是 **thumbs → registry**。
 
 ## 部署到 GitHub Pages
 
@@ -92,7 +95,9 @@ npm run smoke -- --all         # 逐个打开 70 个模型，断言真的渲染�
    用 `--candidates` 确认网格可解析；
 2. 在 `data/curation.json` 的 `robots` 数组里加一条，至少填 `description` 和
    `category`，可选 `name` / `maker` / `dof` / `notes` / `notes_zh` / `links`；
-3. `npm run registry && npm run thumbs && npm run smoke -- --robot <id>`。
+3. `npm run registry && npm run thumbs -- --robot <id> && npm run registry`
+   （第二次 `registry` 是为了把刚测出的尺寸并进注册表），最后
+   `npm run smoke -- --robot <id>` 确认真的渲染出来了。
 
 `data/curation.json` 是唯一需要手写的文件；其余全部由流水线生成。
 
@@ -122,8 +127,10 @@ web/vendor/            已提交的 three.js 与 urdf-loader（无构建步骤�
 | `urdf.mass_kg` | 所有连杆质量之和（上游数据，个别模型存在明显笔误，界面按原值显示） |
 | `assets.base` | CDN 前缀，含固定 commit |
 | `assets.packages` | `package://<名>` → 仓库内目录的映射，逐个 HEAD 校验过 |
-| `assets.mesh_bytes` / `mesh_files` | 该模型需要下载的网格总量 |
-| `source.commit` | `robot_descriptions.py` 固定的上游 commit |
+| `assets.mesh_bytes` / `mesh_files` | 网格文件的原始体积与个数（CDN 启用压缩后实际传输更小，因此该数值仅供参考，CI 不把它的变化当成失败） |
+| `measured.height_m` / `measured.size` | 由渲染器实测的可视网格包围盒（米） |
+| `pose` | 可选：卡片渲染与初始视图使用的关节角（关节名会在构建时校验） |
+| `source.commit` | `robot_descriptions.py` 固定的上游 commit（少数仓库为 release tag） |
 
 ## 已知限制
 

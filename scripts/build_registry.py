@@ -44,6 +44,12 @@ ROOT = Path(__file__).resolve().parent.parent
 CACHE = ROOT / ".cache"
 CDN = "https://cdn.jsdelivr.net/gh"
 UA = {"User-Agent": "robot-urdf-gallery-build"}
+# Deliberately no Accept-Encoding header: jsDelivr answers a compression-capable
+# client with the compressed Content-Length (a 10.7 MB Collada file reports
+# 2.6 MB under brotli), while "identity" makes it omit Content-Length entirely.
+# Sending nothing yields the raw file size, which is the number worth recording —
+# but it does mean mesh_bytes can differ between environments, so the drift check
+# in CI treats it as informational.
 MOVING_JOINTS = ("revolute", "continuous", "prismatic", "planar", "floating")
 
 
@@ -351,7 +357,12 @@ def inspect_urdf(up: Upstream, http: Http, verify_meshes: bool = True) -> UrdfFa
 # --------------------------------------------------------------------------- #
 
 
-def entry_for(up: Upstream, facts: UrdfFacts, curated: dict[str, Any]) -> dict[str, Any]:
+def entry_for(
+    up: Upstream,
+    facts: UrdfFacts,
+    curated: dict[str, Any],
+    measured: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     """Merge upstream metadata, parsed URDF facts and curation into one entry."""
     dof = curated.get("dof") or up.dof or facts.n_moving_joints
     return {
@@ -367,6 +378,11 @@ def entry_for(up: Upstream, facts: UrdfFacts, curated: dict[str, Any]) -> dict[s
         "notes_zh": curated.get("notes_zh"),
         # Optional joint configuration for still frames and the initial view.
         "pose": curated.get("pose"),
+        # Bounding box of the loaded visual meshes, measured by the thumbnail
+        # renderer (data/measured.json). Only the geometry knows how big a robot
+        # really is, and having it here means a card can show the size without
+        # downloading the model.
+        "measured": measured,
         "urdf": {
             "xml_name": facts.xml_name,
             "links": facts.n_links,
@@ -470,6 +486,8 @@ def main() -> int:
         return 0
 
     curation = json.loads(Path(args.curation).read_text())
+    measured_path = ROOT / "data" / "measured.json"
+    measured = json.loads(measured_path.read_text()) if measured_path.exists() else {}
     entries: list[dict[str, Any]] = []
     problems: list[str] = []
 
@@ -488,7 +506,8 @@ def main() -> int:
         unknown = sorted(set(item.get("pose") or ()) - set(facts.joint_names))
         if unknown:
             return item, None, f"{key}: pose names unknown joints {unknown}"
-        return item, entry_for(up, facts, item), None
+        robot_id = item.get("id") or key.removesuffix("_description")
+        return item, entry_for(up, facts, item, measured.get(robot_id)), None
 
     with ThreadPoolExecutor(args.jobs) as ex:
         for item, entry, problem in ex.map(build, curation["robots"]):

@@ -76,7 +76,14 @@ export class RobotViewer {
    */
   constructor(container, options = {}) {
     this.container = container;
-    this.options = { shadows: true, grid: true, antialias: true, alpha: false, ...options };
+    this.options = {
+      shadows: true,
+      grid: true,
+      antialias: true,
+      alpha: false,
+      loadTimeout: 120000,
+      ...options,
+    };
     this.robot = null;
     this.overlays = { collision: false, visual: true, frames: false, axes: false, com: false, inertia: false };
     this._helpers = { frames: [], axes: [], com: [], inertia: [] };
@@ -136,6 +143,9 @@ export class RobotViewer {
     );
     this.ground.rotation.x = -Math.PI / 2;
     this.ground.receiveShadow = true;
+    // ShadowMaterial only darkens where a shadow lands, so with the shadow map
+    // off the plane would tint the whole frame instead of disappearing.
+    this.ground.visible = this.options.shadows;
     this.scene.add(this.ground);
 
     this.grid = new THREE.GridHelper(20, 40, THEME.gridAccent, THEME.grid);
@@ -235,16 +245,33 @@ export class RobotViewer {
     // urdf-loader handles STL and DAE; OBJ needs to be plugged in.
     const objLoader = new OBJLoader();
     const defaultLoad = loader.loadMeshCb.bind(loader);
-    let pending = 0;
+
+    // urdf-loader calls loadMeshCb synchronously while parsing, so once parse()
+    // returns, `total` is the exact number of mesh loads this robot needs. That
+    // makes "fully loaded" a counter comparison instead of a guess — waiting for
+    // a quiet period would declare a 70 MB robot finished mid-download and
+    // measure half a model.
+    let total = 0;
     let done = 0;
-    const tick = () => onProgress && onProgress(done, pending);
+    let parsed = false;
+    let markSettled;
+    const settled = new Promise((resolve) => (markSettled = resolve));
+    const check = () => {
+      if (parsed && done >= total) markSettled();
+    };
+    const tick = () => onProgress && onProgress(done, total);
+
     loader.loadMeshCb = (path, manager, onComplete) => {
-      pending += 1;
+      total += 1;
       tick();
       const finish = (obj, err) => {
         done += 1;
         tick();
-        onComplete(obj, err);
+        try {
+          onComplete(obj, err);
+        } finally {
+          check();
+        }
       };
       if (path.toLowerCase().endsWith('.obj')) {
         objLoader.load(path, (obj) => finish(obj), undefined, (err) => finish(null, err));
@@ -260,6 +287,7 @@ export class RobotViewer {
     });
 
     const robot = loader.parse(text);
+    parsed = true;
     this.robot = robot;
     this.world.add(robot);
     this.entry = entry;
@@ -267,9 +295,12 @@ export class RobotViewer {
     // mesh files arrive over the network, so styling runs again after they land.
     this._styleAll();
     this._applyOverlays();
+    check(); // a URDF made only of primitives has nothing to wait for
 
-    // Meshes stream in asynchronously; frame the camera once they settle.
-    await this._settle();
+    // A single unreachable mesh should degrade to a partial robot, not a page
+    // that never finishes loading.
+    await Promise.race([settled, new Promise((r) => setTimeout(r, this.options.loadTimeout))]);
+    this.loadedMeshes = { done, total };
     this._styleAll();
     this._applyOverlays();
     this.stats = this.meshStats();
@@ -308,28 +339,6 @@ export class RobotViewer {
     return stats;
   }
 
-  /** Resolve once no new mesh has been added for two consecutive frames. */
-  _settle(timeoutMs = 60000) {
-    return new Promise((resolve) => {
-      let last = -1;
-      let stable = 0;
-      const started = Date.now();
-      const poll = () => {
-        let count = 0;
-        this.robot.traverse((c) => {
-          if (c.isMesh) count += 1;
-        });
-        stable = count === last && count > 0 ? stable + 1 : 0;
-        last = count;
-        if (stable >= 3 || Date.now() - started > timeoutMs) {
-          resolve(count);
-          return;
-        }
-        setTimeout(poll, 120);
-      };
-      poll();
-    });
-  }
 
   _styleMesh(mesh, isCollision) {
     const material = Array.isArray(mesh.material) ? mesh.material[0] : mesh.material;
