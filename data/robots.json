@@ -1,0 +1,3810 @@
+{
+ "$schema": "./robots.schema.json",
+ "generated": "2026-08-17T11:05:25Z",
+ "generator": "robot_descriptions 3.1.0",
+ "categories": [
+  {
+   "id": "humanoid",
+   "label": "Humanoid",
+   "label_zh": "人形"
+  },
+  {
+   "id": "quadruped",
+   "label": "Quadruped",
+   "label_zh": "四足"
+  },
+  {
+   "id": "arm",
+   "label": "Arm",
+   "label_zh": "机械臂"
+  },
+  {
+   "id": "hand",
+   "label": "Hand / Gripper",
+   "label_zh": "灵巧手 / 夹爪"
+  },
+  {
+   "id": "biped",
+   "label": "Biped",
+   "label_zh": "双足"
+  },
+  {
+   "id": "dual_arm",
+   "label": "Dual arm",
+   "label_zh": "双臂"
+  },
+  {
+   "id": "mobile",
+   "label": "Mobile manipulator",
+   "label_zh": "移动操作"
+  }
+ ],
+ "robots": [
+  {
+   "id": "g1",
+   "name": "G1",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 29,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The 29-DOF variant; upstream also ships 12/23-DOF and dexterous-hand versions.",
+   "notes_zh": "此处为 29 自由度版本；上游仓库还提供 12/23 自由度以及带灵巧手的版本。",
+   "pose": null,
+   "urdf": {
+    "xml_name": "g1_29dof",
+    "links": 40,
+    "joints": {
+     "fixed": 10,
+     "revolute": 29
+    },
+    "moving_joints": 29,
+    "mass_kg": 35.115,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 35180
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@267182b8521c8d6a631bab1fe63836873237a525/",
+    "urdf": "robots/g1_description/g1_29dof.urdf",
+    "packages": {},
+    "mesh_files": 36,
+    "mesh_bytes": 19133924,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "g1_description",
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "267182b8521c8d6a631bab1fe63836873237a525",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/g1_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "h1",
+   "name": "H1",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 19,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "h1_description",
+    "links": 25,
+    "joints": {
+     "fixed": 5,
+     "revolute": 19
+    },
+    "moving_joints": 19,
+    "mass_kg": 51.601,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 22594
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@267182b8521c8d6a631bab1fe63836873237a525/",
+    "urdf": "robots/h1_description/urdf/h1.urdf",
+    "packages": {
+     "h1_description": "robots/h1_description"
+    },
+    "mesh_files": 21,
+    "mesh_bytes": 19881792,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "h1_description",
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "267182b8521c8d6a631bab1fe63836873237a525",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/h1"
+   }
+  },
+  {
+   "id": "h1_2",
+   "name": "H1_2",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 51,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "H1-2 includes the three-finger hands, hence the high joint count.",
+   "notes_zh": "H1-2 含三指手，因此关节数较多。",
+   "pose": null,
+   "urdf": {
+    "xml_name": "h1_2",
+    "links": 58,
+    "joints": {
+     "fixed": 6,
+     "revolute": 51
+    },
+    "moving_joints": 51,
+    "mass_kg": 67.368,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 54833
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@267182b8521c8d6a631bab1fe63836873237a525/",
+    "urdf": "robots/h1_2_description/h1_2.urdf",
+    "packages": {},
+    "mesh_files": 54,
+    "mesh_bytes": 39365736,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "h1_2_description",
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "267182b8521c8d6a631bab1fe63836873237a525",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_2_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_2_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/h1"
+   }
+  },
+  {
+   "id": "gr1",
+   "name": "GR-1",
+   "maker": "Fourier",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 32,
+   "license": "GPL-3.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "GR1T1_nohand",
+    "links": 37,
+    "joints": {
+     "fixed": 4,
+     "revolute": 32
+    },
+    "moving_joints": 32,
+    "mass_kg": 52.827,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 46715
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/FFTAI/Wiki-GRx-Models@351245ac8fa4bf6f4b0c41556e1e6976a438bcef/",
+    "urdf": "GRX/GR1/GR1T1/urdf/GR1T1_nohand.urdf",
+    "packages": {},
+    "mesh_files": 35,
+    "mesh_bytes": 18415790,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "gr1_description",
+    "github": "FFTAI/Wiki-GRx-Models",
+    "commit": "351245ac8fa4bf6f4b0c41556e1e6976a438bcef",
+    "repo_url": "https://github.com/FFTAI/Wiki-GRx-Models",
+    "tree_url": "https://github.com/FFTAI/Wiki-GRx-Models/tree/351245ac8fa4bf6f4b0c41556e1e6976a438bcef/GRX/GR1/GR1T1",
+    "license_url": "https://github.com/FFTAI/Wiki-GRx-Models/blob/351245ac8fa4bf6f4b0c41556e1e6976a438bcef/GRX/GR1/GR1T1/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.fftai.com/products-gr1"
+   }
+  },
+  {
+   "id": "n1",
+   "name": "N1",
+   "maker": "Fourier",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 23,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "N1",
+    "links": 29,
+    "joints": {
+     "fixed": 5,
+     "revolute": 23
+    },
+    "moving_joints": 23,
+    "mass_kg": 39.727,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 47644
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/FFTAI/Wiki-GRx-Models@f8e683f00d1d99deb882deb9dfce6030095b466a/",
+    "urdf": "N1/urdf/N1_raw.urdf",
+    "packages": {},
+    "mesh_files": 29,
+    "mesh_bytes": 18834736,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "n1_description",
+    "github": "FFTAI/Wiki-GRx-Models",
+    "commit": "f8e683f00d1d99deb882deb9dfce6030095b466a",
+    "repo_url": "https://github.com/FFTAI/Wiki-GRx-Models",
+    "tree_url": "https://github.com/FFTAI/Wiki-GRx-Models/tree/f8e683f00d1d99deb882deb9dfce6030095b466a/N1",
+    "license_url": "https://github.com/FFTAI/Wiki-GRx-Models/blob/f8e683f00d1d99deb882deb9dfce6030095b466a/N1/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "booster_t1",
+   "name": "Booster T1",
+   "maker": "Booster Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 23,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "T1",
+    "links": 24,
+    "joints": {
+     "revolute": 23
+    },
+    "moving_joints": 23,
+    "mass_kg": 31.614,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 26298
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/BoosterRobotics/booster_gym@687a33d08b08875fe45dc8d91b54db83766df8b9/",
+    "urdf": "resources/T1/T1_serial.urdf",
+    "packages": {},
+    "mesh_files": 24,
+    "mesh_bytes": 8431116,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "booster_t1_description",
+    "github": "BoosterRobotics/booster_gym",
+    "commit": "687a33d08b08875fe45dc8d91b54db83766df8b9",
+    "repo_url": "https://github.com/BoosterRobotics/booster_gym",
+    "tree_url": "https://github.com/BoosterRobotics/booster_gym/tree/687a33d08b08875fe45dc8d91b54db83766df8b9/resources/T1",
+    "license_url": "https://github.com/BoosterRobotics/booster_gym/blob/687a33d08b08875fe45dc8d91b54db83766df8b9/resources/T1/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "elf2",
+   "name": "Elf2",
+   "maker": "BXI Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 25,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "elf2_dof25",
+    "links": 26,
+    "joints": {
+     "revolute": 25
+    },
+    "moving_joints": 25,
+    "mass_kg": 31.374,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 31967
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/bxirobotics/robot_models@eabe24ce937f8e633077a163b883e92e8996c36e/",
+    "urdf": "elf2_dof25/urdf/elf2_dof25.urdf",
+    "packages": {},
+    "mesh_files": 26,
+    "mesh_bytes": 74130234,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "elf2_description",
+    "github": "bxirobotics/robot_models",
+    "commit": "eabe24ce937f8e633077a163b883e92e8996c36e",
+    "repo_url": "https://github.com/bxirobotics/robot_models",
+    "tree_url": "https://github.com/bxirobotics/robot_models/tree/eabe24ce937f8e633077a163b883e92e8996c36e/elf2_dof25/urdf",
+    "license_url": "https://github.com/bxirobotics/robot_models/blob/eabe24ce937f8e633077a163b883e92e8996c36e/elf2_dof25/urdf/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "gene01",
+   "name": "GENE.01",
+   "maker": "Generative Bionics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 73,
+   "license": "CC-BY-NC-4.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "gene01",
+    "links": 91,
+    "joints": {
+     "fixed": 17,
+     "revolute": 73
+    },
+    "moving_joints": 73,
+    "mass_kg": 79.668,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 96312
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/gbionics/gb-robot-models@ae990f38968c2ae29caee88851f9153168630b8f/",
+    "urdf": "share/gb_robot_models/robots/gene01_0/model.urdf",
+    "packages": {
+     "gb_robot_models": "share/gb_robot_models"
+    },
+    "mesh_files": 148,
+    "mesh_bytes": 22888477,
+    "mesh_formats": [
+     ".obj",
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "gene01_description",
+    "github": "gbionics/gb-robot-models",
+    "commit": "ae990f38968c2ae29caee88851f9153168630b8f",
+    "repo_url": "https://github.com/gbionics/gb-robot-models",
+    "tree_url": "https://github.com/gbionics/gb-robot-models/tree/ae990f38968c2ae29caee88851f9153168630b8f/share/gb_robot_models",
+    "license_url": "https://github.com/gbionics/gb-robot-models/blob/ae990f38968c2ae29caee88851f9153168630b8f/share/gb_robot_models/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "berkeley_humanoid",
+   "name": "Berkeley Humanoid",
+   "maker": "Hybrid Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 12,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "onshape",
+    "links": 15,
+    "joints": {
+     "fixed": 2,
+     "revolute": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": 16.057,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 20434
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/HybridRobotics/berkeley_humanoid_description@d0d13d3f81d795480e25ed1910eaf83d5f0a1d0b/",
+    "urdf": "urdf/robot.urdf",
+    "packages": {
+     "berkeley_humanoid_description": ""
+    },
+    "mesh_files": 13,
+    "mesh_bytes": 27203292,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "berkeley_humanoid_description",
+    "github": "HybridRobotics/berkeley_humanoid_description",
+    "commit": "d0d13d3f81d795480e25ed1910eaf83d5f0a1d0b",
+    "repo_url": "https://github.com/HybridRobotics/berkeley_humanoid_description",
+    "tree_url": "https://github.com/HybridRobotics/berkeley_humanoid_description/tree/d0d13d3f81d795480e25ed1910eaf83d5f0a1d0b",
+    "license_url": "https://github.com/HybridRobotics/berkeley_humanoid_description/blob/d0d13d3f81d795480e25ed1910eaf83d5f0a1d0b/package.xml",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://berkeley-humanoid.com/"
+   }
+  },
+  {
+   "id": "toddlerbot",
+   "name": "ToddlerBot",
+   "maker": "Stanford University",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 31,
+   "license": "MIT",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "toddlerbot_2xc",
+    "links": 91,
+    "joints": {
+     "fixed": 59,
+     "floating": 1,
+     "revolute": 30
+    },
+    "moving_joints": 31,
+    "mass_kg": 3.499,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 71535
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/hshi74/toddlerbot@067f9dc4f50143e36334877b9395b9c5c29ee30c/",
+    "urdf": "toddlerbot/descriptions/toddlerbot_2xc/toddlerbot_2xc.urdf",
+    "packages": {},
+    "mesh_files": 47,
+    "mesh_bytes": 67610348,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "toddlerbot_description",
+    "github": "hshi74/toddlerbot",
+    "commit": "067f9dc4f50143e36334877b9395b9c5c29ee30c",
+    "repo_url": "https://github.com/hshi74/toddlerbot",
+    "tree_url": "https://github.com/hshi74/toddlerbot/tree/067f9dc4f50143e36334877b9395b9c5c29ee30c/toddlerbot/descriptions/toddlerbot_2xc",
+    "license_url": "https://github.com/hshi74/toddlerbot/blob/067f9dc4f50143e36334877b9395b9c5c29ee30c/toddlerbot/descriptions/toddlerbot_2xc/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://toddlerbot.github.io/"
+   }
+  },
+  {
+   "id": "talos",
+   "name": "TALOS",
+   "maker": "PAL Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 44,
+   "license": "LGPL-3.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "talos",
+    "links": 60,
+    "joints": {
+     "fixed": 15,
+     "revolute": 44
+    },
+    "moving_joints": 44,
+    "mass_kg": 90.272,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 109384
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/stack-of-tasks/talos-data@77169405d6a48a5d3f3f75eb014209f375ff23b6/",
+    "urdf": "urdf/talos_full.urdf",
+    "packages": {
+     "talos_data": ""
+    },
+    "mesh_files": 47,
+    "mesh_bytes": 6913098,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "talos_description",
+    "github": "stack-of-tasks/talos-data",
+    "commit": "77169405d6a48a5d3f3f75eb014209f375ff23b6",
+    "repo_url": "https://github.com/stack-of-tasks/talos-data",
+    "tree_url": "https://github.com/stack-of-tasks/talos-data/tree/77169405d6a48a5d3f3f75eb014209f375ff23b6",
+    "license_url": "https://github.com/stack-of-tasks/talos-data/blob/77169405d6a48a5d3f3f75eb014209f375ff23b6/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://pal-robotics.com/robot/talos/"
+   }
+  },
+  {
+   "id": "valkyrie",
+   "name": "Valkyrie",
+   "maker": "NASA JSC Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 60,
+   "license": "NASA-1.3",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "valkyrie",
+    "links": 78,
+    "joints": {
+     "continuous": 1,
+     "fixed": 18,
+     "prismatic": 1,
+     "revolute": 58
+    },
+    "moving_joints": 60,
+    "mass_kg": 135.9,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 126363
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/gkjohnson/nasa-urdf-robots@54cdeb1dbfb529b79ae3185a53e24fce26e1b74b/",
+    "urdf": "val_description/model/robots/valkyrie_sim.urdf",
+    "packages": {
+     "val_description": "val_description"
+    },
+    "mesh_files": 56,
+    "mesh_bytes": 924511,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "valkyrie_description",
+    "github": "gkjohnson/nasa-urdf-robots",
+    "commit": "54cdeb1dbfb529b79ae3185a53e24fce26e1b74b",
+    "repo_url": "https://github.com/gkjohnson/nasa-urdf-robots",
+    "tree_url": "https://github.com/gkjohnson/nasa-urdf-robots/tree/54cdeb1dbfb529b79ae3185a53e24fce26e1b74b/val_description",
+    "license_url": "https://github.com/gkjohnson/nasa-urdf-robots/blob/54cdeb1dbfb529b79ae3185a53e24fce26e1b74b/val_description/README.md",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.nasa.gov/robotics/"
+   }
+  },
+  {
+   "id": "r2",
+   "name": "Robonaut 2",
+   "maker": "NASA JSC Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 56,
+   "license": "NASA-1.3",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "r2",
+    "links": 105,
+    "joints": {
+     "fixed": 48,
+     "revolute": 56
+    },
+    "moving_joints": 56,
+    "mass_kg": 213.909,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 80145
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/gkjohnson/nasa-urdf-robots@54cdeb1dbfb529b79ae3185a53e24fce26e1b74b/",
+    "urdf": "r2_description/robots/r2c_sim_full_control.urdf.urdf",
+    "packages": {
+     "r2_description": "r2_description"
+    },
+    "mesh_files": 30,
+    "mesh_bytes": 10622593,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "r2_description",
+    "github": "gkjohnson/nasa-urdf-robots",
+    "commit": "54cdeb1dbfb529b79ae3185a53e24fce26e1b74b",
+    "repo_url": "https://github.com/gkjohnson/nasa-urdf-robots",
+    "tree_url": "https://github.com/gkjohnson/nasa-urdf-robots/tree/54cdeb1dbfb529b79ae3185a53e24fce26e1b74b/r2_description",
+    "license_url": "https://github.com/gkjohnson/nasa-urdf-robots/blob/54cdeb1dbfb529b79ae3185a53e24fce26e1b74b/r2_description/README.md",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "jvrc",
+   "name": "JVRC-1",
+   "maker": "AIST",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 44,
+   "license": "BSD-2-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "jvrc1",
+    "links": 60,
+    "joints": {
+     "fixed": 15,
+     "revolute": 44
+    },
+    "moving_joints": 44,
+    "mass_kg": 62.4,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 44370
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/jrl-umi3218/jvrc_description@9ff8efbc7043459a8f0892662bd030d8020fb682/",
+    "urdf": "urdf/jvrc1.urdf",
+    "packages": {
+     "jvrc_description": ""
+    },
+    "mesh_files": 35,
+    "mesh_bytes": 483567,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "jvrc_description",
+    "github": "jrl-umi3218/jvrc_description",
+    "commit": "9ff8efbc7043459a8f0892662bd030d8020fb682",
+    "repo_url": "https://github.com/jrl-umi3218/jvrc_description",
+    "tree_url": "https://github.com/jrl-umi3218/jvrc_description/tree/9ff8efbc7043459a8f0892662bd030d8020fb682",
+    "license_url": "https://github.com/jrl-umi3218/jvrc_description/blob/9ff8efbc7043459a8f0892662bd030d8020fb682/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "atlas_drc",
+   "name": "Atlas DRC (v3)",
+   "maker": "Boston Dynamics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 30,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "atlas",
+    "links": 70,
+    "joints": {
+     "fixed": 39,
+     "revolute": 30
+    },
+    "moving_joints": 30,
+    "mass_kg": 175.118,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 60824
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/RobotLocomotion/drake@7abea0556ede980a5077fe1a8cfbae59b57c7c27/",
+    "urdf": "examples/atlas/urdf/atlas_convex_hull.urdf",
+    "packages": {
+     "drake": ""
+    },
+    "mesh_files": 43,
+    "mesh_bytes": 766672,
+    "mesh_formats": [
+     ".obj"
+    ]
+   },
+   "source": {
+    "description": "atlas_drc_description",
+    "github": "RobotLocomotion/drake",
+    "commit": "7abea0556ede980a5077fe1a8cfbae59b57c7c27",
+    "repo_url": "https://github.com/RobotLocomotion/drake",
+    "tree_url": "https://github.com/RobotLocomotion/drake/tree/7abea0556ede980a5077fe1a8cfbae59b57c7c27/examples/atlas",
+    "license_url": "https://github.com/RobotLocomotion/drake/blob/7abea0556ede980a5077fe1a8cfbae59b57c7c27/examples/atlas/LICENSE.TXT",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://bostondynamics.com/atlas/"
+   }
+  },
+  {
+   "id": "atlas_v4",
+   "name": "Atlas v4",
+   "maker": "Boston Dynamics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 30,
+   "license": "MIT",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "multisense_sl",
+    "links": 31,
+    "joints": {
+     "revolute": 30
+    },
+    "moving_joints": 30,
+    "mass_kg": 182.417,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 40551
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/openai/roboschool@1.0.49/",
+    "urdf": "roboschool/models_robot/atlas_description/urdf/atlas_v4_with_multisense.urdf",
+    "packages": {
+     "atlas_description": "roboschool/models_robot/atlas_description",
+     "multisense_sl_description": "roboschool/models_robot/multisense_sl_description"
+    },
+    "mesh_files": 23,
+    "mesh_bytes": 2355807,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "atlas_v4_description",
+    "github": "openai/roboschool",
+    "commit": "1.0.49",
+    "repo_url": "https://github.com/openai/roboschool",
+    "tree_url": "https://github.com/openai/roboschool/tree/1.0.49/roboschool/models_robot/atlas_description",
+    "license_url": "https://github.com/openai/roboschool/blob/1.0.49/roboschool/models_robot/atlas_description/LICENSE.md",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://bostondynamics.com/atlas/"
+   }
+  },
+  {
+   "id": "icub",
+   "name": "iCub",
+   "maker": "IIT",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 32,
+   "license": "CC-BY-SA-4.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "iCub",
+    "links": 189,
+    "joints": {
+     "fixed": 156,
+     "revolute": 32
+    },
+    "moving_joints": 32,
+    "mass_kg": 33.062,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 162715
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/robotology/icub-models@v1.25.0/",
+    "urdf": "iCub/robots/iCubGazeboV2_5/model.urdf",
+    "packages": {
+     "iCub": "iCub"
+    },
+    "mesh_files": 39,
+    "mesh_bytes": 13671626,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "icub_description",
+    "github": "robotology/icub-models",
+    "commit": "v1.25.0",
+    "repo_url": "https://github.com/robotology/icub-models",
+    "tree_url": "https://github.com/robotology/icub-models/tree/v1.25.0/iCub",
+    "license_url": "https://github.com/robotology/icub-models/blob/v1.25.0/iCub/iCub/package.xml",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://icub.iit.it/"
+   }
+  },
+  {
+   "id": "ergocub",
+   "name": "ergoCub",
+   "maker": "IIT",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 57,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "ergoCub",
+    "links": 204,
+    "joints": {
+     "fixed": 146,
+     "revolute": 57
+    },
+    "moving_joints": 57,
+    "mass_kg": 57.0,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 175874
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/icub-tech-iit/ergocub-software@v0.7.7/",
+    "urdf": "urdf/ergoCub/robots/ergoCubSN002/model.urdf",
+    "packages": {
+     "ergoCub": "urdf/ergoCub"
+    },
+    "mesh_files": 66,
+    "mesh_bytes": 24389503,
+    "mesh_formats": [
+     ".obj"
+    ]
+   },
+   "source": {
+    "description": "ergocub_description",
+    "github": "icub-tech-iit/ergocub-software",
+    "commit": "v0.7.7",
+    "repo_url": "https://github.com/icub-tech-iit/ergocub-software",
+    "tree_url": "https://github.com/icub-tech-iit/ergocub-software/tree/v0.7.7/urdf/ergoCub",
+    "license_url": "https://github.com/icub-tech-iit/ergocub-software/blob/v0.7.7/urdf/ergoCub/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://ergocub.eu/"
+   }
+  },
+  {
+   "id": "draco3",
+   "name": "Draco3",
+   "maker": "Apptronik",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 27,
+   "license": "BSD-2-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "draco_3",
+    "links": 48,
+    "joints": {
+     "fixed": 20,
+     "revolute": 27
+    },
+    "moving_joints": 27,
+    "mass_kg": 36.522,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 42680
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/shbang91/draco3_description@5afd19733d7b3e9f1135ba93e0aad90ed1a24cc7/",
+    "urdf": "urdf/draco3.urdf",
+    "packages": {
+     "draco3_description": ""
+    },
+    "mesh_files": 33,
+    "mesh_bytes": 41710317,
+    "mesh_formats": [
+     ".obj",
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "draco3_description",
+    "github": "shbang91/draco3_description",
+    "commit": "5afd19733d7b3e9f1135ba93e0aad90ed1a24cc7",
+    "repo_url": "https://github.com/shbang91/draco3_description",
+    "tree_url": "https://github.com/shbang91/draco3_description/tree/5afd19733d7b3e9f1135ba93e0aad90ed1a24cc7",
+    "license_url": "https://github.com/shbang91/draco3_description/blob/5afd19733d7b3e9f1135ba93e0aad90ed1a24cc7/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "jaxon",
+   "name": "JAXON",
+   "maker": "JSK",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 38,
+   "license": "CC-BY-SA-4.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "JAXON_JVRC",
+    "links": 39,
+    "joints": {
+     "continuous": 1,
+     "revolute": 37
+    },
+    "moving_joints": 38,
+    "mass_kg": 131.742,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 37892
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/robot-descriptions/jaxon_description@4a0cb7a4a737864312f8d6e3f89823a741539bfc/",
+    "urdf": "urdf/jaxon_jvrc.urdf",
+    "packages": {
+     "jaxon_description": ""
+    },
+    "mesh_files": 39,
+    "mesh_bytes": 20741687,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "jaxon_description",
+    "github": "robot-descriptions/jaxon_description",
+    "commit": "4a0cb7a4a737864312f8d6e3f89823a741539bfc",
+    "repo_url": "https://github.com/robot-descriptions/jaxon_description",
+    "tree_url": "https://github.com/robot-descriptions/jaxon_description/tree/4a0cb7a4a737864312f8d6e3f89823a741539bfc",
+    "license_url": "https://github.com/robot-descriptions/jaxon_description/blob/4a0cb7a4a737864312f8d6e3f89823a741539bfc/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "romeo",
+   "name": "Romeo",
+   "maker": "Aldebaran Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 61,
+   "license": "BSD",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "RomeoH37",
+    "links": 120,
+    "joints": {
+     "continuous": 24,
+     "fixed": 34,
+     "revolute": 37
+    },
+    "moving_joints": 61,
+    "mass_kg": 41.139,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 99808
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/ros-aldebaran/romeo_robot@0.1.5/",
+    "urdf": "romeo_description/urdf/romeo_generated_urdf/romeo.urdf",
+    "packages": {
+     "romeo_description": "romeo_description"
+    },
+    "mesh_files": 93,
+    "mesh_bytes": 8875360,
+    "mesh_formats": [
+     ".dae",
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "romeo_description",
+    "github": "ros-aldebaran/romeo_robot",
+    "commit": "0.1.5",
+    "repo_url": "https://github.com/ros-aldebaran/romeo_robot",
+    "tree_url": "https://github.com/ros-aldebaran/romeo_robot/tree/0.1.5/romeo_description",
+    "license_url": "https://github.com/ros-aldebaran/romeo_robot/blob/0.1.5/romeo_description/romeo_description/package.xml",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "go2",
+   "name": "Go2",
+   "maker": "UNITREE Robotics",
+   "category": "quadruped",
+   "tags": [
+    "quadruped"
+   ],
+   "dof": 12,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": {
+    "FL_hip_joint": 0.0,
+    "FL_thigh_joint": 0.78,
+    "FL_calf_joint": -1.55,
+    "FR_hip_joint": 0.0,
+    "FR_thigh_joint": 0.78,
+    "FR_calf_joint": -1.55,
+    "RL_hip_joint": 0.0,
+    "RL_thigh_joint": 0.78,
+    "RL_calf_joint": -1.55,
+    "RR_hip_joint": 0.0,
+    "RR_thigh_joint": 0.78,
+    "RR_calf_joint": -1.55
+   },
+   "urdf": {
+    "xml_name": "go2_description",
+    "links": 42,
+    "joints": {
+     "fixed": 29,
+     "revolute": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": 16.087,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 27441
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@267182b8521c8d6a631bab1fe63836873237a525/",
+    "urdf": "robots/go2_description/urdf/go2_description.urdf",
+    "packages": {
+     "go2_description": "robots/go2_description"
+    },
+    "mesh_files": 7,
+    "mesh_bytes": 21541369,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "go2_description",
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "267182b8521c8d6a631bab1fe63836873237a525",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/go2_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/go2_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/go2"
+   }
+  },
+  {
+   "id": "b2",
+   "name": "B2",
+   "maker": "UNITREE Robotics",
+   "category": "quadruped",
+   "tags": [
+    "quadruped"
+   ],
+   "dof": 12,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": {
+    "FL_hip_joint": 0.0,
+    "FL_thigh_joint": 0.72,
+    "FL_calf_joint": -1.45,
+    "FR_hip_joint": 0.0,
+    "FR_thigh_joint": 0.72,
+    "FR_calf_joint": -1.45,
+    "RL_hip_joint": 0.0,
+    "RL_thigh_joint": 0.72,
+    "RL_calf_joint": -1.45,
+    "RR_hip_joint": 0.0,
+    "RR_thigh_joint": 0.72,
+    "RR_calf_joint": -1.45
+   },
+   "urdf": {
+    "xml_name": "b2_description",
+    "links": 37,
+    "joints": {
+     "fixed": 24,
+     "revolute": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": 74.58,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 28768
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@267182b8521c8d6a631bab1fe63836873237a525/",
+    "urdf": "robots/b2_description/urdf/b2_description.urdf",
+    "packages": {
+     "b2_description": "robots/b2_description"
+    },
+    "mesh_files": 13,
+    "mesh_bytes": 13186006,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "b2_description",
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "267182b8521c8d6a631bab1fe63836873237a525",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/b2_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/b2_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/b2"
+   }
+  },
+  {
+   "id": "a1",
+   "name": "A1",
+   "maker": "UNITREE Robotics",
+   "category": "quadruped",
+   "tags": [
+    "quadruped"
+   ],
+   "dof": 12,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": {
+    "FL_hip_joint": 0.0,
+    "FL_thigh_joint": 0.78,
+    "FL_calf_joint": -1.55,
+    "FR_hip_joint": 0.0,
+    "FR_thigh_joint": 0.78,
+    "FR_calf_joint": -1.55,
+    "RL_hip_joint": 0.0,
+    "RL_thigh_joint": 0.78,
+    "RL_calf_joint": -1.55,
+    "RR_hip_joint": 0.0,
+    "RR_thigh_joint": 0.78,
+    "RR_calf_joint": -1.55
+   },
+   "urdf": {
+    "xml_name": "a1",
+    "links": 25,
+    "joints": {
+     "fixed": 10,
+     "revolute": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": 13.741,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 32334
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@267182b8521c8d6a631bab1fe63836873237a525/",
+    "urdf": "robots/a1_description/urdf/a1.urdf",
+    "packages": {
+     "a1_description": "robots/a1_description"
+    },
+    "mesh_files": 5,
+    "mesh_bytes": 7254591,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "a1_description",
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "267182b8521c8d6a631bab1fe63836873237a525",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/a1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/a1_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "aliengo",
+   "name": "Aliengo",
+   "maker": "UNITREE Robotics",
+   "category": "quadruped",
+   "tags": [
+    "quadruped"
+   ],
+   "dof": 12,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": {
+    "FL_hip_joint": 0.0,
+    "FL_thigh_joint": 0.78,
+    "FL_calf_joint": -1.55,
+    "FR_hip_joint": 0.0,
+    "FR_thigh_joint": 0.78,
+    "FR_calf_joint": -1.55,
+    "RL_hip_joint": 0.0,
+    "RL_thigh_joint": 0.78,
+    "RL_calf_joint": -1.55,
+    "RR_hip_joint": 0.0,
+    "RR_thigh_joint": 0.78,
+    "RR_calf_joint": -1.55
+   },
+   "urdf": {
+    "xml_name": "aliengo",
+    "links": 32,
+    "joints": {
+     "continuous": 4,
+     "fixed": 18,
+     "revolute": 8
+    },
+    "moving_joints": 12,
+    "mass_kg": 24.937,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 40174
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@267182b8521c8d6a631bab1fe63836873237a525/",
+    "urdf": "robots/aliengo_description/urdf/aliengo.urdf",
+    "packages": {
+     "aliengo_description": "robots/aliengo_description"
+    },
+    "mesh_files": 5,
+    "mesh_bytes": 4638590,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "aliengo_description",
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "267182b8521c8d6a631bab1fe63836873237a525",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/aliengo_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/aliengo_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "laikago",
+   "name": "Laikago",
+   "maker": "UNITREE Robotics",
+   "category": "quadruped",
+   "tags": [
+    "quadruped"
+   ],
+   "dof": 12,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": {
+    "FL_hip_joint": 0.0,
+    "FL_thigh_joint": 0.7,
+    "FL_calf_joint": -1.4,
+    "FR_hip_joint": 0.0,
+    "FR_thigh_joint": 0.7,
+    "FR_calf_joint": -1.4,
+    "RL_hip_joint": 0.0,
+    "RL_thigh_joint": 0.7,
+    "RL_calf_joint": -1.4,
+    "RR_hip_joint": 0.0,
+    "RR_thigh_joint": 0.7,
+    "RR_calf_joint": -1.4
+   },
+   "urdf": {
+    "xml_name": "laikago_description",
+    "links": 14,
+    "joints": {
+     "floating": 1,
+     "revolute": 12
+    },
+    "moving_joints": 13,
+    "mass_kg": 25.193,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 13620
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_mujoco@f3300ff1bf0ab9efbea0162717353480d9b05d73/",
+    "urdf": "data/laikago/urdf/laikago.urdf",
+    "packages": {},
+    "mesh_files": 5,
+    "mesh_bytes": 2127120,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "laikago_description",
+    "github": "unitreerobotics/unitree_mujoco",
+    "commit": "f3300ff1bf0ab9efbea0162717353480d9b05d73",
+    "repo_url": "https://github.com/unitreerobotics/unitree_mujoco",
+    "tree_url": "https://github.com/unitreerobotics/unitree_mujoco/tree/f3300ff1bf0ab9efbea0162717353480d9b05d73/data/laikago",
+    "license_url": "https://github.com/unitreerobotics/unitree_mujoco/blob/f3300ff1bf0ab9efbea0162717353480d9b05d73/data/laikago/LICENSE",
+    "mjcf": "data/laikago/xml/laikago.xml"
+   },
+   "links": {}
+  },
+  {
+   "id": "anymal_b",
+   "name": "ANYmal B",
+   "maker": "ANYbotics",
+   "category": "quadruped",
+   "tags": [
+    "quadruped"
+   ],
+   "dof": 12,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "anymal",
+    "links": 22,
+    "joints": {
+     "fixed": 9,
+     "revolute": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": 30.421,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 32515
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/ANYbotics/anymal_b_simple_description@988b5df22b84761bdf08111b1c2ccc883793f456/",
+    "urdf": "urdf/anymal.urdf",
+    "packages": {
+     "anymal_b_simple_description": ""
+    },
+    "mesh_files": 8,
+    "mesh_bytes": 3533208,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "anymal_b_description",
+    "github": "ANYbotics/anymal_b_simple_description",
+    "commit": "988b5df22b84761bdf08111b1c2ccc883793f456",
+    "repo_url": "https://github.com/ANYbotics/anymal_b_simple_description",
+    "tree_url": "https://github.com/ANYbotics/anymal_b_simple_description/tree/988b5df22b84761bdf08111b1c2ccc883793f456",
+    "license_url": "https://github.com/ANYbotics/anymal_b_simple_description/blob/988b5df22b84761bdf08111b1c2ccc883793f456/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.anybotics.com/robotics/anymal/"
+   }
+  },
+  {
+   "id": "anymal_c",
+   "name": "ANYmal C",
+   "maker": "ANYbotics",
+   "category": "quadruped",
+   "tags": [
+    "quadruped"
+   ],
+   "dof": 12,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "anymal",
+    "links": 78,
+    "joints": {
+     "fixed": 65,
+     "revolute": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": 52.135,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 63712
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/ANYbotics/anymal_c_simple_description@f160b8f7fed840c47a6febe8e2bc78b32bf43a68/",
+    "urdf": "urdf/anymal.urdf",
+    "packages": {
+     "anymal_c_simple_description": ""
+    },
+    "mesh_files": 19,
+    "mesh_bytes": 2227137,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "anymal_c_description",
+    "github": "ANYbotics/anymal_c_simple_description",
+    "commit": "f160b8f7fed840c47a6febe8e2bc78b32bf43a68",
+    "repo_url": "https://github.com/ANYbotics/anymal_c_simple_description",
+    "tree_url": "https://github.com/ANYbotics/anymal_c_simple_description/tree/f160b8f7fed840c47a6febe8e2bc78b32bf43a68",
+    "license_url": "https://github.com/ANYbotics/anymal_c_simple_description/blob/f160b8f7fed840c47a6febe8e2bc78b32bf43a68/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.anybotics.com/robotics/anymal/"
+   }
+  },
+  {
+   "id": "anymal_d",
+   "name": "ANYmal D",
+   "maker": "ANYbotics",
+   "category": "quadruped",
+   "tags": [
+    "quadruped"
+   ],
+   "dof": 12,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "anymal",
+    "links": 96,
+    "joints": {
+     "fixed": 81,
+     "revolute": 14
+    },
+    "moving_joints": 14,
+    "mass_kg": 57.028,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 59405
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/ANYbotics/anymal_d_simple_description@6adc14720aab583613975e5a9d6d4fa3cfcdd081/",
+    "urdf": "urdf/anymal.urdf",
+    "packages": {
+     "anymal_d_simple_description": ""
+    },
+    "mesh_files": 17,
+    "mesh_bytes": 950219,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "anymal_d_description",
+    "github": "ANYbotics/anymal_d_simple_description",
+    "commit": "6adc14720aab583613975e5a9d6d4fa3cfcdd081",
+    "repo_url": "https://github.com/ANYbotics/anymal_d_simple_description",
+    "tree_url": "https://github.com/ANYbotics/anymal_d_simple_description/tree/6adc14720aab583613975e5a9d6d4fa3cfcdd081",
+    "license_url": "https://github.com/ANYbotics/anymal_d_simple_description/blob/6adc14720aab583613975e5a9d6d4fa3cfcdd081/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.anybotics.com/robotics/anymal/"
+   }
+  },
+  {
+   "id": "hyq",
+   "name": "HyQ",
+   "maker": "IIT",
+   "category": "quadruped",
+   "tags": [
+    "quadruped"
+   ],
+   "dof": 12,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "hyq",
+    "links": 19,
+    "joints": {
+     "fixed": 6,
+     "revolute": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": 86.774,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 36818
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/Gepetto/example-robot-data@d0d9098d752014aec3725b07766962acf06c5418/",
+    "urdf": "robots/hyq_description/robots/hyq_no_sensors.urdf",
+    "packages": {
+     "example-robot-data": ""
+    },
+    "mesh_files": 4,
+    "mesh_bytes": 463734,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "hyq_description",
+    "github": "Gepetto/example-robot-data",
+    "commit": "d0d9098d752014aec3725b07766962acf06c5418",
+    "repo_url": "https://github.com/Gepetto/example-robot-data",
+    "tree_url": "https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/hyq_description",
+    "license_url": "https://github.com/Gepetto/example-robot-data/blob/d0d9098d752014aec3725b07766962acf06c5418/robots/hyq_description/robots/hyq_description/README.md",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "solo",
+   "name": "Solo",
+   "maker": "ODRI",
+   "category": "quadruped",
+   "tags": [
+    "quadruped"
+   ],
+   "dof": 12,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "solo",
+    "links": 17,
+    "joints": {
+     "fixed": 4,
+     "revolute": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": 2.5,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 27094
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/Gepetto/example-robot-data@d0d9098d752014aec3725b07766962acf06c5418/",
+    "urdf": "robots/solo_description/robots/solo12.urdf",
+    "packages": {
+     "example-robot-data": ""
+    },
+    "mesh_files": 10,
+    "mesh_bytes": 1544640,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "solo_description",
+    "github": "Gepetto/example-robot-data",
+    "commit": "d0d9098d752014aec3725b07766962acf06c5418",
+    "repo_url": "https://github.com/Gepetto/example-robot-data",
+    "tree_url": "https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/solo_description",
+    "license_url": "https://github.com/Gepetto/example-robot-data/blob/d0d9098d752014aec3725b07766962acf06c5418/robots/solo_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://open-dynamic-robot-initiative.github.io/"
+   }
+  },
+  {
+   "id": "wl_p311d",
+   "name": "WL P311D",
+   "maker": "LimX Dynamics",
+   "category": "quadruped",
+   "tags": [
+    "quadruped",
+    "wheeled"
+   ],
+   "dof": 16,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "wheel_legged",
+    "links": 22,
+    "joints": {
+     "fixed": 5,
+     "revolute": 16
+    },
+    "moving_joints": 16,
+    "mass_kg": 43.514,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 35996
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/limxdynamics/robot-description@a097533372a08298d45af391cbdfc2fd2dc3da6f/",
+    "urdf": "wheellegged/WL_P311D/urdf/robot.urdf",
+    "packages": {
+     "robot_description": ""
+    },
+    "mesh_files": 17,
+    "mesh_bytes": 27161528,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "wl_p311d_description",
+    "github": "limxdynamics/robot-description",
+    "commit": "a097533372a08298d45af391cbdfc2fd2dc3da6f",
+    "repo_url": "https://github.com/limxdynamics/robot-description",
+    "tree_url": "https://github.com/limxdynamics/robot-description/tree/a097533372a08298d45af391cbdfc2fd2dc3da6f/wheellegged/WL_P311D",
+    "license_url": "https://github.com/limxdynamics/robot-description/blob/a097533372a08298d45af391cbdfc2fd2dc3da6f/wheellegged/WL_P311D/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "wl_p311e",
+   "name": "WL P311E",
+   "maker": "LimX Dynamics",
+   "category": "quadruped",
+   "tags": [
+    "quadruped",
+    "wheeled"
+   ],
+   "dof": 16,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "wheel_legged",
+    "links": 22,
+    "joints": {
+     "fixed": 5,
+     "revolute": 16
+    },
+    "moving_joints": 16,
+    "mass_kg": 51.557,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 34988
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/limxdynamics/robot-description@a097533372a08298d45af391cbdfc2fd2dc3da6f/",
+    "urdf": "wheellegged/WL_P311E/urdf/robot.urdf",
+    "packages": {
+     "robot_description": ""
+    },
+    "mesh_files": 17,
+    "mesh_bytes": 31776428,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "wl_p311e_description",
+    "github": "limxdynamics/robot-description",
+    "commit": "a097533372a08298d45af391cbdfc2fd2dc3da6f",
+    "repo_url": "https://github.com/limxdynamics/robot-description",
+    "tree_url": "https://github.com/limxdynamics/robot-description/tree/a097533372a08298d45af391cbdfc2fd2dc3da6f/wheellegged/WL_P311E",
+    "license_url": "https://github.com/limxdynamics/robot-description/blob/a097533372a08298d45af391cbdfc2fd2dc3da6f/wheellegged/WL_P311E/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "panda",
+   "name": "Panda",
+   "maker": "Franka Robotics",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 9,
+   "license": "Apache-2.0",
+   "formats": [
+    "srdf",
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "panda",
+    "links": 13,
+    "joints": {
+     "fixed": 3,
+     "prismatic": 2,
+     "revolute": 7
+    },
+    "moving_joints": 9,
+    "mass_kg": 17.452,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 15069
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/Gepetto/example-robot-data@d0d9098d752014aec3725b07766962acf06c5418/",
+    "urdf": "robots/panda_description/urdf/panda.urdf",
+    "packages": {
+     "example-robot-data": ""
+    },
+    "mesh_files": 19,
+    "mesh_bytes": 3821529,
+    "mesh_formats": [
+     ".dae",
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "panda_description",
+    "github": "Gepetto/example-robot-data",
+    "commit": "d0d9098d752014aec3725b07766962acf06c5418",
+    "repo_url": "https://github.com/Gepetto/example-robot-data",
+    "tree_url": "https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/panda_description",
+    "license_url": "https://github.com/Gepetto/example-robot-data/blob/d0d9098d752014aec3725b07766962acf06c5418/robots/panda_description/robots/panda_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://franka.de/"
+   }
+  },
+  {
+   "id": "iiwa14",
+   "name": "iiwa 14",
+   "maker": "KUKA",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 7,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "iiwa14",
+    "links": 11,
+    "joints": {
+     "fixed": 3,
+     "revolute": 7
+    },
+    "moving_joints": 7,
+    "mass_kg": 30.61,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 17958
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/RobotLocomotion/drake@7abea0556ede980a5077fe1a8cfbae59b57c7c27/",
+    "urdf": "manipulation/models/iiwa_description/urdf/iiwa14_primitive_collision.urdf",
+    "packages": {
+     "drake": ""
+    },
+    "mesh_files": 15,
+    "mesh_bytes": 6603747,
+    "mesh_formats": [
+     ".obj"
+    ]
+   },
+   "source": {
+    "description": "iiwa14_description",
+    "github": "RobotLocomotion/drake",
+    "commit": "7abea0556ede980a5077fe1a8cfbae59b57c7c27",
+    "repo_url": "https://github.com/RobotLocomotion/drake",
+    "tree_url": "https://github.com/RobotLocomotion/drake/tree/7abea0556ede980a5077fe1a8cfbae59b57c7c27/manipulation/models/iiwa_description",
+    "license_url": "https://github.com/RobotLocomotion/drake/blob/7abea0556ede980a5077fe1a8cfbae59b57c7c27/manipulation/models/iiwa_description/manipulation/models/iiwa_description/LICENSE.TXT",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.kuka.com/en-de/products/robot-systems/industrial-robots/lbr-iiwa"
+   }
+  },
+  {
+   "id": "gen2",
+   "name": "Gen2",
+   "maker": "Kinova",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 6,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "kinova",
+    "links": 13,
+    "joints": {
+     "continuous": 3,
+     "fixed": 6,
+     "revolute": 3
+    },
+    "moving_joints": 6,
+    "mass_kg": 4.838,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 21403
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/Gepetto/example-robot-data@d0d9098d752014aec3725b07766962acf06c5418/",
+    "urdf": "robots/kinova_description/robots/kinova.urdf",
+    "packages": {
+     "example-robot-data": ""
+    },
+    "mesh_files": 11,
+    "mesh_bytes": 4776521,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "gen2_description",
+    "github": "Gepetto/example-robot-data",
+    "commit": "d0d9098d752014aec3725b07766962acf06c5418",
+    "repo_url": "https://github.com/Gepetto/example-robot-data",
+    "tree_url": "https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/kinova_description",
+    "license_url": "https://github.com/Gepetto/example-robot-data/blob/d0d9098d752014aec3725b07766962acf06c5418/robots/kinova_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "fanuc_m710ic",
+   "name": "M-710iC",
+   "maker": "Fanuc",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 6,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "Visual-only description: no inertial parameters upstream.",
+   "notes_zh": "仅含可视化几何，上游未提供惯性参数。",
+   "pose": null,
+   "urdf": {
+    "xml_name": "m710ic70",
+    "links": 10,
+    "joints": {
+     "fixed": 3,
+     "revolute": 6
+    },
+    "moving_joints": 6,
+    "mass_kg": null,
+    "has_collision": true,
+    "has_inertia": false,
+    "bytes": 6256
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/robot-descriptions/fanuc_m710ic_description@d12af44559cd7e46f7afd513237f159f82f8402e/",
+    "urdf": "urdf/m710ic70.urdf",
+    "packages": {
+     "fanuc_m710ic_description": ""
+    },
+    "mesh_files": 14,
+    "mesh_bytes": 146576,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "fanuc_m710ic_description",
+    "github": "robot-descriptions/fanuc_m710ic_description",
+    "commit": "d12af44559cd7e46f7afd513237f159f82f8402e",
+    "repo_url": "https://github.com/robot-descriptions/fanuc_m710ic_description",
+    "tree_url": "https://github.com/robot-descriptions/fanuc_m710ic_description/tree/d12af44559cd7e46f7afd513237f159f82f8402e",
+    "license_url": "https://github.com/robot-descriptions/fanuc_m710ic_description/blob/d12af44559cd7e46f7afd513237f159f82f8402e/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "edo",
+   "name": "e.DO",
+   "maker": "Comau",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 6,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "edo_sim",
+    "links": 7,
+    "joints": {
+     "continuous": 6
+    },
+    "moving_joints": 6,
+    "mass_kg": 0.5,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 8788
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/ianathompson/eDO_description@17b3f92f834746106d6a4befaab8eeab3ac248e6/",
+    "urdf": "robots/edo_sim.urdf",
+    "packages": {
+     "edo_sim": ""
+    },
+    "mesh_files": 7,
+    "mesh_bytes": 24780338,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "edo_description",
+    "github": "ianathompson/eDO_description",
+    "commit": "17b3f92f834746106d6a4befaab8eeab3ac248e6",
+    "repo_url": "https://github.com/ianathompson/eDO_description",
+    "tree_url": "https://github.com/ianathompson/eDO_description/tree/17b3f92f834746106d6a4befaab8eeab3ac248e6",
+    "license_url": "https://github.com/ianathompson/eDO_description/blob/17b3f92f834746106d6a4befaab8eeab3ac248e6/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "piper",
+   "name": "PiPER",
+   "maker": "AgileX",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 8,
+   "license": "MIT",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "piper_description",
+    "links": 10,
+    "joints": {
+     "fixed": 1,
+     "prismatic": 2,
+     "revolute": 6
+    },
+    "moving_joints": 8,
+    "mass_kg": 1.712,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 13743
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/agilexrobotics/Piper_ros@f2ec6a67e1f404bcb478529e89861ccdf43fa298/",
+    "urdf": "src/piper_description/urdf/piper_description.urdf",
+    "packages": {
+     "piper_description": "src/piper_description"
+    },
+    "mesh_files": 10,
+    "mesh_bytes": 9188140,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "piper_description",
+    "github": "agilexrobotics/Piper_ros",
+    "commit": "f2ec6a67e1f404bcb478529e89861ccdf43fa298",
+    "repo_url": "https://github.com/agilexrobotics/Piper_ros",
+    "tree_url": "https://github.com/agilexrobotics/Piper_ros/tree/f2ec6a67e1f404bcb478529e89861ccdf43fa298/src/piper_description",
+    "license_url": "https://github.com/agilexrobotics/Piper_ros/blob/f2ec6a67e1f404bcb478529e89861ccdf43fa298/src/piper_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://global.agilex.ai/products/piper"
+   }
+  },
+  {
+   "id": "yam",
+   "name": "YAM",
+   "maker": "I2RT Robotics",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 6,
+   "license": "MIT",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "yam_v0",
+    "links": 7,
+    "joints": {
+     "revolute": 6
+    },
+    "moving_joints": 6,
+    "mass_kg": 4.463,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 8132
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/robot-descriptions/i2rt@7809b5b17227162d265f922e2e10598c0e214322/",
+    "urdf": "i2rt/robot_models/yam/yam.urdf",
+    "packages": {
+     "assets": "i2rt/robot_models/yam/assets"
+    },
+    "mesh_files": 14,
+    "mesh_bytes": 6788576,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "yam_description",
+    "github": "robot-descriptions/i2rt",
+    "commit": "7809b5b17227162d265f922e2e10598c0e214322",
+    "repo_url": "https://github.com/robot-descriptions/i2rt",
+    "tree_url": "https://github.com/robot-descriptions/i2rt/tree/7809b5b17227162d265f922e2e10598c0e214322/i2rt/robot_models/yam",
+    "license_url": "https://github.com/robot-descriptions/i2rt/blob/7809b5b17227162d265f922e2e10598c0e214322/i2rt/robot_models/yam/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "so_arm100",
+   "name": "SO-ARM100",
+   "maker": "The Robot Studio",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 6,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "so_arm100",
+    "links": 7,
+    "joints": {
+     "revolute": 6
+    },
+    "moving_joints": 6,
+    "mass_kg": 1.609,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 8942
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/TheRobotStudio/SO-ARM100@63eede5a636e548eb8f2854e558bd343c21db9f7/",
+    "urdf": "Simulation/SO100/so100.urdf",
+    "packages": {},
+    "mesh_files": 13,
+    "mesh_bytes": 3035192,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "so_arm100_description",
+    "github": "TheRobotStudio/SO-ARM100",
+    "commit": "63eede5a636e548eb8f2854e558bd343c21db9f7",
+    "repo_url": "https://github.com/TheRobotStudio/SO-ARM100",
+    "tree_url": "https://github.com/TheRobotStudio/SO-ARM100/tree/63eede5a636e548eb8f2854e558bd343c21db9f7/Simulation/SO100",
+    "license_url": "https://github.com/TheRobotStudio/SO-ARM100/blob/63eede5a636e548eb8f2854e558bd343c21db9f7/Simulation/SO100/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://github.com/TheRobotStudio/SO-ARM100"
+   }
+  },
+  {
+   "id": "so_arm101",
+   "name": "SO-ARM101",
+   "maker": "The Robot Studio",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 6,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "so101_new_calib",
+    "links": 7,
+    "joints": {
+     "revolute": 6
+    },
+    "moving_joints": 6,
+    "mass_kg": 0.632,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 15250
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/TheRobotStudio/SO-ARM100@63eede5a636e548eb8f2854e558bd343c21db9f7/",
+    "urdf": "Simulation/SO101/so101_new_calib.urdf",
+    "packages": {},
+    "mesh_files": 13,
+    "mesh_bytes": 16129292,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "so_arm101_description",
+    "github": "TheRobotStudio/SO-ARM100",
+    "commit": "63eede5a636e548eb8f2854e558bd343c21db9f7",
+    "repo_url": "https://github.com/TheRobotStudio/SO-ARM100",
+    "tree_url": "https://github.com/TheRobotStudio/SO-ARM100/tree/63eede5a636e548eb8f2854e558bd343c21db9f7/Simulation/SO101",
+    "license_url": "https://github.com/TheRobotStudio/SO-ARM100/blob/63eede5a636e548eb8f2854e558bd343c21db9f7/Simulation/SO101/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "open_manipulator_x",
+   "name": "OpenMANIPULATOR-X",
+   "maker": "ROBOTIS",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 6,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "open_manipulator_x",
+    "links": 9,
+    "joints": {
+     "fixed": 2,
+     "prismatic": 2,
+     "revolute": 4
+    },
+    "moving_joints": 6,
+    "mass_kg": 0.594,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 8656
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/ROBOTIS-GIT/open_manipulator@bc555a9c41ebd7493dc945ddabc43fc649681b62/",
+    "urdf": "open_manipulator_description/urdf/open_manipulator_x/open_manipulator_x.urdf",
+    "packages": {
+     "open_manipulator_description": "open_manipulator_description"
+    },
+    "mesh_files": 7,
+    "mesh_bytes": 4082788,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "open_manipulator_x_description",
+    "github": "ROBOTIS-GIT/open_manipulator",
+    "commit": "bc555a9c41ebd7493dc945ddabc43fc649681b62",
+    "repo_url": "https://github.com/ROBOTIS-GIT/open_manipulator",
+    "tree_url": "https://github.com/ROBOTIS-GIT/open_manipulator/tree/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description",
+    "license_url": "https://github.com/ROBOTIS-GIT/open_manipulator/blob/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "docs": "https://emanual.robotis.com/docs/en/platform/openmanipulator_x/overview/"
+   }
+  },
+  {
+   "id": "omx_f",
+   "name": "OMX-F",
+   "maker": "ROBOTIS",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 7,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "omx_f",
+    "links": 10,
+    "joints": {
+     "fixed": 2,
+     "revolute": 7
+    },
+    "moving_joints": 7,
+    "mass_kg": 0.559,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 10965
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/ROBOTIS-GIT/open_manipulator@bc555a9c41ebd7493dc945ddabc43fc649681b62/",
+    "urdf": "open_manipulator_description/urdf/omx_f/omx_f.urdf",
+    "packages": {
+     "open_manipulator_description": "open_manipulator_description"
+    },
+    "mesh_files": 8,
+    "mesh_bytes": 5698872,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "omx_f_description",
+    "github": "ROBOTIS-GIT/open_manipulator",
+    "commit": "bc555a9c41ebd7493dc945ddabc43fc649681b62",
+    "repo_url": "https://github.com/ROBOTIS-GIT/open_manipulator",
+    "tree_url": "https://github.com/ROBOTIS-GIT/open_manipulator/tree/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description",
+    "license_url": "https://github.com/ROBOTIS-GIT/open_manipulator/blob/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "omx_l",
+   "name": "OMX-L",
+   "maker": "ROBOTIS",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 6,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "omx_l",
+    "links": 8,
+    "joints": {
+     "fixed": 1,
+     "revolute": 6
+    },
+    "moving_joints": 6,
+    "mass_kg": 0.355,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 9169
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/ROBOTIS-GIT/open_manipulator@bc555a9c41ebd7493dc945ddabc43fc649681b62/",
+    "urdf": "open_manipulator_description/urdf/omx_l/omx_l.urdf",
+    "packages": {
+     "open_manipulator_description": "open_manipulator_description"
+    },
+    "mesh_files": 7,
+    "mesh_bytes": 4568088,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "omx_l_description",
+    "github": "ROBOTIS-GIT/open_manipulator",
+    "commit": "bc555a9c41ebd7493dc945ddabc43fc649681b62",
+    "repo_url": "https://github.com/ROBOTIS-GIT/open_manipulator",
+    "tree_url": "https://github.com/ROBOTIS-GIT/open_manipulator/tree/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description",
+    "license_url": "https://github.com/ROBOTIS-GIT/open_manipulator/blob/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "omy_3m",
+   "name": "OMY-3M",
+   "maker": "ROBOTIS",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 6,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "omy_3m",
+    "links": 9,
+    "joints": {
+     "fixed": 2,
+     "revolute": 6
+    },
+    "moving_joints": 6,
+    "mass_kg": 12.785,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 8348
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/ROBOTIS-GIT/open_manipulator@bc555a9c41ebd7493dc945ddabc43fc649681b62/",
+    "urdf": "open_manipulator_description/urdf/omy_3m/omy_3m.urdf",
+    "packages": {
+     "open_manipulator_description": "open_manipulator_description"
+    },
+    "mesh_files": 7,
+    "mesh_bytes": 18385388,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "omy_3m_description",
+    "github": "ROBOTIS-GIT/open_manipulator",
+    "commit": "bc555a9c41ebd7493dc945ddabc43fc649681b62",
+    "repo_url": "https://github.com/ROBOTIS-GIT/open_manipulator",
+    "tree_url": "https://github.com/ROBOTIS-GIT/open_manipulator/tree/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description",
+    "license_url": "https://github.com/ROBOTIS-GIT/open_manipulator/blob/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "omy_f3m",
+   "name": "OMY-F3M",
+   "maker": "ROBOTIS",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 10,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "omy_f3m",
+    "links": 15,
+    "joints": {
+     "fixed": 4,
+     "revolute": 10
+    },
+    "moving_joints": 10,
+    "mass_kg": 13.293,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 14992
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/ROBOTIS-GIT/open_manipulator@bc555a9c41ebd7493dc945ddabc43fc649681b62/",
+    "urdf": "open_manipulator_description/urdf/omy_f3m/omy_f3m.urdf",
+    "packages": {
+     "open_manipulator_description": "open_manipulator_description"
+    },
+    "mesh_files": 13,
+    "mesh_bytes": 18986092,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "omy_f3m_description",
+    "github": "ROBOTIS-GIT/open_manipulator",
+    "commit": "bc555a9c41ebd7493dc945ddabc43fc649681b62",
+    "repo_url": "https://github.com/ROBOTIS-GIT/open_manipulator",
+    "tree_url": "https://github.com/ROBOTIS-GIT/open_manipulator/tree/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description",
+    "license_url": "https://github.com/ROBOTIS-GIT/open_manipulator/blob/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "omy_l100",
+   "name": "OMY-L100",
+   "maker": "ROBOTIS",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 7,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "omy_l100",
+    "links": 9,
+    "joints": {
+     "fixed": 1,
+     "revolute": 7
+    },
+    "moving_joints": 7,
+    "mass_kg": 1.75,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 9243
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/ROBOTIS-GIT/open_manipulator@bc555a9c41ebd7493dc945ddabc43fc649681b62/",
+    "urdf": "open_manipulator_description/urdf/omy_l100/omy_l100.urdf",
+    "packages": {
+     "open_manipulator_description": "open_manipulator_description"
+    },
+    "mesh_files": 8,
+    "mesh_bytes": 4076772,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "omy_l100_description",
+    "github": "ROBOTIS-GIT/open_manipulator",
+    "commit": "bc555a9c41ebd7493dc945ddabc43fc649681b62",
+    "repo_url": "https://github.com/ROBOTIS-GIT/open_manipulator",
+    "tree_url": "https://github.com/ROBOTIS-GIT/open_manipulator/tree/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description",
+    "license_url": "https://github.com/ROBOTIS-GIT/open_manipulator/blob/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "poppy_ergo_jr",
+   "name": "Poppy Ergo Jr",
+   "maker": "Poppy Project",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 6,
+   "license": "GPL-3.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "poppy_ergo_jr",
+    "links": 8,
+    "joints": {
+     "continuous": 6,
+     "fixed": 1
+    },
+    "moving_joints": 6,
+    "mass_kg": 0.6,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 8953
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/poppy-project/poppy_ergo_jr_description@7eb32bd385afa11dea5e6a6b6a4a86a0243aaa2b/",
+    "urdf": "urdf/poppy_ergo_jr.urdf",
+    "packages": {
+     "poppy_ergo_jr_description": ""
+    },
+    "mesh_files": 6,
+    "mesh_bytes": 6775607,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "poppy_ergo_jr_description",
+    "github": "poppy-project/poppy_ergo_jr_description",
+    "commit": "7eb32bd385afa11dea5e6a6b6a4a86a0243aaa2b",
+    "repo_url": "https://github.com/poppy-project/poppy_ergo_jr_description",
+    "tree_url": "https://github.com/poppy-project/poppy_ergo_jr_description/tree/7eb32bd385afa11dea5e6a6b6a4a86a0243aaa2b",
+    "license_url": "https://github.com/poppy-project/poppy_ergo_jr_description/blob/7eb32bd385afa11dea5e6a6b6a4a86a0243aaa2b/package.xml",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.poppy-project.org/en/robots/poppy-ergo-jr/"
+   }
+  },
+  {
+   "id": "leap_hand_v1",
+   "name": "LEAP Hand v1",
+   "maker": "Carnegie Mellon University",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 16,
+   "license": "MIT",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "onshape",
+    "links": 17,
+    "joints": {
+     "revolute": 16
+    },
+    "moving_joints": 16,
+    "mass_kg": 0.746,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 20448
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/leap-hand/LEAP_Hand_Sim@150bc3d4b61fd6619193ba5a8ef209f3609ced89/",
+    "urdf": "assets/leap_hand/robot.urdf",
+    "packages": {},
+    "mesh_files": 8,
+    "mesh_bytes": 12140372,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "leap_hand_v1_description",
+    "github": "leap-hand/LEAP_Hand_Sim",
+    "commit": "150bc3d4b61fd6619193ba5a8ef209f3609ced89",
+    "repo_url": "https://github.com/leap-hand/LEAP_Hand_Sim",
+    "tree_url": "https://github.com/leap-hand/LEAP_Hand_Sim/tree/150bc3d4b61fd6619193ba5a8ef209f3609ced89/assets/leap_hand",
+    "license_url": "https://github.com/leap-hand/LEAP_Hand_Sim/blob/150bc3d4b61fd6619193ba5a8ef209f3609ced89/assets/leap_hand/LICENSE.txt",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://leaphand.com/",
+    "paper": "https://arxiv.org/abs/2309.06440"
+   }
+  },
+  {
+   "id": "allegro_hand",
+   "name": "Allegro Hand",
+   "maker": "Wonik Robotics",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 16,
+   "license": "BSD",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "Left hand; the same package also ships the right hand.",
+   "notes_zh": "此处为左手，同一目录下还有右手模型。",
+   "pose": null,
+   "urdf": {
+    "xml_name": "allegro_hand_left",
+    "links": 22,
+    "joints": {
+     "fixed": 5,
+     "revolute": 16
+    },
+    "moving_joints": 16,
+    "mass_kg": 0.955,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 25250
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/RobotLocomotion/drake@7abea0556ede980a5077fe1a8cfbae59b57c7c27/",
+    "urdf": "manipulation/models/allegro_hand_description/urdf/allegro_hand_description_left.urdf",
+    "packages": {
+     "drake": ""
+    },
+    "mesh_files": 11,
+    "mesh_bytes": 1594527,
+    "mesh_formats": [
+     ".obj"
+    ]
+   },
+   "source": {
+    "description": "allegro_hand_description",
+    "github": "RobotLocomotion/drake",
+    "commit": "7abea0556ede980a5077fe1a8cfbae59b57c7c27",
+    "repo_url": "https://github.com/RobotLocomotion/drake",
+    "tree_url": "https://github.com/RobotLocomotion/drake/tree/7abea0556ede980a5077fe1a8cfbae59b57c7c27/manipulation/models/allegro_hand_description",
+    "license_url": "https://github.com/RobotLocomotion/drake/blob/7abea0556ede980a5077fe1a8cfbae59b57c7c27/manipulation/models/allegro_hand_description/manipulation/models/allegro_hand_description/LICENSE.TXT",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.wonikrobotics.com/research-robot-hand"
+   }
+  },
+  {
+   "id": "ability_hand",
+   "name": "Ability Hand",
+   "maker": "PSYONIC, Inc.",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 10,
+   "license": "MIT",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "ability_hand",
+    "links": 47,
+    "joints": {
+     "fixed": 36,
+     "revolute": 10
+    },
+    "moving_joints": 10,
+    "mass_kg": 0.487,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 21530
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/psyonicinc/ability-hand-api@89407424edfc22faceaedcd7c3ea2b7947cbbb2c/",
+    "urdf": "URDF/ability_hand_left_large.urdf",
+    "packages": {},
+    "mesh_files": 10,
+    "mesh_bytes": 2871640,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "ability_hand_description",
+    "github": "psyonicinc/ability-hand-api",
+    "commit": "89407424edfc22faceaedcd7c3ea2b7947cbbb2c",
+    "repo_url": "https://github.com/psyonicinc/ability-hand-api",
+    "tree_url": "https://github.com/psyonicinc/ability-hand-api/tree/89407424edfc22faceaedcd7c3ea2b7947cbbb2c/URDF",
+    "license_url": "https://github.com/psyonicinc/ability-hand-api/blob/89407424edfc22faceaedcd7c3ea2b7947cbbb2c/URDF/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.psyonic.io/"
+   }
+  },
+  {
+   "id": "aero_hand_open",
+   "name": "Aero Hand Open",
+   "maker": "TetherIA",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 16,
+   "license": "CC-BY-SA-4.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "aero_hand_open_left",
+    "links": 22,
+    "joints": {
+     "fixed": 5,
+     "revolute": 16
+    },
+    "moving_joints": 16,
+    "mass_kg": 0.378,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 25726
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/TetherIA/aero-hand-open@ad7d4fc4078ceedfeefbf27aa5f058b622e18521/",
+    "urdf": "ros2/src/aero_hand_open_description/urdf/aero_hand_open_left.urdf",
+    "packages": {
+     "aero_hand_open_description": "ros2/src/aero_hand_open_description"
+    },
+    "mesh_files": 22,
+    "mesh_bytes": 4065648,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "aero_hand_open_description",
+    "github": "TetherIA/aero-hand-open",
+    "commit": "ad7d4fc4078ceedfeefbf27aa5f058b622e18521",
+    "repo_url": "https://github.com/TetherIA/aero-hand-open",
+    "tree_url": "https://github.com/TetherIA/aero-hand-open/tree/ad7d4fc4078ceedfeefbf27aa5f058b622e18521/ros2/src/aero_hand_open_description",
+    "license_url": "https://github.com/TetherIA/aero-hand-open/blob/ad7d4fc4078ceedfeefbf27aa5f058b622e18521/ros2/src/aero_hand_open_description/ros2/src/aero_hand_open_description/package.xml",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "robotiq_2f85",
+   "name": "Robotiq 2F-85",
+   "maker": "Robotiq",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 6,
+   "license": "BSD",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "robotiq_arg85_description",
+    "links": 9,
+    "joints": {
+     "fixed": 2,
+     "revolute": 6
+    },
+    "moving_joints": 6,
+    "mass_kg": 0.414,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 12960
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/a-price/robotiq_arg85_description@a65190bdbb0666609fe7e8c3bb17341e09e81625/",
+    "urdf": "robots/robotiq_arg85_description.URDF",
+    "packages": {
+     "robotiq_arg85_description": ""
+    },
+    "mesh_files": 10,
+    "mesh_bytes": 2465440,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "robotiq_2f85_description",
+    "github": "a-price/robotiq_arg85_description",
+    "commit": "a65190bdbb0666609fe7e8c3bb17341e09e81625",
+    "repo_url": "https://github.com/a-price/robotiq_arg85_description",
+    "tree_url": "https://github.com/a-price/robotiq_arg85_description/tree/a65190bdbb0666609fe7e8c3bb17341e09e81625",
+    "license_url": "https://github.com/a-price/robotiq_arg85_description/blob/a65190bdbb0666609fe7e8c3bb17341e09e81625/package.xml",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://robotiq.com/products/adaptive-grippers"
+   }
+  },
+  {
+   "id": "barrett_hand",
+   "name": "BarrettHand",
+   "maker": "Barrett Technology",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 8,
+   "license": "BSD",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "bhand_model",
+    "links": 9,
+    "joints": {
+     "revolute": 8
+    },
+    "moving_joints": 8,
+    "mass_kg": 264276.862,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 12540
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/jhu-lcsr-attic/bhand_model@937f4186d6458bd682a7dae825fb6f4efe56ec69/",
+    "urdf": "robots/bhand_model.URDF",
+    "packages": {
+     "bhand_model": ""
+    },
+    "mesh_files": 9,
+    "mesh_bytes": 1245156,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "barrett_hand_description",
+    "github": "jhu-lcsr-attic/bhand_model",
+    "commit": "937f4186d6458bd682a7dae825fb6f4efe56ec69",
+    "repo_url": "https://github.com/jhu-lcsr-attic/bhand_model",
+    "tree_url": "https://github.com/jhu-lcsr-attic/bhand_model/tree/937f4186d6458bd682a7dae825fb6f4efe56ec69",
+    "license_url": "https://github.com/jhu-lcsr-attic/bhand_model/blob/937f4186d6458bd682a7dae825fb6f4efe56ec69/manifest.xml",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://barrett.com/barretthand/"
+   }
+  },
+  {
+   "id": "cassie",
+   "name": "Cassie",
+   "maker": "Agility Robotics",
+   "category": "biped",
+   "tags": [
+    "biped"
+   ],
+   "dof": 16,
+   "license": "MIT",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "cassie_v4",
+    "links": 17,
+    "joints": {
+     "revolute": 16
+    },
+    "moving_joints": 16,
+    "mass_kg": 34.677,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 18369
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/robot-descriptions/cassie_description@81a2d8bbd77201cc974afb127adda4e2857a6dbf/",
+    "urdf": "urdf/cassie_v4.urdf",
+    "packages": {
+     "cassie_description": ""
+    },
+    "mesh_files": 16,
+    "mesh_bytes": 43116294,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "cassie_description",
+    "github": "robot-descriptions/cassie_description",
+    "commit": "81a2d8bbd77201cc974afb127adda4e2857a6dbf",
+    "repo_url": "https://github.com/robot-descriptions/cassie_description",
+    "tree_url": "https://github.com/robot-descriptions/cassie_description/tree/81a2d8bbd77201cc974afb127adda4e2857a6dbf",
+    "license_url": "https://github.com/robot-descriptions/cassie_description/blob/81a2d8bbd77201cc974afb127adda4e2857a6dbf/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://agilityrobotics.com/"
+   }
+  },
+  {
+   "id": "upkie",
+   "name": "Upkie",
+   "maker": "Upkie Project",
+   "category": "biped",
+   "tags": [
+    "biped",
+    "wheeled"
+   ],
+   "dof": 6,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "upkie",
+    "links": 41,
+    "joints": {
+     "fixed": 34,
+     "revolute": 6
+    },
+    "moving_joints": 6,
+    "mass_kg": 5.339,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 33614
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/upkie/upkie_description@19a91ce69cab6742c613cab104986e3f8a18d6a5/",
+    "urdf": "urdf/upkie.urdf",
+    "packages": {
+     "upkie_description": ""
+    },
+    "mesh_files": 10,
+    "mesh_bytes": 13097040,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "upkie_description",
+    "github": "upkie/upkie_description",
+    "commit": "19a91ce69cab6742c613cab104986e3f8a18d6a5",
+    "repo_url": "https://github.com/upkie/upkie_description",
+    "tree_url": "https://github.com/upkie/upkie_description/tree/19a91ce69cab6742c613cab104986e3f8a18d6a5",
+    "license_url": "https://github.com/upkie/upkie_description/blob/19a91ce69cab6742c613cab104986e3f8a18d6a5/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://upkie.github.io/"
+   }
+  },
+  {
+   "id": "bolt",
+   "name": "Bolt",
+   "maker": "ODRI",
+   "category": "biped",
+   "tags": [
+    "biped"
+   ],
+   "dof": 6,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "bolt",
+    "links": 9,
+    "joints": {
+     "fixed": 2,
+     "revolute": 6
+    },
+    "moving_joints": 6,
+    "mass_kg": 1.254,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 15778
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/Gepetto/example-robot-data@d0d9098d752014aec3725b07766962acf06c5418/",
+    "urdf": "robots/bolt_description/robots/bolt.urdf",
+    "packages": {
+     "example-robot-data": ""
+    },
+    "mesh_files": 8,
+    "mesh_bytes": 1045872,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "bolt_description",
+    "github": "Gepetto/example-robot-data",
+    "commit": "d0d9098d752014aec3725b07766962acf06c5418",
+    "repo_url": "https://github.com/Gepetto/example-robot-data",
+    "tree_url": "https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/bolt_description",
+    "license_url": "https://github.com/Gepetto/example-robot-data/blob/d0d9098d752014aec3725b07766962acf06c5418/robots/bolt_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "rhea",
+   "name": "Rhea",
+   "maker": "Gabrael Levine",
+   "category": "biped",
+   "tags": [
+    "biped"
+   ],
+   "dof": 7,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "rhea",
+    "links": 8,
+    "joints": {
+     "continuous": 2,
+     "fixed": 1,
+     "revolute": 4
+    },
+    "moving_joints": 6,
+    "mass_kg": 4.201,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 7145
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/G-Levine/rhea_description@1dc0f1abcf51b5d8a8f7ff8a548399ff0df1414f/",
+    "urdf": "urdf/rhea.urdf",
+    "packages": {},
+    "mesh_files": 7,
+    "mesh_bytes": 7291011,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "rhea_description",
+    "github": "G-Levine/rhea_description",
+    "commit": "1dc0f1abcf51b5d8a8f7ff8a548399ff0df1414f",
+    "repo_url": "https://github.com/G-Levine/rhea_description",
+    "tree_url": "https://github.com/G-Levine/rhea_description/tree/1dc0f1abcf51b5d8a8f7ff8a548399ff0df1414f",
+    "license_url": "https://github.com/G-Levine/rhea_description/blob/1dc0f1abcf51b5d8a8f7ff8a548399ff0df1414f/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "yumi",
+   "name": "YuMi",
+   "maker": "ABB",
+   "category": "dual_arm",
+   "tags": [
+    "dual_arm"
+   ],
+   "dof": 16,
+   "license": "BSD",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "yumi",
+    "links": 23,
+    "joints": {
+     "fixed": 4,
+     "prismatic": 4,
+     "revolute": 14
+    },
+    "moving_joints": 18,
+    "mass_kg": 43.44,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 30525
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/ankurhanda/robot-assets@12f1a3c89c9975194551afaed0dfae1e09fdb27c/",
+    "urdf": "urdfs/robots/yumi/yumi.urdf",
+    "packages": {
+     "yumi": "urdfs/robots/yumi"
+    },
+    "mesh_files": 20,
+    "mesh_bytes": 33440180,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "yumi_description",
+    "github": "ankurhanda/robot-assets",
+    "commit": "12f1a3c89c9975194551afaed0dfae1e09fdb27c",
+    "repo_url": "https://github.com/ankurhanda/robot-assets",
+    "tree_url": "https://github.com/ankurhanda/robot-assets/tree/12f1a3c89c9975194551afaed0dfae1e09fdb27c/urdfs/robots/yumi",
+    "license_url": "https://github.com/ankurhanda/robot-assets/blob/12f1a3c89c9975194551afaed0dfae1e09fdb27c/urdfs/robots/yumi/README.md",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://new.abb.com/products/robotics/robots/collaborative-robots/yumi"
+   }
+  },
+  {
+   "id": "baxter",
+   "name": "Baxter",
+   "maker": "Rethink Robotics",
+   "category": "dual_arm",
+   "tags": [
+    "dual_arm"
+   ],
+   "dof": 15,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "baxter",
+    "links": 49,
+    "joints": {
+     "fixed": 33,
+     "revolute": 15
+    },
+    "moving_joints": 15,
+    "mass_kg": 136.613,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 52314
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/RethinkRobotics/baxter_common@6c4b0f375fe4e356a3b12df26ef7c0d5e58df86e/",
+    "urdf": "baxter_description/urdf/baxter.urdf",
+    "packages": {
+     "baxter_description": "baxter_description"
+    },
+    "mesh_files": 13,
+    "mesh_bytes": 10392061,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "baxter_description",
+    "github": "RethinkRobotics/baxter_common",
+    "commit": "6c4b0f375fe4e356a3b12df26ef7c0d5e58df86e",
+    "repo_url": "https://github.com/RethinkRobotics/baxter_common",
+    "tree_url": "https://github.com/RethinkRobotics/baxter_common/tree/6c4b0f375fe4e356a3b12df26ef7c0d5e58df86e/baxter_description",
+    "license_url": "https://github.com/RethinkRobotics/baxter_common/blob/6c4b0f375fe4e356a3b12df26ef7c0d5e58df86e/baxter_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "pr2",
+   "name": "PR2",
+   "maker": "Willow Garage",
+   "category": "dual_arm",
+   "tags": [
+    "dual_arm",
+    "mobile_manipulator"
+   ],
+   "dof": 38,
+   "license": "BSD",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "pr2",
+    "links": 50,
+    "joints": {
+     "continuous": 16,
+     "fixed": 11,
+     "prismatic": 1,
+     "revolute": 21
+    },
+    "moving_joints": 38,
+    "mass_kg": 265.039,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 120804
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/ankurhanda/robot-assets@12f1a3c89c9975194551afaed0dfae1e09fdb27c/",
+    "urdf": "urdfs/robots/pr2/pr2.urdf",
+    "packages": {},
+    "mesh_files": 31,
+    "mesh_bytes": 645787,
+    "mesh_formats": [
+     ".dae",
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "pr2_description",
+    "github": "ankurhanda/robot-assets",
+    "commit": "12f1a3c89c9975194551afaed0dfae1e09fdb27c",
+    "repo_url": "https://github.com/ankurhanda/robot-assets",
+    "tree_url": "https://github.com/ankurhanda/robot-assets/tree/12f1a3c89c9975194551afaed0dfae1e09fdb27c/urdfs/robots/pr2",
+    "license_url": "https://github.com/ankurhanda/robot-assets/blob/12f1a3c89c9975194551afaed0dfae1e09fdb27c/urdfs/robots/pr2/README.md",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "nextage",
+   "name": "NEXTAGE",
+   "maker": "Kawada Robotics",
+   "category": "dual_arm",
+   "tags": [
+    "dual_arm"
+   ],
+   "dof": 15,
+   "license": "BSD",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "NextageOpen",
+    "links": 16,
+    "joints": {
+     "revolute": 15
+    },
+    "moving_joints": 15,
+    "mass_kg": 1013.359,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 20412
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/tork-a/rtmros_nextage@ac270fb969fa54abeb6863f9b388a9e20c1f14e0/",
+    "urdf": "nextage_description/urdf/NextageOpen.urdf",
+    "packages": {
+     "nextage_description": "nextage_description"
+    },
+    "mesh_files": 16,
+    "mesh_bytes": 1053565,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "nextage_description",
+    "github": "tork-a/rtmros_nextage",
+    "commit": "ac270fb969fa54abeb6863f9b388a9e20c1f14e0",
+    "repo_url": "https://github.com/tork-a/rtmros_nextage",
+    "tree_url": "https://github.com/tork-a/rtmros_nextage/tree/ac270fb969fa54abeb6863f9b388a9e20c1f14e0/nextage_description",
+    "license_url": "https://github.com/tork-a/rtmros_nextage/blob/ac270fb969fa54abeb6863f9b388a9e20c1f14e0/nextage_description/nextage_description/package.xml",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "poppy_torso",
+   "name": "Poppy Torso",
+   "maker": "Poppy Project",
+   "category": "dual_arm",
+   "tags": [
+    "dual_arm"
+   ],
+   "dof": 13,
+   "license": "GPL-3.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "Poppy_Torso",
+    "links": 14,
+    "joints": {
+     "revolute": 13
+    },
+    "moving_joints": 13,
+    "mass_kg": 1.63,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 16491
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/poppy-project/poppy_torso_description@6beeec3d76fb72b7548cce7c73aad722f8884522/",
+    "urdf": "urdf/Poppy_Torso.URDF",
+    "packages": {
+     "poppy_torso_description": ""
+    },
+    "mesh_files": 28,
+    "mesh_bytes": 3493202,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "poppy_torso_description",
+    "github": "poppy-project/poppy_torso_description",
+    "commit": "6beeec3d76fb72b7548cce7c73aad722f8884522",
+    "repo_url": "https://github.com/poppy-project/poppy_torso_description",
+    "tree_url": "https://github.com/poppy-project/poppy_torso_description/tree/6beeec3d76fb72b7548cce7c73aad722f8884522",
+    "license_url": "https://github.com/poppy-project/poppy_torso_description/blob/6beeec3d76fb72b7548cce7c73aad722f8884522/package.xml",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "stretch",
+   "name": "Stretch RE1",
+   "maker": "Hello Robot",
+   "category": "mobile",
+   "tags": [
+    "mobile_manipulator"
+   ],
+   "dof": 14,
+   "license": "CC-BY-NC-SA-4.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "stretch_description",
+    "links": 44,
+    "joints": {
+     "continuous": 2,
+     "fixed": 29,
+     "prismatic": 5,
+     "revolute": 7
+    },
+    "moving_joints": 14,
+    "mass_kg": 4.416,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 37647
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/robot-descriptions/stretch_description@4b838429fe4c5d9f2937efe698444bd68968f376/",
+    "urdf": "urdf/stretch.urdf",
+    "packages": {
+     "stretch_description": ""
+    },
+    "mesh_files": 31,
+    "mesh_bytes": 25773920,
+    "mesh_formats": [
+     ".dae",
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "stretch_description",
+    "github": "robot-descriptions/stretch_description",
+    "commit": "4b838429fe4c5d9f2937efe698444bd68968f376",
+    "repo_url": "https://github.com/robot-descriptions/stretch_description",
+    "tree_url": "https://github.com/robot-descriptions/stretch_description/tree/4b838429fe4c5d9f2937efe698444bd68968f376",
+    "license_url": "https://github.com/robot-descriptions/stretch_description/blob/4b838429fe4c5d9f2937efe698444bd68968f376/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://hello-robot.com/"
+   }
+  },
+  {
+   "id": "tiago",
+   "name": "TIAGo",
+   "maker": "PAL Robotics",
+   "category": "mobile",
+   "tags": [
+    "mobile_manipulator"
+   ],
+   "dof": 48,
+   "license": "CC-BY-NC-ND-3.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "tiago",
+    "links": 78,
+    "joints": {
+     "continuous": 2,
+     "fixed": 29,
+     "prismatic": 1,
+     "revolute": 45
+    },
+    "moving_joints": 48,
+    "mass_kg": 65.894,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 118384
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/Gepetto/example-robot-data@d0d9098d752014aec3725b07766962acf06c5418/",
+    "urdf": "robots/tiago_description/robots/tiago.urdf",
+    "packages": {
+     "example-robot-data": ""
+    },
+    "mesh_files": 34,
+    "mesh_bytes": 4817477,
+    "mesh_formats": [
+     ".dae",
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "tiago_description",
+    "github": "Gepetto/example-robot-data",
+    "commit": "d0d9098d752014aec3725b07766962acf06c5418",
+    "repo_url": "https://github.com/Gepetto/example-robot-data",
+    "tree_url": "https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/tiago_description",
+    "license_url": "https://github.com/Gepetto/example-robot-data/blob/d0d9098d752014aec3725b07766962acf06c5418/robots/tiago_description/robots/tiago_description/README.md",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://pal-robotics.com/robot/tiago/"
+   }
+  },
+  {
+   "id": "pepper",
+   "name": "Pepper",
+   "maker": "SoftBank Robotics",
+   "category": "mobile",
+   "tags": [
+    "mobile_manipulator"
+   ],
+   "dof": 45,
+   "license": "BSD-2-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "pepper",
+    "links": 65,
+    "joints": {
+     "continuous": 28,
+     "fixed": 19,
+     "revolute": 17
+    },
+    "moving_joints": 45,
+    "mass_kg": 28.681,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 47707
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/jrl-umi3218/pepper_description@cd9715bb5df7ad57445d953db7b1924255305944/",
+    "urdf": "urdf/pepper.urdf",
+    "packages": {
+     "pepper_description": ""
+    },
+    "mesh_files": 99,
+    "mesh_bytes": 9813919,
+    "mesh_formats": [
+     ".dae",
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "pepper_description",
+    "github": "jrl-umi3218/pepper_description",
+    "commit": "cd9715bb5df7ad57445d953db7b1924255305944",
+    "repo_url": "https://github.com/jrl-umi3218/pepper_description",
+    "tree_url": "https://github.com/jrl-umi3218/pepper_description/tree/cd9715bb5df7ad57445d953db7b1924255305944",
+    "license_url": "https://github.com/jrl-umi3218/pepper_description/blob/cd9715bb5df7ad57445d953db7b1924255305944/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "rby1",
+   "name": "RBY1",
+   "maker": "Rainbow Robotics",
+   "category": "mobile",
+   "tags": [
+    "mobile_manipulator"
+   ],
+   "dof": 28,
+   "license": "MIT",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "RB_Y1_V1.0.1",
+    "links": 34,
+    "joints": {
+     "continuous": 2,
+     "fixed": 5,
+     "prismatic": 4,
+     "revolute": 22
+    },
+    "moving_joints": 28,
+    "mass_kg": 127.566,
+    "has_collision": false,
+    "has_inertia": true,
+    "bytes": 34666
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/uynitsuj/rby1_description@e4c07203aa0a0d1b6b3b39da105cb00a77e2bc72/",
+    "urdf": "models/rby1a/urdf/model.urdf",
+    "packages": {},
+    "mesh_files": 29,
+    "mesh_bytes": 12951929,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "rby1_description",
+    "github": "uynitsuj/rby1_description",
+    "commit": "e4c07203aa0a0d1b6b3b39da105cb00a77e2bc72",
+    "repo_url": "https://github.com/uynitsuj/rby1_description",
+    "tree_url": "https://github.com/uynitsuj/rby1_description/tree/e4c07203aa0a0d1b6b3b39da105cb00a77e2bc72/models/rby1a/urdf",
+    "license_url": "https://github.com/uynitsuj/rby1_description/blob/e4c07203aa0a0d1b6b3b39da105cb00a77e2bc72/models/rby1a/urdf/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.rainbowrobotics.com/rby1/"
+   }
+  },
+  {
+   "id": "ginger",
+   "name": "Ginger",
+   "maker": "Paaila Technology",
+   "category": "mobile",
+   "tags": [
+    "mobile_manipulator"
+   ],
+   "dof": 49,
+   "license": "BSD",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "gingerurdf",
+    "links": 50,
+    "joints": {
+     "continuous": 49
+    },
+    "moving_joints": 49,
+    "mass_kg": 95.817,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 65744
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/Rayckey/GingerURDF@6a1307cd0ee2b77c82f8839cdce3a2e2eed2bd8f/",
+    "urdf": "urdf/gingerurdf.urdf",
+    "packages": {
+     "gingerurdf": ""
+    },
+    "mesh_files": 50,
+    "mesh_bytes": 18457100,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "ginger_description",
+    "github": "Rayckey/GingerURDF",
+    "commit": "6a1307cd0ee2b77c82f8839cdce3a2e2eed2bd8f",
+    "repo_url": "https://github.com/Rayckey/GingerURDF",
+    "tree_url": "https://github.com/Rayckey/GingerURDF/tree/6a1307cd0ee2b77c82f8839cdce3a2e2eed2bd8f",
+    "license_url": "https://github.com/Rayckey/GingerURDF/blob/6a1307cd0ee2b77c82f8839cdce3a2e2eed2bd8f/package.xml",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "bambot",
+   "name": "BamBot",
+   "maker": "Tim Qian",
+   "category": "mobile",
+   "tags": [
+    "mobile_manipulator"
+   ],
+   "dof": 15,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "urdf": {
+    "xml_name": "bambot",
+    "links": 21,
+    "joints": {
+     "continuous": 3,
+     "fixed": 5,
+     "revolute": 12
+    },
+    "moving_joints": 15,
+    "mass_kg": 3.218,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 15769
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/timqian/bambot@04d902653794f9f72eeabb09ec90a9af8e397c5b/",
+    "urdf": "website/public/URDF/bambot_v0.urdf",
+    "packages": {},
+    "mesh_files": 15,
+    "mesh_bytes": 32518760,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "bambot_description",
+    "github": "timqian/bambot",
+    "commit": "04d902653794f9f72eeabb09ec90a9af8e397c5b",
+    "repo_url": "https://github.com/timqian/bambot",
+    "tree_url": "https://github.com/timqian/bambot/tree/04d902653794f9f72eeabb09ec90a9af8e397c5b/website/public/URDF",
+    "license_url": "https://github.com/timqian/bambot/blob/04d902653794f9f72eeabb09ec90a9af8e397c5b/website/public/URDF/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  }
+ ]
+}
