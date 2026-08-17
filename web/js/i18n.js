@@ -2,8 +2,6 @@
 
 const STRINGS = {
   en: {
-    'site.title': 'Robot URDF Gallery',
-    'site.tagline': 'Common robot descriptions, in your browser',
     'hero.title': 'Robot URDF Gallery',
     'hero.lede':
       'Browse, inspect and compare open robot descriptions — humanoids, quadrupeds, arms and hands. Every model streams from its upstream repository at a pinned commit; nothing is re-hosted here.',
@@ -71,8 +69,6 @@ const STRINGS = {
     'height.measured': 'measured from meshes',
   },
   zh: {
-    'site.title': '机器人 URDF 画廊',
-    'site.tagline': '常用机器人模型，在浏览器里直接看',
     'hero.title': '机器人 URDF 画廊',
     'hero.lede':
       '浏览、查看并对比开源机器人模型——人形、四足、机械臂与灵巧手。每个模型都从上游仓库的固定 commit 直接加载，本站不二次托管任何模型文件。',

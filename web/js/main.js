@@ -38,13 +38,13 @@ function writeHash({ robot, category, q }) {
  */
 function setupTheme() {
   const root = document.documentElement;
-  const icon = document.getElementById('theme-icon');
+  const button = document.getElementById('theme-toggle');
   const render = () => {
-    // Show the theme you would switch *to*.
-    icon.textContent = root.getAttribute('data-theme') === 'light' ? '☾' : '☀';
+    // Show the theme you would switch *to*, with the reference site's glyphs.
+    button.textContent = root.getAttribute('data-theme') === 'light' ? '🌙' : '☀️';
   };
   render();
-  document.getElementById('theme-toggle').addEventListener('click', () => {
+  button.addEventListener('click', () => {
     const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
     root.setAttribute('data-theme', next);
     try {
@@ -56,16 +56,27 @@ function setupTheme() {
   });
 }
 
+/**
+ * One button that names the language you would switch *to*, as on
+ * Humanoid_Robot_Learning_Paper_Notebooks.
+ */
+function setupLang() {
+  const button = document.getElementById('lang-toggle');
+  const label = button.querySelector('.lang-label');
+  label.textContent = lang() === 'zh' ? 'English' : '中文';
+  button.addEventListener('click', () => {
+    setLang(lang() === 'zh' ? 'en' : 'zh');
+    location.reload(); // simplest way to re-render every rendered string
+  });
+}
+
 async function main() {
   setupTheme();
   setLang(detectLang());
   applyStatic();
-  for (const button of document.querySelectorAll('.seg-toggle button')) {
-    button.setAttribute('aria-pressed', String(button.dataset.lang === lang()));
-    button.addEventListener('click', () => {
-      setLang(button.dataset.lang);
-      location.reload(); // simplest way to re-render every rendered string
-    });
+  setupLang();
+  for (const el of document.querySelectorAll('[data-year]')) {
+    el.textContent = String(new Date().getFullYear());
   }
 
   let data;

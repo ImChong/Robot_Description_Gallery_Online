@@ -21,27 +21,20 @@
 </head>
 <body>
 
-<header class="topbar">
-  <a class="brand" href="#">
-    <span class="brand-mark">URDF</span>
-    <span class="brand-text">
-      <strong data-i18n="site.title">Robot URDF Gallery</strong>
-      <small data-i18n="site.tagline">Common robot descriptions, in your browser</small>
-    </span>
-  </a>
-  <div class="topbar-actions">
-    <label class="search">
-      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M12.8 12.8 17 17"/></svg>
-      <input id="search" type="search" autocomplete="off" spellcheck="false" data-i18n-placeholder="search.placeholder">
-    </label>
-    <div class="seg-toggle" role="group" aria-label="Language">
-      <button data-lang="zh">中文</button>
-      <button data-lang="en">EN</button>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#" class="site-title" aria-label="Home - Robot URDF Gallery">🤖 Robot URDF Gallery | 机器人 URDF 画廊</a>
+    <div class="header-right">
+      <label class="search">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M12.8 12.8 17 17"/></svg>
+        <input id="search" type="search" autocomplete="off" spellcheck="false" data-i18n-placeholder="search.placeholder">
+      </label>
+      <a href="https://github.com/ImChong/Robot_URDF_Gallery" class="github-link" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub">GitHub</a>
+      <button id="lang-toggle" class="lang-toggle" aria-label="Switch language">
+        <span class="lang-label">中文</span>
+      </button>
+      <button id="theme-toggle" class="theme-toggle" data-i18n-title="theme.toggle" aria-label="Toggle dark mode">☀️</button>
     </div>
-    <button class="icon-btn" id="theme-toggle" data-i18n-title="theme.toggle" aria-label="Toggle theme">
-      <span id="theme-icon" aria-hidden="true">☾</span>
-    </button>
-    <a class="ghost-btn" id="repo-link" href="https://github.com/ImChong/Robot_URDF_Gallery" target="_blank" rel="noopener">GitHub</a>
   </div>
 </header>
 
@@ -63,12 +56,6 @@
 
   <div class="grid" id="grid"></div>
   <p class="empty" id="empty" hidden data-i18n="gallery.empty">No robot matches this filter.</p>
-
-  <footer class="site-footer">
-    <p data-i18n="footer.credit">Model metadata from <a href="https://github.com/robot-descriptions/robot_descriptions.py" target="_blank" rel="noopener">robot_descriptions.py</a>;
-      assets served from their upstream GitHub repositories via jsDelivr. Each robot keeps its own licence.</p>
-    <p class="muted" id="footer-generated"></p>
-  </footer>
 </main>
 
 <!-- ------------------------------- detail -------------------------------- -->
@@ -141,6 +128,19 @@
     </aside>
   </div>
 </main>
+
+<!-- ------------------------------- footer -------------------------------- -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="footer-text footer-text-en">Model metadata from <a href="https://github.com/robot-descriptions/robot_descriptions.py" target="_blank" rel="noopener noreferrer">robot_descriptions.py</a>;
+      assets served from their upstream GitHub repositories via jsDelivr. Each robot keeps its own licence.</p>
+    <p class="footer-text footer-text-zh">模型元数据来自 <a href="https://github.com/robot-descriptions/robot_descriptions.py" target="_blank" rel="noopener noreferrer">robot_descriptions.py</a>；
+      模型文件经 jsDelivr 由各自的上游 GitHub 仓库直接加载，每个机器人保留其自身许可。</p>
+    <p class="footer-text footer-generated" id="footer-generated"></p>
+    <p class="footer-text footer-text-en">© <a href="https://imchong.github.io/index.html" class="footer-author-link" target="_blank" rel="noopener noreferrer">Chong Liu</a> <span data-year>2026</span> · Robot URDF Gallery</p>
+    <p class="footer-text footer-text-zh">© <a href="https://imchong.github.io/index.html" class="footer-author-link" target="_blank" rel="noopener noreferrer">刘冲</a> <span data-year>2026</span> · 机器人 URDF 画廊</p>
+  </div>
+</footer>
 
 <script type="module" src="./js/main.js"></script>
 </body>
