@@ -480,11 +480,33 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 }
 .panel-block-head { display: flex; align-items: baseline; justify-content: space-between; }
 
+.panel-block-head .head-actions { display: flex; align-items: center; gap: 10px; }
+
 .link-btn {
   border: 0; background: none; color: var(--accent); font: inherit; font-size: 12px;
   cursor: pointer; padding: 0;
 }
 .link-btn:hover { color: var(--accent-hover); text-decoration: underline; }
+
+/* Degrees or radians for the joint readouts. A two-button segmented control
+ * rather than one toggle: both units stay on screen, so the switch says what
+ * it will do without having to be tried. */
+.unit-toggle {
+  display: inline-flex;
+  border: 1px solid var(--border); border-radius: 999px;
+  background: var(--bg-alt); overflow: hidden;
+}
+.unit-toggle[hidden] { display: none; }
+.unit-toggle button {
+  border: 0; background: none; color: var(--text-muted);
+  font: inherit; font-family: var(--font-mono); font-size: 10.5px; line-height: 1;
+  padding: 4px 9px; cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+.unit-toggle button:hover { color: var(--text); }
+/* Same "this one is on" as the overlay toggles over the stage. */
+.unit-toggle button[aria-pressed='true'] { background: var(--accent); color: #fff; font-weight: 600; }
+.unit-toggle button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
 .specs { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; margin: 12px 0 0; font-size: 13px; line-height: 1.5; }
 .specs dt { color: var(--text-muted); }

@@ -15,6 +15,35 @@ const OVERLAYS = [
   { key: 'inertia', color: THEME.inertia },
 ];
 
+/**
+ * Angles are radians everywhere below the UI — that is what the URDF declares
+ * and what the viewer is driven with. Degrees are only ever a rendering of
+ * them, so switching units re-labels the panel and never touches the pose.
+ * The choice is remembered, next to the theme and the language.
+ */
+const ANGLE_UNITS = ['deg', 'rad'];
+const DEG = 180 / Math.PI;
+let angleUnit = storedAngleUnit();
+
+function storedAngleUnit() {
+  try {
+    const stored = localStorage.getItem('cl-angle-unit');
+    if (ANGLE_UNITS.includes(stored)) return stored;
+  } catch {
+    /* private mode — fall through to the default */
+  }
+  return 'deg';
+}
+
+function setAngleUnit(unit) {
+  angleUnit = ANGLE_UNITS.includes(unit) ? unit : 'deg';
+  try {
+    localStorage.setItem('cl-angle-unit', angleUnit);
+  } catch {
+    /* private mode — the choice just will not persist */
+  }
+}
+
 const SNIPPETS = {
   python: (r) => `# pip install robot_descriptions
 from robot_descriptions.loaders.pinocchio import load_robot_description
@@ -83,6 +112,15 @@ export class Detail {
 
     el('joints-reset').addEventListener('click', () => {
       this.viewer.resetJoints();
+      this.renderJoints();
+    });
+
+    this.renderUnitToggle();
+    el('joint-unit').addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-unit]');
+      if (!button || button.dataset.unit === angleUnit) return;
+      setAngleUnit(button.dataset.unit);
+      this.renderUnitToggle();
       this.renderJoints();
     });
 
@@ -211,6 +249,7 @@ export class Detail {
     this.renderResources();
     this.renderSnippet();
     el('d-joints').innerHTML = '';
+    el('joint-unit').hidden = true;
 
     const loading = el('stage-loading');
     const bar = el('loading-bar');
@@ -331,9 +370,18 @@ export class Detail {
     el('snippet-code').textContent = SNIPPETS[this.snippetKind](this.robot);
   }
 
+  /** Which of the two units is in force, on the segmented control. */
+  renderUnitToggle() {
+    for (const button of el('joint-unit').querySelectorAll('button[data-unit]')) {
+      button.setAttribute('aria-pressed', String(button.dataset.unit === angleUnit));
+    }
+  }
+
   renderJoints() {
     const joints = this.viewer.jointList();
     const host = el('d-joints');
+    // Nothing to switch on a robot whose only joints slide rather than turn.
+    el('joint-unit').hidden = !joints.some((joint) => joint.type !== 'prismatic');
     if (!joints.length) {
       host.innerHTML = `<p class="muted" style="font-size:12.5px">${t('joints.none')}</p>`;
       return;
@@ -347,7 +395,7 @@ export class Detail {
             <span class="joint-name" title="${joint.name}">${joint.name}</span>
             <span class="joint-value" data-value>${fmt(joint.value, isRot)}</span>
           </div>
-          <input type="range" min="${lower}" max="${upper}" step="0.001" value="${joint.value}"
+          <input type="range" min="${lower}" max="${upper}" step="${sliderStep(isRot)}" value="${joint.value}"
                  data-joint="${encodeURIComponent(joint.name)}" data-rot="${isRot}">
           ${limitsRow(joint)}
         </div>`;
@@ -398,6 +446,16 @@ function sliderRange(joint) {
 }
 
 /**
+ * The slider still travels in radians — only the readout changes unit — but its
+ * step follows what is on screen, so one arrow key is a round 0.1° in degree
+ * mode and 0.001 rad in radian mode rather than an odd number in either.
+ */
+function sliderStep(isRotational) {
+  if (!isRotational) return 0.001;
+  return angleUnit === 'rad' ? 0.001 : Math.PI / 1800;
+}
+
+/**
  * The limits the URDF declares for one joint: travel, and the effort and
  * velocity ceilings a controller is supposed to respect. Shown as-is —
  * `effort="0"` means the upstream file left it at zero, not that the joint is
@@ -439,17 +497,22 @@ function chip(label, value, title) {
 function rangeText(joint) {
   if (joint.type === 'continuous') return t('limit.continuous');
   if (!joint.hasLimits) return '—';
-  return joint.type === 'prismatic'
-    ? `${num(joint.lower)}…${num(joint.upper)} m`
-    : `${num((joint.lower * 180) / Math.PI, 1)}…${num((joint.upper * 180) / Math.PI, 1)}°`;
+  if (joint.type === 'prismatic') return `${num(joint.lower)}…${num(joint.upper)} m`;
+  return angleUnit === 'rad'
+    ? `${num(joint.lower)}…${num(joint.upper)} rad`
+    : `${num(joint.lower * DEG, 1)}…${num(joint.upper * DEG, 1)}°`;
 }
 
-/** Hover text for the travel chip: the raw URDF numbers, in radians. */
+/** Hover text for the travel chip: the same travel in the unit not on show. */
 function rangeTitle(joint) {
   if (joint.type === 'continuous') return `${t('limit.rangeFull')} · ${t('limit.continuous')}`;
   if (!joint.hasLimits) return `${t('limit.rangeFull')} · ${t('limit.none')}`;
-  const unit = joint.type === 'prismatic' ? 'm' : 'rad';
-  return `${t('limit.rangeFull')}: ${num(joint.lower)} … ${num(joint.upper)} ${unit}`;
+  if (joint.type === 'prismatic') {
+    return `${t('limit.rangeFull')}: ${num(joint.lower)} … ${num(joint.upper)} m`;
+  }
+  return angleUnit === 'rad'
+    ? `${t('limit.rangeFull')}: ${num(joint.lower * DEG, 1)}° … ${num(joint.upper * DEG, 1)}°`
+    : `${t('limit.rangeFull')}: ${num(joint.lower)} … ${num(joint.upper)} rad`;
 }
 
 /** Compact number: no trailing zeros, and no 14-digit float noise. */
@@ -460,11 +523,11 @@ function num(value, digits = 3) {
   return String(Number(value.toFixed(digits)));
 }
 
+/** The readout above a slider, in whichever unit the panel is switched to. */
 function fmt(value, isRotational) {
   if (value === undefined || value === null || Number.isNaN(value)) return '—';
-  return isRotational
-    ? `${((value * 180) / Math.PI).toFixed(1)}°`
-    : `${value.toFixed(3)} m`;
+  if (!isRotational) return `${value.toFixed(3)} m`;
+  return angleUnit === 'rad' ? `${value.toFixed(3)} rad` : `${(value * DEG).toFixed(1)}°`;
 }
 
 function host(url) {

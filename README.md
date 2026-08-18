@@ -89,14 +89,21 @@ npm run smoke -- --all         # 逐个打开 70 个模型，断言真的渲染�
 ### 关节限位
 
 详情页的每个关节滑块下面都列出该关节在 URDF 里声明的限制：行程
-（`<limit lower/upper>`，转动关节换算成角度显示，鼠标悬停可看弧度原值）、速度上限
-（`velocity`）与力矩上限（`effort`）。`continuous` 关节标注为「连续旋转」，
-带 `<mimic>` 的关节额外显示它跟随哪个关节、倍率与偏置。
+（`<limit lower/upper>`）、速度上限（`velocity`）与力矩上限（`effort`）。
+`continuous` 关节标注为「连续旋转」，带 `<mimic>` 的关节额外显示它跟随哪个关节、
+倍率与偏置。
 
 这些数值 urdf-loader 并不提供（它只读 `lower`/`upper`），所以详情页会另外取一次
 URDF 原文解析——请求与网格加载并行发出，走的是浏览器缓存里刚下过的那份文件。
 数值一律照上游原样显示，包括 `effort="0"` 这种上游没填的情况。没有声明 `<limit>`
 的关节不会被卡在 0——滑块退回一个可用行程（转动 ±π，移动 ±0.5 m），否则它根本推不动。
+
+转动关节的读数与行程可以在「关节」面板标题栏的 `deg` / `rad` 开关之间切换，鼠标
+悬停在行程上还能看到另一个单位的数值；选择记在 `localStorage` 里（`cl-angle-unit`，
+与主题、语言同样处理），换机器人、刷新页面都保留。滑块内部一直是弧度——URDF 声明的
+就是弧度，视图也按弧度驱动——切换单位只是换一种写法，不会动到当前姿态，只有方向键
+的步进跟着走：角度模式一格 0.1°，弧度模式一格 0.001 rad。移动关节（`prismatic`）
+不受影响，始终以米显示；模型若没有转动关节，这个开关不会出现。
 
 ### 一键下载
 
@@ -277,7 +284,9 @@ ros2 launch <id>_description display.launch.py
 
 Every joint slider on the detail page also carries the limits its URDF declares — travel,
 velocity and effort — read from the raw XML, since urdf-loader only exposes
-`lower`/`upper`.
+`lower`/`upper`. A `deg` / `rad` switch in the panel header re-labels the rotational
+readouts and travel in either unit, and is remembered across robots and reloads; the
+sliders themselves stay in radians, so switching never moves the robot.
 
 Colours follow [imchong.github.io](https://imchong.github.io/) — Notion-ish warm
 neutrals, dark by default with a light theme — while the 3D areas stay a dark studio in

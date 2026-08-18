@@ -102,7 +102,13 @@
       <section class="panel-block">
         <div class="panel-block-head">
           <h3 data-i18n="panel.joints">Joints</h3>
-          <button class="link-btn" id="joints-reset" data-i18n="panel.resetAll">reset all</button>
+          <div class="head-actions">
+            <div class="unit-toggle" id="joint-unit" role="group" data-i18n-aria-label="joints.unit">
+              <button type="button" data-unit="deg" aria-pressed="true" data-i18n-title="joints.unitDeg">deg</button>
+              <button type="button" data-unit="rad" aria-pressed="false" data-i18n-title="joints.unitRad">rad</button>
+            </div>
+            <button class="link-btn" id="joints-reset" data-i18n="panel.resetAll">reset all</button>
+          </div>
         </div>
         <div class="joints" id="d-joints"></div>
       </section>
