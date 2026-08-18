@@ -414,6 +414,17 @@ html[lang^='zh'] .footer-text-zh { display: block; }
   align-items: start;
 }
 
+/* The viewer and everything that belongs to it rather than to the pose. Only
+ * the specs and the joint sliders stay beside the stage; the reference cards
+ * sit underneath, where the full width fits three of them side by side and the
+ * side column no longer runs a screen and a half long. */
+.stage-col { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.stage-extra {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 14px;
+}
+
 .stage-toolbar {
   position: absolute; left: 12px; bottom: 12px; right: 12px;
   display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end;
@@ -547,7 +558,9 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 
 /* ── Joints ─────────────────────────────────────────────── */
 
-.joints { margin-top: 10px; max-height: 330px; overflow-y: auto; padding-right: 4px; }
+/* Tall enough to work a limb without scrolling — the reference cards moved out
+ * from under this block, so the height is there to be used. */
+.joints { margin-top: 10px; max-height: min(56vh, 560px); overflow-y: auto; padding-right: 4px; }
 .joints::-webkit-scrollbar { width: 8px; }
 .joints::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
@@ -614,7 +627,13 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 }
 .resources li:last-child a { border-bottom: 0; }
 .resources a:hover { color: var(--accent); }
-.resources .kind { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-faint); }
+.resources .res-label { white-space: nowrap; }
+/* The link says what it is; the upstream path after it is the detail, so that
+ * is what gets clipped when the column is narrow — in full on hover. */
+.resources .kind {
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--text-faint);
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
 
 .snippet { margin-top: 10px; position: relative; }
 .snippet-tabs { display: flex; gap: 4px; margin-bottom: 9px; flex-wrap: wrap; }
@@ -633,8 +652,21 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 
 /* ── Responsive ─────────────────────────────────────────── */
 
+/* Between the two-column detail layout and a stage wide enough for three
+ * cards there is a band where only two fit. Rather than leave the third alone
+ * on its own row, it runs the full width there. */
+@media (min-width: 1001px) and (max-width: 1215px) {
+  .stage-extra { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stage-extra > :last-child { grid-column: 1 / -1; }
+}
+
 @media (max-width: 1000px) {
   .detail-body { grid-template-columns: minmax(0, 1fr); }
+  /* One column: the stage's children join the page grid directly so the specs
+   * and sliders can sit right under the viewer, and the reference cards drop
+   * to the end rather than pushing them off screen. */
+  .stage-col { display: contents; }
+  .stage-extra { order: 1; }
   .stage { height: min(56vh, 500px); }
   .joints { max-height: none; }
 }

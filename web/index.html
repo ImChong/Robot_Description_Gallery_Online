@@ -73,24 +73,50 @@
   </div>
 
   <div class="detail-body">
-    <div class="stage">
-      <div class="canvas-host" id="canvas-host"></div>
-      <div class="stage-loading" id="stage-loading" hidden>
-        <div class="spinner"></div>
-        <p id="loading-text" data-i18n="viewer.loading">Loading model…</p>
-        <div class="progress"><i id="loading-bar"></i></div>
-      </div>
-      <div class="stage-error" id="stage-error" hidden></div>
-      <div class="stage-toolbar" id="stage-toolbar">
-        <div class="toggle-group" id="overlay-toggles"></div>
-        <div class="toggle-group">
-          <button data-action="reset" data-i18n-title="viewer.resetPose" title="Reset pose">⟳</button>
-          <button data-action="rotate" data-i18n-title="viewer.autoRotate" title="Auto rotate">◐</button>
-          <button data-action="frame" data-i18n-title="viewer.fitView" title="Fit view">⤢</button>
-          <button data-action="snapshot" data-i18n-title="viewer.snapshot" title="Save PNG">⭳</button>
+    <div class="stage-col">
+      <div class="stage">
+        <div class="canvas-host" id="canvas-host"></div>
+        <div class="stage-loading" id="stage-loading" hidden>
+          <div class="spinner"></div>
+          <p id="loading-text" data-i18n="viewer.loading">Loading model…</p>
+          <div class="progress"><i id="loading-bar"></i></div>
         </div>
+        <div class="stage-error" id="stage-error" hidden></div>
+        <div class="stage-toolbar" id="stage-toolbar">
+          <div class="toggle-group" id="overlay-toggles"></div>
+          <div class="toggle-group">
+            <button data-action="reset" data-i18n-title="viewer.resetPose" title="Reset pose">⟳</button>
+            <button data-action="rotate" data-i18n-title="viewer.autoRotate" title="Auto rotate">◐</button>
+            <button data-action="frame" data-i18n-title="viewer.fitView" title="Fit view">⤢</button>
+            <button data-action="snapshot" data-i18n-title="viewer.snapshot" title="Save PNG">⭳</button>
+          </div>
+        </div>
+        <p class="stage-hint" data-i18n="viewer.hint">Drag to orbit · scroll to zoom · right-drag to pan</p>
       </div>
-      <p class="stage-hint" data-i18n="viewer.hint">Drag to orbit · scroll to zoom · right-drag to pan</p>
+
+      <!-- Reference material — nothing here changes while a pose is being
+           dragged, so it sits under the stage where it has room to breathe,
+           and the column beside the viewer stays short enough to read. -->
+      <div class="stage-extra">
+        <section class="panel-block">
+          <h3 data-i18n="panel.download">Download</h3>
+          <div class="downloads" id="d-downloads"></div>
+        </section>
+
+        <section class="panel-block">
+          <h3 data-i18n="panel.resources">Resources</h3>
+          <ul class="resources" id="d-resources"></ul>
+        </section>
+
+        <section class="panel-block">
+          <h3 data-i18n="panel.reuse">Use this model</h3>
+          <div class="snippet">
+            <div class="snippet-tabs" id="snippet-tabs"></div>
+            <pre><code id="snippet-code"></code></pre>
+            <button class="link-btn" id="snippet-copy" data-i18n="panel.copy">copy</button>
+          </div>
+        </section>
+      </div>
     </div>
 
     <aside class="panel">
@@ -111,25 +137,6 @@
           </div>
         </div>
         <div class="joints" id="d-joints"></div>
-      </section>
-
-      <section class="panel-block">
-        <h3 data-i18n="panel.download">Download</h3>
-        <div class="downloads" id="d-downloads"></div>
-      </section>
-
-      <section class="panel-block">
-        <h3 data-i18n="panel.resources">Resources</h3>
-        <ul class="resources" id="d-resources"></ul>
-      </section>
-
-      <section class="panel-block">
-        <h3 data-i18n="panel.reuse">Use this model</h3>
-        <div class="snippet">
-          <div class="snippet-tabs" id="snippet-tabs"></div>
-          <pre><code id="snippet-code"></code></pre>
-          <button class="link-btn" id="snippet-copy" data-i18n="panel.copy">copy</button>
-        </div>
       </section>
     </aside>
   </div>

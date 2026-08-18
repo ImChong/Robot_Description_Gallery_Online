@@ -354,7 +354,8 @@ export class Detail {
     el('d-resources').innerHTML = items
       .map(
         ([key, url, kind]) =>
-          `<li><a href="${url}" target="_blank" rel="noopener">${t(key)}<span class="kind">${kind}</span></a></li>`,
+          `<li><a href="${url}" target="_blank" rel="noopener" title="${kind}">` +
+          `<span class="res-label">${t(key)}</span><span class="kind">${kind}</span></a></li>`,
       )
       .join('');
   }
@@ -493,14 +494,18 @@ function chip(label, value, title) {
   return `<span class="lim" title="${title}"><i>${label}</i>${value}</span>`;
 }
 
-/** Travel, in the same unit as the readout above the slider. */
+/**
+ * Travel, in the same unit as the readout above the slider, written as the
+ * closed interval it is — `[lower, upper]` — so the two ends read as a pair
+ * rather than as one long run of digits.
+ */
 function rangeText(joint) {
   if (joint.type === 'continuous') return t('limit.continuous');
   if (!joint.hasLimits) return '—';
-  if (joint.type === 'prismatic') return `${num(joint.lower)}…${num(joint.upper)} m`;
+  if (joint.type === 'prismatic') return `[${num(joint.lower)}, ${num(joint.upper)}] m`;
   return angleUnit === 'rad'
-    ? `${num(joint.lower)}…${num(joint.upper)} rad`
-    : `${num(joint.lower * DEG, 1)}…${num(joint.upper * DEG, 1)}°`;
+    ? `[${num(joint.lower)}, ${num(joint.upper)}] rad`
+    : `[${num(joint.lower * DEG, 1)}, ${num(joint.upper * DEG, 1)}]°`;
 }
 
 /** Hover text for the travel chip: the same travel in the unit not on show. */
@@ -508,11 +513,11 @@ function rangeTitle(joint) {
   if (joint.type === 'continuous') return `${t('limit.rangeFull')} · ${t('limit.continuous')}`;
   if (!joint.hasLimits) return `${t('limit.rangeFull')} · ${t('limit.none')}`;
   if (joint.type === 'prismatic') {
-    return `${t('limit.rangeFull')}: ${num(joint.lower)} … ${num(joint.upper)} m`;
+    return `${t('limit.rangeFull')}: [${num(joint.lower)}, ${num(joint.upper)}] m`;
   }
   return angleUnit === 'rad'
-    ? `${t('limit.rangeFull')}: ${num(joint.lower * DEG, 1)}° … ${num(joint.upper * DEG, 1)}°`
-    : `${t('limit.rangeFull')}: ${num(joint.lower)} … ${num(joint.upper)} rad`;
+    ? `${t('limit.rangeFull')}: [${num(joint.lower * DEG, 1)}, ${num(joint.upper * DEG, 1)}]°`
+    : `${t('limit.rangeFull')}: [${num(joint.lower)}, ${num(joint.upper)}] rad`;
 }
 
 /** Compact number: no trailing zeros, and no 14-digit float noise. */
