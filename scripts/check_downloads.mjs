@@ -22,6 +22,7 @@ import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync } 
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { launchBrowser } from './browser.mjs';
+import { parseVisibility } from '../web/js/registry.js';
 
 const args = process.argv.slice(2);
 const flag = (name, fallback = null) => {
@@ -31,16 +32,27 @@ const flag = (name, fallback = null) => {
 const base = flag('--base', process.env.BASE_URL || 'http://localhost:8080');
 const registry = JSON.parse(readFileSync(new URL('../data/robots.json', import.meta.url)));
 
+// The site only serves what data/visibility.md leaves checked, so that is what
+// there is to exercise; an unchecked robot has no detail page or download buttons.
+const visibilityPath = new URL('../data/visibility.md', import.meta.url);
+const visibility = existsSync(visibilityPath)
+  ? parseVisibility(readFileSync(visibilityPath, 'utf8'))
+  : new Map();
+const shown = registry.robots.filter((r) => visibility.get(r.id) !== false);
+const hidden = registry.robots.length - shown.length;
+if (hidden) console.log(`${hidden} robot(s) hidden by data/visibility.md`);
+
 let targets;
 if (flag('--robot')) {
-  targets = registry.robots.filter((r) => r.id === flag('--robot'));
+  targets = shown.filter((r) => r.id === flag('--robot'));
+  if (!targets.length) console.log(`${flag('--robot')}: not shown (or unknown) — nothing to test`);
 } else if (args.includes('--all')) {
-  targets = registry.robots;
+  targets = shown;
 } else {
-  // Default: the lightest robot per mesh format, so every loader path that the
-  // bundle has to copy is covered without downloading a gigabyte.
+  // Default: the lightest shown robot per mesh format, so every loader path that
+  // the bundle has to copy is covered without downloading a gigabyte.
   const byFormat = new Map();
-  for (const robot of registry.robots) {
+  for (const robot of shown) {
     const key = robot.assets.mesh_formats.join('+');
     const current = byFormat.get(key);
     if (!current || robot.assets.mesh_bytes < current.assets.mesh_bytes) {
@@ -48,6 +60,11 @@ if (flag('--robot')) {
     }
   }
   targets = [...byFormat.values()];
+}
+
+if (!targets.length) {
+  console.log('nothing to test');
+  process.exit(0);
 }
 
 /**
