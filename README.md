@@ -70,6 +70,33 @@ python3 scripts/build_registry.py --candidates    # 列出所有可加载的候�
 `--candidates` 会遍历 `robot_descriptions.py` 里全部非 xacro 的 URDF 描述，报告哪些
 模型的网格能完整解析（当前 87 个候选中 80 个通过），是挑选新条目的依据。
 
+### 决定显示哪些机器人
+
+`data/visibility.md` 是一份带勾选框的清单，注册表里的每个条目一行，写着名称、所属组织
+和上游链接：
+
+```markdown
+- [x] `g1` **G1** — UNITREE Robotics — [unitreerobotics/unitree_ros · g1_description](…)
+- [ ] `h1` **H1** — UNITREE Robotics — [unitreerobotics/unitree_ros · h1_description](…)
+```
+
+站点启动时会读这个文件：**`[x]` 的显示，`[ ]` 的不显示。** 想下架一个模型就把方括号里的
+`x` 删掉，提交即可——不需要重新生成注册表，也不用改 `data/robots.json`。被隐藏的条目不会
+出现在网格、分类计数、搜索结果和详情页的上一个/下一个里，直接访问 `#robot=<id>` 会跳回
+合集首页；首页的四个计数也跟着变。
+
+反引号里的 `id` 是站点匹配用的，其余部分只是给人看的。文件读不到时（例如没部署）显示
+全部条目，注册表里有、清单里还没有的机器人同样默认显示——两种情况都是宁可多显示，不会
+把合集变成空的。
+
+```bash
+npm run visibility         # 从 data/robots.json 刷新清单，保留已有勾选状态
+npm run check:visibility   # 校验清单是否与注册表同步（CI 会跑）
+```
+
+缩略图对全部条目渲染（`thumb.html` 不走这个过滤），所以重新勾上一个机器人不需要重跑
+`npm run thumbs`。
+
 ### 缩略图与冒烟测试
 
 ```bash
@@ -190,15 +217,21 @@ URDF 相对上游只有一处改动：网格的 `filename` 属性重写成
    （第二次 `registry` 是为了把刚测出的尺寸并进注册表），最后
    `npm run smoke -- --robot <id>` 确认真的渲染出来了。
 
-`data/curation.json` 是唯一需要手写的文件；其余全部由流水线生成。
+新条目默认就是显示的；跑一次 `npm run visibility` 把它写进 `data/visibility.md`，
+之后就能随时勾掉。
+
+手写的文件只有两个：`data/curation.json`（收录什么）和 `data/visibility.md` 里的勾选框
+（显示什么）；其余全部由流水线生成。
 
 ## 仓库结构
 
 ```
 data/curation.json     手写：收录哪些机器人、归到哪一类、官方链接
+data/visibility.md     手写勾选框：哪些条目显示在站点上（行内容由脚本生成）
 data/robots.json       生成：完整注册表（站点唯一的数据来源）
 data/measured.json     生成：各模型的包围盒尺寸
 scripts/build_registry.py   注册表生成与上游校验
+scripts/build_visibility.mjs  由注册表刷新 data/visibility.md
 scripts/render_thumbnails.mjs / smoke.mjs / check_downloads.mjs
 scripts/check_registry.mjs / serve.mjs / vendor.mjs / browser.mjs
 web/js/viewer.js       three.js 场景 + URDF 加载 + 各种可视化叠加层
@@ -267,7 +300,11 @@ commit `robot_descriptions.py` pins; the URDF and its meshes stream from jsDeliv
 GitHub CDN at that commit. `scripts/build_registry.py` generates `data/robots.json` by
 static-parsing the description modules, downloading only the URDF, and verifying every
 `package://` mesh reference with a HEAD request — a broken entry fails the build rather
-than the visitor. `data/curation.json` is the only hand-written file.
+than the visitor. `data/curation.json` is the only hand-written file — apart from the
+checkboxes in `data/visibility.md`, a generated list of every entry (name, organisation,
+upstream link) whose `[x]`/`[ ]` boxes decide what the gallery shows. The site reads it at
+startup, so hiding a robot is a one-character edit and a commit; a missing file or an
+unlisted id shows the robot rather than dropping it.
 
 Each robot can be downloaded in one click, in the browser: the `.urdf` on its own, a zip
 holding the URDF plus every mesh it references at their upstream repository paths (so
@@ -296,6 +333,7 @@ both themes, since half of these robots are white.
 npm install && npm run vendor && npm run dev   # → http://localhost:8080/web/
 pip install -r scripts/requirements.txt && npm run registry
 npm run thumbs && npm run registry             # card images + measured sizes
+npm run visibility                             # refresh data/visibility.md
 npm run smoke -- --all && npm run check:downloads
 ```
 

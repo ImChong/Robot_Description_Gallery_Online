@@ -9,6 +9,8 @@
     "vendor": "node scripts/vendor.mjs",
     "dev": "node scripts/serve.mjs",
     "registry": "python3 scripts/build_registry.py",
+    "visibility": "node scripts/build_visibility.mjs",
+    "check:visibility": "node scripts/build_visibility.mjs --check",
     "candidates": "python3 scripts/build_registry.py --candidates",
     "thumbs": "node scripts/render_thumbnails.mjs",
     "smoke": "node scripts/smoke.mjs",

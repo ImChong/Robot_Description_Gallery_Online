@@ -8,6 +8,7 @@
  *   node scripts/check_registry.mjs [--links] [--thumbs]
  */
 import { existsSync, readFileSync } from 'node:fs';
+import { parseVisibility } from '../web/js/registry.js';
 
 const args = process.argv.slice(2);
 const root = new URL('..', import.meta.url);
@@ -71,6 +72,26 @@ for (const category of registry.categories) {
     warn(category.id, 'category has no robots');
   }
   if (!category.label || !category.label_zh) fail(category.id, 'category missing a label');
+}
+
+// data/visibility.md decides which entries the site shows. It is generated
+// from this registry, so a row that names nothing is a typo the site would
+// silently ignore, and a missing row is an entry nobody can switch off.
+const visibilityPath = new URL('data/visibility.md', root);
+if (existsSync(visibilityPath)) {
+  const visibility = parseVisibility(readFileSync(visibilityPath, 'utf8'));
+  for (const [id] of visibility) {
+    if (!ids.has(id)) fail(id, 'listed in data/visibility.md but not in the registry');
+  }
+  for (const robot of registry.robots) {
+    if (!visibility.has(robot.id)) {
+      warn(robot.id, 'no row in data/visibility.md — run `npm run visibility`');
+    }
+  }
+  const shown = [...visibility.values()].filter(Boolean).length;
+  console.log(`  visibility  ${shown}/${visibility.size} entries shown`);
+} else {
+  warn('visibility', 'data/visibility.md is missing — run `npm run visibility`');
 }
 
 if (args.includes('--links')) {

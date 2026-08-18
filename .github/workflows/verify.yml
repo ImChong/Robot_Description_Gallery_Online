@@ -92,6 +92,13 @@ jobs:
           sys.exit(1 if drifted else 0)
           PY
 
+      # data/visibility.md is what the site filters on, so a stale row (or a row
+      # naming an id that no longer exists) would quietly change what visitors see.
+      - name: Check the visibility list
+        run: |
+          node scripts/build_visibility.mjs --check
+          node scripts/check_registry.mjs
+
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 

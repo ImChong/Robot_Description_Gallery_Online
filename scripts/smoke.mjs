@@ -10,8 +10,9 @@
  * publishing a registry update: a robot whose upstream repository moved its
  * meshes fails here rather than in front of a visitor.
  */
-import { readFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, mkdirSync, existsSync } from 'node:fs';
 import { launchBrowser } from './browser.mjs';
+import { parseVisibility } from '../web/js/registry.js';
 
 const args = process.argv.slice(2);
 const flag = (name, fallback = null) => {
@@ -21,15 +22,26 @@ const flag = (name, fallback = null) => {
 const base = flag('--base', process.env.BASE_URL || 'http://localhost:8080');
 const registry = JSON.parse(readFileSync(new URL('../data/robots.json', import.meta.url)));
 
+// The site only serves what data/visibility.md leaves checked, so that is what
+// there is to smoke-test; an unchecked robot has no card and no detail page.
+const visibilityPath = new URL('../data/visibility.md', import.meta.url);
+const visibility = existsSync(visibilityPath)
+  ? parseVisibility(readFileSync(visibilityPath, 'utf8'))
+  : new Map();
+const shown = registry.robots.filter((r) => visibility.get(r.id) !== false);
+const hidden = registry.robots.length - shown.length;
+if (hidden) console.log(`${hidden} robot(s) hidden by data/visibility.md`);
+
 let targets;
 if (flag('--robot')) {
-  targets = registry.robots.filter((r) => r.id === flag('--robot'));
+  targets = shown.filter((r) => r.id === flag('--robot'));
+  if (!targets.length) console.log(`${flag('--robot')}: not shown (or unknown) — nothing to test`);
 } else if (args.includes('--all')) {
-  targets = registry.robots;
+  targets = shown;
 } else {
   // One representative (the lightest) per category keeps the default fast.
   const byCategory = new Map();
-  for (const robot of registry.robots) {
+  for (const robot of shown) {
     const current = byCategory.get(robot.category);
     if (!current || robot.assets.mesh_bytes < current.assets.mesh_bytes) {
       byCategory.set(robot.category, robot);
@@ -51,8 +63,8 @@ page.on('pageerror', (err) => consoleErrors.push(`pageerror: ${err.message}`));
 await page.goto(`${base}/web/`, { waitUntil: 'networkidle' });
 const cards = await page.locator('.card').count();
 console.log(`gallery: ${cards} cards`);
-if (cards !== registry.robots.length) {
-  console.error(`  ✗ expected ${registry.robots.length} cards`);
+if (cards !== shown.length) {
+  console.error(`  ✗ expected ${shown.length} cards`);
   process.exitCode = 1;
 }
 
