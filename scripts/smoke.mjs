@@ -73,6 +73,9 @@ for (const robot of targets) {
         if (stage?.dataset.loaded !== id) return false;
         return {
           joints: document.querySelectorAll('#d-joints .joint').length,
+          // Every slider carries the limits its URDF declares; a joint without
+          // that row means the raw XML never made it into the panel.
+          limits: document.querySelectorAll('#d-joints .joint .joint-limits').length,
           specs: document.querySelectorAll('#d-specs dt').length,
           meshes: Number(stage.dataset.meshes || 0),
           height: Number(stage.dataset.height || NaN),
@@ -95,6 +98,13 @@ for (const robot of targets) {
   // A URDF whose meshes 404 still "loads" — an empty scene is the real failure.
   if (!result.meshes) {
     console.error(`  ✗ ${robot.id.padEnd(26)} loaded but no visual geometry rendered`);
+    failures += 1;
+    continue;
+  }
+  if (result.limits !== result.joints) {
+    console.error(
+      `  ✗ ${robot.id.padEnd(26)} ${result.joints} joints but ${result.limits} limit rows`,
+    );
     failures += 1;
     continue;
   }

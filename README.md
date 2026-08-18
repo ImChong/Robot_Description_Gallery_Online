@@ -23,8 +23,10 @@ robot_descriptions.py  ──┐
                                           ▼
                        web/  三 .js + urdf-loader 的静态站点（无构建步骤）
                        · 合集网格（离线渲染的缩略图）
-                       · 详情页：关节滑块 / 碰撞体 / 关节轴 / 坐标系 / 质心 / 惯量
-                       · 一键下载：URDF 单文件，或 URDF + 全部网格的 zip
+                       · 详情页：关节滑块（含限位/速度/力矩）/ 碰撞体 / 关节轴 /
+                         坐标系 / 质心 / 惯量
+                       · 一键下载：URDF 单文件、URDF + 全部网格的 zip，
+                         或可直接 colcon 编译的 ROS 2 功能包
 ```
 
 界面配色沿用 [imchong.github.io](https://imchong.github.io/) 的设计语言：Notion 风格
@@ -84,13 +86,27 @@ npm run smoke -- --all         # 逐个打开 70 个模型，断言真的渲染�
 `npm run registry` 合并进注册表，所以卡片和参数表里的"模型高度"来自网格本身，而不是
 手抄的产品参数。因此完整的更新顺序是 **thumbs → registry**。
 
+### 关节限位
+
+详情页的每个关节滑块下面都列出该关节在 URDF 里声明的限制：行程
+（`<limit lower/upper>`，转动关节换算成角度显示，鼠标悬停可看弧度原值）、速度上限
+（`velocity`）与力矩上限（`effort`）。`continuous` 关节标注为「连续旋转」，
+带 `<mimic>` 的关节额外显示它跟随哪个关节、倍率与偏置。
+
+这些数值 urdf-loader 并不提供（它只读 `lower`/`upper`），所以详情页会另外取一次
+URDF 原文解析——请求与网格加载并行发出，走的是浏览器缓存里刚下过的那份文件。
+数值一律照上游原样显示，包括 `effort="0"` 这种上游没填的情况。没有声明 `<limit>`
+的关节不会被卡在 0——滑块退回一个可用行程（转动 ±π，移动 ±0.5 m），否则它根本推不动。
+
 ### 一键下载
 
-详情页有两个下载按钮，都在浏览器里完成，没有后端：
+详情页有三个下载按钮，都在浏览器里完成，没有后端：
 
 - **URDF + 网格（zip）**——URDF 原文加它引用的全部网格，文件按上游仓库里的相对路径
   存放，因此把包目录放进 ROS package path 后 `package://` 仍然能解析；附带的
   `NOTICE.txt` 记录来源仓库、commit、许可与包路径映射。
+- **ROS 2 功能包（zip）**——同样的内容，外面套上一个能直接 `colcon build` 的
+  `ament_cmake` 包（见下）。
 - **仅 URDF**——只有那一个 `.urdf` 文件，与上游逐字节一致。
 
 zip 是手写的（store 方式 + CRC-32），所以专门有一个检查脚本把产物解包验证：
@@ -100,8 +116,44 @@ npm run check:downloads              # 每种网格格式组合各取一个最�
 npm run check:downloads -- --all     # 全部 70 个
 ```
 
-它会用系统 `unzip -t` 校验每个条目的 CRC、比对条目数与注册表记录的网格数，并确认
-包内 URDF 与上游逐字节相同。
+它会用系统 `unzip -t` 校验每个条目的 CRC、比对条目数与注册表记录的网格数、确认
+包内 URDF 与上游逐字节相同，并对 ROS 2 包额外检查：该有的文件都在、launch 文件能被
+Python 解析、每个重写过的 `package://` 引用都指向包内真实存在的文件、URDF 相对上游
+只有网格路径这一处差异。
+
+### ROS 2 功能包
+
+「ROS 2 功能包」按钮生成的 zip 解压出来就是一个包目录 `<id>_description/`：
+
+```
+<id>_description/
+├── package.xml              ament_cmake，依赖 robot_state_publisher /
+│                            joint_state_publisher_gui / rviz2 / xacro
+├── CMakeLists.txt           安装包内实际存在的目录与文件
+├── launch/display.launch.py robot_state_publisher + 关节滑块 + RViz 2
+├── rviz/display.rviz        RobotModel 绑到 /robot_description，fixed frame
+│                            取根连杆，相机按实测高度拉开
+├── <上游路径>/xxx.urdf        上游原文，只改了网格路径
+├── meshes/…                 全部网格，保持上游的相对布局
+└── README.md / NOTICE.txt   构建运行说明（中英）与来源、commit、许可
+```
+
+```bash
+mkdir -p ~/ros2_ws/src && cp -r <id>_description ~/ros2_ws/src/
+cd ~/ros2_ws && colcon build --packages-select <id>_description
+source install/setup.bash
+ros2 launch <id>_description display.launch.py            # 滑块 + RViz
+ros2 launch <id>_description display.launch.py gui:=false # 无滑块窗口
+ros2 launch <id>_description display.launch.py rviz:=false
+```
+
+拖动 `joint_state_publisher_gui` 的滑块，RViz 里的模型就跟着动——和网页上的关节滑块
+是同一件事，只是换到了本地 ROS 2 环境里。面向 Humble 及以上。
+
+URDF 相对上游只有一处改动：网格的 `filename` 属性重写成
+`package://<id>_description/…`，这样只装这一个包就能解析。包内文件保持上游的相对
+布局（同时被剥掉了 URDF 与全部网格共同的目录前缀），所以原本的相对路径引用也仍然
+有效——直接用别的工具打开那个 `.urdf` 同样能加载。
 
 ## 部署到 GitHub Pages
 
@@ -143,10 +195,10 @@ scripts/build_registry.py   注册表生成与上游校验
 scripts/render_thumbnails.mjs / smoke.mjs / check_downloads.mjs
 scripts/check_registry.mjs / serve.mjs / vendor.mjs / browser.mjs
 web/js/viewer.js       three.js 场景 + URDF 加载 + 各种可视化叠加层
-web/js/download.js     一键下载：手写 zip（store + CRC-32）与 NOTICE 生成
+web/js/download.js     一键下载：手写 zip（store + CRC-32）、ROS 2 包与 NOTICE 生成
 web/js/theme-init.js   首屏前应用主题，避免闪一下深色
 web/js/gallery.js      卡片网格、类别筛选、搜索
-web/js/detail.js       详情页：参数表、关节滑块、资源链接、代码片段
+web/js/detail.js       详情页：参数表、关节滑块与限位、资源链接、代码片段
 web/js/registry.js     注册表加载与筛选
 web/js/i18n.js         中英文界面文案
 web/vendor/            已提交的 three.js 与 urdf-loader（无构建步骤）
@@ -210,10 +262,24 @@ static-parsing the description modules, downloading only the URDF, and verifying
 `package://` mesh reference with a HEAD request — a broken entry fails the build rather
 than the visitor. `data/curation.json` is the only hand-written file.
 
-Each robot can be downloaded in one click, in the browser: the `.urdf` on its own, or a
-zip holding the URDF plus every mesh it references at their upstream repository paths
-(so `package://` still resolves) with a NOTICE.txt recording the source commit and
-licence. Colours follow [imchong.github.io](https://imchong.github.io/) — Notion-ish warm
+Each robot can be downloaded in one click, in the browser: the `.urdf` on its own, a zip
+holding the URDF plus every mesh it references at their upstream repository paths (so
+`package://` still resolves) with a NOTICE.txt recording the source commit and licence,
+or a ready-to-build ROS 2 package — `package.xml`, `CMakeLists.txt`, an RViz config and a
+`display.launch.py` that starts `robot_state_publisher`, the `joint_state_publisher_gui`
+slider window and RViz 2, with the URDF's mesh references rewritten to resolve from that
+package alone:
+
+```bash
+colcon build --packages-select <id>_description && source install/setup.bash
+ros2 launch <id>_description display.launch.py
+```
+
+Every joint slider on the detail page also carries the limits its URDF declares — travel,
+velocity and effort — read from the raw XML, since urdf-loader only exposes
+`lower`/`upper`.
+
+Colours follow [imchong.github.io](https://imchong.github.io/) — Notion-ish warm
 neutrals, dark by default with a light theme — while the 3D areas stay a dark studio in
 both themes, since half of these robots are white.
 
