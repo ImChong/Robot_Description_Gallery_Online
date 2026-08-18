@@ -24,10 +24,27 @@
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
   --shadow-lg: 0 12px 32px -12px rgba(0, 0, 0, 0.6);
 
-  /* The 3D areas stay a dark studio in both themes: half these robots are
-     white, and they would vanish against a white backdrop. */
+  /* The detail page's stage follows the theme — js/viewer.js relights the scene
+     to match, so a light stage gets a darker default mesh grey and the robots
+     keep their edges. The gallery cards do not: their thumbnails are rendered
+     offline against the dark palette, and a pale robot on a pale card would
+     disappear, so the card wells stay a dark studio in both themes. */
   --stage-top: #262a30;
   --stage-bottom: #191b1f;
+  --card-stage-top: #262a30;
+  --card-stage-bottom: #191b1f;
+  /* Chrome that floats over the stage: it has to read against the render, not
+     against the page, so it gets its own set rather than reusing --surface. */
+  --stage-chrome-bg: rgba(25, 25, 25, 0.82);
+  --stage-chrome-border: #3d3d3d;
+  --stage-chrome-text: #b6b5b1;
+  --stage-chrome-text-strong: #f0efec;
+  --stage-chrome-hover: #333333;
+  --stage-veil: rgba(25, 25, 25, 0.76);
+  --stage-veil-text: #cfcec9;
+  --stage-error-text: #ff9d9d;
+  --stage-faint: #8f8e8a;
+  --stage-track: #3d3d3d;
   --code-bg: #202020;
 
   --warn: #ffc857;
@@ -70,6 +87,22 @@
   --code-bg: #f7f6f3;
   --header-bg: #fafafa;
   --header-border: #e8e8e4;
+
+  /* Daylight studio. Kept a touch cooler and darker than the page so the stage
+     still reads as a separate surface, and so a white robot has something to
+     sit against — it matches THEMES.light.background in js/viewer.js. */
+  --stage-top: #f2f3f6;
+  --stage-bottom: #e5e7ec;
+  --stage-chrome-bg: rgba(255, 255, 255, 0.86);
+  --stage-chrome-border: #d9d8d3;
+  --stage-chrome-text: #5f5e5b;
+  --stage-chrome-text-strong: #37352f;
+  --stage-chrome-hover: #ebeae7;
+  --stage-veil: rgba(247, 246, 243, 0.84);
+  --stage-veil-text: #4b4a47;
+  --stage-error-text: #b3261e;
+  --stage-faint: #787774;
+  --stage-track: #e0dfda;
 }
 
 /* Same reset as the reference site: zeroing margins matters here because
@@ -282,7 +315,7 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
 .card-figure {
   position: relative;
   aspect-ratio: 1 / 1;
-  background: radial-gradient(115% 85% at 50% 10%, var(--stage-top) 0%, var(--stage-bottom) 74%);
+  background: radial-gradient(115% 85% at 50% 10%, var(--card-stage-top) 0%, var(--card-stage-bottom) 74%);
   border-bottom: 1px solid var(--border);
   display: grid; place-items: center;
   overflow: hidden;
@@ -435,19 +468,19 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 }
 .toggle-group {
   display: flex; gap: 2px; padding: 3px;
-  background: rgba(25, 25, 25, 0.82);
-  border: 1px solid #3d3d3d;
+  background: var(--stage-chrome-bg);
+  border: 1px solid var(--stage-chrome-border);
   border-radius: var(--radius);
   backdrop-filter: blur(10px);
   pointer-events: auto;
 }
 .toggle-group button {
-  border: 0; background: none; color: #b6b5b1;
+  border: 0; background: none; color: var(--stage-chrome-text);
   font: inherit; font-size: 12px; padding: 5px 10px; border-radius: var(--radius-sm);
   cursor: pointer; white-space: nowrap;
   transition: background var(--transition), color var(--transition);
 }
-.toggle-group button:hover { color: #f0efec; background: #333; }
+.toggle-group button:hover { color: var(--stage-chrome-text-strong); background: var(--stage-chrome-hover); }
 .toggle-group button[aria-pressed='true'] { background: var(--accent); color: #fff; font-weight: 600; }
 .toggle-group button .swatch {
   display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px;
@@ -456,25 +489,25 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 
 .stage-hint {
   position: absolute; top: 12px; right: 14px; margin: 0;
-  font-size: 11.5px; color: #8f8e8a;
+  font-size: 11.5px; color: var(--stage-faint);
   pointer-events: none;
 }
 
 .stage-loading, .stage-error {
   position: absolute; inset: 0;
   display: grid; place-content: center; justify-items: center; gap: 12px;
-  background: rgba(25, 25, 25, 0.76);
-  color: #cfcec9; font-size: 13px; text-align: center; padding: 24px;
+  background: var(--stage-veil);
+  color: var(--stage-veil-text); font-size: 13px; text-align: center; padding: 24px;
 }
-.stage-error { color: #ff9d9d; }
-.stage-error code { display: block; margin-top: 8px; font-size: 11.5px; color: #8f8e8a; max-width: 42ch; word-break: break-all; }
+.stage-error { color: var(--stage-error-text); }
+.stage-error code { display: block; margin-top: 8px; font-size: 11.5px; color: var(--stage-faint); max-width: 42ch; word-break: break-all; }
 .spinner {
   width: 26px; height: 26px; border-radius: 50%;
-  border: 2px solid #3d3d3d; border-top-color: var(--accent);
+  border: 2px solid var(--stage-track); border-top-color: var(--accent);
   animation: spin 0.8s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-.progress { width: 190px; height: 3px; background: #3d3d3d; border-radius: 20px; overflow: hidden; }
+.progress { width: 190px; height: 3px; background: var(--stage-track); border-radius: 20px; overflow: hidden; }
 .progress i { display: block; height: 100%; width: 0; background: var(--accent); transition: width 0.2s; }
 
 /* ── Side panel ─────────────────────────────────────────── */
