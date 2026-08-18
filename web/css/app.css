@@ -534,6 +534,20 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 .joint-head { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; }
 .joint-name { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .joint-value { font-family: var(--font-mono); font-size: 11.5px; color: var(--accent); font-variant-numeric: tabular-nums; }
+/* What the URDF declares for the joint under the slider: travel, and the effort
+ * and velocity ceilings. Three short chips rather than a table — they sit under
+ * every slider, so they have to stay quiet. */
+.joint-limits {
+  display: flex; flex-wrap: wrap; gap: 2px 10px;
+  font-family: var(--font-mono); font-size: 10.5px; line-height: 1.5;
+  color: var(--text-faint); font-variant-numeric: tabular-nums;
+}
+.joint-limits .lim { display: inline-flex; align-items: baseline; gap: 4px; cursor: help; white-space: nowrap; }
+.joint-limits .lim i {
+  font-family: var(--font-sans); font-style: normal; font-size: 9.5px;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); opacity: 0.8;
+}
+
 /* The groove reads as 3px, but a 3px-tall <input> is a 3px-tall hit area — a
  * fingertip cannot land on it, and even a mouse has to be precise. So the input
  * itself is a finger-sized transparent strip and the groove is painted on the

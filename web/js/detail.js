@@ -2,7 +2,7 @@
 import { RobotViewer, THEME } from './viewer.js';
 import { formatBytes, urdfUrl } from './registry.js';
 import { categoryLabel, lang, t } from './i18n.js';
-import { downloadBundle, downloadUrdf } from './download.js';
+import { downloadBundle, downloadRos2, downloadUrdf, ros2PackageName } from './download.js';
 
 const el = (id) => document.getElementById(id);
 
@@ -107,7 +107,7 @@ export class Detail {
   }
 
   /**
-   * Fetch and save a model. Both variants stream from the CDN in the visitor's
+   * Fetch and save a model. Every variant streams from the CDN in the visitor's
    * browser — there is no server here to zip anything up — so the button doubles
    * as the progress indicator.
    */
@@ -119,15 +119,19 @@ export class Detail {
     const fill = button.querySelector('.dl-fill');
     const original = { label: label.textContent, sub: sub.textContent };
 
+    const onProgress = (done, total) => {
+      const pct = total ? Math.round((done / total) * 100) : 0;
+      fill.style.width = `${pct}%`;
+      sub.textContent = `${done}/${total} · ${pct}%`;
+    };
+
     button.disabled = true;
     sub.textContent = t('dl.working');
     try {
       if (kind === 'bundle') {
-        await downloadBundle(robot, (done, total) => {
-          const pct = total ? Math.round((done / total) * 100) : 0;
-          fill.style.width = `${pct}%`;
-          sub.textContent = `${done}/${total} · ${pct}%`;
-        });
+        await downloadBundle(robot, onProgress);
+      } else if (kind === 'ros2') {
+        await downloadRos2(robot, onProgress);
       } else {
         await downloadUrdf(robot);
       }
@@ -153,6 +157,15 @@ export class Detail {
           <span class="dl-sub">${t('dl.bundleSub')} · ${meshes} ${
             meshes === 1 ? 'mesh' : 'meshes'
           }</span>
+        </span>
+        <span class="dl-size">${bundleSize}</span>
+      </button>
+      <button class="dl-btn" data-download="ros2" title="${ros2PackageName(r)}">
+        <i class="dl-fill"></i>
+        <span class="dl-icon" aria-hidden="true">📦</span>
+        <span class="dl-text">
+          <span class="dl-main">${t('dl.ros2')}</span>
+          <span class="dl-sub">${t('dl.ros2Sub')}</span>
         </span>
         <span class="dl-size">${bundleSize}</span>
       </button>
@@ -206,6 +219,14 @@ export class Detail {
     loading.hidden = false;
     bar.style.width = '4%';
 
+    // Inertial data and the effort/velocity limits are in the raw XML but not in
+    // what urdf-loader hands back, so the file is fetched a second time — from
+    // the browser cache, since the loader has just asked for the same URL. Kicked
+    // off alongside the meshes so it is ready by the time they are.
+    const xmlText = fetch(urdfUrl(robot))
+      .then((response) => (response.ok ? response.text() : null))
+      .catch(() => null);
+
     try {
       await this.viewer.load(robot, (done, total) => {
         if (isStale()) return;
@@ -213,13 +234,16 @@ export class Detail {
       });
       if (isStale()) return;
       // Same starting pose as the gallery card, so clicking a card does not
-      // change what the robot looks like.
-      this.viewer.applyPose(robot.pose);
-      // Inertial data comes from the raw XML (urdf-loader drops it).
-      fetch(urdfUrl(robot))
-        .then((r) => r.text())
-        .then((xml) => !isStale() && this.viewer.setInertialData(xml))
-        .catch(() => {});
+      // change what the robot looks like — the reset matters for joints whose
+      // range excludes zero (panda_joint4 is -176°..-4°), which the loader
+      // otherwise leaves parked outside their own limits.
+      this.viewer.poseForPortrait(robot.pose);
+      const xml = await xmlText;
+      if (isStale()) return;
+      if (xml) {
+        this.viewer.setInertialData(xml);
+        this.viewer.setJointMeta(xml);
+      }
       loading.hidden = true;
       this.renderJoints();
       this.renderSpecs(); // fills in the measured height
@@ -317,8 +341,7 @@ export class Detail {
     host.innerHTML = joints
       .map((joint, index) => {
         const isRot = joint.type !== 'prismatic';
-        const lower = joint.ignoreLimits ? -Math.PI : joint.lower;
-        const upper = joint.ignoreLimits ? Math.PI : joint.upper;
+        const [lower, upper] = sliderRange(joint);
         return `<div class="joint" data-index="${index}">
           <div class="joint-head">
             <span class="joint-name" title="${joint.name}">${joint.name}</span>
@@ -326,6 +349,7 @@ export class Detail {
           </div>
           <input type="range" min="${lower}" max="${upper}" step="0.001" value="${joint.value}"
                  data-joint="${encodeURIComponent(joint.name)}" data-rot="${isRot}">
+          ${limitsRow(joint)}
         </div>`;
       })
       .join('');
@@ -359,6 +383,81 @@ function massCell(robot) {
     `${mass.toFixed(2)} kg${suspect ? ` <abbr title="${t('mass.suspect')}">?</abbr>` : ''}` +
     `<br><span class="sub">${t('mass.fromUrdf')}</span>`
   );
+}
+
+/**
+ * How far the slider may travel. A joint with real limits uses them; a
+ * continuous one gets a full turn, and one whose URDF declares no `<limit>` at
+ * all would otherwise be handed the loader's 0..0 default and freeze — those get
+ * a plausible working range instead, wide enough to see the joint move.
+ */
+function sliderRange(joint) {
+  const isRot = joint.type !== 'prismatic';
+  if (joint.hasLimits) return [joint.lower, joint.upper];
+  return isRot ? [-Math.PI, Math.PI] : [-0.5, 0.5];
+}
+
+/**
+ * The limits the URDF declares for one joint: travel, and the effort and
+ * velocity ceilings a controller is supposed to respect. Shown as-is —
+ * `effort="0"` means the upstream file left it at zero, not that the joint is
+ * unlimited.
+ */
+function limitsRow(joint) {
+  const isRot = joint.type !== 'prismatic';
+  const chips = [
+    chip(t('limit.range'), rangeText(joint), rangeTitle(joint)),
+    chip(
+      t('limit.velocity'),
+      joint.velocity === null ? '—' : `${num(joint.velocity)} ${isRot ? 'rad/s' : 'm/s'}`,
+      t('limit.velocityFull'),
+    ),
+    chip(
+      t('limit.effort'),
+      joint.effort === null ? '—' : `${num(joint.effort)} ${isRot ? 'N·m' : 'N'}`,
+      t('limit.effortFull'),
+    ),
+  ];
+  if (joint.mimic?.joint) {
+    const { joint: source, multiplier, offset } = joint.mimic;
+    chips.push(
+      chip(
+        t('limit.mimic'),
+        `${source} ×${num(multiplier)}${offset ? ` ${offset > 0 ? '+' : '−'}${num(Math.abs(offset))}` : ''}`,
+        t('limit.mimicFull'),
+      ),
+    );
+  }
+  return `<div class="joint-limits">${chips.join('')}</div>`;
+}
+
+function chip(label, value, title) {
+  return `<span class="lim" title="${title}"><i>${label}</i>${value}</span>`;
+}
+
+/** Travel, in the same unit as the readout above the slider. */
+function rangeText(joint) {
+  if (joint.type === 'continuous') return t('limit.continuous');
+  if (!joint.hasLimits) return '—';
+  return joint.type === 'prismatic'
+    ? `${num(joint.lower)}…${num(joint.upper)} m`
+    : `${num((joint.lower * 180) / Math.PI, 1)}…${num((joint.upper * 180) / Math.PI, 1)}°`;
+}
+
+/** Hover text for the travel chip: the raw URDF numbers, in radians. */
+function rangeTitle(joint) {
+  if (joint.type === 'continuous') return `${t('limit.rangeFull')} · ${t('limit.continuous')}`;
+  if (!joint.hasLimits) return `${t('limit.rangeFull')} · ${t('limit.none')}`;
+  const unit = joint.type === 'prismatic' ? 'm' : 'rad';
+  return `${t('limit.rangeFull')}: ${num(joint.lower)} … ${num(joint.upper)} ${unit}`;
+}
+
+/** Compact number: no trailing zeros, and no 14-digit float noise. */
+function num(value, digits = 3) {
+  if (value === null || value === undefined || !Number.isFinite(value)) return '—';
+  const abs = Math.abs(value);
+  if (abs !== 0 && (abs < 1e-3 || abs >= 1e5)) return value.toExponential(1);
+  return String(Number(value.toFixed(digits)));
 }
 
 function fmt(value, isRotational) {

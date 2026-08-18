@@ -711,21 +711,81 @@ export class RobotViewer {
     return this._inertials?.get(linkName) || null;
   }
 
+  /**
+   * The parts of `<joint>` urdf-loader throws away: the effort and velocity
+   * limits, whether a position limit was declared at all (the loader defaults a
+   * missing one to 0..0, which is indistinguishable from a joint genuinely
+   * pinned at zero), and mimic relations. Read from the raw XML once and cached
+   * alongside the inertial data.
+   */
+  setJointMeta(xmlText) {
+    const doc = new DOMParser().parseFromString(xmlText, 'text/xml');
+    const map = new Map();
+    const num = (node, attr) => {
+      const raw = node?.getAttribute(attr);
+      if (raw === null || raw === undefined || raw.trim() === '') return null;
+      const value = Number(raw);
+      return Number.isFinite(value) ? value : null;
+    };
+    for (const joint of doc.querySelectorAll('robot > joint')) {
+      const name = joint.getAttribute('name');
+      if (!name) continue;
+      const limit = joint.querySelector(':scope > limit');
+      const mimic = joint.querySelector(':scope > mimic');
+      map.set(name, {
+        type: joint.getAttribute('type') || '',
+        lower: num(limit, 'lower'),
+        upper: num(limit, 'upper'),
+        effort: num(limit, 'effort'),
+        velocity: num(limit, 'velocity'),
+        mimic: mimic
+          ? {
+              joint: mimic.getAttribute('joint') || '',
+              multiplier: num(mimic, 'multiplier') ?? 1,
+              offset: num(mimic, 'offset') ?? 0,
+            }
+          : null,
+      });
+    }
+    this._jointMeta = map;
+    return map;
+  }
+
   // ------------------------------------------------------------------ joints
 
-  /** @returns {Array<{name: string, type: string, lower: number, upper: number, value: number}>} */
+  /**
+   * The actuated joints, each with the limits the URDF declares for it.
+   * `lower`/`upper` come from the loader (which is what the viewer clamps to);
+   * `effort`, `velocity` and `mimic` need the raw XML, so they stay null until
+   * `setJointMeta` has been handed it; `hasLimits` falls back to what the loader
+   * can tell until then.
+   *
+   * @returns {Array<{name: string, type: string, lower: number, upper: number,
+   *   value: number, effort: ?number, velocity: ?number, hasLimits: boolean,
+   *   mimic: ?object}>}
+   */
   jointList() {
     if (!this.robot) return [];
     return Object.values(this.robot.joints)
       .filter((j) => j.jointType !== 'fixed' && !(j.jointType in MULTI_DOF))
-      .map((j) => ({
-        name: j.name,
-        type: j.jointType,
-        lower: j.limit?.lower ?? -Math.PI,
-        upper: j.limit?.upper ?? Math.PI,
-        value: Array.isArray(j.angle) ? j.angle[0] : j.angle,
-        ignoreLimits: j.jointType === 'continuous',
-      }));
+      .map((j) => {
+        const meta = this._jointMeta?.get(j.name) || null;
+        // Without the XML, a 0..0 range is the loader's "no <limit> here".
+        const declared = meta
+          ? meta.lower !== null || meta.upper !== null
+          : j.limit?.lower !== 0 || j.limit?.upper !== 0;
+        return {
+          name: j.name,
+          type: j.jointType,
+          lower: j.limit?.lower ?? -Math.PI,
+          upper: j.limit?.upper ?? Math.PI,
+          value: Array.isArray(j.angle) ? j.angle[0] : j.angle,
+          effort: meta?.effort ?? null,
+          velocity: meta?.velocity ?? null,
+          mimic: meta?.mimic ?? null,
+          hasLimits: j.jointType !== 'continuous' && declared,
+        };
+      });
   }
 
   setJoint(name, value) {
@@ -803,6 +863,7 @@ export class RobotViewer {
     for (const d of this._disposables) d.dispose?.();
     this._disposables.length = 0;
     this._inertials = undefined;
+    this._jointMeta = undefined;
     this.invalidate();
   }
 
