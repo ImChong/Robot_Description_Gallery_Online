@@ -16,6 +16,9 @@ const STRINGS = {
     'panel.specs': 'Specs',
     'panel.joints': 'Joints',
     'panel.resetAll': 'reset all',
+    'joints.unit': 'Angle unit',
+    'joints.unitDeg': 'Show angles in degrees',
+    'joints.unitRad': 'Show angles in radians',
     'panel.download': 'Download',
     'dl.bundle': 'URDF + meshes',
     'dl.bundleSub': 'zip, ready to load',
@@ -95,6 +98,9 @@ const STRINGS = {
     'panel.specs': '参数',
     'panel.joints': '关节',
     'panel.resetAll': '全部复位',
+    'joints.unit': '角度单位',
+    'joints.unitDeg': '以角度（°）显示',
+    'joints.unitRad': '以弧度（rad）显示',
     'panel.download': '下载',
     'dl.bundle': 'URDF + 网格',
     'dl.bundleSub': 'zip，可直接加载',
@@ -222,5 +228,8 @@ export function applyStatic(root = document) {
   }
   for (const el of root.querySelectorAll('[data-i18n-title]')) {
     el.title = t(el.dataset.i18nTitle);
+  }
+  for (const el of root.querySelectorAll('[data-i18n-aria-label]')) {
+    el.setAttribute('aria-label', t(el.dataset.i18nAriaLabel));
   }
 }
