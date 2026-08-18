@@ -89,6 +89,11 @@ for (const robot of targets) {
           // that row means the raw XML never made it into the panel.
           limits: document.querySelectorAll('#d-joints .joint .joint-limits').length,
           specs: document.querySelectorAll('#d-specs dt').length,
+          // The joint tree walks the loaded scene graph, so an empty one means
+          // the panel broke rather than that the robot is simple: every
+          // description has at least a root link.
+          treeNodes: document.querySelectorAll('#d-tree .tree-node').length,
+          treeMovable: document.querySelectorAll('#d-tree .tree-node[data-movable="true"]').length,
           meshes: Number(stage.dataset.meshes || 0),
           height: Number(stage.dataset.height || NaN),
           name: document.getElementById('d-name').textContent,
@@ -117,6 +122,21 @@ for (const robot of targets) {
     console.error(
       `  ✗ ${robot.id.padEnd(26)} ${result.joints} joints but ${result.limits} limit rows`,
     );
+    failures += 1;
+    continue;
+  }
+  // A robot with sliders but no rows for them in the tree means the panel is
+  // showing a different robot from the one on the stage.
+  if (result.joints && result.treeMovable !== result.joints) {
+    console.error(
+      `  ✗ ${robot.id.padEnd(26)} ${result.joints} joint sliders but ` +
+        `${result.treeMovable} movable joints in the tree`,
+    );
+    failures += 1;
+    continue;
+  }
+  if (!result.treeNodes) {
+    console.error(`  ✗ ${robot.id.padEnd(26)} joint tree is empty`);
     failures += 1;
     continue;
   }

@@ -43,6 +43,7 @@ export const THEMES = {
     com: 0xffc857,
     inertia: 0xff6b9d,
     axis: 0x7ee787,
+    highlight: 0x5b9cf6,
     exposure: 1.05,
     shadowOpacity: 0.32,
     hemi: { sky: 0xd7e3f4, ground: 0x1b1f27, intensity: 1.15 },
@@ -59,6 +60,7 @@ export const THEMES = {
     com: 0xb87400,
     inertia: 0xd11b6a,
     axis: 0x18894a,
+    highlight: 0x2d74da,
     exposure: 0.98,
     shadowOpacity: 0.22,
     hemi: { sky: 0xffffff, ground: 0xbcc4d0, intensity: 1.35 },
@@ -131,6 +133,32 @@ function effectivelyVisible(object, root) {
 }
 
 /**
+ * The geometry one link owns: its own `<visual>` and `<collision>` meshes, and
+ * nothing from the links hanging off it — the walk stops at every joint, which
+ * is what makes "this link" a thing that can be counted or lit up on its own.
+ * Overlay helpers parked on the link (frame axes, CoM dots, inertia boxes) are
+ * skipped: they belong to the stage, not to the model.
+ *
+ * @param {import('three').Object3D} link
+ * @param {(mesh: import('three').Mesh, isCollision: boolean) => void} visit
+ */
+function ownGeometry(link, visit) {
+  const walk = (node, collision) => {
+    if (node.userData?.helper) return;
+    const isCollision = collision || node.isURDFCollider === true || node.type === 'URDFCollider';
+    if (node.isMesh) visit(node, isCollision);
+    for (const child of node.children) {
+      if (child.isURDFJoint) continue;
+      walk(child, isCollision);
+    }
+  };
+  for (const child of link.children || []) {
+    if (child.isURDFJoint) continue;
+    walk(child, false);
+  }
+}
+
+/**
  * Bounding box of what is actually on screen. Ancestor visibility matters:
  * collision geometry is hidden by switching off its URDFCollider parent, and
  * counting it here would both mis-measure the robot and hide the case where the
@@ -183,6 +211,10 @@ export class RobotViewer {
     // them in place instead of reloading the robot. Colours that came out of the
     // URDF or a mesh file are the model's own and are never touched.
     this._themed = { visual: [], collision: [] };
+    // One link at a time may be lit up for the tree panel: the meshes whose
+    // material was swapped for a tinted copy, and the originals to put back.
+    this._highlight = [];
+    this._highlighted = null;
     this._raf = null;
     this._needsRender = true;
 
@@ -276,6 +308,11 @@ export class RobotViewer {
     if (next === this.themeName) return;
     this.themeName = next;
     const t = (this.theme = THEMES[next]);
+    // The highlight holds tinted copies of the model's materials; hand the
+    // originals back so the recolouring below reaches them, then light the same
+    // link again in the new palette.
+    const highlighted = this._highlighted;
+    this.highlightLink(null);
 
     if (!this.options.alpha) this.scene.background = new THREE.Color(t.background);
     this.renderer.toneMappingExposure = t.exposure;
@@ -300,6 +337,7 @@ export class RobotViewer {
     for (const material of this._themed.visual) material.color.setHex(t.visual);
     for (const material of this._themed.collision) material.color.setHex(t.collision);
     this._rebuildHelpers();
+    this.highlightLink(highlighted);
     this.invalidate();
   }
 
@@ -765,6 +803,13 @@ export class RobotViewer {
         }
       }
     }
+
+    // Helpers live inside the links and joints they annotate, so anything that
+    // walks the robot looking for the model's own geometry needs to be able to
+    // tell them apart from it.
+    for (const group of Object.values(this._helpers)) {
+      for (const helper of group) helper.userData.helper = true;
+    }
   }
 
   _helperScale() {
@@ -889,6 +934,118 @@ export class RobotViewer {
       });
   }
 
+  // --------------------------------------------------------------- structure
+
+  /**
+   * The kinematic tree, as the URDF declares it: the root link, and under it
+   * one node per joint carrying the link it moves. Read off the scene graph
+   * urdf-loader built rather than off the XML, so what the tree shows is what
+   * is actually on the stage — the same objects the sliders drive and
+   * `highlightLink` lights up.
+   *
+   * `meshes` counts only the geometry the link owns, which is what makes the
+   * difference between a link that is a real body and one that exists to hold a
+   * frame visible in the panel.
+   *
+   * @returns {?{link: string, joint: ?{name: string, type: string, movable: boolean,
+   *   axis: ?number[], mimic: ?object}, meshes: {visual: number, collision: number},
+   *   mass: ?number, children: Array<object>}}
+   */
+  kinematicTree() {
+    if (!this.robot) return null;
+    // A URDF is a tree, but a malformed one can name a loop; the guard keeps
+    // that a missing branch rather than a stack overflow.
+    const seen = new Set();
+    const node = (link, joint) => {
+      if (seen.has(link)) return null;
+      seen.add(link);
+      const meshes = { visual: 0, collision: 0 };
+      ownGeometry(link, (_mesh, isCollision) => {
+        meshes[isCollision ? 'collision' : 'visual'] += 1;
+      });
+      const name = link.urdfName || link.name;
+      const jointName = joint && (joint.urdfName || joint.name);
+      return {
+        link: name,
+        joint: joint
+          ? {
+              name: jointName,
+              type: joint.jointType,
+              movable: joint.jointType !== 'fixed' && !(joint.jointType in MULTI_DOF),
+              axis: joint.axis ? joint.axis.toArray().map((v) => +v.toFixed(4)) : null,
+              mimic: this._jointMeta?.get(jointName)?.mimic ?? null,
+            }
+          : null,
+        meshes,
+        mass: this._inertialOf(name)?.mass ?? null,
+        children: (link.children || [])
+          .filter((child) => child.isURDFJoint)
+          .map((child) => {
+            const childLink = child.children.find((c) => c.isURDFLink);
+            return childLink ? node(childLink, child) : null;
+          })
+          .filter(Boolean),
+      };
+    };
+    // URDFRobot *is* the root link, so the walk starts on the robot itself.
+    return node(this.robot, null);
+  }
+
+  /**
+   * Light one link up on the stage — how the tree panel points at the model.
+   * The link's materials are cloned and tinted rather than edited, so a colour
+   * that came out of the URDF or a mesh file survives being highlighted, and
+   * clearing puts the original material objects straight back on the meshes.
+   *
+   * @param {?string} name link name, or null to clear the highlight
+   */
+  highlightLink(name) {
+    const next = name || null;
+    if (next === this._highlighted) return;
+    this._clearHighlight();
+    this._highlighted = next;
+    const link = next ? this.robot?.links?.[next] : null;
+    if (link) {
+      const color = this.theme.highlight;
+      ownGeometry(link, (mesh) => {
+        const original = mesh.material;
+        const materials = (Array.isArray(original) ? original : [original]).filter(Boolean);
+        if (!materials.length) return;
+        const tinted = materials.map((material) => {
+          const clone = material.clone();
+          // Standard materials glow; the collision wireframes, which have no
+          // emissive channel of their own, take the colour directly.
+          if (clone.emissive) {
+            clone.emissive.setHex(color);
+            clone.emissiveIntensity = 0.75;
+          } else if (clone.color) {
+            clone.color.setHex(color);
+          }
+          return clone;
+        });
+        mesh.material = Array.isArray(original) ? tinted : tinted[0];
+        this._highlight.push({ mesh, original, tinted });
+      });
+    }
+    this.invalidate();
+  }
+
+  /** Which link is lit, if any. */
+  highlightedLink() {
+    return this._highlighted;
+  }
+
+  _clearHighlight() {
+    for (const { mesh, original, tinted } of this._highlight) {
+      mesh.material = original;
+      for (const material of tinted) material.dispose();
+    }
+    this._highlight.length = 0;
+    this._highlighted = null;
+  }
+
+  // ------------------------------------------------------------------ joints
+
   setJoint(name, value) {
     const joint = this.robot?.joints[name];
     if (!joint || joint.jointType in MULTI_DOF || !Number.isFinite(value)) return;
@@ -949,6 +1106,9 @@ export class RobotViewer {
 
   clear() {
     this._clearHelpers();
+    // Before the robot's materials are disposed of, so the tinted copies go and
+    // the originals — which is what the meshes still own — are what is freed.
+    this.highlightLink(null);
     if (this.robot) {
       this.robot.removeFromParent();
       this.robot.traverse((child) => {

@@ -23,8 +23,8 @@ robot_descriptions.py  ──┐
                                           ▼
                        web/  三 .js + urdf-loader 的静态站点（无构建步骤）
                        · 合集网格：按人形 / 四足 / 机械臂…… 分区，标签一点即跳转
-                       · 详情页：关节滑块（含限位/速度/力矩）/ 碰撞体 / 关节轴 /
-                         坐标系 / 质心 / 惯量
+                       · 详情页：关节滑块（含限位/速度/力矩）/ 关节树 / 碰撞体 /
+                         关节轴 / 坐标系 / 质心 / 惯量
                        · 一键下载：URDF 单文件、URDF + 全部网格的 zip，
                          或可直接 colcon 编译的 ROS 2 功能包
 ```
@@ -141,6 +141,29 @@ URDF 原文解析——请求与网格加载并行发出，走的是浏览器缓
 的步进跟着走：角度模式一格 0.1°，弧度模式一格 0.001 rad。移动关节（`prismatic`）
 不受影响，始终以米显示；模型若没有转动关节，这个开关不会出现。
 
+### 关节树
+
+「关节」面板把可动关节平铺成一串滑块，看不出它们怎么连在一起——同一条腿的四个滑块和
+分散在四肢上的四个滑块长得一模一样。详情页 3D 舞台下方因此多了一个**关节树**面板：从
+根连杆开始，每一行是一个关节以及它带动的子连杆，缩进即层级，读一条分支就是读 URDF 里
+的一条运动链。
+
+树是从 urdf-loader 建好的场景图上走出来的，不是另解析一遍 XML——舞台上是什么，树里就
+是什么，和滑块驱动的是同一批对象。每行标注关节类型（旋转 / 连续旋转 / 平移 / 固定，
+带 `<mimic>` 的额外标一个「跟随」），可动关节右侧实时显示当前角度，跟着滑块一起走，
+单位也跟随「关节」面板的 `deg` / `rad` 开关。本身没有几何体的连杆（描述里用来占位或
+标记坐标系的那种）标一个 `∅`，说明它为什么高亮不出东西。
+
+面板和 3D 舞台是联动的：
+
+- **悬停**某一行，对应连杆在舞台上高亮——材质是复制一份再上色，URDF 或网格文件自带的
+  颜色不会被改掉，取消高亮就把原来的材质对象放回去，主题切换时也会按新配色重新点亮；
+- **点击**固定高亮，指针移开也不灭；如果这个关节可动，右侧「关节」面板会滚到它的滑块
+  并短暂标记一下，省得在几十个滑块里找；再点一次取消。
+
+整棵树可以逐节点折叠，标题栏有「全部展开 / 全部收起」，也支持键盘操作（方向键在树里
+移动、展开收起，回车选中）——七十个关节的人形机器人不折叠是读不完的。
+
 ### 一键下载
 
 详情页有三个下载按钮，都在浏览器里完成，没有后端：
@@ -151,6 +174,9 @@ URDF 原文解析——请求与网格加载并行发出，走的是浏览器缓
 - **ROS 2 功能包（zip）**——同样的内容，外面套上一个能直接 `colcon build` 的
   `ament_cmake` 包（见下）。
 - **仅 URDF**——只有那一个 `.urdf` 文件，与上游逐字节一致。
+
+三个按钮一视同仁，没有哪个被主色高亮成「推荐项」：装进仿真、编译成 ROS 2 包还是只要
+一个 `.urdf`，取决于访客要做什么，页面不替他挑。
 
 zip 是手写的（store 方式 + CRC-32），所以专门有一个检查脚本把产物解包验证：
 
@@ -248,7 +274,7 @@ web/js/download.js     一键下载：手写 zip（store + CRC-32）、ROS 2 包
 web/js/theme-init.js   首屏前应用主题，避免闪一下深色
 web/js/theme.js        主题状态与切换事件（3D 舞台据此重新打灯）
 web/js/gallery.js      卡片网格（按类别分区）、标签跳转与滚动高亮、搜索
-web/js/detail.js       详情页：参数表、关节滑块与限位、资源链接、代码片段
+web/js/detail.js       详情页：参数表、关节滑块与限位、关节树、资源链接、代码片段
 web/js/registry.js     注册表加载与筛选
 web/js/i18n.js         中英文界面文案
 web/vendor/            已提交的 three.js 与 urdf-loader（无构建步骤）
@@ -341,6 +367,15 @@ velocity and effort — read from the raw XML, since urdf-loader only exposes
 `lower`/`upper`. A `deg` / `rad` switch in the panel header re-labels the rotational
 readouts and travel in either unit, and is remembered across robots and reloads; the
 sliders themselves stay in radians, so switching never moves the robot.
+
+Under the stage, a **joint tree** shows the description's shape rather than its
+properties: one row per joint with the link it carries, indented into the chain the URDF
+declares, walked off the scene graph the viewer already built. Rows carry the joint type
+and, for the ones that move, a live readout that follows the sliders and their `deg` /
+`rad` switch. Hovering a row lights that link up on the stage — the materials are cloned
+and tinted, so a colour that came out of the URDF survives being highlighted — and
+clicking pins the highlight and scrolls the slider panel to that joint. Branches fold
+individually or all at once, and the tree takes arrow keys.
 
 Colours follow [imchong.github.io](https://imchong.github.io/) — Notion-ish warm
 neutrals, dark by default with a light theme. The detail page's 3D preview switches with

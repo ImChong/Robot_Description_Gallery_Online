@@ -479,7 +479,7 @@ html[lang^='zh'] .footer-text-zh { display: block; }
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
-.stage-extra > :last-child { grid-column: 1 / -1; }
+.stage-extra > .span-full { grid-column: 1 / -1; }
 
 .stage-toolbar {
   position: absolute; left: 12px; bottom: 12px; right: 12px;
@@ -546,9 +546,11 @@ html[lang^='zh'] .footer-text-zh { display: block; }
   font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.09em;
   color: var(--text-faint); font-weight: 600;
 }
-.panel-block-head { display: flex; align-items: baseline; justify-content: space-between; }
+/* Wraps rather than crushes: on a narrow card the counts and the fold controls
+ * fall to a second line instead of breaking mid-label. */
+.panel-block-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 2px 10px; }
 
-.panel-block-head .head-actions { display: flex; align-items: center; gap: 10px; }
+.panel-block-head .head-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
 
 .link-btn {
   border: 0; background: none; color: var(--accent); font: inherit; font-size: 12px;
@@ -625,7 +627,11 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 .joints::-webkit-scrollbar { width: 8px; }
 .joints::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-.joint { padding: 6px 0; border-bottom: 1px solid var(--border-soft); }
+.joint { padding: 6px 0; border-bottom: 1px solid var(--border-soft); transition: background var(--transition), box-shadow var(--transition); }
+/* Where the joint tree just sent the reader: the row is marked for a couple of
+ * seconds, because a list this long scrolled silently would look like nothing
+ * happened. */
+.joint.is-target { background: var(--accent-soft); box-shadow: 0 0 0 6px var(--accent-soft); border-radius: 3px; }
 .joint:last-child { border-bottom: 0; }
 .joint-head { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; }
 .joint-name { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -677,6 +683,85 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 }
 .joint input[type='range']:active::-webkit-slider-thumb { background: var(--accent-hover); }
 .joint input[type='range']:active::-moz-range-thumb { background: var(--accent-hover); }
+
+/* ── Joint tree ─────────────────────────────────────────── */
+
+/* The shape of the description, under the stage where a deep chain has the
+ * width to stay on one line. It scrolls inside its own card: a humanoid is
+ * sixty rows, and the page below it should not move to make room. */
+.tree-host {
+  margin-top: 10px;
+  max-height: 340px;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.tree-host::-webkit-scrollbar { width: 8px; height: 8px; }
+.tree-host::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* min-content width so a row's background — and the value column its
+ * `margin-left: auto` pins to the right — span the widest branch rather than
+ * stopping at the edge of the scroll port. */
+.tree { min-width: max-content; }
+.tree, .tree ul { list-style: none; margin: 0; padding: 0; }
+/* One guide line per level of nesting, so a branch can be followed by eye. */
+.tree ul { margin-left: 7px; padding-left: 11px; border-left: 1px solid var(--border-soft); }
+.tree-node[aria-expanded='false'] > ul { display: none; }
+.tree-node:focus { outline: none; }
+.tree-node:focus-visible > .tree-row { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+.tree-row {
+  display: flex; align-items: baseline; gap: 6px;
+  padding: 2px 6px 2px 0; border-radius: var(--radius-sm);
+  font-size: 12px; line-height: 1.7; white-space: nowrap; cursor: pointer;
+}
+.tree-row:hover { background: var(--bg-alt); }
+.tree-node[aria-selected='true'] > .tree-row { background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent-line); }
+
+/* A disclosure arrow that keeps its column when there is nothing to fold, so
+ * the names down a branch stay aligned. */
+.tree-twisty {
+  flex: 0 0 auto; width: 13px; text-align: center;
+  color: var(--text-faint); font-size: 9px; user-select: none;
+  transition: transform var(--transition);
+}
+.tree-node[aria-expanded] > .tree-row > .tree-twisty::before { content: '▾'; }
+.tree-node[aria-expanded='false'] > .tree-row > .tree-twisty { transform: rotate(-90deg); }
+.tree-twisty:hover { color: var(--text); }
+
+.tree-joint { font-family: var(--font-mono); font-size: 11.5px; color: var(--text); }
+.tree-to { color: var(--text-faint); font-size: 10px; }
+.tree-link {
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--text-muted);
+  overflow: hidden; text-overflow: ellipsis;
+}
+.tree-bare { color: var(--text-faint); font-style: normal; margin-left: 4px; }
+.tree-value {
+  margin-left: auto; padding-left: 12px;
+  font-family: var(--font-mono); font-size: 11px; color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Joint type, as a chip the eye can sort on: the ones that move carry the
+ * accent, `fixed` recedes — a third of a humanoid's tree is fixed joints. */
+.jt {
+  flex: 0 0 auto;
+  padding: 0 5px; border-radius: 4px;
+  border: 1px solid var(--border); background: var(--bg-alt);
+  font-family: var(--font-sans); font-size: 9.5px; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--text-muted);
+}
+.jt[data-jt='revolute'], .jt[data-jt='continuous'], .jt[data-jt='prismatic'] {
+  color: var(--accent); border-color: var(--accent-line); background: var(--accent-soft);
+}
+.jt[data-jt='fixed'] { color: var(--text-faint); border-color: var(--border-soft); background: none; }
+.jt.mimic { color: var(--warn); border-color: var(--border); }
+.jt.root { color: var(--text-faint); }
+
+.tree-summary {
+  font-family: var(--font-mono); font-size: 11px; color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.tree-hint { margin: 9px 0 0; font-size: 11px; color: var(--text-faint); }
 
 /* ── Resources & snippets ───────────────────────────────── */
 

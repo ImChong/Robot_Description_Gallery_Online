@@ -111,7 +111,23 @@
           <ul class="resources" id="d-resources"></ul>
         </section>
 
-        <section class="panel-block">
+        <!-- The kinematic tree, which is the shape of the description rather
+             than a property of it: the joint panel beside the stage lists the
+             joints flat, this says how they hang together. -->
+        <section class="panel-block span-full">
+          <div class="panel-block-head">
+            <h3 data-i18n="panel.tree">Joint tree</h3>
+            <div class="head-actions">
+              <span class="tree-summary" id="tree-summary"></span>
+              <button class="link-btn" id="tree-expand" data-i18n="tree.expandAll">expand all</button>
+              <button class="link-btn" id="tree-collapse" data-i18n="tree.collapseAll">collapse all</button>
+            </div>
+          </div>
+          <div class="tree-host" id="d-tree"></div>
+          <p class="tree-hint" data-i18n="tree.hint">Hover a row to light that link up on the stage; click to keep it lit and jump to its slider.</p>
+        </section>
+
+        <section class="panel-block span-full">
           <h3 data-i18n="panel.reuse">Use this model</h3>
           <div class="snippet">
             <div class="snippet-tabs" id="snippet-tabs"></div>
