@@ -1,5 +1,9 @@
 # Robot URDF Gallery · 机器人 URDF 合集
 
+[![Verify registry](https://github.com/ImChong/Robot_URDF_Gallery/actions/workflows/verify.yml/badge.svg)](https://github.com/ImChong/Robot_URDF_Gallery/actions/workflows/verify.yml)
+[![Deploy to GitHub Pages](https://github.com/ImChong/Robot_URDF_Gallery/actions/workflows/pages.yml/badge.svg)](https://github.com/ImChong/Robot_URDF_Gallery/actions/workflows/pages.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 一个可浏览、可交互的机器人模型合集：人形、四足、机械臂、灵巧手等 **70 个**开源机器人
 描述文件，直接在浏览器里加载、拖关节、看碰撞体和惯量。灵感来自
 [All Hands Up](https://allhandsup.org/)，但对象从机械手扩展到所有常见机器人。

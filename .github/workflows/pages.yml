@@ -10,16 +10,19 @@ permissions:
   pages: write
   id-token: write
 
+# One deployment at a time, but never cancel one that is already running: a
+# half-applied Pages deployment is worse than a slightly stale site, and the
+# retries below mean a run can legitimately sit in this group for minutes.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
+      url: ${{ steps.deploy.outputs.page_url || steps.deploy_retry.outputs.page_url || steps.deploy_final.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -48,5 +51,29 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
+
+      # The Pages deployment API returns a transient 503 often enough that one
+      # attempt is not reliable — two runs failed exactly that way on
+      # 2026-08-17 with a green build and a perfectly good artifact.
+      # deploy-pages does not retry the create call itself, so the retry lives
+      # here; re-running it just creates a fresh deployment from the artifact
+      # already uploaded above, which is what the 503 message asks for.
       - id: deploy
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
+
+      - name: Back off before the second attempt
+        if: steps.deploy.outcome == 'failure'
+        run: sleep 60
+      - id: deploy_retry
+        if: steps.deploy.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
+
+      # Last attempt, and the only one allowed to fail the job.
+      - name: Back off before the final attempt
+        if: steps.deploy.outcome == 'failure' && steps.deploy_retry.outcome == 'failure'
+        run: sleep 120
+      - id: deploy_final
+        if: steps.deploy.outcome == 'failure' && steps.deploy_retry.outcome == 'failure'
         uses: actions/deploy-pages@v4
