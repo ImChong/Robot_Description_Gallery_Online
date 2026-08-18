@@ -39,7 +39,9 @@ const state = { ready: false, error: null, meshes: 0, measured: null };
 window.__thumb = state;
 
 try {
-  const data = await loadRegistry('../data/robots.json');
+  // Thumbnails are rendered for the whole registry, hidden entries included,
+  // so flipping a checkbox in data/visibility.md never needs a re-render.
+  const data = await loadRegistry('../data/robots.json', { visibility: false });
   const robot = byId(data, params.get('robot'));
   if (!robot) throw new Error(`unknown robot: ${params.get('robot')}`);
 

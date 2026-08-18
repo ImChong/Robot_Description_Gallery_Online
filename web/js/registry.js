@@ -2,7 +2,46 @@
 
 let cache = null;
 
-export async function loadRegistry(url = '../data/robots.json') {
+/**
+ * The visibility list: one task-list line per robot in data/visibility.md.
+ * Only the checkbox and the leading `id` matter; everything after them is
+ * there for whoever is reading the file.
+ *
+ *     - [x] `g1` **G1** — UNITREE Robotics — [unitreerobotics/unitree_ros …](…)
+ */
+const VISIBILITY_LINE = /^\s*[-*]\s*\[([ xX])\]\s*`([a-z0-9_]+)`/;
+
+/** @returns {Map<string, boolean>} robot id -> shown in the gallery */
+export function parseVisibility(text) {
+  const wanted = new Map();
+  for (const line of text.split('\n')) {
+    const match = VISIBILITY_LINE.exec(line);
+    if (match) wanted.set(match[2], match[1] !== ' ');
+  }
+  return wanted;
+}
+
+/**
+ * Hand-editing data/visibility.md is the whole point, so every failure mode
+ * here shows the robot rather than hiding it: a missing or unreadable file
+ * leaves the gallery complete, and an id nobody has listed yet (a robot added
+ * to the registry before the file was regenerated) shows up by default.
+ */
+async function applyVisibility(data, url) {
+  let wanted;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) return;
+    wanted = parseVisibility(await response.text());
+  } catch {
+    return; // file not deployed, offline, ad blocker — show everything
+  }
+  if (!wanted.size) return;
+  data.hidden = data.robots.filter((r) => wanted.get(r.id) === false);
+  data.robots = data.robots.filter((r) => wanted.get(r.id) !== false);
+}
+
+export async function loadRegistry(url = '../data/robots.json', { visibility = true } = {}) {
   if (cache) return cache;
   const response = await fetch(url);
   if (!response.ok) throw new Error(`registry ${response.status}`);
@@ -16,6 +55,9 @@ export async function loadRegistry(url = '../data/robots.json') {
       .join(' ')
       .toLowerCase();
   }
+  data.hidden = [];
+  // Sibling of the registry, so this works from /web/ and from thumb.html alike.
+  if (visibility) await applyVisibility(data, url.replace(/[^/]*$/, 'visibility.md'));
   cache = data;
   return data;
 }
