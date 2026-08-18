@@ -31,8 +31,11 @@ robot_descriptions.py  ──┐
 
 界面配色沿用 [imchong.github.io](https://imchong.github.io/) 的设计语言：Notion 风格
 的暖灰、8px 圆角、胶囊标签，深色为默认并可切换浅色（`data-theme`，与那边共用
-`cl-theme` / `cl-lang` 两个 localStorage 键名）。3D 区域在两种主题下都保持深色影棚——
-这里近一半机器人是白色的，放在白底上就看不见了。
+`cl-theme` / `cl-lang` 两个 localStorage 键名）。详情页的 3D 预览跟着一起切换：背景、
+地面网格、灯光、默认材质灰以及碰撞体 / 关节轴 / 质心 / 惯量这些叠加层的配色都各有一
+套——浅色影棚下默认材质要更深、轮廓光要收住，否则白色机器人就贴在白底上没影了。切换
+是就地重打灯，姿态、视角和已加载的网格都不动。列表页的卡片底色则始终保持深色影棚：
+缩略图是离线按深色渲染好的图片，换成浅底会糊成一片。
 
 ## 目前收录
 
@@ -237,6 +240,7 @@ scripts/check_registry.mjs / serve.mjs / vendor.mjs / browser.mjs
 web/js/viewer.js       three.js 场景 + URDF 加载 + 各种可视化叠加层
 web/js/download.js     一键下载：手写 zip（store + CRC-32）、ROS 2 包与 NOTICE 生成
 web/js/theme-init.js   首屏前应用主题，避免闪一下深色
+web/js/theme.js        主题状态与切换事件（3D 舞台据此重新打灯）
 web/js/gallery.js      卡片网格、类别筛选、搜索
 web/js/detail.js       详情页：参数表、关节滑块与限位、资源链接、代码片段
 web/js/registry.js     注册表加载与筛选
@@ -326,8 +330,13 @@ readouts and travel in either unit, and is remembered across robots and reloads;
 sliders themselves stay in radians, so switching never moves the robot.
 
 Colours follow [imchong.github.io](https://imchong.github.io/) — Notion-ish warm
-neutrals, dark by default with a light theme — while the 3D areas stay a dark studio in
-both themes, since half of these robots are white.
+neutrals, dark by default with a light theme. The detail page's 3D preview switches with
+it: backdrop, floor grid, lighting, the default material grey and every overlay colour
+have a palette per theme, because the neon cyan and green that carry a dark stage go
+pastel on a bright one, and a pale robot needs a darker default grey to keep its edges.
+The switch relights the scene in place — pose, camera and loaded meshes all stay put.
+Gallery cards keep the dark studio in both themes: their thumbnails are rendered offline
+against the dark palette, and half of these robots are white.
 
 ```bash
 npm install && npm run vendor && npm run dev   # → http://localhost:8080/web/

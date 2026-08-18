@@ -3,6 +3,7 @@ import { loadRegistry, byId } from './registry.js';
 import { Gallery } from './gallery.js';
 import { Detail } from './detail.js';
 import { applyStatic, detectLang, setLang, lang, LANGS } from './i18n.js';
+import { theme, toggleTheme } from './theme.js';
 
 const views = {
   gallery: document.getElementById('view-gallery'),
@@ -34,24 +35,18 @@ function writeHash({ robot, category, q }) {
 
 /**
  * Theme is stamped on <html> before first paint by js/theme-init.js; this only
- * handles the toggle. Same storage key as imchong.github.io.
+ * handles the toggle. js/theme.js owns the switch itself, so the 3D stage can
+ * hear about it without knowing this button exists.
  */
 function setupTheme() {
-  const root = document.documentElement;
   const button = document.getElementById('theme-toggle');
   const render = () => {
     // Show the theme you would switch *to*, with the reference site's glyphs.
-    button.textContent = root.getAttribute('data-theme') === 'light' ? '🌙' : '☀️';
+    button.textContent = theme() === 'light' ? '🌙' : '☀️';
   };
   render();
   button.addEventListener('click', () => {
-    const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-    root.setAttribute('data-theme', next);
-    try {
-      localStorage.setItem('cl-theme', next);
-    } catch {
-      /* private mode — the choice just will not persist */
-    }
+    toggleTheme();
     render();
   });
 }

@@ -1,19 +1,27 @@
 /** The detail view: 3D stage, overlay toggles, joint sliders, spec table. */
-import { RobotViewer, THEME } from './viewer.js';
+import { RobotViewer, THEMES } from './viewer.js';
 import { formatBytes, urdfUrl } from './registry.js';
 import { categoryLabel, lang, t } from './i18n.js';
 import { downloadBundle, downloadRos2, downloadUrdf, ros2PackageName } from './download.js';
+import { onThemeChange, theme } from './theme.js';
 
 const el = (id) => document.getElementById(id);
 
+/**
+ * `swatch` names the palette entry the dot borrows, rather than a colour: the
+ * overlays are drawn in whichever studio the stage is currently lit for, and
+ * the legend has to move with them.
+ */
 const OVERLAYS = [
-  { key: 'visual', color: null },
-  { key: 'collision', color: THEME.collision },
-  { key: 'axes', color: THEME.axis },
-  { key: 'frames', color: null },
-  { key: 'com', color: THEME.com },
-  { key: 'inertia', color: THEME.inertia },
+  { key: 'visual', swatch: null },
+  { key: 'collision', swatch: 'collision' },
+  { key: 'axes', swatch: 'axis' },
+  { key: 'frames', swatch: null },
+  { key: 'com', swatch: 'com' },
+  { key: 'inertia', swatch: 'inertia' },
 ];
+
+const hex = (color) => `#${color.toString(16).padStart(6, '0')}`;
 
 /**
  * Angles are radians everywhere below the UI — that is what the URDF declares
@@ -76,13 +84,22 @@ export class Detail {
   constructor(data) {
     this.data = data;
     this.snippetKind = 'python';
-    this.viewer = new RobotViewer(el('canvas-host'));
+    this.viewer = new RobotViewer(el('canvas-host'), { theme: theme() });
 
     el('overlay-toggles').innerHTML = OVERLAYS.map(
       (o) => `<button data-overlay="${o.key}" aria-pressed="${o.key === 'visual'}">
-        ${o.color ? `<span class="swatch" style="color:#${o.color.toString(16).padStart(6, '0')}"></span>` : ''}
+        ${o.swatch ? `<span class="swatch" data-swatch="${o.swatch}"></span>` : ''}
         <span data-i18n="overlay.${o.key}">${t(`overlay.${o.key}`)}</span></button>`,
     ).join('');
+    this.renderSwatches();
+
+    // The stage is part of the page, not a picture pasted onto it: flipping the
+    // header's theme switch relights it in place, keeping the pose, the camera
+    // and the loaded meshes exactly where the visitor left them.
+    onThemeChange((name) => {
+      this.viewer.setTheme(name);
+      this.renderSwatches();
+    });
 
     el('overlay-toggles').addEventListener('click', (event) => {
       const button = event.target.closest('button');
@@ -142,6 +159,14 @@ export class Detail {
       const button = event.target.closest('button[data-download]');
       if (button) this.runDownload(button);
     });
+  }
+
+  /** Paint the overlay legend dots in the palette the stage is currently using. */
+  renderSwatches() {
+    const palette = THEMES[theme()];
+    for (const dot of el('overlay-toggles').querySelectorAll('.swatch[data-swatch]')) {
+      dot.style.color = hex(palette[dot.dataset.swatch]);
+    }
   }
 
   /**

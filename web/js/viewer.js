@@ -22,16 +22,56 @@ const UP_Z = -Math.PI / 2; // URDF is Z-up, three.js is Y-up.
  */
 const MULTI_DOF = { floating: 6, planar: 3 };
 
-export const THEME = {
-  background: 0x0e1116,
-  grid: 0x2a3340,
-  gridAccent: 0x3d4a5c,
-  visual: 0xb9c2cf,
-  collision: 0x4ac3ff,
-  com: 0xffc857,
-  inertia: 0xff6b9d,
-  axis: 0x7ee787,
+/**
+ * Two studios, one per site theme. The stage is not just a background swap:
+ * the overlay colours are re-picked rather than dimmed, because the neon cyan
+ * and green that carry a dark stage go pastel and unreadable on a bright one,
+ * and the default mesh grey has to move the other way — pale enough to stand
+ * out of the dark, dark enough to stand out of the light.
+ *
+ * Lighting travels with the palette too: the strong rim light exists to lift a
+ * matte-black robot off a dark backdrop, and on a bright stage it only blows
+ * out the highlights, so it is turned most of the way down.
+ */
+export const THEMES = {
+  dark: {
+    background: 0x0e1116,
+    grid: 0x2a3340,
+    gridAccent: 0x3d4a5c,
+    visual: 0xb9c2cf,
+    collision: 0x4ac3ff,
+    com: 0xffc857,
+    inertia: 0xff6b9d,
+    axis: 0x7ee787,
+    exposure: 1.05,
+    shadowOpacity: 0.32,
+    hemi: { sky: 0xd7e3f4, ground: 0x1b1f27, intensity: 1.15 },
+    key: { color: 0xffffff, intensity: 2.0 },
+    fill: { color: 0x9fb6d4, intensity: 0.8 },
+    rim: { color: 0xdce8ff, intensity: 1.6 },
+  },
+  light: {
+    background: 0xeceef2,
+    grid: 0xa9b2c0,
+    gridAccent: 0x7f8998,
+    visual: 0x98a2b1,
+    collision: 0x0f7cc4,
+    com: 0xb87400,
+    inertia: 0xd11b6a,
+    axis: 0x18894a,
+    exposure: 0.98,
+    shadowOpacity: 0.22,
+    hemi: { sky: 0xffffff, ground: 0xbcc4d0, intensity: 1.35 },
+    key: { color: 0xffffff, intensity: 2.1 },
+    fill: { color: 0xd8e3f2, intensity: 0.7 },
+    rim: { color: 0x93a8c4, intensity: 0.5 },
+  },
 };
+
+/** @param {string} name @returns {'dark'|'light'} the palette key, defaulting to dark */
+function themeName(name) {
+  return name === 'light' ? 'light' : 'dark';
+}
 
 /**
  * Mesh files are not always only geometry. Several Collada exports still carry
@@ -121,7 +161,8 @@ function boundingBox(root) {
 export class RobotViewer {
   /**
    * @param {HTMLElement} container
-   * @param {{shadows?: boolean, grid?: boolean, antialias?: boolean, alpha?: boolean}} options
+   * @param {{shadows?: boolean, grid?: boolean, antialias?: boolean, alpha?: boolean,
+   *          theme?: 'dark'|'light'}} options
    */
   constructor(container, options = {}) {
     this.container = container;
@@ -130,6 +171,7 @@ export class RobotViewer {
       grid: true,
       antialias: true,
       alpha: false,
+      theme: 'dark',
       loadTimeout: 120000,
       ...options,
     };
@@ -137,11 +179,18 @@ export class RobotViewer {
     this.overlays = { collision: false, visual: true, frames: false, axes: false, com: false, inertia: false };
     this._helpers = { frames: [], axes: [], com: [], inertia: [] };
     this._disposables = [];
+    // Materials the viewer authored itself, kept so a theme switch can recolour
+    // them in place instead of reloading the robot. Colours that came out of the
+    // URDF or a mesh file are the model's own and are never touched.
+    this._themed = { visual: [], collision: [] };
     this._raf = null;
     this._needsRender = true;
 
+    this.themeName = themeName(this.options.theme);
+    this.theme = THEMES[this.themeName];
+
     this.scene = new THREE.Scene();
-    if (!this.options.alpha) this.scene.background = new THREE.Color(THEME.background);
+    if (!this.options.alpha) this.scene.background = new THREE.Color(this.theme.background);
 
     this.camera = new THREE.PerspectiveCamera(45, 1, 0.01, 200);
     this.camera.position.set(1.6, 1.2, 1.9);
@@ -155,7 +204,7 @@ export class RobotViewer {
     this.renderer.shadowMap.enabled = this.options.shadows;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.05;
+    this.renderer.toneMappingExposure = this.theme.exposure;
     container.appendChild(this.renderer.domElement);
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -169,10 +218,12 @@ export class RobotViewer {
   }
 
   _buildEnvironment() {
-    const hemi = new THREE.HemisphereLight(0xd7e3f4, 0x1b1f27, 1.15);
+    const t = this.theme;
+    const hemi = new THREE.HemisphereLight(t.hemi.sky, t.hemi.ground, t.hemi.intensity);
     this.scene.add(hemi);
+    this.hemiLight = hemi;
 
-    const key = new THREE.DirectionalLight(0xffffff, 2.0);
+    const key = new THREE.DirectionalLight(t.key.color, t.key.intensity);
     key.position.set(2.4, 4.2, 2.8);
     key.castShadow = this.options.shadows;
     key.shadow.mapSize.set(2048, 2048);
@@ -182,19 +233,21 @@ export class RobotViewer {
     this.scene.add(key);
     this.keyLight = key;
 
-    const fill = new THREE.DirectionalLight(0x9fb6d4, 0.8);
+    const fill = new THREE.DirectionalLight(t.fill.color, t.fill.intensity);
     fill.position.set(-2.5, 1.6, -2.0);
     this.scene.add(fill);
+    this.fillLight = fill;
 
     // Rim light from behind: several of these robots are matte black (H1, Atlas)
     // and would otherwise read as a flat silhouette on a dark stage.
-    const rim = new THREE.DirectionalLight(0xdce8ff, 1.6);
+    const rim = new THREE.DirectionalLight(t.rim.color, t.rim.intensity);
     rim.position.set(-1.8, 2.4, -3.4);
     this.scene.add(rim);
+    this.rimLight = rim;
 
     this.ground = new THREE.Mesh(
       new THREE.PlaneGeometry(40, 40),
-      new THREE.ShadowMaterial({ opacity: 0.32 }),
+      new THREE.ShadowMaterial({ opacity: t.shadowOpacity }),
     );
     this.ground.rotation.x = -Math.PI / 2;
     this.ground.receiveShadow = true;
@@ -203,15 +256,72 @@ export class RobotViewer {
     this.ground.visible = this.options.shadows;
     this.scene.add(this.ground);
 
-    this.grid = new THREE.GridHelper(20, 40, THEME.gridAccent, THEME.grid);
-    this.grid.material.transparent = true;
-    this.grid.material.opacity = 0.42;
-    this.grid.visible = this.options.grid;
-    this.scene.add(this.grid);
+    this._installGrid(20, 40);
 
     this.world = new THREE.Group(); // holds the robot, rotated into Y-up
     this.world.rotation.x = UP_Z;
     this.scene.add(this.world);
+  }
+
+  /**
+   * Swap the stage between the dark and light studios without reloading the
+   * robot: the scene is rebuilt only where the palette actually reaches — the
+   * backdrop, the lights, the grid, the materials the viewer authored, and the
+   * inspection overlays, whose colours are baked into their geometry.
+   *
+   * @param {'dark'|'light'} name
+   */
+  setTheme(name) {
+    const next = themeName(name);
+    if (next === this.themeName) return;
+    this.themeName = next;
+    const t = (this.theme = THEMES[next]);
+
+    if (!this.options.alpha) this.scene.background = new THREE.Color(t.background);
+    this.renderer.toneMappingExposure = t.exposure;
+
+    this.hemiLight.color.setHex(t.hemi.sky);
+    this.hemiLight.groundColor.setHex(t.hemi.ground);
+    this.hemiLight.intensity = t.hemi.intensity;
+    for (const [light, spec] of [
+      [this.keyLight, t.key],
+      [this.fillLight, t.fill],
+      [this.rimLight, t.rim],
+    ]) {
+      light.color.setHex(spec.color);
+      light.intensity = spec.intensity;
+    }
+    this.ground.material.opacity = t.shadowOpacity;
+
+    // GridHelper bakes its two colours into a vertex attribute, so recolouring
+    // it means building it again — at whatever size the current robot asked for.
+    this._installGrid(this._grid.size, this._grid.divisions);
+
+    for (const material of this._themed.visual) material.color.setHex(t.visual);
+    for (const material of this._themed.collision) material.color.setHex(t.collision);
+    this._rebuildHelpers();
+    this.invalidate();
+  }
+
+  /**
+   * Put a fresh grid on the stage in the current palette, inheriting the
+   * position of the one it replaces.
+   */
+  _installGrid(size, divisions) {
+    const previous = this.grid;
+    const grid = new THREE.GridHelper(size, divisions, this.theme.gridAccent, this.theme.grid);
+    grid.material.transparent = true;
+    grid.material.opacity = 0.4;
+    grid.visible = this.options.grid;
+    if (previous) {
+      grid.position.copy(previous.position);
+      previous.removeFromParent();
+      previous.geometry.dispose();
+      previous.material.dispose();
+    }
+    this.grid = grid;
+    this._grid = { size, divisions };
+    this.scene.add(grid);
   }
 
   /**
@@ -225,21 +335,10 @@ export class RobotViewer {
     );
     const divisions = Math.min(Math.max(Math.round((span * 6) / step), 8), 60);
     const size = step * divisions;
-    if (this._gridStep === step && this._gridSize === size) {
-      this.grid.position.set(center.x, floorY, center.z);
-      return;
+    if (this._grid.size !== size || this._grid.divisions !== divisions) {
+      this._installGrid(size, divisions);
     }
-    this._gridStep = step;
-    this._gridSize = size;
-    this.grid.removeFromParent();
-    this.grid.geometry.dispose();
-    this.grid.material.dispose();
-    this.grid = new THREE.GridHelper(size, divisions, THEME.gridAccent, THEME.grid);
-    this.grid.material.transparent = true;
-    this.grid.material.opacity = 0.4;
-    this.grid.visible = this.options.grid;
     this.grid.position.set(center.x, floorY, center.z);
-    this.scene.add(this.grid);
   }
 
   _observeResize() {
@@ -403,12 +502,13 @@ export class RobotViewer {
       mesh.castShadow = false;
       mesh.receiveShadow = false;
       mesh.material = new THREE.MeshBasicMaterial({
-        color: THEME.collision,
+        color: this.theme.collision,
         wireframe: true,
         transparent: true,
         opacity: 0.55,
       });
       this._disposables.push(mesh.material);
+      this._themed.collision.push(mesh.material);
       return;
     }
     // Keep authored colours where the URDF or mesh provides them, but give
@@ -424,11 +524,12 @@ export class RobotViewer {
         !material.map);
     if (untouched) {
       mesh.material = new THREE.MeshStandardMaterial({
-        color: THEME.visual,
+        color: this.theme.visual,
         metalness: 0.25,
         roughness: 0.55,
       });
       this._disposables.push(mesh.material);
+      this._themed.visual.push(mesh.material);
     } else if (material.isMeshBasicMaterial || material.isMeshLambertMaterial) {
       const upgraded = new THREE.MeshStandardMaterial({
         color: material.color.clone(),
@@ -628,7 +729,7 @@ export class RobotViewer {
       for (const joint of Object.values(this.robot.joints)) {
         if (joint.jointType === 'fixed') continue;
         const dir = joint.axis.clone().normalize();
-        const arrow = new THREE.ArrowHelper(dir, new THREE.Vector3(), scale * 2.2, THEME.axis, scale * 0.5, scale * 0.28);
+        const arrow = new THREE.ArrowHelper(dir, new THREE.Vector3(), scale * 2.2, this.theme.axis, scale * 0.5, scale * 0.28);
         arrow.line.material.depthTest = false;
         arrow.cone.material.depthTest = false;
         arrow.renderOrder = 11;
@@ -645,7 +746,7 @@ export class RobotViewer {
           const radius = Math.max(scale * 0.22 * Math.cbrt(Math.max(inertial.mass, 1e-3)), scale * 0.12);
           const dot = new THREE.Mesh(
             new THREE.SphereGeometry(radius, 16, 12),
-            new THREE.MeshBasicMaterial({ color: THEME.com, depthTest: false }),
+            new THREE.MeshBasicMaterial({ color: this.theme.com, depthTest: false }),
           );
           dot.position.fromArray(inertial.origin);
           dot.renderOrder = 12;
@@ -655,7 +756,7 @@ export class RobotViewer {
         if (this.overlays.inertia && inertial.box) {
           const box = new THREE.Mesh(
             new THREE.BoxGeometry(...inertial.box),
-            new THREE.MeshBasicMaterial({ color: THEME.inertia, wireframe: true, transparent: true, opacity: 0.7, depthTest: false }),
+            new THREE.MeshBasicMaterial({ color: this.theme.inertia, wireframe: true, transparent: true, opacity: 0.7, depthTest: false }),
           );
           box.position.fromArray(inertial.origin);
           box.renderOrder = 12;
@@ -862,6 +963,8 @@ export class RobotViewer {
     }
     for (const d of this._disposables) d.dispose?.();
     this._disposables.length = 0;
+    this._themed.visual.length = 0;
+    this._themed.collision.length = 0;
     this._inertials = undefined;
     this._jointMeta = undefined;
     this.invalidate();
