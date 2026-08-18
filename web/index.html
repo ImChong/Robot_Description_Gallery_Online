@@ -52,9 +52,12 @@
     </dl>
   </section>
 
-  <nav class="filters" id="category-filters" aria-label="Categories"></nav>
+  <!-- Jump chips, not filters: the grid below carries every category at once
+       and these scroll to the one that was clicked. -->
+  <nav class="filters" id="category-filters" aria-label="Jump to a category"
+       data-i18n-aria-label="filters.aria"></nav>
 
-  <div class="grid" id="grid"></div>
+  <div class="sections" id="grid"></div>
   <p class="empty" id="empty" hidden data-i18n="gallery.empty">No robot matches this filter.</p>
 </main>
 

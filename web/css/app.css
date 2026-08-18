@@ -283,10 +283,30 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
   transition: background var(--transition), border-color var(--transition), color var(--transition);
 }
 .filters button:hover { border-color: var(--text-faint); }
-.filters button[aria-pressed='true'] {
+.filters button[aria-current='true'] {
   background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600;
 }
 .filters button .count { font-family: var(--font-mono); font-size: 11px; opacity: 0.65; }
+
+/* ── Category sections ──────────────────────────────────── */
+
+/* The gallery is read top to bottom — humanoids, quadrupeds, arms — and the
+ * chips above scroll between these. `scroll-margin-top` is for the anchor
+ * navigation a browser does on its own; when js/gallery.js scrolls it measures
+ * the bar instead, which wraps to a second row at middling widths. */
+.sections { display: flex; flex-direction: column; gap: 34px; }
+
+.cat-section { scroll-margin-top: calc(var(--header-h) + 62px); }
+
+.cat-heading {
+  display: flex; align-items: baseline; gap: 9px;
+  font-size: 17px; line-height: 1.3;
+  padding-bottom: 9px; margin-bottom: 15px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.cat-heading .count {
+  font-family: var(--font-mono); font-size: 11.5px; font-weight: 400; color: var(--text-faint);
+}
 
 /* ── Card grid ──────────────────────────────────────────── */
 
@@ -722,6 +742,14 @@ html[lang^='zh'] .footer-text-zh { display: block; }
   .search:focus-within input { width: clamp(110px, 42vw, 200px); }
   .lang-toggle, .theme-toggle { min-width: 32px; padding: 0 0.45rem; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 12px; }
+  .sections { gap: 24px; }
+  .cat-heading { font-size: 15.5px; margin-bottom: 12px; }
+  /* The chips are navigation now and the bar is sticky, so it stays one row:
+   * wrapped, seven categories cost a third of a phone screen for the whole
+   * scroll. js/gallery.js keeps the section being read scrolled into it. */
+  .filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .filters::-webkit-scrollbar { display: none; }
+  .filters button { flex: 0 0 auto; }
   .hero-stats { gap: 20px; }
   .hero-stats dd { font-size: 20px; }
   .stage-hint { display: none; }
