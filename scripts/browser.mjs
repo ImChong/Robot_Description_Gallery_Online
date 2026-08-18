@@ -33,18 +33,33 @@ export const GL_ARGS = [
 function proxyConfig() {
   const server = process.env.HTTPS_PROXY || process.env.https_proxy;
   if (!server) return {};
-  const bypass = (process.env.NO_PROXY || process.env.no_proxy || 'localhost,127.0.0.1')
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean)
-    .join(',');
-  return { proxy: { server: server.startsWith('http') ? server : `http://${server}`, bypass } };
+  // The dev server is the one host that must never go through the proxy: an
+  // agent proxy that only relays CONNECT answers a plain GET to localhost with
+  // 405, and the page under test never loads. Loopback leads the list whatever
+  // NO_PROXY says, and `::` — which some environments put there and Chromium
+  // rejects — is dropped rather than left to invalidate the rest.
+  const bypass = [
+    'localhost',
+    '127.0.0.1',
+    '::1',
+    ...(process.env.NO_PROXY || process.env.no_proxy || '').split(','),
+  ]
+    .map((entry) => entry.trim())
+    .filter((entry, index, all) => entry && entry !== '::' && all.indexOf(entry) === index);
+  return {
+    proxy: { server: server.startsWith('http') ? server : `http://${server}`, bypass: bypass.join(',') },
+    bypass,
+  };
 }
 
 export async function launchBrowser(options = {}) {
   const executablePath = CANDIDATES.find((path) => path && existsSync(path));
-  const proxy = proxyConfig();
+  const { bypass, ...proxy } = proxyConfig();
   const extraArgs = [];
+  // Chromium's own flag as well as Playwright's option: the option alone has
+  // been seen not to reach the browser, and then every request — the local page
+  // included — goes to the proxy.
+  if (bypass) extraArgs.push(`--proxy-bypass-list=${bypass.join(';')}`);
   // Some TLS-terminating proxies reset Chromium's TLS 1.3 handshake (the large
   // post-quantum ClientHello is the usual culprit) while curl and node get
   // through fine. Capping the handshake keeps the mesh downloads working behind

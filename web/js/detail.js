@@ -159,6 +159,45 @@ export class Detail {
       const button = event.target.closest('button[data-download]');
       if (button) this.runDownload(button);
     });
+
+    this.bindTree();
+  }
+
+  /**
+   * The joint tree talks to two things at once: the stage, where the link under
+   * the pointer lights up, and the slider list, which it scrolls to the joint
+   * that was clicked. Hovering is a preview — leaving the tree puts the pinned
+   * link back — and clicking pins.
+   */
+  bindTree() {
+    const tree = el('d-tree');
+
+    tree.addEventListener('click', (event) => {
+      const twisty = event.target.closest('.tree-twisty');
+      const node = event.target.closest('.tree-node');
+      if (!node) return;
+      if (twisty) this.toggleTreeNode(node);
+      else this.selectTreeNode(node);
+    });
+
+    tree.addEventListener('pointerover', (event) => {
+      const node = event.target.closest('.tree-node');
+      if (node) this.viewer.highlightLink(node.dataset.link);
+    });
+    tree.addEventListener('pointerleave', () => {
+      this.viewer.highlightLink(this.pinnedLink || null);
+    });
+    // Keyboard focus is the other way to walk the tree, and it lights the same
+    // link the pointer would.
+    tree.addEventListener('focusin', (event) => {
+      const node = event.target.closest('.tree-node');
+      if (node) this.viewer.highlightLink(node.dataset.link);
+    });
+
+    tree.addEventListener('keydown', (event) => this.onTreeKey(event));
+
+    el('tree-expand').addEventListener('click', () => this.setTreeExpanded(true));
+    el('tree-collapse').addEventListener('click', () => this.setTreeExpanded(false));
   }
 
   /** Paint the overlay legend dots in the palette the stage is currently using. */
@@ -212,7 +251,7 @@ export class Detail {
     const meshes = r.assets.mesh_files;
     const bundleSize = formatBytes(r.assets.mesh_bytes + r.urdf.bytes);
     el('d-downloads').innerHTML = `
-      <button class="dl-btn primary" data-download="bundle">
+      <button class="dl-btn" data-download="bundle">
         <i class="dl-fill"></i>
         <span class="dl-icon" aria-hidden="true">⬇</span>
         <span class="dl-text">
@@ -275,6 +314,7 @@ export class Detail {
     this.renderSnippet();
     el('d-joints').innerHTML = '';
     el('joint-unit').hidden = true;
+    this.clearTree();
 
     const loading = el('stage-loading');
     const bar = el('loading-bar');
@@ -310,6 +350,7 @@ export class Detail {
       }
       loading.hidden = true;
       this.renderJoints();
+      this.renderTree();
       this.renderSpecs(); // fills in the measured height
       // Published for the headless scripts: how much geometry arrived, and how
       // big it measured. A robot with meshes but no measurable size means the
@@ -436,12 +477,229 @@ export class Detail {
       this.viewer.setJoint(name, value);
       input.closest('.joint').querySelector('[data-value]').textContent =
         fmt(value, input.dataset.rot === 'true');
+      const cell = this.treeValues?.get(name);
+      if (cell) cell.textContent = fmt(value, input.dataset.rot === 'true');
     };
+    // A re-render is a reset, a unit switch or a new robot; either way the
+    // tree's own readouts are showing the previous state.
+    this.syncTreeValues();
+  }
+
+  // ------------------------------------------------------------- joint tree
+
+  clearTree() {
+    el('d-tree').innerHTML = '';
+    el('tree-summary').textContent = '';
+    this.treeValues = new Map();
+    this.pinnedLink = null;
+  }
+
+  /**
+   * The kinematic tree: the root link, then one row per joint with the link it
+   * carries. The joint panel beside the stage is a flat list of everything that
+   * moves — this is where a visitor can see that four of those sliders are one
+   * leg, and which link each of them actually swings.
+   */
+  renderTree() {
+    this.clearTree();
+    const root = this.viewer.kinematicTree();
+    const host = el('d-tree');
+    if (!root) return;
+
+    const counts = { links: 0, joints: 0 };
+    countTree(root, counts);
+    el('tree-summary').textContent = t('tree.summary')
+      .replace('{links}', counts.links)
+      .replace('{joints}', counts.joints);
+
+    if (!root.children.length) {
+      host.innerHTML = `<p class="muted" style="font-size:12.5px">${t('tree.none')}</p>`;
+      return;
+    }
+
+    host.innerHTML =
+      `<ul class="tree" role="tree" aria-label="${t('tree.aria')}">${treeNode(root, true)}</ul>`;
+    // The rows carry a roving tabindex: one stop for the whole tree, arrow keys
+    // to move inside it, rather than sixty tab stops on a humanoid.
+    host.querySelector('.tree-node')?.setAttribute('tabindex', '0');
+    for (const cell of host.querySelectorAll('[data-tree-value]')) {
+      this.treeValues.set(cell.dataset.treeValue, cell);
+    }
+    this.syncTreeValues();
+  }
+
+  /** Repaint the tree's angle readouts from the pose the viewer is actually in. */
+  syncTreeValues() {
+    if (!this.treeValues?.size) return;
+    for (const joint of this.viewer.jointList()) {
+      const cell = this.treeValues.get(joint.name);
+      if (cell) cell.textContent = fmt(joint.value, joint.type !== 'prismatic');
+    }
+  }
+
+  toggleTreeNode(node) {
+    const expanded = node.getAttribute('aria-expanded');
+    if (expanded === null) return; // a leaf has nothing to fold
+    node.setAttribute('aria-expanded', expanded === 'true' ? 'false' : 'true');
+  }
+
+  /** Fold or unfold the whole tree. The root stays open — folding it hides everything. */
+  setTreeExpanded(open) {
+    for (const node of el('d-tree').querySelectorAll('.tree-node[aria-expanded]')) {
+      if (!open && node.classList.contains('is-root')) continue;
+      node.setAttribute('aria-expanded', String(open));
+    }
+  }
+
+  /**
+   * Pin a row: its link stays lit on the stage after the pointer leaves, and if
+   * the joint above it is one that moves, the slider panel scrolls to it.
+   * Clicking the pinned row again lets go.
+   */
+  selectTreeNode(node) {
+    const host = el('d-tree');
+    const wasPinned = node.getAttribute('aria-selected') === 'true';
+    for (const other of host.querySelectorAll('.tree-node[aria-selected="true"]')) {
+      other.removeAttribute('aria-selected');
+    }
+    for (const other of host.querySelectorAll('.tree-node[tabindex="0"]')) {
+      other.setAttribute('tabindex', '-1');
+    }
+    node.setAttribute('tabindex', '0');
+    if (wasPinned) {
+      this.pinnedLink = null;
+    } else {
+      node.setAttribute('aria-selected', 'true');
+      this.pinnedLink = node.dataset.link;
+      if (node.dataset.joint && node.dataset.movable === 'true') {
+        this.revealJoint(node.dataset.joint);
+      }
+    }
+    this.viewer.highlightLink(this.pinnedLink);
+  }
+
+  /** Bring one joint's slider into view and mark it, so the jump is visible. */
+  revealJoint(name) {
+    const host = el('d-joints');
+    const input = host.querySelector(`input[data-joint="${CSS.escape(encodeURIComponent(name))}"]`);
+    const row = input?.closest('.joint');
+    if (!row) return;
+    for (const other of host.querySelectorAll('.joint.is-target')) other.classList.remove('is-target');
+    row.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    row.classList.add('is-target');
+    clearTimeout(this._targetTimer);
+    this._targetTimer = setTimeout(() => row.classList.remove('is-target'), 2200);
+  }
+
+  /** Arrow-key navigation, as a tree widget is expected to have. */
+  onTreeKey(event) {
+    const node = event.target.closest('.tree-node');
+    if (!node) return;
+    const open = node.getAttribute('aria-expanded');
+    const move = (target) => {
+      if (!target) return;
+      node.setAttribute('tabindex', '-1');
+      target.setAttribute('tabindex', '0');
+      target.focus();
+    };
+    const rows = [...el('d-tree').querySelectorAll('.tree-node')].filter((n) => n.offsetParent);
+    const at = rows.indexOf(node);
+
+    switch (event.key) {
+      case 'ArrowDown': move(rows[at + 1]); break;
+      case 'ArrowUp': move(rows[at - 1]); break;
+      case 'ArrowRight':
+        if (open === 'false') node.setAttribute('aria-expanded', 'true');
+        else if (open === 'true') move(node.querySelector('.tree-node'));
+        break;
+      case 'ArrowLeft':
+        if (open === 'true') node.setAttribute('aria-expanded', 'false');
+        else move(node.parentElement?.closest('.tree-node'));
+        break;
+      case 'Home': move(rows[0]); break;
+      case 'End': move(rows[rows.length - 1]); break;
+      case 'Enter': case ' ': this.selectTreeNode(node); break;
+      default: return;
+    }
+    event.preventDefault();
   }
 
   relayout() {
     this.viewer.invalidate();
   }
+}
+
+/**
+ * One node of the joint tree, and everything under it. Each row is the joint
+ * that attaches this link to its parent plus the link itself, so reading down a
+ * branch reads the chain the way the URDF declares it; the root has no joint
+ * above it and says so.
+ *
+ * Names come out of an upstream URDF, so they are escaped on the way into the
+ * markup and into the attributes the panel reads them back out of.
+ */
+function treeNode(node, isRoot = false) {
+  const { joint } = node;
+  const children = node.children.length
+    ? `<ul role="group">${node.children.map((child) => treeNode(child)).join('')}</ul>`
+    : '';
+  const type = joint ? joint.type : null;
+  const label = joint
+    ? `<span class="tree-joint">${esc(joint.name)}</span>` +
+      `<span class="jt" data-jt="${esc(type)}" title="${esc(type)}">${jointTypeLabel(type)}</span>` +
+      (joint.mimic?.joint
+        ? `<span class="jt mimic" title="${t('limit.mimicFull')}">${t('limit.mimic')}</span>`
+        : '') +
+      `<span class="tree-to" aria-hidden="true">→</span>`
+    : `<span class="jt root">${t('tree.root')}</span>`;
+  // A link with no geometry of its own is usually a frame the description
+  // carries for reference; saying so explains why highlighting it lights
+  // nothing up on the stage.
+  const bare = node.meshes.visual === 0 && node.meshes.collision === 0;
+
+  return (
+    `<li class="tree-node${isRoot ? ' is-root' : ''}" role="treeitem" tabindex="-1"` +
+    `${node.children.length ? ' aria-expanded="true"' : ''}` +
+    ` data-link="${esc(node.link)}"` +
+    (joint ? ` data-joint="${esc(joint.name)}" data-movable="${joint.movable}"` : '') +
+    '>' +
+    '<span class="tree-row">' +
+    `<span class="tree-twisty" aria-hidden="true"></span>` +
+    label +
+    `<span class="tree-link"${bare ? ` title="${t('tree.noMesh')}"` : ''}>${esc(node.link)}` +
+    `${bare ? '<i class="tree-bare" aria-hidden="true">∅</i>' : ''}</span>` +
+    (joint?.movable ? `<span class="tree-value" data-tree-value="${esc(joint.name)}">—</span>` : '') +
+    '</span>' +
+    children +
+    '</li>'
+  );
+}
+
+/**
+ * The joint type in the reader's language, falling back to what the URDF wrote
+ * for a type this UI has no name for — `t()` hands the key back for a miss.
+ */
+function jointTypeLabel(type) {
+  const label = t(`jt.${type}`);
+  return esc(label === `jt.${type}` ? type : label);
+}
+
+/** How much of a robot the tree is showing: links, and the joints between them. */
+function countTree(node, counts) {
+  counts.links += 1;
+  for (const child of node.children) {
+    counts.joints += 1;
+    countTree(child, counts);
+  }
+  return counts;
+}
+
+/** Link and joint names are upstream text; they never reach the DOM unescaped. */
+function esc(value) {
+  return String(value).replace(
+    /[&<>"']/g,
+    (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c],
+  );
 }
 
 /**
