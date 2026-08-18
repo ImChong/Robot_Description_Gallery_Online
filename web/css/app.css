@@ -411,8 +411,22 @@ html[lang^='zh'] .footer-text-zh { display: block; }
   display: grid;
   grid-template-columns: minmax(0, 1fr) 340px;
   gap: 18px;
-  align-items: start;
 }
+
+/* The viewer and everything that belongs to it rather than to the pose. Only
+ * the specs and the joint sliders stay beside the stage; the reference cards
+ * sit underneath, where there is width to spare and the side column no longer
+ * runs a screen and a half long. */
+.stage-col { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+/* Two cards side by side with the snippet across the pair: the code block is
+ * the one card that wants width, and its edges line up with the outer edges of
+ * the two above it. */
+.stage-extra {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.stage-extra > :last-child { grid-column: 1 / -1; }
 
 .stage-toolbar {
   position: absolute; left: 12px; bottom: 12px; right: 12px;
@@ -468,6 +482,7 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 .panel { display: flex; flex-direction: column; gap: 14px; }
 
 .panel-block {
+  flex: 0 0 auto;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -547,7 +562,13 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 
 /* ── Joints ─────────────────────────────────────────────── */
 
-.joints { margin-top: 10px; max-height: 330px; overflow-y: auto; padding-right: 4px; }
+/* The panel is stretched to the height of the stage column and the joint list
+ * absorbs the difference: it runs from under the specs down to the foot of the
+ * last card beneath the viewer, scrolling inside that. The 190px floor never
+ * binds in practice — the stage and its cards are far taller than the spec
+ * table — but it keeps the list from collapsing behind a long spec block. */
+.joints-block { display: flex; flex-direction: column; flex: 1 1 0; min-height: 190px; }
+.joints { margin-top: 10px; flex: 1 1 auto; min-height: 0; overflow-y: auto; padding-right: 4px; }
 .joints::-webkit-scrollbar { width: 8px; }
 .joints::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
@@ -614,7 +635,13 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 }
 .resources li:last-child a { border-bottom: 0; }
 .resources a:hover { color: var(--accent); }
-.resources .kind { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-faint); }
+.resources .res-label { white-space: nowrap; }
+/* The link says what it is; the upstream path after it is the detail, so that
+ * is what gets clipped when the column is narrow — in full on hover. */
+.resources .kind {
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--text-faint);
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
 
 .snippet { margin-top: 10px; position: relative; }
 .snippet-tabs { display: flex; gap: 4px; margin-bottom: 9px; flex-wrap: wrap; }
@@ -635,8 +662,14 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 
 @media (max-width: 1000px) {
   .detail-body { grid-template-columns: minmax(0, 1fr); }
+  /* One column: the stage's children join the page grid directly so the specs
+   * and sliders can sit right under the viewer, and the reference cards drop
+   * to the end rather than pushing them off screen. */
+  .stage-col { display: contents; }
+  .stage-extra { order: 1; }
   .stage { height: min(56vh, 500px); }
-  .joints { max-height: none; }
+  .joints-block { display: block; flex: 0 0 auto; }
+  .joints { flex: none; }
 }
 
 @media (max-width: 720px) {
@@ -659,6 +692,7 @@ html[lang^='zh'] .footer-text-zh { display: block; }
   .hero-stats { gap: 20px; }
   .hero-stats dd { font-size: 20px; }
   .stage-hint { display: none; }
+  .stage-extra { grid-template-columns: minmax(0, 1fr); }
   /* The overlay toggles do not fit on one narrow line; let them scroll rather
    * than pushing the rest of the toolbar off screen. */
   .stage-toolbar { flex-direction: column; align-items: flex-start; }
