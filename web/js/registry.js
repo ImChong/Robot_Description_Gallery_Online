@@ -66,24 +66,29 @@ export function byId(data, id) {
   return data.robots.find((r) => r.id === id) || null;
 }
 
-/** Categories that actually have entries, in registry order, with counts. */
-export function categoriesWithCounts(data) {
-  const counts = new Map();
-  for (const robot of data.robots) {
-    counts.set(robot.category, (counts.get(robot.category) || 0) + 1);
-  }
-  return data.categories
-    .filter((c) => counts.has(c.id))
-    .map((c) => ({ ...c, count: counts.get(c.id) }));
-}
-
-export function filterRobots(data, { category = 'all', query = '' } = {}) {
+export function filterRobots(data, { query = '' } = {}) {
   const q = query.trim().toLowerCase();
   const terms = q ? q.split(/\s+/) : [];
-  return data.robots.filter((robot) => {
-    if (category !== 'all' && robot.category !== category) return false;
-    return terms.every((term) => robot._haystack.includes(term));
-  });
+  return data.robots.filter((robot) => terms.every((term) => robot._haystack.includes(term)));
+}
+
+/**
+ * The gallery's reading order: humanoids, then quadrupeds, then arms — one
+ * group per category, in registry order, with anything whose category the
+ * registry does not list appended after them. The search still applies inside
+ * the groups, and a group nothing matches is dropped rather than left empty.
+ *
+ * @returns {{ id: string, robots: object[] }[]}
+ */
+export function groupRobots(data, state = {}) {
+  const groups = new Map(data.categories.map((c) => [c.id, []]));
+  for (const robot of filterRobots(data, state)) {
+    if (!groups.has(robot.category)) groups.set(robot.category, []);
+    groups.get(robot.category).push(robot);
+  }
+  return [...groups]
+    .filter(([, robots]) => robots.length)
+    .map(([id, robots]) => ({ id, robots }));
 }
 
 export function stats(data) {

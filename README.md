@@ -22,12 +22,18 @@ robot_descriptions.py  ──┐
                                           │
                                           ▼
                        web/  三 .js + urdf-loader 的静态站点（无构建步骤）
-                       · 合集网格（离线渲染的缩略图）
+                       · 合集网格：按人形 / 四足 / 机械臂…… 分区，标签一点即跳转
                        · 详情页：关节滑块（含限位/速度/力矩）/ 碰撞体 / 关节轴 /
                          坐标系 / 质心 / 惯量
                        · 一键下载：URDF 单文件、URDF + 全部网格的 zip，
                          或可直接 colcon 编译的 ROS 2 功能包
 ```
+
+列表页按类别分区排列——人形、四足、机械臂、灵巧手、双足、双臂、移动操作，顺序与注册表
+一致，每区一个标题和数量。顶部那排类别标签因此不再是筛选器而是跳转导航：点一下滚到对应
+分区，读到哪一区就亮到哪一区，地址栏同步为 `#category=quadruped`，分享出去便是一个直达
+该分区的链接。搜索仍然是筛选，它在各分区内部生效，并把一个都没命中的分区整块收起。窄屏
+上标签条收成一行横向滚动，当前分区的标签会自动滚进视野。
 
 界面配色沿用 [imchong.github.io](https://imchong.github.io/) 的设计语言：Notion 风格
 的暖灰、8px 圆角、胶囊标签，深色为默认并可切换浅色（`data-theme`，与那边共用
@@ -241,7 +247,7 @@ web/js/viewer.js       three.js 场景 + URDF 加载 + 各种可视化叠加层
 web/js/download.js     一键下载：手写 zip（store + CRC-32）、ROS 2 包与 NOTICE 生成
 web/js/theme-init.js   首屏前应用主题，避免闪一下深色
 web/js/theme.js        主题状态与切换事件（3D 舞台据此重新打灯）
-web/js/gallery.js      卡片网格、类别筛选、搜索
+web/js/gallery.js      卡片网格（按类别分区）、标签跳转与滚动高亮、搜索
 web/js/detail.js       详情页：参数表、关节滑块与限位、资源链接、代码片段
 web/js/registry.js     注册表加载与筛选
 web/js/i18n.js         中英文界面文案
@@ -298,6 +304,13 @@ web/vendor/            已提交的 three.js 与 urdf-loader（无构建步骤�
 A browsable 3D gallery of 70 open robot descriptions — humanoids, quadrupeds, arms,
 hands — that loads URDFs in the browser, lets you drag joints, and overlays collision
 geometry, joint axes, link frames, centres of mass and inertia boxes.
+
+The gallery is laid out in one section per category — humanoids, quadrupeds, arms, hands
+and the rest, in registry order — so the chips above the grid are navigation rather than a
+filter: clicking one scrolls to that section, the chip for the section being read lights
+up as you scroll, and the address bar follows it (`#category=quadruped` is a link straight
+into that band of the page). Search still filters, inside the sections, and folds away any
+section it leaves empty.
 
 **No model files are hosted here.** Each entry records its upstream repository and the
 commit `robot_descriptions.py` pins; the URDF and its meshes stream from jsDelivr's

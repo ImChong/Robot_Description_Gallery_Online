@@ -19,14 +19,19 @@ function parseHash() {
   };
 }
 
-function writeHash({ robot, category, q }) {
+/** The address for a state: a robot, or the gallery at a section and a query. */
+function hashFor({ robot, category, q }) {
   const params = new URLSearchParams();
   if (robot) params.set('robot', robot);
   else {
     if (category && category !== 'all') params.set('category', category);
     if (q) params.set('q', q);
   }
-  const hash = params.toString();
+  return params.toString();
+}
+
+function writeHash(state) {
+  const hash = hashFor(state);
   const next = hash ? `#${hash}` : location.pathname;
   if (next !== location.hash && !(hash === '' && location.hash === '')) {
     history.replaceState(null, '', next);
@@ -89,7 +94,6 @@ async function main() {
   let detail = null;
 
   const initial = parseHash();
-  gallery.state.category = initial.category;
   gallery.state.query = initial.q;
   document.getElementById('search').value = initial.q;
   gallery.renderStats();
@@ -97,13 +101,23 @@ async function main() {
   gallery.onStateChange = (state) => {
     if (!parseHash().robot) writeHash({ category: state.category, q: state.query });
   };
+  // The gallery is long now that every category is on it at once, so coming
+  // back from a detail page returns to the card that was clicked, not the top.
+  let galleryScroll = 0;
 
   async function route() {
-    const { robot: id } = parseHash();
+    const { robot: id, category } = parseHash();
     if (!id) {
       views.detail.hidden = true;
       views.gallery.hidden = false;
       document.title = 'Robot URDF Gallery · 机器人 URDF 合集';
+      // `#category=quadruped` is a link to a section of the page: honour it on
+      // the first load and whenever the address bar names a section other than
+      // the one being read. Coming back from a robot it names that same
+      // section, and then the remembered scroll is the better answer — it
+      // returns to the card that was clicked rather than the section's top.
+      if (category !== gallery.state.category) gallery.jumpTo(category, { smooth: false });
+      else window.scrollTo({ top: galleryScroll });
       writeHash(gallery.state);
       return;
     }
@@ -112,6 +126,7 @@ async function main() {
       location.hash = '';
       return;
     }
+    if (!views.gallery.hidden) galleryScroll = window.scrollY;
     views.gallery.hidden = true;
     views.detail.hidden = false;
     window.scrollTo({ top: 0 });
@@ -136,14 +151,17 @@ async function main() {
     nextBtn.title = next.name;
   }
 
-  document.getElementById('back-btn').addEventListener('click', () => {
-    location.hash = '';
-  });
+  // Leaving a robot returns to the gallery as it was — same section, same
+  // search — rather than to a bare address that reads as "start from the top".
+  const toGallery = () => {
+    location.hash = hashFor(gallery.state);
+  };
+  document.getElementById('back-btn').addEventListener('click', toGallery);
 
   window.addEventListener('hashchange', route);
   window.addEventListener('keydown', (event) => {
     if (event.target.matches('input, textarea')) return;
-    if (event.key === 'Escape' && parseHash().robot) location.hash = '';
+    if (event.key === 'Escape' && parseHash().robot) toGallery();
     if (event.key === 'ArrowLeft') document.getElementById('prev-robot')?.click();
     if (event.key === 'ArrowRight') document.getElementById('next-robot')?.click();
     if (event.key === '/') {
