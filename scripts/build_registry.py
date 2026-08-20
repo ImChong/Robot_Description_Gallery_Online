@@ -415,7 +415,10 @@ def upstream_from_curation(item: dict[str, Any]) -> Upstream:
         license_path=spec.get("license_file"),
         github=spec["github"],
         commit=spec["commit"],
-        package_path=spec.get("package") or posixpath.dirname(urdf_path),
+        # An explicit empty string means the repository root is the package —
+        # true of every repository that ships exactly one description. Only an
+        # absent key falls back to the directory holding the URDF.
+        package_path=spec["package"] if spec.get("package") is not None else posixpath.dirname(urdf_path),
         urdf_path=urdf_path,
         mjcf_path=spec.get("mjcf"),
         uses_xacro=False,

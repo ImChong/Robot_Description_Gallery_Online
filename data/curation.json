@@ -17,7 +17,8 @@
     "the commit to pin, the URDF path and the licence — everything the build would",
     "otherwise have read from a description module. Such an entry must set `id`,",
     "and should set `name`, `maker` and `upstream.tags` too, since nothing else",
-    "supplies them."
+    "supplies them. `upstream.package` names the ROS package directory; leave it",
+    "as \"\" when the repository root is itself the package."
   ],
   "categories": [
     {
@@ -277,6 +278,64 @@
       },
       "notes": "A3 Ultra with two dexterous hands: 63 moving joints against the 31 of the hand-less variants, sixteen per hand.",
       "notes_zh": "带两只灵巧手的 A3 Ultra：63 个可动关节，而不带手的版本只有 31 个，每只手十六个。"
+    },
+    {
+      "id": "magicbot_gen1",
+      "name": "Magicbot Gen1",
+      "maker": "MagicLab",
+      "category": "humanoid",
+      "upstream": {
+        "github": "MagiclabRobotics/magicbot-gen1_description",
+        "commit": "413a3a50cee2013f654f7c436ac131b935be4e84",
+        "package": "",
+        "urdf": "urdf/MAGICBOT.urdf",
+        "mjcf": "mjcf/MAGICBOT.xml",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.magiclab.top/human"
+      },
+      "notes": "30 joints: six per leg, seven per arm, a two-axis waist and a two-axis neck. The hands are one rigid part here; upstream's MAGICBOT_with_hand.urdf splits each into a five-finger hand with 11 more joints.",
+      "notes_zh": "30 个关节：单腿 6 个、单臂 7 个，外加两轴腰部与两轴颈部。这里的手掌是一整块，上游的 MAGICBOT_with_hand.urdf 把它拆成五指手，每只手多出 11 个关节。"
+    },
+    {
+      "id": "magicbot_z1",
+      "name": "Magicbot Z1",
+      "maker": "MagicLab",
+      "category": "humanoid",
+      "upstream": {
+        "github": "MagiclabRobotics/magicbot-z1_description",
+        "commit": "f58c620ac323fe8c1ffda410d9fdb9074fe8adfc",
+        "package": "",
+        "urdf": "urdf/MagicBotZ1.urdf",
+        "mjcf": "mjcf/MAGICBOTZ1.xml",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.magiclab.top/z1"
+      },
+      "notes": "23 actuated joints: six per leg, five per arm and a waist yaw. The head and both palms hang off fixed joints, so the URDF moves one joint fewer than upstream's joint tree suggests.",
+      "notes_zh": "23 个驱动关节：单腿 6 个、单臂 5 个，外加腰部 yaw。头部和两只手掌是固定关节，所以 URDF 里可动关节比上游 README 的关节树少一个。",
+      "pose": {
+        "left_elbow_joint": 1.4,
+        "right_elbow_joint": 1.4
+      }
     },
     {
       "description": "gr1_description",
@@ -700,6 +759,84 @@
         "leg3_hl_joint0": 0.0,
         "leg3_hl_joint1": -0.7,
         "leg3_hl_joint2": 1.4
+      }
+    },
+    {
+      "id": "magicdog",
+      "name": "MagicDog",
+      "maker": "MagicLab",
+      "category": "quadruped",
+      "upstream": {
+        "github": "MagiclabRobotics/magicdog_description",
+        "commit": "e37cd1dca176b9aa19721bb5029dd377a1f3ed92",
+        "package": "",
+        "urdf": "urdf/magicdog.urdf",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE.txt",
+        "tags": [
+          "quadruped"
+        ]
+      },
+      "links": {
+        "official": "https://www.magiclab.top/dog"
+      },
+      "notes": "Three joints per leg plus a yawing head. The calf limits stop short of zero, so the knees stay bent whatever you do with the sliders.",
+      "notes_zh": "每条腿 3 个关节，另有一个可左右转的头部。小腿关节的限位不包含 0，所以无论怎么拖滑块，膝盖都是弯的。",
+      "pose": {
+        "FL_hip_joint": 0.0,
+        "FL_thigh_joint": 0.78,
+        "FL_calf_joint": -1.55,
+        "FR_hip_joint": 0.0,
+        "FR_thigh_joint": 0.78,
+        "FR_calf_joint": -1.55,
+        "RL_hip_joint": 0.0,
+        "RL_thigh_joint": 0.78,
+        "RL_calf_joint": -1.55,
+        "RR_hip_joint": 0.0,
+        "RR_thigh_joint": 0.78,
+        "RR_calf_joint": -1.55
+      }
+    },
+    {
+      "id": "magicdog_w",
+      "name": "MagicDog-W",
+      "maker": "MagicLab",
+      "category": "quadruped",
+      "upstream": {
+        "github": "MagiclabRobotics/magicdog-w_description",
+        "commit": "0de1ee339ca41c40c36b50eb51490df74291d2b2",
+        "package": "",
+        "urdf": "urdf/magicdog_w.urdf",
+        "mjcf": "mjcf/MAGICDOGW.xml",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "quadruped",
+          "wheeled"
+        ]
+      },
+      "links": {
+        "official": "https://www.magiclab.top/dog-w"
+      },
+      "notes": "The wheeled MagicDog: a continuous wheel joint below the usual three leg joints, 16 in all. The head is a fixed link here, unlike on the legged version.",
+      "notes_zh": "轮足版 MagicDog：常规三个腿部关节之下再挂一个连续转动的轮关节，共 16 个。和足式版不同，这里的头部是固定连杆。",
+      "pose": {
+        "FL_hip_joint": 0.0,
+        "FL_thigh_joint": 0.78,
+        "FL_calf_joint": -1.55,
+        "FR_hip_joint": 0.0,
+        "FR_thigh_joint": 0.78,
+        "FR_calf_joint": -1.55,
+        "RL_hip_joint": 0.0,
+        "RL_thigh_joint": 0.78,
+        "RL_calf_joint": -1.55,
+        "RR_hip_joint": 0.0,
+        "RR_thigh_joint": 0.78,
+        "RR_calf_joint": -1.55
       }
     },
     {
