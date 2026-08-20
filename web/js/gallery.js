@@ -72,9 +72,6 @@ export class Gallery {
     const s = stats(this.data);
     el('stat-robots').textContent = s.robots;
     el('stat-makers').textContent = s.makers;
-    if (this.data.generated) {
-      el('footer-generated').textContent = `${this.data.generator} · ${this.data.generated}`;
-    }
   }
 
   renderFilters() {
