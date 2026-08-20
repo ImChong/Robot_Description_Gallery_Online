@@ -124,6 +124,42 @@ function urdfColorsToLinear(xml, scratch = new THREE.Color()) {
   });
 }
 
+/**
+ * Force a visual material to render solid.
+ *
+ * Upstream hands out translucency freely and rarely on purpose: Booster T1's
+ * URDF paints its whole body `rgba="… 0.2"`, Baxter's arms come in at 0.3,
+ * Upkie's chassis and the Dex5-1 palm at 0.8 and 0.7. urdf-loader honours the
+ * alpha and switches depth writing off with it, so the robot arrives as a
+ * ghost with its own far side and its internals showing through — and against
+ * the transparent canvas the thumbnails render on, the card background shows
+ * through too. This is a gallery of shapes, not of glass.
+ *
+ * Two things are deliberately out of reach:
+ *
+ * - Materials that never asked to be blended. An opaque material with depth
+ *   writing switched off is a decal that has to win against the surface it
+ *   is laid on — ANYmal's logo panel, the labels on Atlas and Valkyrie —
+ *   and turning depth writing back on makes it lose the z-fight and vanish.
+ * - Texture-driven alpha (`alphaTest`, `alphaMap`, or a `map` whose alpha
+ *   channel does the cutting). There the alpha carves a shape out of the
+ *   surface instead of making it see-through, so clearing `transparent`
+ *   paints the cut-away pixels back in.
+ *
+ * Collision wireframes and the overlay helpers author their own transparency
+ * and never come through here.
+ */
+function makeOpaque(material) {
+  for (const one of Array.isArray(material) ? material : [material]) {
+    if (!one?.transparent) continue;
+    if (one.alphaTest > 0 || one.alphaMap || one.map) continue;
+    one.transparent = false;
+    one.opacity = 1;
+    one.depthWrite = true;
+    one.needsUpdate = true;
+  }
+}
+
 /** True only if the object and every ancestor up to the root is visible. */
 function effectivelyVisible(object, root) {
   for (let node = object; node && node !== root.parent; node = node.parent) {
@@ -420,7 +456,10 @@ export class RobotViewer {
   async load(entry, onProgress) {
     this.clear();
     const base = entry.assets.base;
-    const loader = new URDFLoader(new THREE.LoadingManager());
+    // Every request either loader makes goes through this manager, which is
+    // what lets `outstanding` below see the loads the mesh counter cannot.
+    const manager = new THREE.LoadingManager();
+    const loader = new URDFLoader(manager);
     loader.parseCollision = true;
     // urdf-loader joins with '/', so package roots must not end in one — a
     // package mapped to the repository root would otherwise produce '//meshes'.
@@ -449,8 +488,26 @@ export class RobotViewer {
     let parsed = false;
     let markSettled;
     const settled = new Promise((resolve) => (markSettled = resolve));
+
+    // The mesh counter is not the whole story: a Collada file asks for textures
+    // of its own once it is parsed, and those loads are nobody's mesh. Waiting
+    // on the counter alone screenshots ANYmal before its logo decal arrives —
+    // intermittently, which is worse than never. The loading manager sees both
+    // kinds of request, and it only starts a texture while the .dae that wants
+    // it is still open, so `outstanding` never dips to zero in between.
+    let outstanding = 0;
     const check = () => {
-      if (parsed && done >= total) markSettled();
+      if (parsed && done >= total && outstanding === 0) markSettled();
+    };
+    const { itemStart, itemEnd } = manager;
+    manager.itemStart = (url) => {
+      outstanding += 1;
+      itemStart.call(manager, url);
+    };
+    manager.itemEnd = (url) => {
+      itemEnd.call(manager, url);
+      outstanding -= 1;
+      check();
     };
     const tick = () => onProgress && onProgress(done, total);
 
@@ -578,6 +635,7 @@ export class RobotViewer {
       mesh.material = upgraded;
       this._disposables.push(upgraded);
     }
+    makeOpaque(mesh.material);
   }
 
   /**
