@@ -171,6 +171,114 @@
       "notes_zh": "R1 的轻量版本：20 个可动关节而非 26 个，踝部同样是并联机构。"
     },
     {
+      "id": "x2_ultra",
+      "name": "X2 Ultra",
+      "maker": "AgiBot",
+      "category": "humanoid",
+      "upstream": {
+        "github": "AgibotTech/agibot_x2_urdf",
+        "commit": "77f43eb0904dae4c48ccd9154fee824f8ffd4d38",
+        "package": "X2_URDF-v1.4.0",
+        "urdf": "X2_URDF-v1.4.0/X2-Ultra.urdf",
+        "mjcf": "X2_URDF-v1.4.0/X2-Ultra.xml",
+        "license": "MulanPSL-2.0",
+        "license_file": "LICENSE",
+        "formats": [
+          "mjcf",
+          "urdf"
+        ],
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.agibot.com/products/X2"
+      },
+      "notes": "The v1.4.0 hardware — the revision whose nameplate ends in X2 Ultra -N. Upstream also ships v1.3.0 with the same 31 joints, and a 27-DOF fist variant whose arms stop at the wrist yaw.",
+      "notes_zh": "v1.4.0 硬件版本，即铭牌结尾是 X2 Ultra -N 的那一台。上游还提供关节数相同的 v1.3.0，以及手臂停在腕部 yaw 的 27 自由度假拳版本。"
+    },
+    {
+      "id": "a3_t3d0",
+      "name": "A3 T3.0",
+      "maker": "AgiBot",
+      "category": "humanoid",
+      "upstream": {
+        "github": "AgibotTech/A3-A3U-robot-model",
+        "commit": "589f508ff357447c610a3f3004419035ddc8f153",
+        "package": "a3_t3d0",
+        "urdf": "a3_t3d0/urdf/model.urdf",
+        "mjcf": "a3_t3d0/mjcf/a3_t3d0.xml",
+        "license": "MulanPSL-2.0",
+        "license_file": "LICENSE.txt",
+        "formats": [
+          "mjcf",
+          "urdf"
+        ],
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.agibot.com/products/A3"
+      },
+      "notes": "The base A3 on T3.0 hardware. The repository carries an A3 T2.5 as well, but its URDF resolves every mesh through a robot_descriptions package the repository does not contain, so it cannot be loaded as published.",
+      "notes_zh": "T3.0 硬件的基础版 A3。同一仓库还有 A3 T2.5，但它的 URDF 把所有网格指向仓库里并不存在的 robot_descriptions 包，按原样无法加载。"
+    },
+    {
+      "id": "a3_ultra_t2d5",
+      "name": "A3 Ultra T2.5",
+      "maker": "AgiBot",
+      "category": "humanoid",
+      "upstream": {
+        "github": "AgibotTech/A3-A3U-robot-model",
+        "commit": "589f508ff357447c610a3f3004419035ddc8f153",
+        "package": "a3_ultra_t2d5",
+        "urdf": "a3_ultra_t2d5/urdf/model.urdf",
+        "mjcf": "a3_ultra_t2d5/mjcf/a3_ultra_t2d5.xml",
+        "license": "MulanPSL-2.0",
+        "license_file": "LICENSE.txt",
+        "formats": [
+          "mjcf",
+          "urdf"
+        ],
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.agibot.com/products/A3"
+      },
+      "notes": "A3 Ultra on T2.5 hardware: the same 31 joints as the base A3, plus the head and torso RealSense cameras carried as extra fixed frames.",
+      "notes_zh": "T2.5 硬件的 A3 Ultra：关节与基础版 A3 一样是 31 个，另外把头部和躯干的 RealSense 相机建成了额外的固定坐标系。"
+    },
+    {
+      "id": "a3_ultra_t3d0",
+      "name": "A3 Ultra T3.0",
+      "maker": "AgiBot",
+      "category": "humanoid",
+      "upstream": {
+        "github": "AgibotTech/A3-A3U-robot-model",
+        "commit": "589f508ff357447c610a3f3004419035ddc8f153",
+        "package": "a3_ultra_t3d0",
+        "urdf": "a3_ultra_t3d0/urdf/model.urdf",
+        "mjcf": "a3_ultra_t3d0/mjcf/a3_ultra_t3d0.xml",
+        "license": "MulanPSL-2.0",
+        "license_file": "LICENSE.txt",
+        "formats": [
+          "mjcf",
+          "urdf"
+        ],
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.agibot.com/products/A3"
+      },
+      "notes": "A3 Ultra with two dexterous hands: 63 moving joints against the 31 of the hand-less variants, sixteen per hand.",
+      "notes_zh": "带两只灵巧手的 A3 Ultra：63 个可动关节，而不带手的版本只有 31 个，每只手十六个。"
+    },
+    {
       "description": "gr1_description",
       "category": "humanoid",
       "links": {
@@ -559,6 +667,40 @@
     {
       "description": "wl_p311e_description",
       "category": "quadruped"
+    },
+    {
+      "id": "d1_maxpro",
+      "name": "D1 MaxPro",
+      "maker": "AgiBot",
+      "category": "quadruped",
+      "upstream": {
+        "github": "AgibotTech/Agibot_D1_MaxPro",
+        "commit": "7828aef8238388c11267e56d5e44bac9f6dd2eb4",
+        "package": "urdf/maxpro_description",
+        "urdf": "urdf/maxpro_description/urdf/maxpro.urdf",
+        "tags": [
+          "quadruped"
+        ]
+      },
+      "links": {
+        "official": "https://www.agibot.com/products/D1_MaxPro"
+      },
+      "notes": "Shipped inside AgiBot's D1 SDK repository rather than a description package of its own, which is also why it records no licence: the ROS manifest beside it still says TODO instead of naming one.",
+      "notes_zh": "它随智元 D1 SDK 仓库发布，而不是独立的描述包，这也是它没有许可证的原因：旁边的 ROS package.xml 里仍写着 TODO，而不是具体的许可证。",
+      "pose": {
+        "leg0_fr_joint0": 0.0,
+        "leg0_fr_joint1": -0.7,
+        "leg0_fr_joint2": 1.4,
+        "leg1_fl_joint0": 0.0,
+        "leg1_fl_joint1": -0.7,
+        "leg1_fl_joint2": 1.4,
+        "leg2_hr_joint0": 0.0,
+        "leg2_hr_joint1": -0.7,
+        "leg2_hr_joint2": 1.4,
+        "leg3_hl_joint0": 0.0,
+        "leg3_hl_joint1": -0.7,
+        "leg3_hl_joint2": 1.4
+      }
     },
     {
       "description": "z1_description",

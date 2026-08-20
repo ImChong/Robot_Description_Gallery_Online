@@ -20,7 +20,7 @@ The gallery fetches this file at startup: rows checked `[x]` are shown, rows lef
 the site matches on; the name, organisation and upstream link after it are for
 human readers.
 
-## 人形 Humanoid · 25
+## 人形 Humanoid · 29
 
 - [x] `g1` **G1** — UNITREE Robotics — [unitreerobotics/unitree_ros · g1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/g1_description)
 - [x] `h1` **H1** — UNITREE Robotics — [unitreerobotics/unitree_ros · h1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description)
@@ -29,6 +29,10 @@ human readers.
 - [x] `h2_plus` **H2 Plus** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/h2_plus)
 - [x] `r1` **R1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_description)
 - [x] `r1_air` **R1 Air** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_air_description)
+- [x] `x2_ultra` **X2 Ultra** — AgiBot — [AgibotTech/agibot_x2_urdf](https://github.com/AgibotTech/agibot_x2_urdf/tree/77f43eb0904dae4c48ccd9154fee824f8ffd4d38/X2_URDF-v1.4.0)
+- [x] `a3_t3d0` **A3 T3.0** — AgiBot — [AgibotTech/A3-A3U-robot-model](https://github.com/AgibotTech/A3-A3U-robot-model/tree/589f508ff357447c610a3f3004419035ddc8f153/a3_t3d0)
+- [x] `a3_ultra_t2d5` **A3 Ultra T2.5** — AgiBot — [AgibotTech/A3-A3U-robot-model](https://github.com/AgibotTech/A3-A3U-robot-model/tree/589f508ff357447c610a3f3004419035ddc8f153/a3_ultra_t2d5)
+- [x] `a3_ultra_t3d0` **A3 Ultra T3.0** — AgiBot — [AgibotTech/A3-A3U-robot-model](https://github.com/AgibotTech/A3-A3U-robot-model/tree/589f508ff357447c610a3f3004419035ddc8f153/a3_ultra_t3d0)
 - [x] `gr1` **GR-1** — Fourier — [FFTAI/Wiki-GRx-Models · gr1_description](https://github.com/FFTAI/Wiki-GRx-Models/tree/351245ac8fa4bf6f4b0c41556e1e6976a438bcef/GRX/GR1/GR1T1)
 - [x] `n1` **N1** — Fourier — [FFTAI/Wiki-GRx-Models · n1_description](https://github.com/FFTAI/Wiki-GRx-Models/tree/f8e683f00d1d99deb882deb9dfce6030095b466a/N1)
 - [x] `booster_t1` **Booster T1** — Booster Robotics — [BoosterRobotics/booster_gym · booster_t1_description](https://github.com/BoosterRobotics/booster_gym/tree/687a33d08b08875fe45dc8d91b54db83766df8b9/resources/T1)
@@ -48,7 +52,7 @@ human readers.
 - [ ] `jaxon` **JAXON** — JSK — [robot-descriptions/jaxon_description · jaxon_description](https://github.com/robot-descriptions/jaxon_description/tree/4a0cb7a4a737864312f8d6e3f89823a741539bfc)
 - [ ] `romeo` **Romeo** — Aldebaran Robotics — [ros-aldebaran/romeo_robot · romeo_description](https://github.com/ros-aldebaran/romeo_robot/tree/0.1.5/romeo_description)
 
-## 四足 Quadruped · 15
+## 四足 Quadruped · 16
 
 - [x] `go2` **Go2** — UNITREE Robotics — [unitreerobotics/unitree_ros · go2_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/go2_description)
 - [x] `go2w` **Go2-W** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/go2w_description)
@@ -65,6 +69,7 @@ human readers.
 - [x] `solo` **Solo** — ODRI — [Gepetto/example-robot-data · solo_description](https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/solo_description)
 - [ ] `wl_p311d` **WL P311D** — LimX Dynamics — [limxdynamics/robot-description · wl_p311d_description](https://github.com/limxdynamics/robot-description/tree/a097533372a08298d45af391cbdfc2fd2dc3da6f/wheellegged/WL_P311D)
 - [ ] `wl_p311e` **WL P311E** — LimX Dynamics — [limxdynamics/robot-description · wl_p311e_description](https://github.com/limxdynamics/robot-description/tree/a097533372a08298d45af391cbdfc2fd2dc3da6f/wheellegged/WL_P311E)
+- [x] `d1_maxpro` **D1 MaxPro** — AgiBot — [AgibotTech/Agibot_D1_MaxPro](https://github.com/AgibotTech/Agibot_D1_MaxPro/tree/7828aef8238388c11267e56d5e44bac9f6dd2eb4/urdf/maxpro_description)
 
 ## 机械臂 Arm · 17
 
