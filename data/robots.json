@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-08-20T09:51:36Z",
+ "generated": "2026-08-20T11:44:23Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -705,6 +705,135 @@
    },
    "links": {
     "official": "https://www.agibot.com/products/A3"
+   }
+  },
+  {
+   "id": "magicbot_gen1",
+   "name": "Magicbot Gen1",
+   "maker": "MagicLab",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 30,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "30 joints: six per leg, seven per arm, a two-axis waist and a two-axis neck. The hands are one rigid part here; upstream's MAGICBOT_with_hand.urdf splits each into a five-finger hand with 11 more joints.",
+   "notes_zh": "30 个关节：单腿 6 个、单臂 7 个，外加两轴腰部与两轴颈部。这里的手掌是一整块，上游的 MAGICBOT_with_hand.urdf 把它拆成五指手，每只手多出 11 个关节。",
+   "pose": null,
+   "measured": {
+    "size": {
+     "x": 0.34,
+     "y": 1.7436,
+     "z": 0.5996
+    },
+    "height_m": 1.7436
+   },
+   "urdf": {
+    "xml_name": "Magicbot-Gen1",
+    "links": 36,
+    "joints": {
+     "fixed": 5,
+     "revolute": 30
+    },
+    "moving_joints": 30,
+    "mass_kg": 66.404,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 41079
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/MagiclabRobotics/magicbot-gen1_description@413a3a50cee2013f654f7c436ac131b935be4e84/",
+    "urdf": "urdf/MAGICBOT.urdf",
+    "packages": {
+     "magicbot-gen1_description": ""
+    },
+    "mesh_files": 32,
+    "mesh_bytes": 33785938,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "MagiclabRobotics/magicbot-gen1_description",
+    "commit": "413a3a50cee2013f654f7c436ac131b935be4e84",
+    "repo_url": "https://github.com/MagiclabRobotics/magicbot-gen1_description",
+    "tree_url": "https://github.com/MagiclabRobotics/magicbot-gen1_description/tree/413a3a50cee2013f654f7c436ac131b935be4e84",
+    "license_url": "https://github.com/MagiclabRobotics/magicbot-gen1_description/blob/413a3a50cee2013f654f7c436ac131b935be4e84/LICENSE",
+    "mjcf": "mjcf/MAGICBOT.xml"
+   },
+   "links": {
+    "official": "https://www.magiclab.top/human"
+   }
+  },
+  {
+   "id": "magicbot_z1",
+   "name": "Magicbot Z1",
+   "maker": "MagicLab",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 23,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "23 actuated joints: six per leg, five per arm and a waist yaw. The head and both palms hang off fixed joints, so the URDF moves one joint fewer than upstream's joint tree suggests.",
+   "notes_zh": "23 个驱动关节：单腿 6 个、单臂 5 个，外加腰部 yaw。头部和两只手掌是固定关节，所以 URDF 里可动关节比上游 README 的关节树少一个。",
+   "pose": {
+    "left_elbow_joint": 1.4,
+    "right_elbow_joint": 1.4
+   },
+   "measured": {
+    "size": {
+     "x": 0.5326,
+     "y": 1.3751,
+     "z": 0.4242
+    },
+    "height_m": 1.3751
+   },
+   "urdf": {
+    "xml_name": "MagicBotZ1",
+    "links": 27,
+    "joints": {
+     "fixed": 3,
+     "revolute": 23
+    },
+    "moving_joints": 23,
+    "mass_kg": 39.285,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 34827
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/MagiclabRobotics/magicbot-z1_description@f58c620ac323fe8c1ffda410d9fdb9074fe8adfc/",
+    "urdf": "urdf/MagicBotZ1.urdf",
+    "packages": {
+     "magicbot-z1_description": ""
+    },
+    "mesh_files": 25,
+    "mesh_bytes": 39700400,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "MagiclabRobotics/magicbot-z1_description",
+    "commit": "f58c620ac323fe8c1ffda410d9fdb9074fe8adfc",
+    "repo_url": "https://github.com/MagiclabRobotics/magicbot-z1_description",
+    "tree_url": "https://github.com/MagiclabRobotics/magicbot-z1_description/tree/f58c620ac323fe8c1ffda410d9fdb9074fe8adfc",
+    "license_url": "https://github.com/MagiclabRobotics/magicbot-z1_description/blob/f58c620ac323fe8c1ffda410d9fdb9074fe8adfc/LICENSE",
+    "mjcf": "mjcf/MAGICBOTZ1.xml"
+   },
+   "links": {
+    "official": "https://www.magiclab.top/z1"
    }
   },
   {
@@ -2939,6 +3068,159 @@
    },
    "links": {
     "official": "https://www.agibot.com/products/D1_MaxPro"
+   }
+  },
+  {
+   "id": "magicdog",
+   "name": "MagicDog",
+   "maker": "MagicLab",
+   "category": "quadruped",
+   "tags": [
+    "quadruped"
+   ],
+   "dof": 13,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "Three joints per leg plus a yawing head. The calf limits stop short of zero, so the knees stay bent whatever you do with the sliders.",
+   "notes_zh": "每条腿 3 个关节，另有一个可左右转的头部。小腿关节的限位不包含 0，所以无论怎么拖滑块，膝盖都是弯的。",
+   "pose": {
+    "FL_hip_joint": 0.0,
+    "FL_thigh_joint": 0.78,
+    "FL_calf_joint": -1.55,
+    "FR_hip_joint": 0.0,
+    "FR_thigh_joint": 0.78,
+    "FR_calf_joint": -1.55,
+    "RL_hip_joint": 0.0,
+    "RL_thigh_joint": 0.78,
+    "RL_calf_joint": -1.55,
+    "RR_hip_joint": 0.0,
+    "RR_thigh_joint": 0.78,
+    "RR_calf_joint": -1.55
+   },
+   "measured": {
+    "size": {
+     "x": 0.7649,
+     "y": 0.5608,
+     "z": 0.3595
+    },
+    "height_m": 0.5608
+   },
+   "urdf": {
+    "xml_name": "magicdog",
+    "links": 18,
+    "joints": {
+     "fixed": 4,
+     "revolute": 13
+    },
+    "moving_joints": 13,
+    "mass_kg": 17.386,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 17846
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/MagiclabRobotics/magicdog_description@e37cd1dca176b9aa19721bb5029dd377a1f3ed92/",
+    "urdf": "urdf/magicdog.urdf",
+    "packages": {
+     "magicdog_description": ""
+    },
+    "mesh_files": 7,
+    "mesh_bytes": 39403288,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "MagiclabRobotics/magicdog_description",
+    "commit": "e37cd1dca176b9aa19721bb5029dd377a1f3ed92",
+    "repo_url": "https://github.com/MagiclabRobotics/magicdog_description",
+    "tree_url": "https://github.com/MagiclabRobotics/magicdog_description/tree/e37cd1dca176b9aa19721bb5029dd377a1f3ed92",
+    "license_url": "https://github.com/MagiclabRobotics/magicdog_description/blob/e37cd1dca176b9aa19721bb5029dd377a1f3ed92/LICENSE.txt",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.magiclab.top/dog"
+   }
+  },
+  {
+   "id": "magicdog_w",
+   "name": "MagicDog-W",
+   "maker": "MagicLab",
+   "category": "quadruped",
+   "tags": [
+    "quadruped",
+    "wheeled"
+   ],
+   "dof": 16,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "The wheeled MagicDog: a continuous wheel joint below the usual three leg joints, 16 in all. The head is a fixed link here, unlike on the legged version.",
+   "notes_zh": "轮足版 MagicDog：常规三个腿部关节之下再挂一个连续转动的轮关节，共 16 个。和足式版不同，这里的头部是固定连杆。",
+   "pose": {
+    "FL_hip_joint": 0.0,
+    "FL_thigh_joint": 0.78,
+    "FL_calf_joint": -1.55,
+    "FR_hip_joint": 0.0,
+    "FR_thigh_joint": 0.78,
+    "FR_calf_joint": -1.55,
+    "RL_hip_joint": 0.0,
+    "RL_thigh_joint": 0.78,
+    "RL_calf_joint": -1.55,
+    "RR_hip_joint": 0.0,
+    "RR_thigh_joint": 0.78,
+    "RR_calf_joint": -1.55
+   },
+   "measured": {
+    "size": {
+     "x": 0.8036,
+     "y": 0.6595,
+     "z": 0.4296
+    },
+    "height_m": 0.6595
+   },
+   "urdf": {
+    "xml_name": "magicdog",
+    "links": 18,
+    "joints": {
+     "continuous": 4,
+     "fixed": 1,
+     "revolute": 12
+    },
+    "moving_joints": 16,
+    "mass_kg": 22.496,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 19408
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/MagiclabRobotics/magicdog-w_description@0de1ee339ca41c40c36b50eb51490df74291d2b2/",
+    "urdf": "urdf/magicdog_w.urdf",
+    "packages": {
+     "magicdog-w_description": ""
+    },
+    "mesh_files": 8,
+    "mesh_bytes": 16085272,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "MagiclabRobotics/magicdog-w_description",
+    "commit": "0de1ee339ca41c40c36b50eb51490df74291d2b2",
+    "repo_url": "https://github.com/MagiclabRobotics/magicdog-w_description",
+    "tree_url": "https://github.com/MagiclabRobotics/magicdog-w_description/tree/0de1ee339ca41c40c36b50eb51490df74291d2b2",
+    "license_url": "https://github.com/MagiclabRobotics/magicdog-w_description/blob/0de1ee339ca41c40c36b50eb51490df74291d2b2/LICENSE",
+    "mjcf": "mjcf/MAGICDOGW.xml"
+   },
+   "links": {
+    "official": "https://www.magiclab.top/dog-w"
    }
   },
   {
