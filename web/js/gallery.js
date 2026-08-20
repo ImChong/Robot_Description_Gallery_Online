@@ -72,11 +72,6 @@ export class Gallery {
     const s = stats(this.data);
     el('stat-robots').textContent = s.robots;
     el('stat-makers').textContent = s.makers;
-    el('stat-joints').textContent = s.joints;
-    el('stat-repos').textContent = s.repos;
-    if (this.data.generated) {
-      el('footer-generated').textContent = `${this.data.generator} · ${this.data.generated}`;
-    }
   }
 
   renderFilters() {
@@ -223,7 +218,7 @@ export class Gallery {
     return `<a class="card" href="#robot=${robot.id}" data-id="${robot.id}">
       <figure class="card-figure">
         <img src="${thumb}" alt="${robot.name}" loading="lazy" decoding="async"
-             onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'placeholder',textContent:'🦾'}))">
+             onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'placeholder',textContent:'🖼️'}))">
         <span class="card-cat">${categoryLabel(robot.category, this.data.categories)}</span>
       </figure>
       <div class="card-body">

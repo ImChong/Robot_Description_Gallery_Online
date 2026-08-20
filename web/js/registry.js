@@ -93,14 +93,10 @@ export function groupRobots(data, state = {}) {
 
 export function stats(data) {
   const makers = new Set();
-  const repos = new Set();
-  let joints = 0;
   for (const robot of data.robots) {
     if (robot.maker) makers.add(robot.maker);
-    if (robot.source.github) repos.add(robot.source.github);
-    joints += robot.urdf.moving_joints || 0;
   }
-  return { robots: data.robots.length, makers: makers.size, repos: repos.size, joints };
+  return { robots: data.robots.length, makers: makers.size };
 }
 
 export function urdfUrl(robot) {

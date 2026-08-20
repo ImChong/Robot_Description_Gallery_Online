@@ -20,7 +20,7 @@ The gallery fetches this file at startup: rows checked `[x]` are shown, rows lef
 the site matches on; the name, organisation and upstream link after it are for
 human readers.
 
-## 人形 Humanoid · 31
+## 人形 Humanoid · 33
 
 - [x] `g1` **G1** — UNITREE Robotics — [unitreerobotics/unitree_ros · g1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/g1_description)
 - [x] `h1` **H1** — UNITREE Robotics — [unitreerobotics/unitree_ros · h1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description)
@@ -38,6 +38,8 @@ human readers.
 - [x] `gr1` **GR-1** — Fourier — [FFTAI/Wiki-GRx-Models · gr1_description](https://github.com/FFTAI/Wiki-GRx-Models/tree/351245ac8fa4bf6f4b0c41556e1e6976a438bcef/GRX/GR1/GR1T1)
 - [x] `n1` **N1** — Fourier — [FFTAI/Wiki-GRx-Models · n1_description](https://github.com/FFTAI/Wiki-GRx-Models/tree/f8e683f00d1d99deb882deb9dfce6030095b466a/N1)
 - [x] `booster_t1` **Booster T1** — Booster Robotics — [BoosterRobotics/booster_gym · booster_t1_description](https://github.com/BoosterRobotics/booster_gym/tree/687a33d08b08875fe45dc8d91b54db83766df8b9/resources/T1)
+- [x] `booster_k1` **Booster K1** — Booster Robotics — [BoosterRobotics/booster_assets](https://github.com/BoosterRobotics/booster_assets/tree/508cbee6ca9ae6fbc8c0b38dd58785a6f3fc61a2/robots/K1)
+- [x] `booster_t1_29dof` **Booster T1 (29 DoF)** — Booster Robotics — [BoosterRobotics/booster_assets](https://github.com/BoosterRobotics/booster_assets/tree/508cbee6ca9ae6fbc8c0b38dd58785a6f3fc61a2/robots/T1)
 - [ ] `elf2` **Elf2** — BXI Robotics — [bxirobotics/robot_models · elf2_description](https://github.com/bxirobotics/robot_models/tree/eabe24ce937f8e633077a163b883e92e8996c36e/elf2_dof25/urdf)
 - [ ] `gene01` **GENE.01** — Generative Bionics — [gbionics/gb-robot-models · gene01_description](https://github.com/gbionics/gb-robot-models/tree/ae990f38968c2ae29caee88851f9153168630b8f/share/gb_robot_models)
 - [x] `berkeley_humanoid` **Berkeley Humanoid** — Hybrid Robotics — [HybridRobotics/berkeley_humanoid_description · berkeley_humanoid_description](https://github.com/HybridRobotics/berkeley_humanoid_description/tree/d0d13d3f81d795480e25ed1910eaf83d5f0a1d0b)
@@ -125,7 +127,7 @@ human readers.
 - [x] `nextage` **NEXTAGE** — Kawada Robotics — [tork-a/rtmros_nextage · nextage_description](https://github.com/tork-a/rtmros_nextage/tree/ac270fb969fa54abeb6863f9b388a9e20c1f14e0/nextage_description)
 - [x] `poppy_torso` **Poppy Torso** — Poppy Project — [poppy-project/poppy_torso_description · poppy_torso_description](https://github.com/poppy-project/poppy_torso_description/tree/6beeec3d76fb72b7548cce7c73aad722f8884522)
 
-## 移动操作 Mobile manipulator · 7
+## 移动操作 Mobile manipulator · 9
 
 - [x] `g1_d` **G1-D** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_d_description)
 - [x] `stretch` **Stretch RE1** — Hello Robot — [robot-descriptions/stretch_description · stretch_description](https://github.com/robot-descriptions/stretch_description/tree/4b838429fe4c5d9f2937efe698444bd68968f376)
@@ -134,3 +136,5 @@ human readers.
 - [ ] `rby1` **RBY1** — Rainbow Robotics — [uynitsuj/rby1_description · rby1_description](https://github.com/uynitsuj/rby1_description/tree/e4c07203aa0a0d1b6b3b39da105cb00a77e2bc72/models/rby1a/urdf)
 - [x] `ginger` **Ginger** — Paaila Technology — [Rayckey/GingerURDF · ginger_description](https://github.com/Rayckey/GingerURDF/tree/6a1307cd0ee2b77c82f8839cdce3a2e2eed2bd8f)
 - [ ] `bambot` **BamBot** — Tim Qian — [timqian/bambot · bambot_description](https://github.com/timqian/bambot/tree/04d902653794f9f72eeabb09ec90a9af8e397c5b/website/public/URDF)
+- [x] `galbot_one_golf` **Galbot One Golf** — Galbot — [GalaxyGeneralRobotics/galbot_one_golf_description](https://github.com/GalaxyGeneralRobotics/galbot_one_golf_description/tree/7c06d4ddc9c92658780c1ce24bc4531ab91300a5)
+- [x] `galbot_s1` **Galbot S1** — Galbot — [GalaxyGeneralRobotics/galbot_s1_description](https://github.com/GalaxyGeneralRobotics/galbot_s1_description/tree/cb758e557a880c70260c7883207334aed2aa3c65)

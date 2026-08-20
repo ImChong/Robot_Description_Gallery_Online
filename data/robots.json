@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-08-20T11:44:23Z",
+ "generated": "2026-08-20T13:43:44Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -144,7 +144,7 @@
      "h1_description": "robots/h1_description"
     },
     "mesh_files": 21,
-    "mesh_bytes": 20187637,
+    "mesh_bytes": 17944694,
     "mesh_formats": [
      ".dae"
     ]
@@ -324,7 +324,7 @@
     "urdf": "robots/h2_plus/H2_Plus.urdf",
     "packages": {},
     "mesh_files": 93,
-    "mesh_bytes": 29681415,
+    "mesh_bytes": 40407987,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -792,7 +792,7 @@
    },
    "measured": {
     "size": {
-     "x": 0.5326,
+     "x": 0.2247,
      "y": 1.3751,
      "z": 0.4242
     },
@@ -1010,6 +1010,127 @@
     "mjcf": null
    },
    "links": {}
+  },
+  {
+   "id": "booster_k1",
+   "name": "Booster K1",
+   "maker": "Booster Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 22,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "22 joints: two in the neck, four per arm and six per leg, with the ankles driven through a parallel four-bar. Upstream also ships a ZED-camera head and a locomotion variant that fixes everything above the waist.",
+   "notes_zh": "22 个关节：颈部 2 个、单臂 4 个、单腿 6 个，踝部由四连杆并联驱动。上游还提供换装 ZED 相机头部的版本，以及把腰部以上全部固定的运动控制版本。",
+   "pose": null,
+   "measured": {
+    "size": {
+     "x": 0.1854,
+     "y": 0.9546,
+     "z": 1.0779
+    },
+    "height_m": 0.9546
+   },
+   "urdf": {
+    "xml_name": "K1",
+    "links": 23,
+    "joints": {
+     "revolute": 22
+    },
+    "moving_joints": 22,
+    "mass_kg": 19.666,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 28009
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/BoosterRobotics/booster_assets@508cbee6ca9ae6fbc8c0b38dd58785a6f3fc61a2/",
+    "urdf": "robots/K1/K1_22dof.urdf",
+    "packages": {},
+    "mesh_files": 24,
+    "mesh_bytes": 11978066,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "BoosterRobotics/booster_assets",
+    "commit": "508cbee6ca9ae6fbc8c0b38dd58785a6f3fc61a2",
+    "repo_url": "https://github.com/BoosterRobotics/booster_assets",
+    "tree_url": "https://github.com/BoosterRobotics/booster_assets/tree/508cbee6ca9ae6fbc8c0b38dd58785a6f3fc61a2/robots/K1",
+    "license_url": "https://github.com/BoosterRobotics/booster_assets/blob/508cbee6ca9ae6fbc8c0b38dd58785a6f3fc61a2/LICENSE",
+    "mjcf": "robots/K1/K1_22dof.xml"
+   },
+   "links": {
+    "official": "https://www.booster.tech/booster-k1",
+    "docs": "https://docs.booster.tech"
+   }
+  },
+  {
+   "id": "booster_t1_29dof",
+   "name": "Booster T1 (29 DoF)",
+   "maker": "Booster Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 29,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The seven-DOF-arm T1: same head, waist and legs as the 23-DOF Booster T1 above, with three more joints in each arm. Only the 23-DOF layout has an MJCF upstream.",
+   "notes_zh": "七自由度手臂版 T1：头部、腰部和双腿与上面 23 自由度的 Booster T1 相同，每条手臂多出 3 个关节。上游只为 23 自由度版本提供了 MJCF。",
+   "pose": null,
+   "measured": {
+    "size": {
+     "x": 0.2249,
+     "y": 1.18,
+     "z": 1.5269
+    },
+    "height_m": 1.18
+   },
+   "urdf": {
+    "xml_name": "T1",
+    "links": 30,
+    "joints": {
+     "revolute": 29
+    },
+    "moving_joints": 29,
+    "mass_kg": 34.632,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 34802
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/BoosterRobotics/booster_assets@508cbee6ca9ae6fbc8c0b38dd58785a6f3fc61a2/",
+    "urdf": "robots/T1/T1_29dof.urdf",
+    "packages": {},
+    "mesh_files": 31,
+    "mesh_bytes": 9897304,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "BoosterRobotics/booster_assets",
+    "commit": "508cbee6ca9ae6fbc8c0b38dd58785a6f3fc61a2",
+    "repo_url": "https://github.com/BoosterRobotics/booster_assets",
+    "tree_url": "https://github.com/BoosterRobotics/booster_assets/tree/508cbee6ca9ae6fbc8c0b38dd58785a6f3fc61a2/robots/T1",
+    "license_url": "https://github.com/BoosterRobotics/booster_assets/blob/508cbee6ca9ae6fbc8c0b38dd58785a6f3fc61a2/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.booster.tech/booster-t1",
+    "docs": "https://docs.booster.tech"
+   }
   },
   {
    "id": "elf2",
@@ -1360,7 +1481,7 @@
      "val_description": "val_description"
     },
     "mesh_files": 56,
-    "mesh_bytes": 897272,
+    "mesh_bytes": 1307770,
     "mesh_formats": [
      ".dae"
     ]
@@ -1422,7 +1543,7 @@
      "r2_description": "r2_description"
     },
     "mesh_files": 30,
-    "mesh_bytes": 7015443,
+    "mesh_bytes": 13322138,
     "mesh_formats": [
      ".dae"
     ]
@@ -1482,7 +1603,7 @@
      "jvrc_description": ""
     },
     "mesh_files": 35,
-    "mesh_bytes": 680150,
+    "mesh_bytes": 659216,
     "mesh_formats": [
      ".dae"
     ]
@@ -1604,7 +1725,7 @@
      "multisense_sl_description": "roboschool/models_robot/multisense_sl_description"
     },
     "mesh_files": 23,
-    "mesh_bytes": 1907007,
+    "mesh_bytes": 2228640,
     "mesh_formats": [
      ".dae"
     ]
@@ -1851,7 +1972,7 @@
      "jaxon_description": ""
     },
     "mesh_files": 39,
-    "mesh_bytes": 10774595,
+    "mesh_bytes": 25775051,
     "mesh_formats": [
      ".dae"
     ]
@@ -1912,7 +2033,7 @@
      "romeo_description": "romeo_description"
     },
     "mesh_files": 93,
-    "mesh_bytes": 5194172,
+    "mesh_bytes": 7385521,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -1986,7 +2107,7 @@
      "go2_description": "robots/go2_description"
     },
     "mesh_files": 7,
-    "mesh_bytes": 2250974,
+    "mesh_bytes": 20922900,
     "mesh_formats": [
      ".dae"
     ]
@@ -2063,7 +2184,7 @@
      "go2w_description": "robots/go2w_description"
     },
     "mesh_files": 8,
-    "mesh_bytes": 16037770,
+    "mesh_bytes": 16347000,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -2139,7 +2260,7 @@
      "b2_description": "robots/b2_description"
     },
     "mesh_files": 13,
-    "mesh_bytes": 7409215,
+    "mesh_bytes": 7082282,
     "mesh_formats": [
      ".dae"
     ]
@@ -2214,7 +2335,7 @@
      "a1_description": "robots/a1_description"
     },
     "mesh_files": 5,
-    "mesh_bytes": 668998,
+    "mesh_bytes": 9013989,
     "mesh_formats": [
      ".dae"
     ]
@@ -2433,7 +2554,7 @@
      "aliengo_description": "robots/aliengo_description"
     },
     "mesh_files": 5,
-    "mesh_bytes": 741600,
+    "mesh_bytes": 1862128,
     "mesh_formats": [
      ".dae"
     ]
@@ -2573,7 +2694,7 @@
      "anymal_b_simple_description": ""
     },
     "mesh_files": 8,
-    "mesh_bytes": 5772713,
+    "mesh_bytes": 20656287,
     "mesh_formats": [
      ".dae"
     ]
@@ -2644,7 +2765,7 @@
      "anymal_c_simple_description": ""
     },
     "mesh_files": 19,
-    "mesh_bytes": 1720723,
+    "mesh_bytes": 3325560,
     "mesh_formats": [
      ".dae"
     ]
@@ -2715,7 +2836,7 @@
      "anymal_d_simple_description": ""
     },
     "mesh_files": 17,
-    "mesh_bytes": 1456440,
+    "mesh_bytes": 1219881,
     "mesh_formats": [
      ".dae"
     ]
@@ -2786,7 +2907,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 4,
-    "mesh_bytes": 38852,
+    "mesh_bytes": 471954,
     "mesh_formats": [
      ".dae"
     ]
@@ -3271,7 +3392,7 @@
      "z1_description": "robots/z1_description"
     },
     "mesh_files": 7,
-    "mesh_bytes": 11559591,
+    "mesh_bytes": 3982537,
     "mesh_formats": [
      ".dae"
     ]
@@ -3335,7 +3456,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 19,
-    "mesh_bytes": 4568875,
+    "mesh_bytes": 8605712,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -3470,7 +3591,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 11,
-    "mesh_bytes": 3998080,
+    "mesh_bytes": 1066671,
     "mesh_formats": [
      ".dae"
     ]
@@ -4266,7 +4387,7 @@
      "poppy_ergo_jr_description": ""
     },
     "mesh_files": 6,
-    "mesh_bytes": 592437,
+    "mesh_bytes": 7290640,
     "mesh_formats": [
      ".dae"
     ]
@@ -5143,7 +5264,7 @@
     "urdf": "urdf/rhea.urdf",
     "packages": {},
     "mesh_files": 7,
-    "mesh_bytes": 4523777,
+    "mesh_bytes": 13411463,
     "mesh_formats": [
      ".dae"
     ]
@@ -5384,7 +5505,7 @@
      "baxter_description": "baxter_description"
     },
     "mesh_files": 13,
-    "mesh_bytes": 5331836,
+    "mesh_bytes": 11264884,
     "mesh_formats": [
      ".dae"
     ]
@@ -5445,7 +5566,7 @@
     "urdf": "urdfs/robots/pr2/pr2.urdf",
     "packages": {},
     "mesh_files": 31,
-    "mesh_bytes": 362548,
+    "mesh_bytes": 1068753,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -5505,7 +5626,7 @@
      "nextage_description": "nextage_description"
     },
     "mesh_files": 16,
-    "mesh_bytes": 62795,
+    "mesh_bytes": 1983554,
     "mesh_formats": [
      ".dae"
     ]
@@ -5689,7 +5810,7 @@
      "stretch_description": ""
     },
     "mesh_files": 31,
-    "mesh_bytes": 25773920,
+    "mesh_bytes": 41556359,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -5754,7 +5875,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 34,
-    "mesh_bytes": 4808689,
+    "mesh_bytes": 4958747,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -5818,7 +5939,7 @@
      "pepper_description": ""
     },
     "mesh_files": 99,
-    "mesh_bytes": 9204466,
+    "mesh_bytes": 2325200,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -5879,7 +6000,7 @@
     "urdf": "models/rby1a/urdf/model.urdf",
     "packages": {},
     "mesh_files": 29,
-    "mesh_bytes": 3818080,
+    "mesh_bytes": 22333617,
     "mesh_formats": [
      ".dae"
     ]
@@ -6014,6 +6135,142 @@
     "mjcf": null
    },
    "links": {}
+  },
+  {
+   "id": "galbot_one_golf",
+   "name": "Galbot One Golf",
+   "maker": "Galbot",
+   "category": "mobile",
+   "tags": [
+    "mobile_manipulator",
+    "wheeled"
+   ],
+   "dof": 27,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "27 driven joints — a five-joint folding leg, a two-axis head, two 7-DOF arms with a parallel gripper each and four omni wheels — inside 77 movable ones: each gripper carries five mimic joints and each wheel ten free rollers. The visual meshes are glTF, the only ones in the gallery.",
+   "notes_zh": "27 个驱动关节：五关节折叠腿、两轴头部、两条 7 自由度手臂各带一只平行夹爪，以及四个全向轮；URDF 里共 77 个可动关节，因为每只夹爪有 5 个 mimic 关节、每个轮子有 10 个自由滚子。它的可视网格是 glTF 格式，全站仅此一家。",
+   "pose": {
+    "left_arm_joint2": -1.5,
+    "left_arm_joint3": -0.4,
+    "left_arm_joint4": 1.2,
+    "right_arm_joint2": 1.5,
+    "right_arm_joint3": 0.4,
+    "right_arm_joint4": -1.2
+   },
+   "measured": {
+    "size": {
+     "x": 0.8599,
+     "y": 1.1491,
+     "z": 0.8052
+    },
+    "height_m": 1.1491
+   },
+   "urdf": {
+    "xml_name": "galbot_one_golf",
+    "links": 104,
+    "joints": {
+     "continuous": 44,
+     "fixed": 26,
+     "revolute": 33
+    },
+    "moving_joints": 77,
+    "mass_kg": 95.184,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 95433
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/GalaxyGeneralRobotics/galbot_one_golf_description@7c06d4ddc9c92658780c1ce24bc4531ab91300a5/",
+    "urdf": "urdf/galbot_one_golf.urdf",
+    "packages": {},
+    "mesh_files": 118,
+    "mesh_bytes": 8244688,
+    "mesh_formats": [
+     ".glb",
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "GalaxyGeneralRobotics/galbot_one_golf_description",
+    "commit": "7c06d4ddc9c92658780c1ce24bc4531ab91300a5",
+    "repo_url": "https://github.com/GalaxyGeneralRobotics/galbot_one_golf_description",
+    "tree_url": "https://github.com/GalaxyGeneralRobotics/galbot_one_golf_description/tree/7c06d4ddc9c92658780c1ce24bc4531ab91300a5",
+    "license_url": "https://github.com/GalaxyGeneralRobotics/galbot_one_golf_description/blob/7c06d4ddc9c92658780c1ce24bc4531ab91300a5/LICENSE",
+    "mjcf": "mjcf/galbot_one_golf.xml"
+   },
+   "links": {
+    "official": "https://www.galbot.com/"
+   }
+  },
+  {
+   "id": "galbot_s1",
+   "name": "Galbot S1",
+   "maker": "Galbot",
+   "category": "mobile",
+   "tags": [
+    "mobile_manipulator",
+    "wheeled"
+   ],
+   "dof": 27,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "A warehouse picker: four steered and driven wheels, a prismatic torso lift, a two-axis head and two 7-DOF arms with three-jaw grippers. Four of the 31 movable joints mimic the gripper drives, leaving 27 driven.",
+   "notes_zh": "仓储拣选机器人：四个可转向的驱动轮、一根直线升降立柱、两轴头部，以及两条带三指夹爪的 7 自由度手臂。31 个可动关节里有 4 个是夹爪的 mimic 关节，实际驱动 27 个。",
+   "pose": null,
+   "measured": {
+    "size": {
+     "x": 0.736,
+     "y": 1.652,
+     "z": 2.9492
+    },
+    "height_m": 1.652
+   },
+   "urdf": {
+    "xml_name": "galbot_s1-v2_1_0-A21-ge103in",
+    "links": 54,
+    "joints": {
+     "continuous": 4,
+     "fixed": 22,
+     "prismatic": 1,
+     "revolute": 26
+    },
+    "moving_joints": 31,
+    "mass_kg": 338.721,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 45637
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/GalaxyGeneralRobotics/galbot_s1_description@cb758e557a880c70260c7883207334aed2aa3c65/",
+    "urdf": "urdf/galbot_s1.urdf",
+    "packages": {},
+    "mesh_files": 82,
+    "mesh_bytes": 10127100,
+    "mesh_formats": [
+     ".glb",
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "GalaxyGeneralRobotics/galbot_s1_description",
+    "commit": "cb758e557a880c70260c7883207334aed2aa3c65",
+    "repo_url": "https://github.com/GalaxyGeneralRobotics/galbot_s1_description",
+    "tree_url": "https://github.com/GalaxyGeneralRobotics/galbot_s1_description/tree/cb758e557a880c70260c7883207334aed2aa3c65",
+    "license_url": "https://github.com/GalaxyGeneralRobotics/galbot_s1_description/blob/cb758e557a880c70260c7883207334aed2aa3c65/LICENSE",
+    "mjcf": "mjcf/galbot_s1.xml"
+   },
+   "links": {
+    "official": "https://www.galbot.com/"
+   }
   }
  ]
 }

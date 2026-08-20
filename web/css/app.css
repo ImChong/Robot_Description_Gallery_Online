@@ -419,22 +419,17 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
 }
 
 .footer-text { margin: 0; }
-.footer-text a, .footer-author-link {
+
+/* The name is a link whether or not you are pointing at it, so it carries its
+ * underline at rest instead of growing one on hover. currentColor keeps the
+ * rule exactly as loud as the text it sits under, through the hover too. */
+.footer-author-link {
   color: inherit;
   text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: color var(--transition), border-color var(--transition);
+  border-bottom: 1px solid currentColor;
+  transition: color var(--transition);
 }
-.footer-text a:hover, .footer-author-link:hover {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
-}
-
-.footer-generated {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--text-faint);
-}
+.footer-author-link:hover { color: var(--accent); }
 
 /* One paragraph per language, switched by the <html lang> the language
  * toggle writes — the credit lines carry links, so they cannot go through

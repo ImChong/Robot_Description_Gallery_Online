@@ -353,6 +353,60 @@
       "category": "humanoid"
     },
     {
+      "id": "booster_k1",
+      "name": "Booster K1",
+      "maker": "Booster Robotics",
+      "category": "humanoid",
+      "upstream": {
+        "github": "BoosterRobotics/booster_assets",
+        "commit": "508cbee6ca9ae6fbc8c0b38dd58785a6f3fc61a2",
+        "package": "robots/K1",
+        "urdf": "robots/K1/K1_22dof.urdf",
+        "mjcf": "robots/K1/K1_22dof.xml",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.booster.tech/booster-k1",
+        "docs": "https://docs.booster.tech"
+      },
+      "notes": "22 joints: two in the neck, four per arm and six per leg, with the ankles driven through a parallel four-bar. Upstream also ships a ZED-camera head and a locomotion variant that fixes everything above the waist.",
+      "notes_zh": "22 个关节：颈部 2 个、单臂 4 个、单腿 6 个，踝部由四连杆并联驱动。上游还提供换装 ZED 相机头部的版本，以及把腰部以上全部固定的运动控制版本。"
+    },
+    {
+      "id": "booster_t1_29dof",
+      "name": "Booster T1 (29 DoF)",
+      "maker": "Booster Robotics",
+      "category": "humanoid",
+      "upstream": {
+        "github": "BoosterRobotics/booster_assets",
+        "commit": "508cbee6ca9ae6fbc8c0b38dd58785a6f3fc61a2",
+        "package": "robots/T1",
+        "urdf": "robots/T1/T1_29dof.urdf",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "formats": [
+          "urdf"
+        ],
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.booster.tech/booster-t1",
+        "docs": "https://docs.booster.tech"
+      },
+      "notes": "The seven-DOF-arm T1: same head, waist and legs as the 23-DOF Booster T1 above, with three more joints in each arm. Only the 23-DOF layout has an MJCF upstream.",
+      "notes_zh": "七自由度手臂版 T1：头部、腰部和双腿与上面 23 自由度的 Booster T1 相同，每条手臂多出 3 个关节。上游只为 23 自由度版本提供了 MJCF。"
+    },
+    {
       "description": "elf2_description",
       "category": "humanoid"
     },
@@ -1272,6 +1326,72 @@
     {
       "description": "bambot_description",
       "category": "mobile"
+    },
+    {
+      "id": "galbot_one_golf",
+      "name": "Galbot One Golf",
+      "maker": "Galbot",
+      "category": "mobile",
+      "dof": 27,
+      "upstream": {
+        "github": "GalaxyGeneralRobotics/galbot_one_golf_description",
+        "commit": "7c06d4ddc9c92658780c1ce24bc4531ab91300a5",
+        "package": "",
+        "urdf": "urdf/galbot_one_golf.urdf",
+        "mjcf": "mjcf/galbot_one_golf.xml",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "mobile_manipulator",
+          "wheeled"
+        ]
+      },
+      "links": {
+        "official": "https://www.galbot.com/"
+      },
+      "notes": "27 driven joints — a five-joint folding leg, a two-axis head, two 7-DOF arms with a parallel gripper each and four omni wheels — inside 77 movable ones: each gripper carries five mimic joints and each wheel ten free rollers. The visual meshes are glTF, the only ones in the gallery.",
+      "notes_zh": "27 个驱动关节：五关节折叠腿、两轴头部、两条 7 自由度手臂各带一只平行夹爪，以及四个全向轮；URDF 里共 77 个可动关节，因为每只夹爪有 5 个 mimic 关节、每个轮子有 10 个自由滚子。它的可视网格是 glTF 格式，全站仅此一家。",
+      "pose": {
+        "left_arm_joint2": -1.5,
+        "left_arm_joint3": -0.4,
+        "left_arm_joint4": 1.2,
+        "right_arm_joint2": 1.5,
+        "right_arm_joint3": 0.4,
+        "right_arm_joint4": -1.2
+      }
+    },
+    {
+      "id": "galbot_s1",
+      "name": "Galbot S1",
+      "maker": "Galbot",
+      "category": "mobile",
+      "dof": 27,
+      "upstream": {
+        "github": "GalaxyGeneralRobotics/galbot_s1_description",
+        "commit": "cb758e557a880c70260c7883207334aed2aa3c65",
+        "package": "",
+        "urdf": "urdf/galbot_s1.urdf",
+        "mjcf": "mjcf/galbot_s1.xml",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "mobile_manipulator",
+          "wheeled"
+        ]
+      },
+      "links": {
+        "official": "https://www.galbot.com/"
+      },
+      "notes": "A warehouse picker: four steered and driven wheels, a prismatic torso lift, a two-axis head and two 7-DOF arms with three-jaw grippers. Four of the 31 movable joints mimic the gripper drives, leaving 27 driven.",
+      "notes_zh": "仓储拣选机器人：四个可转向的驱动轮、一根直线升降立柱、两轴头部，以及两条带三指夹爪的 7 自由度手臂。31 个可动关节里有 4 个是夹爪的 mimic 关节，实际驱动 27 个。"
     }
   ]
 }
