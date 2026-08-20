@@ -73,6 +73,9 @@ robot = pinocchio.RobotWrapper.BuildFromURDF(
     "${repoDir(r)}/${r.assets.urdf}",${packageDirs(r).length ? `\n    [${packageDirs(r).map((d) => `"${d}"`).join(', ')}],` : ''}
 )
 print(robot.model.nq, "DOF")`,
+  // Same split as `python` above, with a third case: a curated entry can ship
+  // an MJCF next to its URDF without robot_descriptions having a key for it,
+  // and pointing at the checkout is the only way to load that one.
   mujoco: (r) =>
     r.formats.includes('mjcf') && r.source.description
       ? `# pip install robot_descriptions mujoco
@@ -81,7 +84,15 @@ from robot_descriptions import ${mjKey(r)}
 
 model = mujoco.MjModel.from_xml_path(${mjKey(r)}.MJCF_PATH)
 data = mujoco.MjData(model)`
-      : `# ${r.name} has no MJCF${r.source.description ? ' in robot_descriptions' : ' here'}.
+      : r.source.mjcf
+        ? `# pip install mujoco
+# ${r.name} has no robot_descriptions entry — load its MJCF from the checkout
+# the git tab makes.
+import mujoco
+
+model = mujoco.MjModel.from_xml_path("${repoDir(r)}/${r.source.mjcf}")
+data = mujoco.MjData(model)`
+        : `# ${r.name} has no MJCF${r.source.description ? ' in robot_descriptions' : ' upstream'}.
 # Convert the URDF with MuJoCo's compiler:
 #   python -m mujoco.urdf2mjcf ${r.assets.urdf.split('/').pop()}`,
   git: (r) => `git clone ${r.source.repo_url}.git

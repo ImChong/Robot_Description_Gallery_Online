@@ -9,6 +9,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import URDFLoader from 'urdf-loader';
 
 const UP_Z = -Math.PI / 2; // URDF is Z-up, three.js is Y-up.
@@ -93,6 +94,20 @@ function stripNonGeometry(object) {
   });
   for (const child of doomed) child.removeFromParent();
   return doomed.length;
+}
+
+/**
+ * Drop `<axis>` elements that carry no `xyz`.
+ *
+ * The attribute is not optional, and urdf-loader reads it without looking:
+ * `axisNode.getAttribute('xyz').split(...)` throws on the bare `<axis/>` that
+ * Galbot One Golf writes into four of its fixed mount joints, and one of those
+ * takes the whole robot down before a single mesh is requested. Removing the
+ * element leaves urdf-loader on the URDF default axis of `1 0 0` — which is
+ * what an empty `<axis>` means anyway, and what a fixed joint does not use.
+ */
+function dropAxesWithoutXyz(xml) {
+  return xml.replace(/<axis\b[^>]*>(\s*<\/axis>)?/g, (tag) => (/\bxyz\s*=/.test(tag) ? tag : ''));
 }
 
 /**
@@ -473,8 +488,12 @@ export class RobotViewer {
     // file, which is not where this page lives.
     loader.workingPath = base + entry.assets.urdf.replace(/[^/]+$/, '');
 
-    // urdf-loader handles STL and DAE; OBJ needs to be plugged in.
+    // urdf-loader handles STL and DAE; OBJ and glTF need to be plugged in.
+    // Galbot ships its visual meshes as .glb, and urdf-loader answers a format
+    // it does not know by logging a warning and never calling back — which
+    // would leave the load counter one short of `total` forever.
     const objLoader = new OBJLoader();
+    const gltfLoader = new GLTFLoader(manager);
     const defaultLoad = loader.loadMeshCb.bind(loader);
 
     // urdf-loader calls loadMeshCb synchronously while parsing, so once parse()
@@ -524,8 +543,15 @@ export class RobotViewer {
           check();
         }
       };
-      if (path.toLowerCase().endsWith('.obj')) {
+      const lower = path.toLowerCase();
+      if (lower.endsWith('.obj')) {
         objLoader.load(path, (obj) => finish(obj), undefined, (err) => finish(null, err));
+      } else if (lower.endsWith('.glb') || lower.endsWith('.gltf')) {
+        // No Y-up correction here: a glTF written as a URDF mesh carries the
+        // link frame the URDF expects, and rotating it would lay the robot on
+        // its side. GLTFLoader resolves its textures before calling back, so a
+        // finished .glb is a finished mesh.
+        gltfLoader.load(path, (gltf) => finish(gltf.scene), undefined, (err) => finish(null, err));
       } else {
         defaultLoad(path, manager, (obj, err) => finish(obj, err));
       }
@@ -537,7 +563,7 @@ export class RobotViewer {
       return r.text();
     });
 
-    const robot = loader.parse(urdfColorsToLinear(text));
+    const robot = loader.parse(dropAxesWithoutXyz(urdfColorsToLinear(text)));
     parsed = true;
     this.robot = robot;
     this.world.add(robot);

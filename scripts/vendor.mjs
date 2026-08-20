@@ -24,6 +24,9 @@ const files = [
   ['three/examples/jsm/loaders/TGALoader.js', 'three/jsm/loaders/TGALoader.js'],
   ['three/examples/jsm/loaders/OBJLoader.js', 'three/jsm/loaders/OBJLoader.js'],
   ['three/examples/jsm/loaders/MTLLoader.js', 'three/jsm/loaders/MTLLoader.js'],
+  ['three/examples/jsm/loaders/GLTFLoader.js', 'three/jsm/loaders/GLTFLoader.js'],
+  // GLTFLoader's only non-three import.
+  ['three/examples/jsm/utils/BufferGeometryUtils.js', 'three/jsm/utils/BufferGeometryUtils.js'],
   ['three/LICENSE', 'three/LICENSE'],
   ['urdf-loader/src/URDFLoader.js', 'urdf-loader/URDFLoader.js'],
   ['urdf-loader/src/URDFClasses.js', 'urdf-loader/URDFClasses.js'],
