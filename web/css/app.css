@@ -137,6 +137,21 @@ a:hover { color: var(--accent-hover); }
 h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
 .muted { color: var(--text-muted); }
 
+/* Inline SVG icons, painted from js/icons.js. Stroked rather than filled so
+ * the whole set carries one weight, and drawn in `currentColor` so each icon
+ * picks up the hover and pressed states of whatever holds it. Sized here
+ * rather than in `em`, so a 12px button label does not shrink the mark with
+ * it. */
+.icon {
+  display: block;
+  width: 16px; height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 /* ── Header ─────────────────────────────────────────────────
    Structure and controls follow Humanoid_Robot_Learning_Paper_Notebooks:
    a fixed bar whose inner row is centred on the content measure, the site
@@ -501,6 +516,13 @@ html[lang^='zh'] .footer-text-zh { display: block; }
   transition: background var(--transition), color var(--transition);
 }
 .toggle-group button:hover { color: var(--stage-chrome-text-strong); background: var(--stage-chrome-hover); }
+.toggle-group button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+/* The icon-only half of the row: a square target rather than a text label,
+ * kept the height of the labelled buttons in the group beside it. */
+.toggle-group button.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 30px; padding: 0;
+}
 .toggle-group button[aria-pressed='true'] { background: var(--accent); color: #fff; font-weight: 600; }
 .toggle-group button .swatch {
   display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px;
@@ -602,7 +624,12 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 .dl-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
 .dl-btn:disabled { cursor: progress; }
 .dl-btn.primary { border-color: var(--accent-line); background: var(--accent-soft); }
-.dl-btn .dl-icon { font-size: 15px; line-height: 1; flex-shrink: 0; }
+/* All three rows carry the same download mark — they differ in what comes
+ * down, not in what the button does — so the icon stays quiet until the row
+ * is hovered. */
+.dl-btn .dl-icon { display: flex; color: var(--text-muted); flex-shrink: 0; }
+.dl-btn:hover:not(:disabled) .dl-icon { color: var(--accent); }
+.dl-btn .dl-icon .icon { width: 17px; height: 17px; }
 .dl-btn .dl-text { display: flex; flex-direction: column; line-height: 1.35; min-width: 0; }
 .dl-btn .dl-sub { color: var(--text-faint); font-size: 11.5px; }
 .dl-btn .dl-size { margin-left: auto; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
