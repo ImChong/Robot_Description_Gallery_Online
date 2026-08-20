@@ -623,11 +623,25 @@ html[lang^='zh'] .footer-text-zh { display: block; }
  * binds in practice — the stage and its cards are far taller than the spec
  * table — but it keeps the list from collapsing behind a long spec block. */
 .joints-block { display: flex; flex-direction: column; flex: 1 1 0; min-height: 190px; }
-.joints { margin-top: 10px; flex: 1 1 auto; min-height: 0; overflow-y: auto; padding-right: 4px; }
+/* The list scrolls, and a scroller clips whatever reaches past its padding
+ * box — which is what the target flash and the slider's focus ring both do.
+ * The padding gives them room and the negative margin hands it back to the
+ * panel, so the rows still line up with the heading above them. */
+.joints {
+  margin: 4px -8px 0; padding: 6px 8px 8px;
+  flex: 1 1 auto; min-height: 0; overflow-y: auto;
+}
 .joints::-webkit-scrollbar { width: 8px; }
 .joints::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-.joint { padding: 6px 0; border-bottom: 1px solid var(--border-soft); transition: background var(--transition), box-shadow var(--transition); }
+.joint {
+  padding: 6px 0; border-bottom: 1px solid var(--border-soft);
+  /* Room for the flash when the joint tree scrolls a row to the edge of the
+   * list: without it `scrollIntoView` parks the row flush against the edge
+   * and the ring above or below it is the part that gets cut. */
+  scroll-margin-block: 8px;
+  transition: background var(--transition), box-shadow var(--transition);
+}
 /* Where the joint tree just sent the reader: the row is marked for a couple of
  * seconds, because a list this long scrolled silently would look like nothing
  * happened. */
