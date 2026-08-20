@@ -20,11 +20,15 @@ The gallery fetches this file at startup: rows checked `[x]` are shown, rows lef
 the site matches on; the name, organisation and upstream link after it are for
 human readers.
 
-## 人形 Humanoid · 21
+## 人形 Humanoid · 25
 
 - [x] `g1` **G1** — UNITREE Robotics — [unitreerobotics/unitree_ros · g1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/g1_description)
 - [x] `h1` **H1** — UNITREE Robotics — [unitreerobotics/unitree_ros · h1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description)
 - [x] `h1_2` **H1_2** — UNITREE Robotics — [unitreerobotics/unitree_ros · h1_2_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_2_description)
+- [x] `h2` **H2** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/h2_description)
+- [x] `h2_plus` **H2 Plus** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/h2_plus)
+- [x] `r1` **R1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_description)
+- [x] `r1_air` **R1 Air** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_air_description)
 - [x] `gr1` **GR-1** — Fourier — [FFTAI/Wiki-GRx-Models · gr1_description](https://github.com/FFTAI/Wiki-GRx-Models/tree/351245ac8fa4bf6f4b0c41556e1e6976a438bcef/GRX/GR1/GR1T1)
 - [x] `n1` **N1** — Fourier — [FFTAI/Wiki-GRx-Models · n1_description](https://github.com/FFTAI/Wiki-GRx-Models/tree/f8e683f00d1d99deb882deb9dfce6030095b466a/N1)
 - [x] `booster_t1` **Booster T1** — Booster Robotics — [BoosterRobotics/booster_gym · booster_t1_description](https://github.com/BoosterRobotics/booster_gym/tree/687a33d08b08875fe45dc8d91b54db83766df8b9/resources/T1)
@@ -44,11 +48,14 @@ human readers.
 - [ ] `jaxon` **JAXON** — JSK — [robot-descriptions/jaxon_description · jaxon_description](https://github.com/robot-descriptions/jaxon_description/tree/4a0cb7a4a737864312f8d6e3f89823a741539bfc)
 - [ ] `romeo` **Romeo** — Aldebaran Robotics — [ros-aldebaran/romeo_robot · romeo_description](https://github.com/ros-aldebaran/romeo_robot/tree/0.1.5/romeo_description)
 
-## 四足 Quadruped · 12
+## 四足 Quadruped · 15
 
 - [x] `go2` **Go2** — UNITREE Robotics — [unitreerobotics/unitree_ros · go2_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/go2_description)
+- [x] `go2w` **Go2-W** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/go2w_description)
 - [x] `b2` **B2** — UNITREE Robotics — [unitreerobotics/unitree_ros · b2_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/b2_description)
 - [x] `a1` **A1** — UNITREE Robotics — [unitreerobotics/unitree_ros · a1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/a1_description)
+- [x] `a2` **A2** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/a2_description)
+- [x] `as2` **AS2** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/as2_description)
 - [x] `aliengo` **Aliengo** — UNITREE Robotics — [unitreerobotics/unitree_ros · aliengo_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/aliengo_description)
 - [x] `laikago` **Laikago** — UNITREE Robotics — [unitreerobotics/unitree_mujoco · laikago_description](https://github.com/unitreerobotics/unitree_mujoco/tree/f3300ff1bf0ab9efbea0162717353480d9b05d73/data/laikago)
 - [x] `anymal_b` **ANYmal B** — ANYbotics — [ANYbotics/anymal_b_simple_description · anymal_b_description](https://github.com/ANYbotics/anymal_b_simple_description/tree/988b5df22b84761bdf08111b1c2ccc883793f456)
@@ -59,8 +66,9 @@ human readers.
 - [ ] `wl_p311d` **WL P311D** — LimX Dynamics — [limxdynamics/robot-description · wl_p311d_description](https://github.com/limxdynamics/robot-description/tree/a097533372a08298d45af391cbdfc2fd2dc3da6f/wheellegged/WL_P311D)
 - [ ] `wl_p311e` **WL P311E** — LimX Dynamics — [limxdynamics/robot-description · wl_p311e_description](https://github.com/limxdynamics/robot-description/tree/a097533372a08298d45af391cbdfc2fd2dc3da6f/wheellegged/WL_P311E)
 
-## 机械臂 Arm · 16
+## 机械臂 Arm · 17
 
+- [x] `z1` **Z1** — UNITREE Robotics — [unitreerobotics/unitree_ros · z1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/z1_description)
 - [x] `panda` **Panda** — Franka Robotics — [Gepetto/example-robot-data · panda_description](https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/panda_description)
 - [x] `iiwa14` **iiwa 14** — KUKA — [RobotLocomotion/drake · iiwa14_description](https://github.com/RobotLocomotion/drake/tree/7abea0556ede980a5077fe1a8cfbae59b57c7c27/manipulation/models/iiwa_description)
 - [ ] `gen2` **Gen2** — Kinova — [Gepetto/example-robot-data · gen2_description](https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/kinova_description)
@@ -78,8 +86,12 @@ human readers.
 - [x] `omy_l100` **OMY-L100** — ROBOTIS — [ROBOTIS-GIT/open_manipulator · omy_l100_description](https://github.com/ROBOTIS-GIT/open_manipulator/tree/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description)
 - [ ] `poppy_ergo_jr` **Poppy Ergo Jr** — Poppy Project — [poppy-project/poppy_ergo_jr_description · poppy_ergo_jr_description](https://github.com/poppy-project/poppy_ergo_jr_description/tree/7eb32bd385afa11dea5e6a6b6a4a86a0243aaa2b)
 
-## 灵巧手 / 夹爪 Hand / Gripper · 6
+## 灵巧手 / 夹爪 Hand / Gripper · 10
 
+- [x] `dex1_1` **Dex1-1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex1_1)
+- [x] `dex2_5` **Dex2-5** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex2_5)
+- [x] `dex3_1` **Dex3-1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex3_1)
+- [x] `dex5_1` **Dex5-1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex5_1)
 - [ ] `leap_hand_v1` **LEAP Hand v1** — Carnegie Mellon University — [leap-hand/LEAP_Hand_Sim · leap_hand_v1_description](https://github.com/leap-hand/LEAP_Hand_Sim/tree/150bc3d4b61fd6619193ba5a8ef209f3609ced89/assets/leap_hand)
 - [x] `allegro_hand` **Allegro Hand** — Wonik Robotics — [RobotLocomotion/drake · allegro_hand_description](https://github.com/RobotLocomotion/drake/tree/7abea0556ede980a5077fe1a8cfbae59b57c7c27/manipulation/models/allegro_hand_description)
 - [x] `ability_hand` **Ability Hand** — PSYONIC, Inc. — [psyonicinc/ability-hand-api · ability_hand_description](https://github.com/psyonicinc/ability-hand-api/tree/89407424edfc22faceaedcd7c3ea2b7947cbbb2c/URDF)
@@ -94,16 +106,19 @@ human readers.
 - [x] `bolt` **Bolt** — ODRI — [Gepetto/example-robot-data · bolt_description](https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/bolt_description)
 - [x] `rhea` **Rhea** — Gabrael Levine — [G-Levine/rhea_description · rhea_description](https://github.com/G-Levine/rhea_description/tree/1dc0f1abcf51b5d8a8f7ff8a548399ff0df1414f)
 
-## 双臂 Dual arm · 5
+## 双臂 Dual arm · 7
 
+- [x] `r1_a5` **R1-A5** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_a5_description)
+- [x] `r1_a7` **R1-A7** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_a7_description)
 - [x] `yumi` **YuMi** — ABB — [ankurhanda/robot-assets · yumi_description](https://github.com/ankurhanda/robot-assets/tree/12f1a3c89c9975194551afaed0dfae1e09fdb27c/urdfs/robots/yumi)
 - [x] `baxter` **Baxter** — Rethink Robotics — [RethinkRobotics/baxter_common · baxter_description](https://github.com/RethinkRobotics/baxter_common/tree/6c4b0f375fe4e356a3b12df26ef7c0d5e58df86e/baxter_description)
 - [x] `pr2` **PR2** — Willow Garage — [ankurhanda/robot-assets · pr2_description](https://github.com/ankurhanda/robot-assets/tree/12f1a3c89c9975194551afaed0dfae1e09fdb27c/urdfs/robots/pr2)
 - [x] `nextage` **NEXTAGE** — Kawada Robotics — [tork-a/rtmros_nextage · nextage_description](https://github.com/tork-a/rtmros_nextage/tree/ac270fb969fa54abeb6863f9b388a9e20c1f14e0/nextage_description)
 - [x] `poppy_torso` **Poppy Torso** — Poppy Project — [poppy-project/poppy_torso_description · poppy_torso_description](https://github.com/poppy-project/poppy_torso_description/tree/6beeec3d76fb72b7548cce7c73aad722f8884522)
 
-## 移动操作 Mobile manipulator · 6
+## 移动操作 Mobile manipulator · 7
 
+- [x] `g1_d` **G1-D** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_d_description)
 - [x] `stretch` **Stretch RE1** — Hello Robot — [robot-descriptions/stretch_description · stretch_description](https://github.com/robot-descriptions/stretch_description/tree/4b838429fe4c5d9f2937efe698444bd68968f376)
 - [x] `tiago` **TIAGo** — PAL Robotics — [Gepetto/example-robot-data · tiago_description](https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/tiago_description)
 - [x] `pepper` **Pepper** — SoftBank Robotics — [jrl-umi3218/pepper_description · pepper_description](https://github.com/jrl-umi3218/pepper_description/tree/cd9715bb5df7ad57445d953db7b1924255305944)

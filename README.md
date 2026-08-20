@@ -4,7 +4,7 @@
 [![Deploy to GitHub Pages](https://github.com/ImChong/Robot_URDF_Gallery/actions/workflows/pages.yml/badge.svg)](https://github.com/ImChong/Robot_URDF_Gallery/actions/workflows/pages.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-一个可浏览、可交互的机器人模型合集：人形、四足、机械臂、灵巧手等 **70 个**开源机器人
+一个可浏览、可交互的机器人模型合集：人形、四足、机械臂、灵巧手等 **85 个**开源机器人
 描述文件，直接在浏览器里加载、拖关节、看碰撞体和惯量。灵感来自
 [All Hands Up](https://allhandsup.org/)，但对象从机械手扩展到所有常见机器人。
 
@@ -16,7 +16,7 @@ URDF 与网格在访问时从 jsDelivr 的 GitHub CDN 直接流式加载。上�
 robot_descriptions.py  ──┐
 （186 个描述的元数据）     │
                          ├─▶  scripts/build_registry.py  ──▶  data/robots.json
-上游 GitHub 仓库 @commit ─┘    · 静态解析描述模块（不 clone）      （70 个条目）
+上游 GitHub 仓库 @commit ─┘    · 静态解析描述模块（不 clone）      （85 个条目）
 （URDF + 网格，经 CDN）         · 只下载 URDF，解析关节/连杆/质量
                                 · 逐个 HEAD 校验每个 package:// 网格
                                           │
@@ -47,13 +47,13 @@ robot_descriptions.py  ──┐
 
 | 类别 | 数量 | 代表机器人 |
 | --- | --- | --- |
-| 人形 Humanoid | 21 | G1、H1、H1-2、GR-1、N1、Elf2、Booster T1、TALOS、Valkyrie、Atlas、iCub、ergoCub、ToddlerBot |
-| 四足 Quadruped | 12 | Go2、B2、A1、Aliengo、ANYmal B/C/D、HyQ、Solo、WL P311 |
-| 机械臂 Arm | 16 | Panda、iiwa 14、Kinova Gen2、PiPER、SO-ARM100/101、OpenMANIPULATOR、OMY 系列 |
-| 灵巧手 / 夹爪 Hand | 6 | LEAP Hand、Allegro Hand、Ability Hand、Robotiq 2F-85、BarrettHand |
+| 人形 Humanoid | 25 | G1、H1、H1-2、H2、H2 Plus、R1、R1 Air、GR-1、N1、Elf2、Booster T1、TALOS、Valkyrie、Atlas、iCub、ergoCub、ToddlerBot |
+| 四足 Quadruped | 15 | Go2、Go2-W、B2、A1、A2、AS2、Aliengo、ANYmal B/C/D、HyQ、Solo、WL P311 |
+| 机械臂 Arm | 17 | Z1、Panda、iiwa 14、Kinova Gen2、PiPER、SO-ARM100/101、OpenMANIPULATOR、OMY 系列 |
+| 灵巧手 / 夹爪 Hand | 10 | Dex1-1、Dex2-5、Dex3-1、Dex5-1、LEAP Hand、Allegro Hand、Ability Hand、Robotiq 2F-85、BarrettHand |
 | 双足 Biped | 4 | Cassie、Bolt、Upkie、Rhea |
-| 双臂 Dual arm | 5 | YuMi、Baxter、PR2、NEXTAGE、Poppy Torso |
-| 移动操作 Mobile | 6 | Stretch RE1、TIAGo、Pepper、RBY1、Ginger、BamBot |
+| 双臂 Dual arm | 7 | R1-A5、R1-A7、YuMi、Baxter、PR2、NEXTAGE、Poppy Torso |
+| 移动操作 Mobile | 7 | G1-D、Stretch RE1、TIAGo、Pepper、RBY1、Ginger、BamBot |
 
 计划中的第一版目标是人形 + 四足 + 机械臂 + 灵巧手四类；由于流水线对每个候选模型都做
 了自动校验，另外三类（双足 / 双臂 / 移动操作）也一并纳入，没有额外维护成本。
@@ -111,7 +111,7 @@ npm run check:visibility   # 校验清单是否与注册表同步（CI 会跑）
 ```bash
 npm run dev &
 npm run thumbs                 # 无头 Chromium 渲染 web/thumbs/<id>.webp
-npm run smoke -- --all         # 逐个打开 70 个模型，断言真的渲染出了几何体
+npm run smoke -- --all         # 逐个打开每个模型，断言真的渲染出了几何体
 ```
 
 两个脚本都跑在真实的 WebGL 上下文里，用的是详情页同一份 `viewer.js`。冒烟测试专门盯
@@ -182,7 +182,7 @@ zip 是手写的（store 方式 + CRC-32），所以专门有一个检查脚本�
 
 ```bash
 npm run check:downloads              # 每种网格格式组合各取一个最小模型
-npm run check:downloads -- --all     # 全部 70 个
+npm run check:downloads -- --all     # 全部条目
 ```
 
 它会用系统 `unzip -t` 校验每个条目的 CRC、比对条目数与注册表记录的网格数、确认
@@ -255,6 +255,36 @@ URDF 相对上游只有一处改动：网格的 `filename` 属性重写成
 新条目默认就是显示的；跑一次 `npm run visibility` 把它写进 `data/visibility.md`，
 之后就能随时勾掉。
 
+### `robot_descriptions.py` 里没有的机器人
+
+上游仓库里的模型往往比 `robot_descriptions.py` 收录的多——例如 `unitree_ros` 就有十来个
+它没有条目的机器人。这种情况把 `description` 换成一段 `upstream`，把描述模块本来会提供
+的信息直接写出来：
+
+```json
+{
+  "id": "r1",
+  "name": "R1",
+  "maker": "UNITREE Robotics",
+  "category": "humanoid",
+  "upstream": {
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "package": "robots/r1_description",
+    "urdf": "robots/r1_description/R1.urdf",
+    "license": "BSD-3-Clause",
+    "license_file": "LICENSE",
+    "tags": ["humanoid"]
+  }
+}
+```
+
+`commit` 要是完整的 40 位 sha 或版本 tag——校验脚本不接受分支名，那样的链接不可复现；
+`license_file` 是相对仓库根目录的路径。这样的条目必须自己写 `id`，`name` / `maker` /
+`upstream.tags` 也没有别处可以取。其余流程完全一致：同样解析 URDF、同样逐个 HEAD 校验
+网格、同样生成缩略图与下载包。详情页知道它没有 `robot_descriptions` 条目——代码片段改成
+用 pinocchio 直接读 URDF，「robot_descriptions 条目」那一行资源链接也不再出现。
+
 手写的文件只有两个：`data/curation.json`（收录什么）和 `data/visibility.md` 里的勾选框
 （显示什么）；其余全部由流水线生成。
 
@@ -299,8 +329,12 @@ web/vendor/            已提交的 three.js 与 urdf-loader（无构建步骤�
 
 - **xacro 模型暂不支持。** UR 系列、Shadow Hand、Fetch 等在上游只提供 xacro，需要
   在构建阶段展开后才能进合集（见 Roadmap）。
-- 少量上游模型的网格缺失或路径含空格（Go1、iiwa7、mini cheetah、Reachy 等），
+- 少量上游模型的网格缺失或路径含空格（iiwa7、mini cheetah、Reachy 等），
   `--candidates` 会把它们标为不可加载。
+- **jsDelivr 单个文件上限 20 MB。** `unitree_ros` 的 Go1、B1、B2-W 各有一个超限的
+  Collada 网格（分别是 64 MB、24 MB、72 MB 的 `trunk.dae` / `trunkb.dae` /
+  `base_link.dae`），CDN 直接返回 403，所以这三个机器人暂时进不了合集；即便换一个不限
+  大小的源，浏览器加载一个 70 MB 的 Collada 也不现实。
 - 个别模型的 `mass_kg` 明显是上游笔误（例如 BarrettHand 的 264 t）。界面照实显示，
   不做静默修正。
 
@@ -327,7 +361,7 @@ web/vendor/            已提交的 three.js 与 urdf-loader（无构建步骤�
 
 ## English
 
-A browsable 3D gallery of 70 open robot descriptions — humanoids, quadrupeds, arms,
+A browsable 3D gallery of 85 open robot descriptions — humanoids, quadrupeds, arms,
 hands — that loads URDFs in the browser, lets you drag joints, and overlays collision
 geometry, joint axes, link frames, centres of mass and inertia boxes.
 
@@ -338,9 +372,10 @@ up as you scroll, and the address bar follows it (`#category=quadruped` is a lin
 into that band of the page). Search still filters, inside the sections, and folds away any
 section it leaves empty.
 
-**No model files are hosted here.** Each entry records its upstream repository and the
-commit `robot_descriptions.py` pins; the URDF and its meshes stream from jsDelivr's
-GitHub CDN at that commit. `scripts/build_registry.py` generates `data/robots.json` by
+**No model files are hosted here.** Each entry records its upstream repository and a
+pinned commit — the one `robot_descriptions.py` uses, or one written by hand for the
+models it does not ship; the URDF and its meshes stream from jsDelivr's GitHub CDN at
+that commit. `scripts/build_registry.py` generates `data/robots.json` by
 static-parsing the description modules, downloading only the URDF, and verifying every
 `package://` mesh reference with a HEAD request — a broken entry fails the build rather
 than the visitor. `data/curation.json` is the only hand-written file — apart from the

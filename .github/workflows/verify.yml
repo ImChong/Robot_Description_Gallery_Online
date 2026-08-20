@@ -102,7 +102,7 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
-      # Loads all 70 robots from the CDN in a real browser, so it is the slow
+      # Loads every robot from the CDN in a real browser, so it is the slow
       # step; it is also the only one that catches a robot that silently stopped
       # rendering.
       - name: Render check
