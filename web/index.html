@@ -88,10 +88,20 @@
         <div class="stage-toolbar" id="stage-toolbar">
           <div class="toggle-group" id="overlay-toggles"></div>
           <div class="toggle-group">
-            <button data-action="reset" data-i18n-title="viewer.resetPose" title="Reset pose">⟳</button>
-            <button data-action="rotate" data-i18n-title="viewer.autoRotate" title="Auto rotate">◐</button>
-            <button data-action="frame" data-i18n-title="viewer.fitView" title="Fit view">⤢</button>
-            <button data-action="snapshot" data-i18n-title="viewer.snapshot" title="Save PNG">⭳</button>
+            <!-- Icon-only buttons: js/icons.js paints the SVG into `data-icon`,
+                 and `aria-label` carries the name the glyph no longer says. -->
+            <button class="icon-btn" data-action="reset" data-icon="reset"
+                    data-i18n-title="viewer.resetPose" title="Reset pose"
+                    data-i18n-aria-label="viewer.resetPose" aria-label="Reset pose"></button>
+            <button class="icon-btn" data-action="rotate" data-icon="rotate"
+                    data-i18n-title="viewer.autoRotate" title="Auto rotate"
+                    data-i18n-aria-label="viewer.autoRotate" aria-label="Auto rotate"></button>
+            <button class="icon-btn" data-action="frame" data-icon="fit"
+                    data-i18n-title="viewer.fitView" title="Fit view"
+                    data-i18n-aria-label="viewer.fitView" aria-label="Fit view"></button>
+            <button class="icon-btn" data-action="snapshot" data-icon="camera"
+                    data-i18n-title="viewer.snapshot" title="Save PNG"
+                    data-i18n-aria-label="viewer.snapshot" aria-label="Save PNG"></button>
           </div>
         </div>
         <p class="stage-hint" data-i18n="viewer.hint">Drag to orbit · scroll to zoom · right-drag to pan</p>

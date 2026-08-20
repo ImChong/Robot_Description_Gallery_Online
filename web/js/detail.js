@@ -3,6 +3,7 @@ import { RobotViewer, THEMES } from './viewer.js';
 import { formatBytes, urdfUrl } from './registry.js';
 import { categoryLabel, lang, t } from './i18n.js';
 import { downloadBundle, downloadRos2, downloadUrdf, ros2PackageName } from './download.js';
+import { icon } from './icons.js';
 import { onThemeChange, theme } from './theme.js';
 
 const el = (id) => document.getElementById(id);
@@ -279,40 +280,52 @@ export class Detail {
     }
   }
 
+  /**
+   * The three archives, smallest payload first: the .urdf on its own, then the
+   * same file with every mesh beside it, then that bundle wrapped as a ROS 2
+   * package. Each row adds to the one above it, so the list reads as one scale
+   * rather than three unrelated options — and each carries the same download
+   * mark, since what differs between them is the payload, not the action.
+   */
   renderDownloads() {
     const r = this.robot;
     const meshes = r.assets.mesh_files;
     const bundleSize = formatBytes(r.assets.mesh_bytes + r.urdf.bytes);
-    el('d-downloads').innerHTML = `
-      <button class="dl-btn" data-download="bundle">
+    const rows = [
+      {
+        kind: 'urdf',
+        main: t('dl.urdf'),
+        sub: t('dl.urdfSub'),
+        size: formatBytes(r.urdf.bytes),
+      },
+      {
+        kind: 'bundle',
+        main: t('dl.bundle'),
+        sub: `${t('dl.bundleSub')} · ${meshes} ${meshes === 1 ? 'mesh' : 'meshes'}`,
+        size: bundleSize,
+      },
+      {
+        kind: 'ros2',
+        main: t('dl.ros2'),
+        sub: t('dl.ros2Sub'),
+        size: bundleSize,
+        title: ros2PackageName(r),
+      },
+    ];
+    el('d-downloads').innerHTML = rows
+      .map(
+        (row) => `
+      <button class="dl-btn" data-download="${row.kind}"${row.title ? ` title="${row.title}"` : ''}>
         <i class="dl-fill"></i>
-        <span class="dl-icon" aria-hidden="true">⬇</span>
+        <span class="dl-icon">${icon('download')}</span>
         <span class="dl-text">
-          <span class="dl-main">${t('dl.bundle')}</span>
-          <span class="dl-sub">${t('dl.bundleSub')} · ${meshes} ${
-            meshes === 1 ? 'mesh' : 'meshes'
-          }</span>
+          <span class="dl-main">${row.main}</span>
+          <span class="dl-sub">${row.sub}</span>
         </span>
-        <span class="dl-size">${bundleSize}</span>
-      </button>
-      <button class="dl-btn" data-download="ros2" title="${ros2PackageName(r)}">
-        <i class="dl-fill"></i>
-        <span class="dl-icon" aria-hidden="true">📦</span>
-        <span class="dl-text">
-          <span class="dl-main">${t('dl.ros2')}</span>
-          <span class="dl-sub">${t('dl.ros2Sub')}</span>
-        </span>
-        <span class="dl-size">${bundleSize}</span>
-      </button>
-      <button class="dl-btn" data-download="urdf">
-        <i class="dl-fill"></i>
-        <span class="dl-icon" aria-hidden="true">⬇</span>
-        <span class="dl-text">
-          <span class="dl-main">${t('dl.urdf')}</span>
-          <span class="dl-sub">${t('dl.urdfSub')}</span>
-        </span>
-        <span class="dl-size">${formatBytes(r.urdf.bytes)}</span>
-      </button>`;
+        <span class="dl-size">${row.size}</span>
+      </button>`,
+      )
+      .join('');
   }
 
   download() {

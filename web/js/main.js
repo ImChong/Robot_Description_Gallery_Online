@@ -3,6 +3,7 @@ import { loadRegistry, byId } from './registry.js';
 import { Gallery } from './gallery.js';
 import { Detail } from './detail.js';
 import { applyStatic, detectLang, setLang, lang, LANGS } from './i18n.js';
+import { paintIcons } from './icons.js';
 import { theme, toggleTheme } from './theme.js';
 
 const views = {
@@ -74,6 +75,7 @@ async function main() {
   setupTheme();
   setLang(detectLang());
   applyStatic();
+  paintIcons();
   setupLang();
   for (const el of document.querySelectorAll('[data-year]')) {
     el.textContent = String(new Date().getFullYear());
