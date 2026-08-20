@@ -53,24 +53,38 @@ function setAngleUnit(unit) {
 }
 
 const SNIPPETS = {
-  python: (r) => `# pip install robot_descriptions
+  // Most entries come from robot_descriptions.py and load in one call. The
+  // ones curated straight from a repository have no key to pass it, so they
+  // get the equivalent: pinocchio pointed at the checkout the git tab clones.
+  python: (r) =>
+    r.source.description
+      ? `# pip install robot_descriptions
 from robot_descriptions.loaders.pinocchio import load_robot_description
 
 robot = load_robot_description("${r.source.description}")
+print(robot.model.nq, "DOF")`
+      : `# pip install pin
+# ${r.name} has no robot_descriptions entry — load it from the checkout
+# the git tab makes.
+import pinocchio
+
+robot = pinocchio.RobotWrapper.BuildFromURDF(
+    "${repoDir(r)}/${r.assets.urdf}",${packageDirs(r).length ? `\n    [${packageDirs(r).map((d) => `"${d}"`).join(', ')}],` : ''}
+)
 print(robot.model.nq, "DOF")`,
   mujoco: (r) =>
-    r.formats.includes('mjcf')
+    r.formats.includes('mjcf') && r.source.description
       ? `# pip install robot_descriptions mujoco
 import mujoco
 from robot_descriptions import ${mjKey(r)}
 
 model = mujoco.MjModel.from_xml_path(${mjKey(r)}.MJCF_PATH)
 data = mujoco.MjData(model)`
-      : `# ${r.name} has no MJCF in robot_descriptions.
+      : `# ${r.name} has no MJCF${r.source.description ? ' in robot_descriptions' : ' here'}.
 # Convert the URDF with MuJoCo's compiler:
 #   python -m mujoco.urdf2mjcf ${r.assets.urdf.split('/').pop()}`,
   git: (r) => `git clone ${r.source.repo_url}.git
-cd ${r.source.github.split('/')[1]}
+cd ${repoDir(r)}
 git checkout ${r.source.commit}
 # URDF: ${r.assets.urdf}`,
   url: (r) => urdfUrl(r),
@@ -78,6 +92,25 @@ git checkout ${r.source.commit}
 
 function mjKey(robot) {
   return robot.source.description.replace('_description', '_mj_description');
+}
+
+/** The directory `git clone` drops the upstream repository into. */
+function repoDir(robot) {
+  return robot.source.github.split('/')[1];
+}
+
+/**
+ * Roots a URDF loader needs on its package path to resolve this model's
+ * `package://` references: the parent of each directory the build step matched
+ * a package to, relative to the clone. Models whose meshes are all relative
+ * need none.
+ */
+function packageDirs(robot) {
+  const dirs = Object.values(robot.assets.packages || {}).map((dir) => {
+    const parent = dir.split('/').slice(0, -1).join('/');
+    return parent ? `${repoDir(robot)}/${parent}` : repoDir(robot);
+  });
+  return [...new Set(dirs)];
 }
 
 export class Detail {
@@ -410,11 +443,13 @@ export class Detail {
       r.links.official ? ['res.official', r.links.official, host(r.links.official)] : null,
       r.links.docs ? ['res.docs', r.links.docs, host(r.links.docs)] : null,
       r.links.paper ? ['res.paper', r.links.paper, host(r.links.paper)] : null,
-      [
-        'res.descriptions',
-        `https://github.com/robot-descriptions/robot_descriptions.py/blob/main/robot_descriptions/${r.source.description}.py`,
-        r.source.description,
-      ],
+      r.source.description
+        ? [
+            'res.descriptions',
+            `https://github.com/robot-descriptions/robot_descriptions.py/blob/main/robot_descriptions/${r.source.description}.py`,
+            r.source.description,
+          ]
+        : null,
     ].filter(Boolean);
 
     el('d-resources').innerHTML = items

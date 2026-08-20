@@ -805,10 +805,14 @@ ${opening}
   licence    : ${robot.license || 'see the upstream repository'}
 ${source.license_url ? `  licence file: ${source.license_url}\n` : ''}
 ${layout}
-
+${
+  source.description
+    ? `
 Metadata for this model comes from robot_descriptions.py:
   https://github.com/robot-descriptions/robot_descriptions.py
-
+`
+    : ''
+}
 The licence above governs this model — check it before use, some are
 non-commercial.
 `;

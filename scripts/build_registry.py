@@ -6,7 +6,8 @@ upstream repository plus the exact commit that ``robot_descriptions.py`` pins,
 and serves the URDF and its meshes straight from jsDelivr's GitHub CDN at that
 commit. This script turns that upstream metadata into a self-contained registry:
 
-  1. read robot metadata (maker, DOF, tags, license) from ``robot_descriptions``
+  1. read robot metadata (maker, DOF, tags, license) from ``robot_descriptions``,
+     or, for a model it does not ship, from an ``upstream`` block in the curation
   2. static-parse each description module for its repository and URDF path
      (importing the module would clone the whole repository)
   3. download only the URDF file itself and parse joints, links and meshes
@@ -70,13 +71,19 @@ class Upstream:
     tags: list[str]
     formats: list[str]
     license_spdx: str | None
-    license_file: str | None
+    # Repository-relative path of the licence file, not the package-relative
+    # name robot_descriptions records: some repositories keep a single licence
+    # at the root rather than one per description package.
+    license_path: str | None
     github: str | None
     commit: str | None
     package_path: str
     urdf_path: str | None
     mjcf_path: str | None
     uses_xacro: bool
+    # False for entries hand-written in data/curation.json, which have no
+    # module in robot_descriptions.py to link to or load through.
+    from_descriptions: bool = True
 
 
 def _join_parts(node: ast.expr, env: dict[str, list[str]]) -> list[str]:
@@ -139,7 +146,11 @@ def read_upstream(descriptions_dir: Path) -> list[Upstream]:
                 tags=sorted(desc.tags),
                 formats=sorted(f.name.lower() for f in desc.formats),
                 license_spdx=desc.license_spdx,
-                license_file=desc.license_file,
+                license_path=(
+                    posixpath.join(paths.get("PACKAGE_PATH", ""), desc.license_file)
+                    if desc.license_file
+                    else None
+                ),
                 github=slug,
                 commit=repo.commit if repo else None,
                 package_path=paths.get("PACKAGE_PATH", ""),
@@ -372,6 +383,46 @@ def inspect_urdf(up: Upstream, http: Http, verify_meshes: bool = True) -> UrdfFa
 # --------------------------------------------------------------------------- #
 
 
+def curated_key(item: dict[str, Any]) -> str:
+    """Label a curation entry for error messages and description lookups."""
+    return item.get("description") or item.get("id") or "(unnamed entry)"
+
+
+def curated_id(item: dict[str, Any]) -> str:
+    """The gallery id a curation entry will end up with."""
+    return item.get("id") or curated_key(item).removesuffix("_description")
+
+
+def upstream_from_curation(item: dict[str, Any]) -> Upstream:
+    """Build an ``Upstream`` from a hand-written ``upstream`` block.
+
+    robot_descriptions.py is the metadata source for most of the registry, but
+    it does not ship every model a repository has: unitree_ros, for one, carries
+    a dozen robots it has no module for. Such an entry spells its upstream out
+    in data/curation.json instead, and from here on is treated like any other —
+    same URDF parsing, same mesh probing, same failure modes.
+    """
+    spec = item["upstream"]
+    urdf_path = spec["urdf"]
+    return Upstream(
+        key=curated_id(item),
+        robot=item.get("name") or curated_id(item),
+        maker=item.get("maker"),
+        dof=item.get("dof"),
+        tags=sorted(spec.get("tags") or []),
+        formats=sorted(spec.get("formats") or ["urdf"]),
+        license_spdx=spec.get("license"),
+        license_path=spec.get("license_file"),
+        github=spec["github"],
+        commit=spec["commit"],
+        package_path=spec.get("package") or posixpath.dirname(urdf_path),
+        urdf_path=urdf_path,
+        mjcf_path=spec.get("mjcf"),
+        uses_xacro=False,
+        from_descriptions=False,
+    )
+
+
 def entry_for(
     up: Upstream,
     facts: UrdfFacts,
@@ -417,17 +468,18 @@ def entry_for(
             "mesh_formats": facts.mesh_formats,
         },
         "source": {
-            "description": up.key,
+            # Only entries that come from robot_descriptions.py carry a key the
+            # site can link to or load with; hand-written ones leave it null.
+            "description": up.key if up.from_descriptions else None,
             "github": up.github,
             "commit": up.commit,
             "repo_url": f"https://github.com/{up.github}",
             "tree_url": f"https://github.com/{up.github}/tree/{up.commit}/{up.package_path}".rstrip("/"),
             "license_url": (
-                f"https://github.com/{up.github}/blob/{up.commit}/"
-                f"{posixpath.join(up.package_path, up.license_file) if up.license_file else ''}"
-            )
-            if up.license_file
-            else None,
+                f"https://github.com/{up.github}/blob/{up.commit}/{up.license_path}"
+                if up.license_path
+                else None
+            ),
             "mjcf": up.mjcf_path,
         },
         "links": curated.get("links", {}),
@@ -507,10 +559,16 @@ def main() -> int:
     problems: list[str] = []
 
     def build(item: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any] | None, str | None]:
-        key = item["description"]
-        up = upstream.get(key)
-        if up is None:
-            return item, None, f"{key}: not in robot_descriptions"
+        key = curated_key(item)
+        if item.get("upstream"):
+            try:
+                up = upstream_from_curation(item)
+            except KeyError as exc:
+                return item, None, f"{key}: upstream block is missing {exc}"
+        else:
+            up = upstream.get(key)
+            if up is None:
+                return item, None, f"{key}: not in robot_descriptions"
         facts = inspect_urdf(up, http)
         if not facts.ok:
             return item, None, f"{key}: {facts.error}"
@@ -521,8 +579,7 @@ def main() -> int:
         unknown = sorted(set(item.get("pose") or ()) - set(facts.joint_names))
         if unknown:
             return item, None, f"{key}: pose names unknown joints {unknown}"
-        robot_id = item.get("id") or key.removesuffix("_description")
-        return item, entry_for(up, facts, item, measured.get(robot_id)), None
+        return item, entry_for(up, facts, item, measured.get(curated_id(item))), None
 
     with ThreadPoolExecutor(args.jobs) as ex:
         for item, entry, problem in ex.map(build, curation["robots"]):
@@ -532,8 +589,8 @@ def main() -> int:
                 entries.append(entry)
     http.save()
 
-    order = {item["description"]: i for i, item in enumerate(curation["robots"])}
-    entries.sort(key=lambda e: order[e["source"]["description"]])
+    order = {curated_id(item): i for i, item in enumerate(curation["robots"])}
+    entries.sort(key=lambda e: order[e["id"]])
 
     registry = {
         "$schema": "./robots.schema.json",

@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-08-17T16:31:13Z",
+ "generated": "2026-08-20T04:15:32Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -220,6 +220,247 @@
    },
    "links": {
     "official": "https://www.unitree.com/h1"
+   }
+  },
+  {
+   "id": "h2",
+   "name": "H2",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 31,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "Upstream also ships the same robot with Collada meshes and a closed-loop variant.",
+   "notes_zh": "上游同一台机器人还提供 Collada 网格版本与闭链版本。",
+   "pose": null,
+   "measured": {
+    "size": {
+     "x": 0.5607,
+     "y": 1.8333,
+     "z": 0.4554
+    },
+    "height_m": 1.8333
+   },
+   "urdf": {
+    "xml_name": "H2",
+    "links": 37,
+    "joints": {
+     "fixed": 5,
+     "revolute": 31
+    },
+    "moving_joints": 31,
+    "mass_kg": 75.587,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 33905
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/h2_description/H2.urdf",
+    "packages": {},
+    "mesh_files": 34,
+    "mesh_bytes": 13352556,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/h2_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/H2"
+   }
+  },
+  {
+   "id": "h2_plus",
+   "name": "H2 Plus",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 75,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "H2 with two dexterous hands, hence 75 moving joints against H2's 31.",
+   "notes_zh": "H2 加装两只灵巧手，因此有 75 个可动关节，而 H2 只有 31 个。",
+   "pose": null,
+   "measured": {
+    "size": {
+     "x": 0.6141,
+     "y": 1.8353,
+     "z": 0.4554
+    },
+    "height_m": 1.8353
+   },
+   "urdf": {
+    "xml_name": "H2",
+    "links": 98,
+    "joints": {
+     "fixed": 22,
+     "revolute": 75
+    },
+    "moving_joints": 75,
+    "mass_kg": 77.238,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 103133
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/h2_plus/H2_Plus.urdf",
+    "packages": {},
+    "mesh_files": 93,
+    "mesh_bytes": 29681415,
+    "mesh_formats": [
+     ".dae",
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/h2_plus",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/H2"
+   }
+  },
+  {
+   "id": "r1",
+   "name": "R1",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 26,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The ankles are parallel linkages. URDF cannot close a loop, so upstream ships the rods hanging free with constraint frames marking where they meet.",
+   "notes_zh": "踝关节是并联机构。URDF 无法描述闭链，上游把连杆画成断开的，并用 constraint 坐标系标出本应连接的位置。",
+   "pose": null,
+   "measured": {
+    "size": {
+     "x": 0.3691,
+     "y": 1.2302,
+     "z": 0.3754
+    },
+    "height_m": 1.2302
+   },
+   "urdf": {
+    "xml_name": "R1",
+    "links": 40,
+    "joints": {
+     "fixed": 13,
+     "revolute": 26
+    },
+    "moving_joints": 26,
+    "mass_kg": 28.836,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 38359
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/r1_description/R1.urdf",
+    "packages": {},
+    "mesh_files": 42,
+    "mesh_bytes": 22466678,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/R1"
+   }
+  },
+  {
+   "id": "r1_air",
+   "name": "R1 Air",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 20,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "A lighter R1: 20 moving joints instead of 26, with the same parallel ankles.",
+   "notes_zh": "R1 的轻量版本：20 个可动关节而非 26 个，踝部同样是并联机构。",
+   "pose": null,
+   "measured": {
+    "size": {
+     "x": 0.3646,
+     "y": 1.2302,
+     "z": 0.3754
+    },
+    "height_m": 1.2302
+   },
+   "urdf": {
+    "xml_name": "R1_AIR",
+    "links": 34,
+    "joints": {
+     "fixed": 13,
+     "revolute": 20
+    },
+    "moving_joints": 20,
+    "mass_kg": 26.676,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 32748
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/r1_air_description/R1_AIR.urdf",
+    "packages": {},
+    "mesh_files": 36,
+    "mesh_bytes": 22739424,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_air_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/R1"
    }
   },
   {
@@ -1391,6 +1632,84 @@
    }
   },
   {
+   "id": "go2w",
+   "name": "Go2-W",
+   "maker": "UNITREE Robotics",
+   "category": "quadruped",
+   "tags": [
+    "quadruped",
+    "wheeled"
+   ],
+   "dof": 16,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The wheeled Go2: each foot is a continuous wheel joint on top of the usual three leg joints.",
+   "notes_zh": "轮足版 Go2：常规三个腿部关节之外，每只脚是一个连续转动的轮关节。",
+   "pose": {
+    "FL_hip_joint": 0.0,
+    "FL_thigh_joint": 0.78,
+    "FL_calf_joint": -1.55,
+    "FR_hip_joint": 0.0,
+    "FR_thigh_joint": 0.78,
+    "FR_calf_joint": -1.55,
+    "RL_hip_joint": 0.0,
+    "RL_thigh_joint": 0.78,
+    "RL_calf_joint": -1.55,
+    "RR_hip_joint": 0.0,
+    "RR_thigh_joint": 0.78,
+    "RR_calf_joint": -1.55
+   },
+   "measured": {
+    "size": {
+     "x": 0.7332,
+     "y": 0.5244,
+     "z": 0.432
+    },
+    "height_m": 0.5244
+   },
+   "urdf": {
+    "xml_name": "go2w_description",
+    "links": 33,
+    "joints": {
+     "continuous": 4,
+     "fixed": 16,
+     "revolute": 12
+    },
+    "moving_joints": 16,
+    "mass_kg": 19.523,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 24479
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/go2w_description/urdf/go2w_description.urdf",
+    "packages": {
+     "go2w_description": "robots/go2w_description"
+    },
+    "mesh_files": 8,
+    "mesh_bytes": 16037770,
+    "mesh_formats": [
+     ".dae",
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/go2w_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/go2"
+   }
+  },
+  {
    "id": "b2",
    "name": "B2",
    "maker": "UNITREE Robotics",
@@ -1534,6 +1853,151 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/a1_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/a1_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "a2",
+   "name": "A2",
+   "maker": "UNITREE Robotics",
+   "category": "quadruped",
+   "tags": [
+    "quadruped"
+   ],
+   "dof": 12,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": {
+    "FL_hip_joint": 0.0,
+    "FL_thigh_joint": 0.78,
+    "FL_calf_joint": -1.55,
+    "FR_hip_joint": 0.0,
+    "FR_thigh_joint": 0.78,
+    "FR_calf_joint": -1.55,
+    "RL_hip_joint": 0.0,
+    "RL_thigh_joint": 0.78,
+    "RL_calf_joint": -1.55,
+    "RR_hip_joint": 0.0,
+    "RR_thigh_joint": 0.78,
+    "RR_calf_joint": -1.55
+   },
+   "measured": {
+    "size": {
+     "x": 0.8932,
+     "y": 0.5673,
+     "z": 0.4585
+    },
+    "height_m": 0.5673
+   },
+   "urdf": {
+    "xml_name": "a2",
+    "links": 20,
+    "joints": {
+     "fixed": 7,
+     "revolute": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": 40.071,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 24791
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/a2_description/urdf/a2.urdf",
+    "packages": {},
+    "mesh_files": 17,
+    "mesh_bytes": 14733328,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/a2_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/A2"
+   }
+  },
+  {
+   "id": "as2",
+   "name": "AS2",
+   "maker": "UNITREE Robotics",
+   "category": "quadruped",
+   "tags": [
+    "quadruped"
+   ],
+   "dof": 12,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "Present in unitree_ros but absent from its README. The 12 leg joints sit under a floating base joint, which is why the URDF counts 13 movable joints.",
+   "notes_zh": "unitree_ros 里有这个目录，但 README 没有列出。12 个腿部关节之上还有一个 floating 基座关节，所以 URDF 统计出 13 个可动关节。",
+   "pose": {
+    "FL_hip_joint": 0.0,
+    "FL_thigh_joint": 0.78,
+    "FL_calf_joint": -1.55,
+    "FR_hip_joint": 0.0,
+    "FR_thigh_joint": 0.78,
+    "FR_calf_joint": -1.55,
+    "RL_hip_joint": 0.0,
+    "RL_thigh_joint": 0.78,
+    "RL_calf_joint": -1.55,
+    "RR_hip_joint": 0.0,
+    "RR_thigh_joint": 0.78,
+    "RR_calf_joint": -1.55
+   },
+   "measured": {
+    "size": {
+     "x": 0.7413,
+     "y": 0.4766,
+     "z": 0.3794
+    },
+    "height_m": 0.4766
+   },
+   "urdf": {
+    "xml_name": "as2",
+    "links": 18,
+    "joints": {
+     "fixed": 4,
+     "floating": 1,
+     "revolute": 12
+    },
+    "moving_joints": 13,
+    "mass_kg": 17.64,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 21881
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/as2_description/urdf/as2.urdf",
+    "packages": {},
+    "mesh_files": 17,
+    "mesh_bytes": 30817628,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/as2_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
     "mjcf": null
    },
    "links": {}
@@ -2157,6 +2621,72 @@
     "mjcf": null
    },
    "links": {}
+  },
+  {
+   "id": "z1",
+   "name": "Z1",
+   "maker": "UNITREE Robotics",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 6,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": {
+    "joint2": 0.9,
+    "joint3": -1.2,
+    "joint4": 0.4
+   },
+   "measured": {
+    "size": {
+     "x": 0.4221,
+     "y": 0.5391,
+     "z": 0.1319
+    },
+    "height_m": 0.5391
+   },
+   "urdf": {
+    "xml_name": "z1_description",
+    "links": 8,
+    "joints": {
+     "fixed": 1,
+     "revolute": 6
+    },
+    "moving_joints": 6,
+    "mass_kg": 4.419,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 10240
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@267182b8521c8d6a631bab1fe63836873237a525/",
+    "urdf": "robots/z1_description/xacro/z1.urdf",
+    "packages": {
+     "z1_description": "robots/z1_description"
+    },
+    "mesh_files": 7,
+    "mesh_bytes": 11559591,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": "z1_description",
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "267182b8521c8d6a631bab1fe63836873237a525",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/z1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/z1_description/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/z1"
+   }
   },
   {
    "id": "panda",
@@ -3154,6 +3684,264 @@
    }
   },
   {
+   "id": "dex1_1",
+   "name": "Dex1-1",
+   "maker": "UNITREE Robotics",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 2,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "A parallel gripper: two prismatic jaws.",
+   "notes_zh": "平行夹爪：两个移动关节驱动的夹指。",
+   "pose": null,
+   "measured": {
+    "size": {
+     "x": 0.0811,
+     "y": 0.124,
+     "z": 0.1473
+    },
+    "height_m": 0.124
+   },
+   "urdf": {
+    "xml_name": "dex1_1",
+    "links": 7,
+    "joints": {
+     "fixed": 4,
+     "prismatic": 2
+    },
+    "moving_joints": 2,
+    "mass_kg": 0.193,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 6279
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/dexterous_hand_description/dex1_1/dex1_1.urdf",
+    "packages": {},
+    "mesh_files": 7,
+    "mesh_bytes": 3259388,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex1_1",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/Dex1-1"
+   }
+  },
+  {
+   "id": "dex2_5",
+   "name": "Dex2-5",
+   "maker": "UNITREE Robotics",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 10,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The right hand; upstream also ships the left one and both with a G1 wrist attached.",
+   "notes_zh": "此处为右手；上游还提供左手，以及带 G1 手腕的两个版本。",
+   "pose": null,
+   "measured": {
+    "size": {
+     "x": 0.151,
+     "y": 0.0702,
+     "z": 0.0974
+    },
+    "height_m": 0.0702
+   },
+   "urdf": {
+    "xml_name": "right",
+    "links": 11,
+    "joints": {
+     "revolute": 10
+    },
+    "moving_joints": 10,
+    "mass_kg": 0.365,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 11338
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/dexterous_hand_description/dex2_5/Right_Hand.urdf",
+    "packages": {},
+    "mesh_files": 11,
+    "mesh_bytes": 39615824,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex2_5",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/Dex2-5"
+   }
+  },
+  {
+   "id": "dex3_1",
+   "name": "Dex3-1",
+   "maker": "UNITREE Robotics",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 7,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The right hand; upstream also ships the left one.",
+   "notes_zh": "此处为右手；上游还提供左手。",
+   "pose": null,
+   "measured": {
+    "size": {
+     "x": 0.1755,
+     "y": 0.0878,
+     "z": 0.1385
+    },
+    "height_m": 0.0878
+   },
+   "urdf": {
+    "xml_name": "dex3_1_r",
+    "links": 8,
+    "joints": {
+     "revolute": 7
+    },
+    "moving_joints": 7,
+    "mass_kg": 0.697,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 8415
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/dexterous_hand_description/dex3_1/dex3_1_r.urdf",
+    "packages": {},
+    "mesh_files": 8,
+    "mesh_bytes": 8142372,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex3_1",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/Dex3-1"
+   }
+  },
+  {
+   "id": "dex5_1",
+   "name": "Dex5-1",
+   "maker": "UNITREE Robotics",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 20,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The right hand; upstream also ships the left one.",
+   "notes_zh": "此处为右手；上游还提供左手。",
+   "pose": {
+    "Yaw_11R": 0.3,
+    "Roll_12R": 0.9,
+    "Pitch_13R": 0.5,
+    "Pitch_14R": 0.4,
+    "Roll_21R": 0.2,
+    "Pitch_22R": 0.5,
+    "Pitch_23R": 0.5,
+    "Pitch_24R": 0.4,
+    "Roll_31R": 0.07,
+    "Pitch_32R": 0.5,
+    "Pitch_33R": 0.5,
+    "Pitch_34R": 0.4,
+    "Roll_41R": -0.07,
+    "Pitch_42R": 0.5,
+    "Pitch_43R": 0.5,
+    "Pitch_44R": 0.4,
+    "Roll_51R": -0.2,
+    "Pitch_52R": 0.5,
+    "Pitch_53R": 0.5,
+    "Pitch_54R": 0.4
+   },
+   "measured": {
+    "size": {
+     "x": 0.1304,
+     "y": 0.1603,
+     "z": 0.187
+    },
+    "height_m": 0.1603
+   },
+   "urdf": {
+    "xml_name": "Dex5-URDF-R",
+    "links": 21,
+    "joints": {
+     "revolute": 20
+    },
+    "moving_joints": 20,
+    "mass_kg": 0.979,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 21212
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/dexterous_hand_description/dex5_1/Dex5-URDF-R/Dex5-URDF-R.urdf",
+    "packages": {},
+    "mesh_files": 21,
+    "mesh_bytes": 7205564,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex5_1",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/Dex5-1"
+   }
+  },
+  {
    "id": "leap_hand_v1",
    "name": "LEAP Hand v1",
    "maker": "Carnegie Mellon University",
@@ -3771,6 +4559,124 @@
    "links": {}
   },
   {
+   "id": "r1_a5",
+   "name": "R1-A5",
+   "maker": "UNITREE Robotics",
+   "category": "dual_arm",
+   "tags": [
+    "dual_arm"
+   ],
+   "dof": 13,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "R1's upper body on its own: waist yaw, a two-axis head and two 5-DOF arms.",
+   "notes_zh": "R1 的上半身：腰部偏航、两自由度头部，以及两条 5 自由度手臂。",
+   "pose": null,
+   "measured": {
+    "size": {
+     "x": 0.3691,
+     "y": 0.4959,
+     "z": 0.3754
+    },
+    "height_m": 0.4959
+   },
+   "urdf": {
+    "xml_name": "A5",
+    "links": 14,
+    "joints": {
+     "revolute": 13
+    },
+    "moving_joints": 13,
+    "mass_kg": 14.487,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 13474
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/r1_a5_description/r1_a5.urdf",
+    "packages": {},
+    "mesh_files": 14,
+    "mesh_bytes": 11578476,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_a5_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/R1"
+   }
+  },
+  {
+   "id": "r1_a7",
+   "name": "R1-A7",
+   "maker": "UNITREE Robotics",
+   "category": "dual_arm",
+   "tags": [
+    "dual_arm"
+   ],
+   "dof": 17,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The same upper body as R1-A5 with 7-DOF arms — the wrists gain pitch and yaw.",
+   "notes_zh": "与 R1-A5 相同的上半身，换成 7 自由度手臂——手腕多了俯仰与偏航。",
+   "pose": null,
+   "measured": {
+    "size": {
+     "x": 0.5087,
+     "y": 0.4959,
+     "z": 0.3754
+    },
+    "height_m": 0.4959
+   },
+   "urdf": {
+    "xml_name": "A7",
+    "links": 18,
+    "joints": {
+     "revolute": 17
+    },
+    "moving_joints": 17,
+    "mass_kg": 16.917,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 16884
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/r1_a7_description/r1_a7.urdf",
+    "packages": {},
+    "mesh_files": 18,
+    "mesh_bytes": 12413612,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_a7_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/R1"
+   }
+  },
+  {
    "id": "yumi",
    "name": "YuMi",
    "maker": "ABB",
@@ -4072,6 +4978,69 @@
     "mjcf": null
    },
    "links": {}
+  },
+  {
+   "id": "g1_d",
+   "name": "G1-D",
+   "maker": "UNITREE Robotics",
+   "category": "mobile",
+   "tags": [
+    "mobile_manipulator",
+    "wheeled"
+   ],
+   "dof": 34,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "G1's upper body and two-finger grippers on a two-wheel base with a prismatic lifting column.",
+   "notes_zh": "G1 的上半身与两指夹爪装在两轮底盘上，中间是一根可升降的直线导轨。",
+   "pose": null,
+   "measured": {
+    "size": {
+     "x": 0.7391,
+     "y": 1.3214,
+     "z": 0.525
+    },
+    "height_m": 1.3214
+   },
+   "urdf": {
+    "xml_name": "G1_D",
+    "links": 41,
+    "joints": {
+     "continuous": 2,
+     "fixed": 6,
+     "prismatic": 2,
+     "revolute": 30
+    },
+    "moving_joints": 34,
+    "mass_kg": 70.723,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 42820
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_d_description/g1_d.urdf",
+    "packages": {},
+    "mesh_files": 41,
+    "mesh_bytes": 29869544,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_d_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/G1-D"
+   }
   },
   {
    "id": "stretch",

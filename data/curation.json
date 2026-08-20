@@ -10,7 +10,14 @@
     "it filed under, then re-run the build. Optional per-robot keys: id, name,",
     "maker, dof, notes, notes_zh, links{official,docs,paper}, and pose (joint",
     "name -> position, used for card renders when the zero pose looks broken).",
-    "Pose joint names are validated against the URDF at build time."
+    "Pose joint names are validated against the URDF at build time.",
+    "",
+    "A robot that robot_descriptions.py does not ship (unitree_ros carries a dozen",
+    "such) replaces `description` with an `upstream` block naming the repository,",
+    "the commit to pin, the URDF path and the licence — everything the build would",
+    "otherwise have read from a description module. Such an entry must set `id`,",
+    "and should set `name`, `maker` and `upstream.tags` too, since nothing else",
+    "supplies them."
   ],
   "categories": [
     {
@@ -74,6 +81,94 @@
       },
       "notes": "H1-2 includes the three-finger hands, hence the high joint count.",
       "notes_zh": "H1-2 含三指手，因此关节数较多。"
+    },
+    {
+      "id": "h2",
+      "name": "H2",
+      "maker": "UNITREE Robotics",
+      "category": "humanoid",
+      "upstream": {
+        "github": "unitreerobotics/unitree_ros",
+        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+        "package": "robots/h2_description",
+        "urdf": "robots/h2_description/H2.urdf",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.unitree.com/H2"
+      },
+      "notes": "Upstream also ships the same robot with Collada meshes and a closed-loop variant.",
+      "notes_zh": "上游同一台机器人还提供 Collada 网格版本与闭链版本。"
+    },
+    {
+      "id": "h2_plus",
+      "name": "H2 Plus",
+      "maker": "UNITREE Robotics",
+      "category": "humanoid",
+      "upstream": {
+        "github": "unitreerobotics/unitree_ros",
+        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+        "package": "robots/h2_plus",
+        "urdf": "robots/h2_plus/H2_Plus.urdf",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.unitree.com/H2"
+      },
+      "notes": "H2 with two dexterous hands, hence 75 moving joints against H2's 31.",
+      "notes_zh": "H2 加装两只灵巧手，因此有 75 个可动关节，而 H2 只有 31 个。"
+    },
+    {
+      "id": "r1",
+      "name": "R1",
+      "maker": "UNITREE Robotics",
+      "category": "humanoid",
+      "upstream": {
+        "github": "unitreerobotics/unitree_ros",
+        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+        "package": "robots/r1_description",
+        "urdf": "robots/r1_description/R1.urdf",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.unitree.com/R1"
+      },
+      "notes": "The ankles are parallel linkages. URDF cannot close a loop, so upstream ships the rods hanging free with constraint frames marking where they meet.",
+      "notes_zh": "踝关节是并联机构。URDF 无法描述闭链，上游把连杆画成断开的，并用 constraint 坐标系标出本应连接的位置。"
+    },
+    {
+      "id": "r1_air",
+      "name": "R1 Air",
+      "maker": "UNITREE Robotics",
+      "category": "humanoid",
+      "upstream": {
+        "github": "unitreerobotics/unitree_ros",
+        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+        "package": "robots/r1_air_description",
+        "urdf": "robots/r1_air_description/R1_AIR.urdf",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.unitree.com/R1"
+      },
+      "notes": "A lighter R1: 20 moving joints instead of 26, with the same parallel ankles.",
+      "notes_zh": "R1 的轻量版本：20 个可动关节而非 26 个，踝部同样是并联机构。"
     },
     {
       "description": "gr1_description",
@@ -196,6 +291,43 @@
       }
     },
     {
+      "id": "go2w",
+      "name": "Go2-W",
+      "maker": "UNITREE Robotics",
+      "category": "quadruped",
+      "upstream": {
+        "github": "unitreerobotics/unitree_ros",
+        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+        "package": "robots/go2w_description",
+        "urdf": "robots/go2w_description/urdf/go2w_description.urdf",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "quadruped",
+          "wheeled"
+        ]
+      },
+      "links": {
+        "official": "https://www.unitree.com/go2"
+      },
+      "notes": "The wheeled Go2: each foot is a continuous wheel joint on top of the usual three leg joints.",
+      "notes_zh": "轮足版 Go2：常规三个腿部关节之外，每只脚是一个连续转动的轮关节。",
+      "pose": {
+        "FL_hip_joint": 0.0,
+        "FL_thigh_joint": 0.78,
+        "FL_calf_joint": -1.55,
+        "FR_hip_joint": 0.0,
+        "FR_thigh_joint": 0.78,
+        "FR_calf_joint": -1.55,
+        "RL_hip_joint": 0.0,
+        "RL_thigh_joint": 0.78,
+        "RL_calf_joint": -1.55,
+        "RR_hip_joint": 0.0,
+        "RR_thigh_joint": 0.78,
+        "RR_calf_joint": -1.55
+      }
+    },
+    {
       "description": "b2_description",
       "category": "quadruped",
       "links": {
@@ -219,6 +351,74 @@
     {
       "description": "a1_description",
       "category": "quadruped",
+      "pose": {
+        "FL_hip_joint": 0.0,
+        "FL_thigh_joint": 0.78,
+        "FL_calf_joint": -1.55,
+        "FR_hip_joint": 0.0,
+        "FR_thigh_joint": 0.78,
+        "FR_calf_joint": -1.55,
+        "RL_hip_joint": 0.0,
+        "RL_thigh_joint": 0.78,
+        "RL_calf_joint": -1.55,
+        "RR_hip_joint": 0.0,
+        "RR_thigh_joint": 0.78,
+        "RR_calf_joint": -1.55
+      }
+    },
+    {
+      "id": "a2",
+      "name": "A2",
+      "maker": "UNITREE Robotics",
+      "category": "quadruped",
+      "upstream": {
+        "github": "unitreerobotics/unitree_ros",
+        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+        "package": "robots/a2_description",
+        "urdf": "robots/a2_description/urdf/a2.urdf",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "quadruped"
+        ]
+      },
+      "links": {
+        "official": "https://www.unitree.com/A2"
+      },
+      "pose": {
+        "FL_hip_joint": 0.0,
+        "FL_thigh_joint": 0.78,
+        "FL_calf_joint": -1.55,
+        "FR_hip_joint": 0.0,
+        "FR_thigh_joint": 0.78,
+        "FR_calf_joint": -1.55,
+        "RL_hip_joint": 0.0,
+        "RL_thigh_joint": 0.78,
+        "RL_calf_joint": -1.55,
+        "RR_hip_joint": 0.0,
+        "RR_thigh_joint": 0.78,
+        "RR_calf_joint": -1.55
+      }
+    },
+    {
+      "id": "as2",
+      "name": "AS2",
+      "maker": "UNITREE Robotics",
+      "category": "quadruped",
+      "dof": 12,
+      "upstream": {
+        "github": "unitreerobotics/unitree_ros",
+        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+        "package": "robots/as2_description",
+        "urdf": "robots/as2_description/urdf/as2.urdf",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "quadruped"
+        ]
+      },
+      "notes": "Present in unitree_ros but absent from its README. The 12 leg joints sit under a floating base joint, which is why the URDF counts 13 movable joints.",
+      "notes_zh": "unitree_ros 里有这个目录，但 README 没有列出。12 个腿部关节之上还有一个 floating 基座关节，所以 URDF 统计出 13 个可动关节。",
       "pose": {
         "FL_hip_joint": 0.0,
         "FL_thigh_joint": 0.78,
@@ -361,6 +561,18 @@
       "category": "quadruped"
     },
     {
+      "description": "z1_description",
+      "category": "arm",
+      "links": {
+        "official": "https://www.unitree.com/z1"
+      },
+      "pose": {
+        "joint2": 0.9,
+        "joint3": -1.2,
+        "joint4": 0.4
+      }
+    },
+    {
       "description": "panda_description",
       "category": "arm",
       "links": {
@@ -476,6 +688,116 @@
       }
     },
     {
+      "id": "dex1_1",
+      "name": "Dex1-1",
+      "maker": "UNITREE Robotics",
+      "category": "hand",
+      "upstream": {
+        "github": "unitreerobotics/unitree_ros",
+        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+        "package": "robots/dexterous_hand_description/dex1_1",
+        "urdf": "robots/dexterous_hand_description/dex1_1/dex1_1.urdf",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "end_effector"
+        ]
+      },
+      "links": {
+        "official": "https://www.unitree.com/Dex1-1"
+      },
+      "notes": "A parallel gripper: two prismatic jaws.",
+      "notes_zh": "平行夹爪：两个移动关节驱动的夹指。"
+    },
+    {
+      "id": "dex2_5",
+      "name": "Dex2-5",
+      "maker": "UNITREE Robotics",
+      "category": "hand",
+      "upstream": {
+        "github": "unitreerobotics/unitree_ros",
+        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+        "package": "robots/dexterous_hand_description/dex2_5",
+        "urdf": "robots/dexterous_hand_description/dex2_5/Right_Hand.urdf",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "end_effector"
+        ]
+      },
+      "links": {
+        "official": "https://www.unitree.com/Dex2-5"
+      },
+      "notes": "The right hand; upstream also ships the left one and both with a G1 wrist attached.",
+      "notes_zh": "此处为右手；上游还提供左手，以及带 G1 手腕的两个版本。"
+    },
+    {
+      "id": "dex3_1",
+      "name": "Dex3-1",
+      "maker": "UNITREE Robotics",
+      "category": "hand",
+      "upstream": {
+        "github": "unitreerobotics/unitree_ros",
+        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+        "package": "robots/dexterous_hand_description/dex3_1",
+        "urdf": "robots/dexterous_hand_description/dex3_1/dex3_1_r.urdf",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "end_effector"
+        ]
+      },
+      "links": {
+        "official": "https://www.unitree.com/Dex3-1"
+      },
+      "notes": "The right hand; upstream also ships the left one.",
+      "notes_zh": "此处为右手；上游还提供左手。"
+    },
+    {
+      "id": "dex5_1",
+      "name": "Dex5-1",
+      "maker": "UNITREE Robotics",
+      "category": "hand",
+      "upstream": {
+        "github": "unitreerobotics/unitree_ros",
+        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+        "package": "robots/dexterous_hand_description/dex5_1",
+        "urdf": "robots/dexterous_hand_description/dex5_1/Dex5-URDF-R/Dex5-URDF-R.urdf",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "end_effector"
+        ]
+      },
+      "links": {
+        "official": "https://www.unitree.com/Dex5-1"
+      },
+      "notes": "The right hand; upstream also ships the left one.",
+      "notes_zh": "此处为右手；上游还提供左手。",
+      "pose": {
+        "Yaw_11R": 0.3,
+        "Roll_12R": 0.9,
+        "Pitch_13R": 0.5,
+        "Pitch_14R": 0.4,
+        "Roll_21R": 0.2,
+        "Pitch_22R": 0.5,
+        "Pitch_23R": 0.5,
+        "Pitch_24R": 0.4,
+        "Roll_31R": 0.07,
+        "Pitch_32R": 0.5,
+        "Pitch_33R": 0.5,
+        "Pitch_34R": 0.4,
+        "Roll_41R": -0.07,
+        "Pitch_42R": 0.5,
+        "Pitch_43R": 0.5,
+        "Pitch_44R": 0.4,
+        "Roll_51R": -0.2,
+        "Pitch_52R": 0.5,
+        "Pitch_53R": 0.5,
+        "Pitch_54R": 0.4
+      }
+    },
+    {
       "description": "leap_hand_v1_description",
       "category": "hand",
       "links": {
@@ -550,6 +872,50 @@
       "category": "biped"
     },
     {
+      "id": "r1_a5",
+      "name": "R1-A5",
+      "maker": "UNITREE Robotics",
+      "category": "dual_arm",
+      "upstream": {
+        "github": "unitreerobotics/unitree_ros",
+        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+        "package": "robots/r1_a5_description",
+        "urdf": "robots/r1_a5_description/r1_a5.urdf",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "dual_arm"
+        ]
+      },
+      "links": {
+        "official": "https://www.unitree.com/R1"
+      },
+      "notes": "R1's upper body on its own: waist yaw, a two-axis head and two 5-DOF arms.",
+      "notes_zh": "R1 的上半身：腰部偏航、两自由度头部，以及两条 5 自由度手臂。"
+    },
+    {
+      "id": "r1_a7",
+      "name": "R1-A7",
+      "maker": "UNITREE Robotics",
+      "category": "dual_arm",
+      "upstream": {
+        "github": "unitreerobotics/unitree_ros",
+        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+        "package": "robots/r1_a7_description",
+        "urdf": "robots/r1_a7_description/r1_a7.urdf",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "dual_arm"
+        ]
+      },
+      "links": {
+        "official": "https://www.unitree.com/R1"
+      },
+      "notes": "The same upper body as R1-A5 with 7-DOF arms — the wrists gain pitch and yaw.",
+      "notes_zh": "与 R1-A5 相同的上半身，换成 7 自由度手臂——手腕多了俯仰与偏航。"
+    },
+    {
       "description": "yumi_description",
       "category": "dual_arm",
       "links": {
@@ -571,6 +937,29 @@
     {
       "description": "poppy_torso_description",
       "category": "dual_arm"
+    },
+    {
+      "id": "g1_d",
+      "name": "G1-D",
+      "maker": "UNITREE Robotics",
+      "category": "mobile",
+      "upstream": {
+        "github": "unitreerobotics/unitree_ros",
+        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+        "package": "robots/g1_d_description",
+        "urdf": "robots/g1_d_description/g1_d.urdf",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "mobile_manipulator",
+          "wheeled"
+        ]
+      },
+      "links": {
+        "official": "https://www.unitree.com/G1-D"
+      },
+      "notes": "G1's upper body and two-finger grippers on a two-wheel base with a prismatic lifting column.",
+      "notes_zh": "G1 的上半身与两指夹爪装在两轮底盘上，中间是一根可升降的直线导轨。"
     },
     {
       "description": "stretch_description",
