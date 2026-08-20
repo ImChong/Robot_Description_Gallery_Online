@@ -4,7 +4,7 @@
 [![Deploy to GitHub Pages](https://github.com/ImChong/Robot_URDF_Gallery/actions/workflows/pages.yml/badge.svg)](https://github.com/ImChong/Robot_URDF_Gallery/actions/workflows/pages.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-一个可浏览、可交互的机器人模型合集：人形、四足、机械臂、灵巧手等 **85 个**开源机器人
+一个可浏览、可交互的机器人模型合集：人形、四足、机械臂、灵巧手等 **90 个**开源机器人
 描述文件，直接在浏览器里加载、拖关节、看碰撞体和惯量。灵感来自
 [All Hands Up](https://allhandsup.org/)，但对象从机械手扩展到所有常见机器人。
 
@@ -16,7 +16,7 @@ URDF 与网格在访问时从 jsDelivr 的 GitHub CDN 直接流式加载。上�
 robot_descriptions.py  ──┐
 （186 个描述的元数据）     │
                          ├─▶  scripts/build_registry.py  ──▶  data/robots.json
-上游 GitHub 仓库 @commit ─┘    · 静态解析描述模块（不 clone）      （85 个条目）
+上游 GitHub 仓库 @commit ─┘    · 静态解析描述模块（不 clone）      （90 个条目）
 （URDF + 网格，经 CDN）         · 只下载 URDF，解析关节/连杆/质量
                                 · 逐个 HEAD 校验每个 package:// 网格
                                           │
@@ -47,8 +47,8 @@ robot_descriptions.py  ──┐
 
 | 类别 | 数量 | 代表机器人 |
 | --- | --- | --- |
-| 人形 Humanoid | 25 | G1、H1、H1-2、H2、H2 Plus、R1、R1 Air、GR-1、N1、Elf2、Booster T1、TALOS、Valkyrie、Atlas、iCub、ergoCub、ToddlerBot |
-| 四足 Quadruped | 15 | Go2、Go2-W、B2、A1、A2、AS2、Aliengo、ANYmal B/C/D、HyQ、Solo、WL P311 |
+| 人形 Humanoid | 29 | G1、H1、H1-2、H2、H2 Plus、R1、R1 Air、X2 Ultra、A3、A3 Ultra、GR-1、N1、Elf2、Booster T1、TALOS、Valkyrie、Atlas、iCub、ergoCub、ToddlerBot |
+| 四足 Quadruped | 16 | Go2、Go2-W、B2、A1、A2、AS2、Aliengo、ANYmal B/C/D、HyQ、Solo、WL P311、D1 MaxPro |
 | 机械臂 Arm | 17 | Z1、Panda、iiwa 14、Kinova Gen2、PiPER、SO-ARM100/101、OpenMANIPULATOR、OMY 系列 |
 | 灵巧手 / 夹爪 Hand | 10 | Dex1-1、Dex2-5、Dex3-1、Dex5-1、LEAP Hand、Allegro Hand、Ability Hand、Robotiq 2F-85、BarrettHand |
 | 双足 Biped | 4 | Cassie、Bolt、Upkie、Rhea |
@@ -281,9 +281,12 @@ URDF 相对上游只有一处改动：网格的 `filename` 属性重写成
 
 `commit` 要是完整的 40 位 sha 或版本 tag——校验脚本不接受分支名，那样的链接不可复现；
 `license_file` 是相对仓库根目录的路径。这样的条目必须自己写 `id`，`name` / `maker` /
-`upstream.tags` 也没有别处可以取。其余流程完全一致：同样解析 URDF、同样逐个 HEAD 校验
-网格、同样生成缩略图与下载包。详情页知道它没有 `robot_descriptions` 条目——代码片段改成
-用 pinocchio 直接读 URDF，「robot_descriptions 条目」那一行资源链接也不再出现。
+`upstream.tags` 也没有别处可以取；上游若同时提供 MJCF，再补上 `formats`
+（`["mjcf", "urdf"]`）和 `mjcf` 路径，卡片就会带上 MJCF 标签，详情页也多一条下载链接。
+上游没有声明许可证时（智元的 D1 MaxPro 就是如此），`license` / `license_file` 一并留空，
+界面显示 `—`。其余流程完全一致：同样解析 URDF、同样逐个 HEAD 校验网格、同样生成缩略图
+与下载包。详情页知道它没有 `robot_descriptions` 条目——代码片段改成用 pinocchio 直接读
+URDF，「robot_descriptions 条目」那一行资源链接也不再出现。
 
 手写的文件只有两个：`data/curation.json`（收录什么）和 `data/visibility.md` 里的勾选框
 （显示什么）；其余全部由流水线生成。
@@ -330,7 +333,9 @@ web/vendor/            已提交的 three.js 与 urdf-loader（无构建步骤�
 - **xacro 模型暂不支持。** UR 系列、Shadow Hand、Fetch 等在上游只提供 xacro，需要
   在构建阶段展开后才能进合集（见 Roadmap）。
 - 少量上游模型的网格缺失或路径含空格（iiwa7、mini cheetah、Reachy 等），
-  `--candidates` 会把它们标为不可加载。
+  `--candidates` 会把它们标为不可加载。手写 `upstream` 的仓库也有同类问题：
+  `AgibotTech/A3-A3U-robot-model` 里的 A3 T2.5 把每个网格都指向仓库中并不存在的
+  `robot_descriptions` 包，所以同仓库只收录了另外三套模型。
 - **jsDelivr 单个文件上限 20 MB。** `unitree_ros` 的 Go1、B1、B2-W 各有一个超限的
   Collada 网格（分别是 64 MB、24 MB、72 MB 的 `trunk.dae` / `trunkb.dae` /
   `base_link.dae`），CDN 直接返回 403，所以这三个机器人暂时进不了合集；即便换一个不限
@@ -361,7 +366,7 @@ web/vendor/            已提交的 three.js 与 urdf-loader（无构建步骤�
 
 ## English
 
-A browsable 3D gallery of 85 open robot descriptions — humanoids, quadrupeds, arms,
+A browsable 3D gallery of 90 open robot descriptions — humanoids, quadrupeds, arms,
 hands — that loads URDFs in the browser, lets you drag joints, and overlays collision
 geometry, joint axes, link frames, centres of mass and inertia boxes.
 

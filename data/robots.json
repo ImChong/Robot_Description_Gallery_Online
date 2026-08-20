@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-08-20T04:15:32Z",
+ "generated": "2026-08-20T09:51:36Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -461,6 +461,250 @@
    },
    "links": {
     "official": "https://www.unitree.com/R1"
+   }
+  },
+  {
+   "id": "x2_ultra",
+   "name": "X2 Ultra",
+   "maker": "AgiBot",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 31,
+   "license": "MulanPSL-2.0",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "The v1.4.0 hardware — the revision whose nameplate ends in X2 Ultra -N. Upstream also ships v1.3.0 with the same 31 joints, and a 27-DOF fist variant whose arms stop at the wrist yaw.",
+   "notes_zh": "v1.4.0 硬件版本，即铭牌结尾是 X2 Ultra -N 的那一台。上游还提供关节数相同的 v1.3.0，以及手臂停在腕部 yaw 的 27 自由度假拳版本。",
+   "pose": null,
+   "measured": {
+    "size": {
+     "x": 0.3091,
+     "y": 1.319,
+     "z": 0.6813
+    },
+    "height_m": 1.319
+   },
+   "urdf": {
+    "xml_name": "X2-Ultra",
+    "links": 39,
+    "joints": {
+     "fixed": 7,
+     "revolute": 31
+    },
+    "moving_joints": 31,
+    "mass_kg": 44.801,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 38206
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/AgibotTech/agibot_x2_urdf@77f43eb0904dae4c48ccd9154fee824f8ffd4d38/",
+    "urdf": "X2_URDF-v1.4.0/X2-Ultra.urdf",
+    "packages": {},
+    "mesh_files": 40,
+    "mesh_bytes": 78618510,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "AgibotTech/agibot_x2_urdf",
+    "commit": "77f43eb0904dae4c48ccd9154fee824f8ffd4d38",
+    "repo_url": "https://github.com/AgibotTech/agibot_x2_urdf",
+    "tree_url": "https://github.com/AgibotTech/agibot_x2_urdf/tree/77f43eb0904dae4c48ccd9154fee824f8ffd4d38/X2_URDF-v1.4.0",
+    "license_url": "https://github.com/AgibotTech/agibot_x2_urdf/blob/77f43eb0904dae4c48ccd9154fee824f8ffd4d38/LICENSE",
+    "mjcf": "X2_URDF-v1.4.0/X2-Ultra.xml"
+   },
+   "links": {
+    "official": "https://www.agibot.com/products/X2"
+   }
+  },
+  {
+   "id": "a3_t3d0",
+   "name": "A3 T3.0",
+   "maker": "AgiBot",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 31,
+   "license": "MulanPSL-2.0",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "The base A3 on T3.0 hardware. The repository carries an A3 T2.5 as well, but its URDF resolves every mesh through a robot_descriptions package the repository does not contain, so it cannot be loaded as published.",
+   "notes_zh": "T3.0 硬件的基础版 A3。同一仓库还有 A3 T2.5，但它的 URDF 把所有网格指向仓库里并不存在的 robot_descriptions 包，按原样无法加载。",
+   "pose": null,
+   "measured": {
+    "size": {
+     "x": 0.5793,
+     "y": 1.7223,
+     "z": 0.5325
+    },
+    "height_m": 1.7223
+   },
+   "urdf": {
+    "xml_name": "A3T3",
+    "links": 40,
+    "joints": {
+     "fixed": 8,
+     "revolute": 31
+    },
+    "moving_joints": 31,
+    "mass_kg": 56.8,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 39990
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/AgibotTech/A3-A3U-robot-model@589f508ff357447c610a3f3004419035ddc8f153/",
+    "urdf": "a3_t3d0/urdf/model.urdf",
+    "packages": {},
+    "mesh_files": 40,
+    "mesh_bytes": 14685610,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "AgibotTech/A3-A3U-robot-model",
+    "commit": "589f508ff357447c610a3f3004419035ddc8f153",
+    "repo_url": "https://github.com/AgibotTech/A3-A3U-robot-model",
+    "tree_url": "https://github.com/AgibotTech/A3-A3U-robot-model/tree/589f508ff357447c610a3f3004419035ddc8f153/a3_t3d0",
+    "license_url": "https://github.com/AgibotTech/A3-A3U-robot-model/blob/589f508ff357447c610a3f3004419035ddc8f153/LICENSE.txt",
+    "mjcf": "a3_t3d0/mjcf/a3_t3d0.xml"
+   },
+   "links": {
+    "official": "https://www.agibot.com/products/A3"
+   }
+  },
+  {
+   "id": "a3_ultra_t2d5",
+   "name": "A3 Ultra T2.5",
+   "maker": "AgiBot",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 31,
+   "license": "MulanPSL-2.0",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "A3 Ultra on T2.5 hardware: the same 31 joints as the base A3, plus the head and torso RealSense cameras carried as extra fixed frames.",
+   "notes_zh": "T2.5 硬件的 A3 Ultra：关节与基础版 A3 一样是 31 个，另外把头部和躯干的 RealSense 相机建成了额外的固定坐标系。",
+   "pose": null,
+   "measured": {
+    "size": {
+     "x": 0.5247,
+     "y": 1.7372,
+     "z": 0.5325
+    },
+    "height_m": 1.7372
+   },
+   "urdf": {
+    "xml_name": "A3_ULTRA_T2D5",
+    "links": 47,
+    "joints": {
+     "fixed": 15,
+     "revolute": 31
+    },
+    "moving_joints": 31,
+    "mass_kg": 60.178,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 47548
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/AgibotTech/A3-A3U-robot-model@589f508ff357447c610a3f3004419035ddc8f153/",
+    "urdf": "a3_ultra_t2d5/urdf/model.urdf",
+    "packages": {},
+    "mesh_files": 47,
+    "mesh_bytes": 20717098,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "AgibotTech/A3-A3U-robot-model",
+    "commit": "589f508ff357447c610a3f3004419035ddc8f153",
+    "repo_url": "https://github.com/AgibotTech/A3-A3U-robot-model",
+    "tree_url": "https://github.com/AgibotTech/A3-A3U-robot-model/tree/589f508ff357447c610a3f3004419035ddc8f153/a3_ultra_t2d5",
+    "license_url": "https://github.com/AgibotTech/A3-A3U-robot-model/blob/589f508ff357447c610a3f3004419035ddc8f153/LICENSE.txt",
+    "mjcf": "a3_ultra_t2d5/mjcf/a3_ultra_t2d5.xml"
+   },
+   "links": {
+    "official": "https://www.agibot.com/products/A3"
+   }
+  },
+  {
+   "id": "a3_ultra_t3d0",
+   "name": "A3 Ultra T3.0",
+   "maker": "AgiBot",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 63,
+   "license": "MulanPSL-2.0",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "A3 Ultra with two dexterous hands: 63 moving joints against the 31 of the hand-less variants, sixteen per hand.",
+   "notes_zh": "带两只灵巧手的 A3 Ultra：63 个可动关节，而不带手的版本只有 31 个，每只手十六个。",
+   "pose": null,
+   "measured": {
+    "size": {
+     "x": 0.6028,
+     "y": 1.7372,
+     "z": 0.6367
+    },
+    "height_m": 1.7372
+   },
+   "urdf": {
+    "xml_name": "A3_ULTRA_T3D0",
+    "links": 95,
+    "joints": {
+     "fixed": 31,
+     "revolute": 63
+    },
+    "moving_joints": 63,
+    "mass_kg": 60.007,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 84024
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/AgibotTech/A3-A3U-robot-model@589f508ff357447c610a3f3004419035ddc8f153/",
+    "urdf": "a3_ultra_t3d0/urdf/model.urdf",
+    "packages": {},
+    "mesh_files": 58,
+    "mesh_bytes": 35679772,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "AgibotTech/A3-A3U-robot-model",
+    "commit": "589f508ff357447c610a3f3004419035ddc8f153",
+    "repo_url": "https://github.com/AgibotTech/A3-A3U-robot-model",
+    "tree_url": "https://github.com/AgibotTech/A3-A3U-robot-model/tree/589f508ff357447c610a3f3004419035ddc8f153/a3_ultra_t3d0",
+    "license_url": "https://github.com/AgibotTech/A3-A3U-robot-model/blob/589f508ff357447c610a3f3004419035ddc8f153/LICENSE.txt",
+    "mjcf": "a3_ultra_t3d0/mjcf/a3_ultra_t3d0.xml"
+   },
+   "links": {
+    "official": "https://www.agibot.com/products/A3"
    }
   },
   {
@@ -2621,6 +2865,81 @@
     "mjcf": null
    },
    "links": {}
+  },
+  {
+   "id": "d1_maxpro",
+   "name": "D1 MaxPro",
+   "maker": "AgiBot",
+   "category": "quadruped",
+   "tags": [
+    "quadruped"
+   ],
+   "dof": 12,
+   "license": null,
+   "formats": [
+    "urdf"
+   ],
+   "notes": "Shipped inside AgiBot's D1 SDK repository rather than a description package of its own, which is also why it records no licence: the ROS manifest beside it still says TODO instead of naming one.",
+   "notes_zh": "它随智元 D1 SDK 仓库发布，而不是独立的描述包，这也是它没有许可证的原因：旁边的 ROS package.xml 里仍写着 TODO，而不是具体的许可证。",
+   "pose": {
+    "leg0_fr_joint0": 0.0,
+    "leg0_fr_joint1": -0.7,
+    "leg0_fr_joint2": 1.4,
+    "leg1_fl_joint0": 0.0,
+    "leg1_fl_joint1": -0.7,
+    "leg1_fl_joint2": 1.4,
+    "leg2_hr_joint0": 0.0,
+    "leg2_hr_joint1": -0.7,
+    "leg2_hr_joint2": 1.4,
+    "leg3_hl_joint0": 0.0,
+    "leg3_hl_joint1": -0.7,
+    "leg3_hl_joint2": 1.4
+   },
+   "measured": {
+    "size": {
+     "x": 1.2015,
+     "y": 0.722,
+     "z": 0.5251
+    },
+    "height_m": 0.722
+   },
+   "urdf": {
+    "xml_name": "maxpro",
+    "links": 18,
+    "joints": {
+     "fixed": 5,
+     "revolute": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": 67.888,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 17671
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/AgibotTech/Agibot_D1_MaxPro@7828aef8238388c11267e56d5e44bac9f6dd2eb4/",
+    "urdf": "urdf/maxpro_description/urdf/maxpro.urdf",
+    "packages": {
+     "maxpro_description": "urdf/maxpro_description"
+    },
+    "mesh_files": 13,
+    "mesh_bytes": 38545992,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "AgibotTech/Agibot_D1_MaxPro",
+    "commit": "7828aef8238388c11267e56d5e44bac9f6dd2eb4",
+    "repo_url": "https://github.com/AgibotTech/Agibot_D1_MaxPro",
+    "tree_url": "https://github.com/AgibotTech/Agibot_D1_MaxPro/tree/7828aef8238388c11267e56d5e44bac9f6dd2eb4/urdf/maxpro_description",
+    "license_url": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.agibot.com/products/D1_MaxPro"
+   }
   },
   {
    "id": "z1",
