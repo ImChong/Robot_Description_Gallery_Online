@@ -665,8 +665,8 @@ export class RobotViewer {
   }
 
   /**
-   * Frame the robot: place the camera on an orbit around the visible geometry,
-   * then fit and centre it against the actual frustum.
+   * Frame the robot: unwind the turntable, place the camera on an orbit around
+   * the visible geometry, then fit and centre it against the actual frustum.
    *
    * @param {number} azimuth orbit angle around the vertical axis, radians
    * @param {number} elevation angle above the horizon, radians
@@ -674,6 +674,12 @@ export class RobotViewer {
    */
   frameCamera(azimuth = Math.PI * 0.22, elevation = 0.28, padding = 1.16) {
     if (!this.robot) return;
+    // Fitting the view restores the pose the robot arrived in, so the turntable
+    // spin unwinds with the camera: a model left facing away would otherwise
+    // stay facing away, and the fit would measure the silhouette the spin
+    // happened to stop on rather than the robot's own. Auto rotate keeps
+    // running if it is on — it just starts over from the front.
+    this.world.rotation.z = 0;
     this.world.updateWorldMatrix(true, true);
     const box = boundingBox(this.world);
     if (box.isEmpty()) return;
