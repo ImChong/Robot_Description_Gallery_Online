@@ -219,16 +219,23 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
 }
 
 .github-link {
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  gap: 6px;
   height: 30px;
   padding: 0 2px;
   font-size: 0.85rem;
   color: var(--text-muted);
   text-decoration: none;
   white-space: nowrap;
+  transition: color var(--transition), border-color var(--transition);
 }
 .github-link:hover { color: var(--accent); }
+/* Filled, unlike the stroked set in `.icon`: the GitHub mark is a solid glyph
+ * and only reads as itself that way. It waits here for the phone width. */
+.github-mark { display: none; width: 16px; height: 16px; fill: currentColor; }
 
 .lang-toggle, .theme-toggle {
   flex-shrink: 0;
@@ -849,12 +856,23 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 
 @media (max-width: 720px) {
   /* The bar stays one row at every width — a wrapping header would no longer
-   * match the space `.view` reserves for the fixed bar. The title truncates
-   * and the GitHub link drops out to make room. */
+   * match the space `.view` reserves for the fixed bar. The title truncates to
+   * make room. */
   .header-inner { gap: 0.6rem; padding-left: 16px; padding-right: 16px; }
   .site-title { font-size: 1rem; }
   .header-right { gap: 0.4rem; }
-  .github-link { display: none; }
+  /* The word "GitHub" is what costs the room here, not the link, so the label
+   * gives way to the mark and the link stays in the row — in the toggles' own
+   * box, so the three controls beside the search read as one set. */
+  .github-link {
+    min-width: 32px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+  }
+  .github-link:hover { border-color: var(--accent); }
+  .github-label { display: none; }
+  .github-mark { display: block; }
   /* A search field wide enough to type in leaves the bilingual title with a
    * few characters, so on phones it collapses to its icon — the whole label
    * is the hit area — and expands again while it has focus. */
