@@ -161,8 +161,8 @@ function urdfColorsToLinear(xml, scratch = new THREE.Color()) {
  *   surface instead of making it see-through, so clearing `transparent`
  *   paints the cut-away pixels back in.
  *
- * Collision wireframes and the overlay helpers author their own transparency
- * and never come through here.
+ * Collision shells and the overlay helpers author their own transparency and
+ * never come through here.
  */
 function makeOpaque(material) {
   for (const one of Array.isArray(material) ? material : [material]) {
@@ -622,11 +622,17 @@ export class RobotViewer {
     if (isCollision) {
       mesh.castShadow = false;
       mesh.receiveShadow = false;
-      mesh.material = new THREE.MeshBasicMaterial({
+      // A shaded, semi-transparent shell rather than a wireframe: the faces
+      // catch the stage lights, so the hull keeps its form, and depth writing
+      // stays off so the visual mesh it wraps still reads through it.
+      mesh.material = new THREE.MeshStandardMaterial({
         color: this.theme.collision,
-        wireframe: true,
+        metalness: 0,
+        roughness: 0.75,
         transparent: true,
-        opacity: 0.55,
+        opacity: 0.38,
+        depthWrite: false,
+        side: THREE.DoubleSide,
       });
       this._disposables.push(mesh.material);
       this._themed.collision.push(mesh.material);
@@ -884,7 +890,18 @@ export class RobotViewer {
         if (this.overlays.inertia && inertial.box) {
           const box = new THREE.Mesh(
             new THREE.BoxGeometry(...inertial.box),
-            new THREE.MeshBasicMaterial({ color: this.theme.inertia, wireframe: true, transparent: true, opacity: 0.7, depthTest: false }),
+            // A translucent solid rather than a wireframe: lit, so the faces
+            // read as a box, front-facing only and faint, so a whole robot's
+            // worth of boxes layered over the model does not bury it.
+            new THREE.MeshStandardMaterial({
+              color: this.theme.inertia,
+              metalness: 0,
+              roughness: 0.8,
+              transparent: true,
+              opacity: 0.24,
+              depthWrite: false,
+              depthTest: false,
+            }),
           );
           box.position.fromArray(inertial.origin);
           box.renderOrder = 12;
@@ -1103,8 +1120,8 @@ export class RobotViewer {
         if (!materials.length) return;
         const tinted = materials.map((material) => {
           const clone = material.clone();
-          // Standard materials glow; the collision wireframes, which have no
-          // emissive channel of their own, take the colour directly.
+          // Standard materials glow; anything without an emissive channel of
+          // its own takes the colour directly.
           if (clone.emissive) {
             clone.emissive.setHex(color);
             clone.emissiveIntensity = 0.75;
