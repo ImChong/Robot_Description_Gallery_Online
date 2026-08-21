@@ -723,13 +723,14 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 /* ── Joint tree ─────────────────────────────────────────── */
 
 /* The shape of the description, under the stage where a deep chain has the
- * width to stay on one line. It scrolls inside its own card: a humanoid is
- * sixty rows, and the page below it should not move to make room. */
+ * width to stay on one line. The card takes whatever height the tree asks for,
+ * all sixty rows of a humanoid included: the whole chain is the thing worth
+ * reading here, so it opens out and the page below it moves down. Only a branch
+ * wider than the card scrolls, and only sideways. */
 .tree-host {
   margin-top: 10px;
-  max-height: 340px;
-  overflow: auto;
-  overscroll-behavior: contain;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
 }
 .tree-host::-webkit-scrollbar { width: 8px; height: 8px; }
 .tree-host::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
