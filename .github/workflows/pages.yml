@@ -24,9 +24,9 @@ jobs:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url || steps.deploy_retry.outputs.page_url || steps.deploy_final.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: npm
@@ -47,8 +47,8 @@ jobs:
           rm -f _site/data/curation.json
           du -sh _site
 
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
@@ -59,7 +59,7 @@ jobs:
       # here; re-running it just creates a fresh deployment from the artifact
       # already uploaded above, which is what the 503 message asks for.
       - id: deploy
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
         continue-on-error: true
 
       - name: Back off before the second attempt
@@ -67,7 +67,7 @@ jobs:
         run: sleep 60
       - id: deploy_retry
         if: steps.deploy.outcome == 'failure'
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
         continue-on-error: true
 
       # Last attempt, and the only one allowed to fail the job.
@@ -76,4 +76,4 @@ jobs:
         run: sleep 120
       - id: deploy_final
         if: steps.deploy.outcome == 'failure' && steps.deploy_retry.outcome == 'failure'
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
