@@ -68,6 +68,45 @@ if (!targets.length) {
 }
 
 /**
+ * Fetch a text asset the way build_registry.py does: a 200 or a 404 is an
+ * answer, anything else — a 5xx, a 429, a reset connection — is the CDN having
+ * a moment, and gets another go. One dropped connection used to fail the whole
+ * job with a bare "fetch failed" and no clue which request it was: that is how
+ * fanuc_m710ic failed on main while passing on the very commit that merged.
+ */
+async function fetchText(url, attempts = 3) {
+  let failure;
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    if (attempt) await new Promise((done) => setTimeout(done, 2 ** attempt * 1000));
+    try {
+      const response = await fetch(url, { signal: AbortSignal.timeout(60000) });
+      if (response.ok) return response.text();
+      failure = new Error(`${url} → HTTP ${response.status}`);
+      if (response.status === 404) break;
+    } catch (err) {
+      failure = new Error(`${url} → ${err.message || err}`);
+    }
+  }
+  throw failure;
+}
+
+/**
+ * XML text with its comments removed.
+ *
+ * The generated package is built from a DOM parse — web/js/download.js walks
+ * `<mesh>` elements — so a mesh reference that exists only inside a comment is
+ * neither fetched nor rewritten, which is right: nothing loads it. This check
+ * reads the URDF as text instead of XML, so that it can compare byte-for-byte
+ * against upstream, and has to drop the comments itself or it reads those
+ * deliberately untouched references as broken ones. ANYmal D is the case in
+ * point: it ships a commented-out `hatch` link whose mesh still names
+ * `package://anymal_d_simple_description/...`.
+ */
+function withoutComments(xml) {
+  return xml.replace(/<!--[\s\S]*?-->/g, '');
+}
+
+/**
  * Everything that has to hold for the generated package to build and launch:
  * the files ament and the launch file expect, a launch file Python can parse,
  * and mesh references that resolve inside the package. The URDF must also be
@@ -115,7 +154,7 @@ function checkRos2Package(root, pkg, upstream) {
 
   const files = new Set(entries.map((name) => name.split('\\').join('/')));
   let rewritten = 0;
-  for (const [, ref] of urdf.matchAll(/<mesh[^>]*filename="([^"]*)"/g)) {
+  for (const [, ref] of withoutComments(urdf).matchAll(/<mesh[^>]*filename="([^"]*)"/g)) {
     if (!ref.startsWith('package://')) continue;
     const [refPkg, ...rest] = ref.slice('package://'.length).split('/');
     if (refPkg !== pkg) throw new Error(`mesh reference points outside the package: ${ref}`);
@@ -153,7 +192,7 @@ for (const robot of targets) {
     const urdfPath = join(workDir, `${robot.id}.urdf`);
     await urdfDownload.saveAs(urdfPath);
 
-    const upstream = await fetch(robot.assets.base + robot.assets.urdf).then((r) => r.text());
+    const upstream = await fetchText(robot.assets.base + robot.assets.urdf);
     const saved = readFileSync(urdfPath, 'utf8');
     if (saved !== upstream) throw new Error('saved URDF differs from upstream');
 
