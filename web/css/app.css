@@ -945,27 +945,24 @@ body.panel-resizing { cursor: ew-resize; user-select: none; }
 #view-detail.stage-fullscreen .tree-host { flex: 1 1 auto; min-height: 0; overflow: auto; }
 #view-detail.stage-fullscreen .joints { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
 
-/* Between the two columns, where the render is — but centred on the window, not
- * on the strip: the bar carries the way back out of fullscreen, so it belongs
- * where the eye already is rather than sliding sideways every time a column is
- * dragged. Both insets are therefore the same number, the wider column's, which
- * is what keeps the bar's centre the window's centre whatever the columns are
- * doing and still keeps it out from under either of them — it could not climb
- * over them anyway (each column is a stacking context above the stage the bar
- * belongs to). js/detail.js caps a column at the width that leaves this strip
- * wide enough for the icon row. */
+/* The bar spans the window and centres its two rows in it, so the legend and
+ * the icon row sit under the middle of the render and stay there — dragging a
+ * column moves the column, not the way back out of fullscreen.
+ *
+ * It can afford the whole width because it is not beside the columns but below
+ * them: they stop 70px short of the bottom edge, which is the band the bar sits
+ * in. Nothing here has to dodge them, and nothing has to be inset by what they
+ * are currently worth. The insets are the two safe areas read as one, because a
+ * pair that differed would take the centre off the middle of the window. */
 #view-detail.stage-fullscreen .stage-toolbar {
+  --fs-bar-inset: max(env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
   justify-content: center;
-  --fs-bar-edge: max(
-    calc(var(--fs-tree-w, clamp(240px, 22vw, 340px)) + env(safe-area-inset-left, 0px)),
-    calc(var(--fs-joints-w, clamp(240px, 22vw, 340px)) + env(safe-area-inset-right, 0px))
-  );
-  left: calc(var(--fs-bar-edge) + 28px);
-  right: calc(var(--fs-bar-edge) + 28px);
+  left: calc(12px + var(--fs-bar-inset));
+  right: calc(12px + var(--fs-bar-inset));
 }
-/* The overlay legend is the one row too wide for a strip like that; it scrolls
- * inside what is left rather than spilling under the columns — the same answer
- * the phone layout gives it. */
+/* A window narrow enough for the legend to outgrow even that: it scrolls inside
+ * the row rather than wrapping the icon row up into the columns above it — the
+ * same answer the phone layout gives it. */
 #view-detail.stage-fullscreen #overlay-toggles {
   max-width: 100%; overflow-x: auto; scrollbar-width: none;
 }
