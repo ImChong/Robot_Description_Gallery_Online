@@ -141,6 +141,12 @@
           </div>
           <div class="tree-host" id="d-tree"></div>
           <p class="tree-hint" data-i18n="tree.hint">Hover a row to light that link up on the stage; click to keep it lit and jump to its slider.</p>
+          <!-- Only ever on screen in fullscreen, where this card is a floating
+               column over the render: the edge that drags it wider. A focusable
+               separator, so the width is also reachable with the arrow keys. -->
+          <div class="panel-resize" data-resize="tree" role="separator" aria-orientation="vertical" tabindex="0"
+               data-i18n-title="panel.resize" title="Drag to resize · double-click to reset"
+               data-i18n-aria-label="panel.resizeTree" aria-label="Joint tree panel width"></div>
         </section>
 
         <section class="panel-block">
@@ -182,6 +188,9 @@
           </div>
         </div>
         <div class="joints" id="d-joints"></div>
+        <div class="panel-resize" data-resize="joints" role="separator" aria-orientation="vertical" tabindex="0"
+             data-i18n-title="panel.resize" title="Drag to resize · double-click to reset"
+             data-i18n-aria-label="panel.resizeJoints" aria-label="Joint slider panel width"></div>
       </section>
     </aside>
   </div>
