@@ -46,6 +46,121 @@ function fsExit() {
 }
 
 /**
+ * Fullscreen lifts the joint tree and the slider list onto the render as two
+ * floating columns, sized for a glance at them. A deep chain, or the joint
+ * names a generated URDF tends to carry, wants more than a glance — so on a
+ * desktop the inner edge of each column is a handle: drag it and the column
+ * grows, as far as half the page.
+ *
+ * The width is written onto the detail view as a pixel variable the fullscreen
+ * rules read; the same panels stay ordinary cards on the page, where the grid
+ * sizes them. The numbers below are the ones css/app.css falls back to when
+ * nobody has dragged anything — the floor of its `clamp()`, and its `22vw`
+ * ceiling of `340px`.
+ */
+const PANEL_MIN_W = 240;
+const PANEL_VAR = { tree: '--fs-tree-w', joints: '--fs-joints-w' };
+const PANEL_W_KEY = 'cl-fs-panel-w';
+
+/**
+ * What the two columns may never close over between them: the 14px each sits in
+ * from its own edge of the screen, and a strip of render wide enough for the
+ * toolbar's icon row. A column is a stacking context of its own, so a handle
+ * buried under the opposite column could not be dug back out with the pointer —
+ * and the way out of fullscreen lives in that strip too.
+ */
+const PANEL_GUTTERS = 28;
+const PANEL_MIN_GAP = 200;
+
+/** Half the page: as wide as a column may be dragged. */
+const panelMaxW = () => Math.round(window.innerWidth / 2);
+
+/** As far as a column can actually be dragged, which on a window with room to
+ *  spare is that same half. What it takes to keep the far column at its
+ *  narrowest and the strip of render between them comes out first. */
+function panelCeilingW() {
+  const half = panelMaxW();
+  const floor = Math.min(PANEL_MIN_W, half);
+  return Math.max(floor, Math.min(half, window.innerWidth - PANEL_GUTTERS - PANEL_MIN_GAP - floor));
+}
+
+/** What a column is worth before anyone drags it. */
+const panelDefaultW = () =>
+  Math.round(Math.min(340, Math.max(PANEL_MIN_W, window.innerWidth * 0.22)));
+
+/** Never past half the page, never under the floor — and on a window too narrow
+ *  for both bounds to hold at once, half the page is the one that wins. */
+function clampPanelW(px) {
+  const max = panelMaxW();
+  return Math.round(Math.min(Math.max(px, Math.min(PANEL_MIN_W, max)), max));
+}
+
+/**
+ * The two widths as they can actually be shown: each column is what it was
+ * dragged to, up to half the page, and the strip of render between them is
+ * never closed up.
+ *
+ * The column being dragged is the one that keeps its width — the other gives
+ * way, as far down as its own floor. So half the page is always there to be
+ * dragged to, on any window with room for the far column at its narrowest and
+ * the strip between them (a real fullscreen on a real desktop, several times
+ * over); it is only a small window that has to stop a drag short of it.
+ *
+ * Nothing here is written back to the dragged widths, so the column that gave
+ * way opens out again the moment there is room for it.
+ */
+function resolvePanelWidths(widths, dragged = null) {
+  const floor = Math.min(PANEL_MIN_W, panelMaxW());
+  const out = {};
+  for (const key of Object.keys(PANEL_VAR)) {
+    out[key] = clampPanelW(widths[key] ?? panelDefaultW());
+  }
+
+  let over = out.tree + out.joints - (window.innerWidth - PANEL_GUTTERS - PANEL_MIN_GAP);
+  if (over <= 0) return out;
+
+  // Nobody is being dragged when it is the window that moved; then the wider
+  // column is the one with something to give.
+  const gives = dragged
+    ? (dragged === 'tree' ? 'joints' : 'tree')
+    : (out.tree >= out.joints ? 'tree' : 'joints');
+  const keeps = gives === 'tree' ? 'joints' : 'tree';
+  const given = Math.min(over, Math.max(0, out[gives] - floor));
+  out[gives] -= given;
+  over -= given;
+  // A window with no room for both floors and the strip is the phone layout,
+  // where the columns are a bottom row and the stylesheet reads none of this.
+  if (over > 0) out[keeps] = Math.max(floor, out[keeps] - over);
+  return out;
+}
+
+/**
+ * Dragged widths survive the visit, next to the theme and the angle unit: a
+ * column widened to read a long branch is a preference about this reader's
+ * screen, not about the robot that happened to be open.
+ */
+function storedPanelWidths() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(PANEL_W_KEY) || '{}');
+    const out = {};
+    for (const key of Object.keys(PANEL_VAR)) {
+      if (Number.isFinite(raw?.[key])) out[key] = raw[key];
+    }
+    return out;
+  } catch {
+    return {}; // private mode, or something else wrote that key
+  }
+}
+
+function savePanelWidths(widths) {
+  try {
+    localStorage.setItem(PANEL_W_KEY, JSON.stringify(widths));
+  } catch {
+    /* private mode — the widths just will not persist */
+  }
+}
+
+/**
  * Angles are radians everywhere below the UI — that is what the URDF declares
  * and what the viewer is driven with. Degrees are only ever a rendering of
  * them, so switching units re-labels the panel and never touches the pose.
@@ -237,6 +352,7 @@ export class Detail {
     });
 
     this.bindTree();
+    this.bindPanelResize();
   }
 
   /**
@@ -773,6 +889,129 @@ export class Detail {
     // The canvas host has just changed size; the viewer's own ResizeObserver
     // does the resizing, this only asks for the frame that shows it.
     this.viewer.invalidate();
+  }
+
+  // -------------------------------------------------- fullscreen panel width
+
+  /**
+   * The width handle on each of the two floating columns. Whether there is one
+   * to grab is the stylesheet's call — it withholds the handle on phones and
+   * touch screens, where the columns are a bottom row the width of the screen —
+   * so nothing here has to ask what kind of screen this is: a handle that is
+   * not on screen is neither clickable nor tabbable.
+   */
+  bindPanelResize() {
+    this.panelWidths = storedPanelWidths();
+    this.resizers = {};
+
+    for (const handle of document.querySelectorAll('.panel-resize')) {
+      const key = handle.dataset.resize;
+      const panel = handle.closest('.panel-block');
+      if (!panel || !PANEL_VAR[key]) continue;
+      // The left column grows to the right and the right column to the left, so
+      // both handles follow the pointer instead of one of them mirroring it.
+      const grow = key === 'tree' ? 1 : -1;
+      this.resizers[key] = { handle, panel };
+
+      handle.addEventListener('pointerdown', (event) => {
+        if (event.button !== 0) return;
+        const startX = event.clientX;
+        const startWidth = panel.getBoundingClientRect().width;
+        // The pointer leaves a 12px strip almost immediately; capturing it
+        // keeps every move of the drag on this handle — and off the stage
+        // behind it, which would otherwise read the same drag as an orbit.
+        handle.setPointerCapture(event.pointerId);
+        handle.classList.add('is-dragging');
+        document.body.classList.add('panel-resizing');
+
+        // Offset from where the drag started rather than the pointer's own
+        // position: the column then keeps whatever grip it was taken by.
+        const move = (e) => this.setPanelWidth(key, startWidth + grow * (e.clientX - startX));
+        const done = () => {
+          handle.removeEventListener('pointermove', move);
+          handle.removeEventListener('pointerup', done);
+          handle.removeEventListener('pointercancel', done);
+          handle.classList.remove('is-dragging');
+          document.body.classList.remove('panel-resizing');
+          savePanelWidths(this.panelWidths);
+        };
+        handle.addEventListener('pointermove', move);
+        handle.addEventListener('pointerup', done);
+        handle.addEventListener('pointercancel', done);
+        // Or the drag selects the text of the panel it started on.
+        event.preventDefault();
+      });
+
+      // The way back, for a column dragged somewhere it should not have gone.
+      handle.addEventListener('dblclick', () => {
+        this.resetPanelWidth(key);
+        savePanelWidths(this.panelWidths);
+      });
+
+      handle.addEventListener('keydown', (event) => this.onPanelResizeKey(event, key, grow));
+    }
+
+    // A narrower window is a lower ceiling: the columns come down to it, and go
+    // back out to the width they were dragged to once the room returns.
+    window.addEventListener('resize', () => this.syncPanelWidths());
+    this.syncPanelWidths();
+  }
+
+  /**
+   * Arrows widen and narrow — with Shift, faster — Home and End go to the two
+   * bounds, and Enter restores the default. Every one of them stops at the
+   * handle: on a detail page the left and right arrows are the previous and the
+   * next robot, which is not what the reader holding this edge is asking for.
+   */
+  onPanelResizeKey(event, key, grow) {
+    const width = this.resizers[key].panel.getBoundingClientRect().width;
+    const step = event.shiftKey ? 48 : 16;
+    switch (event.key) {
+      case 'ArrowLeft': this.setPanelWidth(key, width - grow * step); break;
+      case 'ArrowRight': this.setPanelWidth(key, width + grow * step); break;
+      case 'Home': this.setPanelWidth(key, PANEL_MIN_W); break;
+      case 'End': this.setPanelWidth(key, panelCeilingW()); break;
+      case 'Enter': this.resetPanelWidth(key); break;
+      default: return;
+    }
+    savePanelWidths(this.panelWidths);
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  /** Give one column a width in pixels, within what the window allows. */
+  setPanelWidth(key, px) {
+    this.panelWidths[key] = clampPanelW(px);
+    // The pair may allow less than that. Whatever it allows is what the column
+    // was dragged to, or dragging back off the limit would move nothing until
+    // the pointer had caught up with a number it cannot see.
+    this.panelWidths[key] = this.syncPanelWidths(key)[key];
+  }
+
+  /** Hand one column back to the width it has when nobody has dragged it. */
+  resetPanelWidth(key) {
+    delete this.panelWidths[key];
+    this.syncPanelWidths();
+  }
+
+  /** Both columns against the window as it is now. A dragged width is kept as
+   *  it was dragged — only what it is allowed to be moves with the window. */
+  syncPanelWidths(dragged = null) {
+    const widths = resolvePanelWidths(this.panelWidths, dragged);
+    for (const key of Object.keys(this.resizers)) this.applyPanelWidth(key, widths[key]);
+    return widths;
+  }
+
+  /** Write a width onto the view for the fullscreen rules to read, and tell the
+   *  handle where it now stands — a separator reports its position the way a
+   *  slider does, and both bounds move with the window. */
+  applyPanelWidth(key, width) {
+    const { handle } = this.resizers[key];
+    el('view-detail').style.setProperty(PANEL_VAR[key], `${width}px`);
+    handle.setAttribute('aria-valuemin', String(Math.min(PANEL_MIN_W, panelMaxW())));
+    handle.setAttribute('aria-valuemax', String(panelCeilingW()));
+    handle.setAttribute('aria-valuenow', String(width));
+    handle.setAttribute('aria-valuetext', `${width}px`);
   }
 
   relayout() {

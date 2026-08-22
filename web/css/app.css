@@ -881,15 +881,62 @@ html[lang^='zh'] .footer-text-zh { display: block; }
   position: fixed; z-index: 1410;
   top: calc(52px + env(safe-area-inset-top, 0px));
   bottom: calc(70px + env(safe-area-inset-bottom, 0px));
-  width: clamp(240px, 22vw, 340px);
   display: flex; flex-direction: column; min-height: 0;
   background: var(--stage-chrome-bg);
   border-color: var(--stage-chrome-border);
   box-shadow: var(--shadow-lg);
   backdrop-filter: blur(10px);
 }
-#view-detail.stage-fullscreen .tree-block { left: calc(14px + env(safe-area-inset-left, 0px)); }
-#view-detail.stage-fullscreen .joints-block { right: calc(14px + env(safe-area-inset-right, 0px)); }
+/* The width is a variable, because the inner edge of each column is a handle:
+ * js/detail.js writes the dragged width onto the view in pixels, and the
+ * `clamp()` here is what a column is worth until someone drags it — and all it
+ * is ever worth where the handle is not offered (a phone, or no script at
+ * all). The two stay in step: js/detail.js repeats the same three numbers. */
+#view-detail.stage-fullscreen .tree-block {
+  left: calc(14px + env(safe-area-inset-left, 0px));
+  width: var(--fs-tree-w, clamp(240px, 22vw, 340px));
+}
+#view-detail.stage-fullscreen .joints-block {
+  right: calc(14px + env(safe-area-inset-right, 0px));
+  width: var(--fs-joints-w, clamp(240px, 22vw, 340px));
+}
+
+/* The handle itself, on the edge that faces the render: a strip straddling the
+ * border, so the target is a comfortable width without the panel having to
+ * leave a gutter for it. It exists only in fullscreen — on the page these two
+ * are cards in the grid, sized by the grid — and only where there is a pointer
+ * precise enough to catch it; the responsive block below takes it back on
+ * phones and touch screens. */
+.panel-resize { display: none; }
+#view-detail.stage-fullscreen .panel-resize {
+  display: block;
+  position: absolute; top: 0; bottom: 0; z-index: 1;
+  width: 12px;
+  cursor: ew-resize;
+  /* The drag is the handle's own; without this a touch pointer would scroll
+   * the panel behind it instead. */
+  touch-action: none;
+}
+#view-detail.stage-fullscreen .tree-block .panel-resize { right: -6px; }
+#view-detail.stage-fullscreen .joints-block .panel-resize { left: -6px; }
+/* A grip down the middle of that strip: faint enough to sit on the render
+ * unasked, lit while the pointer is on it or the drag is running, so the
+ * column edge says it can be moved before it is tried. */
+.panel-resize::before {
+  content: '';
+  position: absolute; top: 50%; left: 50%;
+  width: 3px; height: 36px; margin: -18px 0 0 -1.5px;
+  border-radius: 3px; background: var(--stage-chrome-border);
+  transition: background var(--transition), height var(--transition);
+}
+.panel-resize:hover::before,
+.panel-resize:focus-visible::before,
+.panel-resize.is-dragging::before { background: var(--accent); height: 52px; margin-top: -26px; }
+.panel-resize:focus { outline: none; }
+.panel-resize:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: var(--radius-sm); }
+/* While a column is being dragged the pointer belongs to the drag, wherever it
+ * has got to — not to the text it happens to be over. */
+body.panel-resizing { cursor: ew-resize; user-select: none; }
 
 /* Each panel is now as tall as the screen allows rather than as tall as its
  * content, so the list inside it is what absorbs the difference. The tree also
@@ -898,8 +945,24 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 #view-detail.stage-fullscreen .tree-host { flex: 1 1 auto; min-height: 0; overflow: auto; }
 #view-detail.stage-fullscreen .joints { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
 
-/* Between the two columns, where the render is. */
-#view-detail.stage-fullscreen .stage-toolbar { justify-content: center; }
+/* Between the two columns, where the render is: the bar is inset by whatever
+ * width the columns currently have, so it stays centred on the render rather
+ * than on the screen — and stays out from under them, which it could not climb
+ * over (each column is a stacking context above the stage the bar belongs to).
+ * js/detail.js keeps the strip between the columns wide enough for the icon
+ * row below, which is the way back out of fullscreen. */
+#view-detail.stage-fullscreen .stage-toolbar {
+  justify-content: center;
+  left: calc(var(--fs-tree-w, clamp(240px, 22vw, 340px)) + 28px + env(safe-area-inset-left, 0px));
+  right: calc(var(--fs-joints-w, clamp(240px, 22vw, 340px)) + 28px + env(safe-area-inset-right, 0px));
+}
+/* The overlay legend is the one row too wide for a strip like that; it scrolls
+ * inside what is left rather than spilling under the columns — the same answer
+ * the phone layout gives it. */
+#view-detail.stage-fullscreen #overlay-toggles {
+  max-width: 100%; overflow-x: auto; scrollbar-width: none;
+}
+#view-detail.stage-fullscreen #overlay-toggles::-webkit-scrollbar { display: none; }
 
 #view-detail.stage-fullscreen .stage-title {
   display: block;
@@ -1026,14 +1089,26 @@ body.stage-fullscreen-open { overflow: hidden; }
   }
   #view-detail.stage-fullscreen .tree-block { left: 12px; }
   #view-detail.stage-fullscreen .joints-block { right: 12px; }
+  /* Half the screen each is already the whole width there is, and the columns
+   * are below the render rather than beside it, so there is nothing left for a
+   * width handle to win. */
+  #view-detail.stage-fullscreen .panel-resize { display: none; }
   #view-detail.stage-fullscreen .stage-toolbar {
     align-items: center;
+    left: 12px; right: 12px;
     bottom: calc(min(38vh, 320px) + 20px + env(safe-area-inset-bottom, 0px));
   }
   /* Three lines of instructions in a panel this narrow cost more rows of tree
    * than they are worth — and hovering, which is half of what they describe,
    * is not what a phone does anyway. */
   #view-detail.stage-fullscreen .tree-hint { display: none; }
+}
+
+/* Dragging a 12px edge is a mouse's trick. Where the pointer is a fingertip the
+ * columns keep the width the stylesheet gives them — the handle would only be
+ * one more thing to hit by accident while scrolling the list beside it. */
+@media (pointer: coarse) {
+  #view-detail.stage-fullscreen .panel-resize { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
