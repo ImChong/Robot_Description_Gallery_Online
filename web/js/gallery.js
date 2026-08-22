@@ -72,6 +72,8 @@ export class Gallery {
     const s = stats(this.data);
     el('stat-robots').textContent = s.robots;
     el('stat-makers').textContent = s.makers;
+    el('stat-categories').textContent = s.categories;
+    el('stat-repos').textContent = s.repos;
   }
 
   renderFilters() {

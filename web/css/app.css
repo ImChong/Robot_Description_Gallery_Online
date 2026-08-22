@@ -283,9 +283,23 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
 .hero h1 { font-size: clamp(28px, 4.4vw, 40px); line-height: 1.15; }
 .hero p { color: var(--text-muted); font-size: clamp(14px, 1.3vw, 15.5px); margin: 14px 0 0; }
 
-.hero-stats { display: flex; flex-wrap: wrap; gap: 32px; margin: 26px 0 0; }
-.hero-stats dt { color: var(--text-faint); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
-.hero-stats dd { margin: 2px 0 0; font-size: 24px; font-variant-numeric: tabular-nums; font-weight: 700; line-height: 1.2; }
+/* The counters are a caption for the lede, not a dashboard: on one baseline
+ * they read as a sentence — "75 robots, 33 makers" — and the hero no longer
+ * spends a band of empty space on two stacked numbers. `order` puts the count
+ * first without disturbing the dt-then-dd order of the markup. */
+.hero-stats {
+  display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: 4px 15px;
+  margin: 20px 0 0;
+}
+.hero-stats > div { display: flex; align-items: baseline; gap: 7px; }
+/* A hairline between neighbours, so the row is one line rather than four. */
+.hero-stats > div + div { padding-left: 15px; border-left: 1px solid var(--border); }
+.hero-stats dt { order: 2; color: var(--text-faint); font-size: 12.5px; }
+.hero-stats dd {
+  order: 1; margin: 0;
+  font-size: 19px; font-variant-numeric: tabular-nums; font-weight: 700; line-height: 1.4;
+}
 
 /* ── Filters ────────────────────────────────────────────── */
 
@@ -890,8 +904,11 @@ html[lang^='zh'] .footer-text-zh { display: block; }
   .filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
   .filters::-webkit-scrollbar { display: none; }
   .filters button { flex: 0 0 auto; }
-  .hero-stats { gap: 20px; }
-  .hero-stats dd { font-size: 20px; }
+  /* Wrapped onto two lines the hairlines would lead a row, so narrow screens
+   * separate the counters by space alone. */
+  .hero-stats { gap: 2px 16px; }
+  .hero-stats > div + div { padding-left: 0; border-left: 0; }
+  .hero-stats dd { font-size: 17px; }
   .stage-hint { display: none; }
   .stage-extra { grid-template-columns: minmax(0, 1fr); }
   /* The overlay toggles do not fit on one narrow line; let them scroll rather
