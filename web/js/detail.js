@@ -50,7 +50,7 @@ function fsExit() {
  * floating columns, sized for a glance at them. A deep chain, or the joint
  * names a generated URDF tends to carry, wants more than a glance — so on a
  * desktop the inner edge of each column is a handle: drag it and the column
- * grows, as far as half the page.
+ * grows, as far as the toolbar between them allows.
  *
  * The width is written onto the detail view as a pixel variable the fullscreen
  * rules read; the same panels stay ordinary cards on the page, where the grid
@@ -63,33 +63,35 @@ const PANEL_VAR = { tree: '--fs-tree-w', joints: '--fs-joints-w' };
 const PANEL_W_KEY = 'cl-fs-panel-w';
 
 /**
- * What the two columns may never close over between them: the 14px each sits in
- * from its own edge of the screen, and a strip of render wide enough for the
+ * What neither column may close over: the chrome around the toolbar strip — the
+ * 14px each column sits in from its own edge of the screen and the 14px between
+ * it and the bar, 56px over the pair — and a strip of render wide enough for the
  * toolbar's icon row. A column is a stacking context of its own, so a handle
  * buried under the opposite column could not be dug back out with the pointer —
  * and the way out of fullscreen lives in that strip too.
  */
-const PANEL_GUTTERS = 28;
+const PANEL_GUTTERS = 56;
 const PANEL_MIN_GAP = 200;
 
-/** Half the page: as wide as a column may be dragged. */
-const panelMaxW = () => Math.round(window.innerWidth / 2);
-
-/** As far as a column can actually be dragged, which on a window with room to
- *  spare is that same half. What it takes to keep the far column at its
- *  narrowest and the strip of render between them comes out first. */
-function panelCeilingW() {
-  const half = panelMaxW();
-  const floor = Math.min(PANEL_MIN_W, half);
-  return Math.max(floor, Math.min(half, window.innerWidth - PANEL_GUTTERS - PANEL_MIN_GAP - floor));
-}
+/**
+ * As wide as a column may be dragged. The toolbar is centred on the window
+ * rather than on the render between the columns, so it is inset by the wider of
+ * the two on both sides: what the widest column may not do is take the strip
+ * below half of what the window has left once the chrome is out. That is a
+ * bound on each column on its own, so neither ever has to give way to the
+ * other — and the same number on a window of any width, which is why a column
+ * that was dragged past what a narrower window allows opens back out when the
+ * room returns.
+ */
+const panelMaxW = () =>
+  Math.max(0, Math.round((window.innerWidth - PANEL_GUTTERS - PANEL_MIN_GAP) / 2));
 
 /** What a column is worth before anyone drags it. */
 const panelDefaultW = () =>
   Math.round(Math.min(340, Math.max(PANEL_MIN_W, window.innerWidth * 0.22)));
 
-/** Never past half the page, never under the floor — and on a window too narrow
- *  for both bounds to hold at once, half the page is the one that wins. */
+/** Never past the ceiling, never under the floor — and on a window too narrow
+ *  for both bounds to hold at once, the ceiling is the one that wins. */
 function clampPanelW(px) {
   const max = panelMaxW();
   return Math.round(Math.min(Math.max(px, Math.min(PANEL_MIN_W, max)), max));
@@ -97,40 +99,18 @@ function clampPanelW(px) {
 
 /**
  * The two widths as they can actually be shown: each column is what it was
- * dragged to, up to half the page, and the strip of render between them is
- * never closed up.
+ * dragged to, within what this window allows it. The ceiling above already
+ * leaves the centred strip its width whatever the other column is doing, so
+ * neither column has to be read against the other here.
  *
- * The column being dragged is the one that keeps its width — the other gives
- * way, as far down as its own floor. So half the page is always there to be
- * dragged to, on any window with room for the far column at its narrowest and
- * the strip between them (a real fullscreen on a real desktop, several times
- * over); it is only a small window that has to stop a drag short of it.
- *
- * Nothing here is written back to the dragged widths, so the column that gave
- * way opens out again the moment there is room for it.
+ * Nothing is written back to the dragged widths, so a column the window has
+ * brought in opens out again the moment there is room for it.
  */
-function resolvePanelWidths(widths, dragged = null) {
-  const floor = Math.min(PANEL_MIN_W, panelMaxW());
+function resolvePanelWidths(widths) {
   const out = {};
   for (const key of Object.keys(PANEL_VAR)) {
     out[key] = clampPanelW(widths[key] ?? panelDefaultW());
   }
-
-  let over = out.tree + out.joints - (window.innerWidth - PANEL_GUTTERS - PANEL_MIN_GAP);
-  if (over <= 0) return out;
-
-  // Nobody is being dragged when it is the window that moved; then the wider
-  // column is the one with something to give.
-  const gives = dragged
-    ? (dragged === 'tree' ? 'joints' : 'tree')
-    : (out.tree >= out.joints ? 'tree' : 'joints');
-  const keeps = gives === 'tree' ? 'joints' : 'tree';
-  const given = Math.min(over, Math.max(0, out[gives] - floor));
-  out[gives] -= given;
-  over -= given;
-  // A window with no room for both floors and the strip is the phone layout,
-  // where the columns are a bottom row and the stylesheet reads none of this.
-  if (over > 0) out[keeps] = Math.max(floor, out[keeps] - over);
   return out;
 }
 
@@ -970,7 +950,7 @@ export class Detail {
       case 'ArrowLeft': this.setPanelWidth(key, width - grow * step); break;
       case 'ArrowRight': this.setPanelWidth(key, width + grow * step); break;
       case 'Home': this.setPanelWidth(key, PANEL_MIN_W); break;
-      case 'End': this.setPanelWidth(key, panelCeilingW()); break;
+      case 'End': this.setPanelWidth(key, panelMaxW()); break;
       case 'Enter': this.resetPanelWidth(key); break;
       default: return;
     }
@@ -982,10 +962,7 @@ export class Detail {
   /** Give one column a width in pixels, within what the window allows. */
   setPanelWidth(key, px) {
     this.panelWidths[key] = clampPanelW(px);
-    // The pair may allow less than that. Whatever it allows is what the column
-    // was dragged to, or dragging back off the limit would move nothing until
-    // the pointer had caught up with a number it cannot see.
-    this.panelWidths[key] = this.syncPanelWidths(key)[key];
+    this.syncPanelWidths();
   }
 
   /** Hand one column back to the width it has when nobody has dragged it. */
@@ -996,8 +973,8 @@ export class Detail {
 
   /** Both columns against the window as it is now. A dragged width is kept as
    *  it was dragged — only what it is allowed to be moves with the window. */
-  syncPanelWidths(dragged = null) {
-    const widths = resolvePanelWidths(this.panelWidths, dragged);
+  syncPanelWidths() {
+    const widths = resolvePanelWidths(this.panelWidths);
     for (const key of Object.keys(this.resizers)) this.applyPanelWidth(key, widths[key]);
     return widths;
   }
@@ -1009,7 +986,7 @@ export class Detail {
     const { handle } = this.resizers[key];
     el('view-detail').style.setProperty(PANEL_VAR[key], `${width}px`);
     handle.setAttribute('aria-valuemin', String(Math.min(PANEL_MIN_W, panelMaxW())));
-    handle.setAttribute('aria-valuemax', String(panelCeilingW()));
+    handle.setAttribute('aria-valuemax', String(panelMaxW()));
     handle.setAttribute('aria-valuenow', String(width));
     handle.setAttribute('aria-valuetext', `${width}px`);
   }
