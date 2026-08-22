@@ -84,10 +84,12 @@ for (const robot of targets) {
         }
         if (stage?.dataset.loaded !== id) return false;
         return {
-          joints: document.querySelectorAll('#d-joints .joint').length,
+          // Every joint that moves carries its slider in the tree, under the
+          // row for the joint it turns.
+          joints: document.querySelectorAll('#d-tree .tree-slider').length,
           // Every slider carries the limits its URDF declares; a joint without
           // that row means the raw XML never made it into the panel.
-          limits: document.querySelectorAll('#d-joints .joint .joint-limits').length,
+          limits: document.querySelectorAll('#d-tree .tree-slider .joint-limits').length,
           specs: document.querySelectorAll('#d-specs dt').length,
           // The joint tree walks the loaded scene graph, so an empty one means
           // the panel broke rather than that the robot is simple: every
@@ -125,9 +127,9 @@ for (const robot of targets) {
     failures += 1;
     continue;
   }
-  // A robot with sliders but no rows for them in the tree means the panel is
-  // showing a different robot from the one on the stage.
-  if (result.joints && result.treeMovable !== result.joints) {
+  // The sliders are in the tree, one per row that moves: a count that does not
+  // match means rows and joints were built from different robots.
+  if (result.treeMovable !== result.joints) {
     console.error(
       `  ✗ ${robot.id.padEnd(26)} ${result.joints} joint sliders but ` +
         `${result.treeMovable} movable joints in the tree`,

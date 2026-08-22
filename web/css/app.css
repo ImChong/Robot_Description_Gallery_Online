@@ -274,7 +274,7 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
 .ghost-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
   height: 34px; padding: 0 13px;
-  border: 1px solid var(--border); border-radius: 20px;
+  border: 1px solid var(--border); border-radius: var(--radius);
   background: var(--bg-alt); color: var(--text-muted);
   font: inherit; font-size: 13px; text-decoration: none; cursor: pointer;
   transition: color var(--transition), border-color var(--transition), background var(--transition);
@@ -477,7 +477,7 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 .back-btn {
   display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0;
   height: 34px; padding: 0 14px;
-  border: 1px solid var(--border); border-radius: 20px;
+  border: 1px solid var(--border); border-radius: var(--radius);
   background: var(--bg-alt); color: var(--text-muted);
   font: inherit; font-size: 13px; cursor: pointer;
   transition: color var(--transition), border-color var(--transition);
@@ -502,24 +502,28 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 .canvas-host { position: absolute; inset: 0; }
 .canvas-host canvas { display: block; }
 
-.detail-body {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
-  gap: 18px;
-}
+/* One column. The pose used to need a panel beside the stage, and the stage
+ * gave up a third of the page for it; the tree and its sliders are a fullscreen
+ * tool now, so the render takes the width back and everything that describes
+ * the file reads underneath it. */
+.detail-body { display: block; }
 
 /* The viewer and everything that belongs to it rather than to the pose. Only
  * the specs and the joint sliders stay beside the stage; the reference cards
  * sit underneath, where there is width to spare and the side column no longer
  * runs a screen and a half long. */
 .stage-col { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-/* Two cards side by side with the snippet across the pair: the code block is
- * the one card that wants width, and its edges line up with the outer edges of
- * the two above it. */
+/* Three cards across, with the wide ones spanning the row: specs, downloads and
+ * links are each a short list, and the snippet and the fullscreen note are the
+ * two that want the whole width. */
 .stage-extra {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
+  /* Cards in a row share its height, so specs, downloads and links line up
+   * along the bottom as well as the top — three panels of one height read as
+   * one band under the stage, where three ragged ones read as leftovers. */
+  align-items: stretch;
 }
 .stage-extra > .span-full { grid-column: 1 / -1; }
 
@@ -580,8 +584,6 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 .progress i { display: block; height: 100%; width: 0; background: var(--accent); transition: width 0.2s; }
 
 /* ── Side panel ─────────────────────────────────────────── */
-
-.panel { display: flex; flex-direction: column; gap: 14px; }
 
 .panel-block {
   flex: 0 0 auto;
@@ -669,44 +671,21 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 }
 .dl-btn > *:not(.dl-fill) { position: relative; }
 
-/* ── Joints ─────────────────────────────────────────────── */
+/* ── Joint sliders ──────────────────────────────────── */
 
-/* The panel is stretched to the height of the stage column and the joint list
- * absorbs the difference: it runs from under the specs down to the foot of the
- * last card beneath the viewer, scrolling inside that. The 190px floor never
- * binds in practice — the stage and its cards are far taller than the spec
- * table — but it keeps the list from collapsing behind a long spec block. */
-.joints-block { display: flex; flex-direction: column; flex: 1 1 0; min-height: 190px; }
-/* The list scrolls, and a scroller clips whatever reaches past its padding
- * box — which is what the target flash and the slider's focus ring both do.
- * The padding gives them room and the negative margin hands it back to the
- * panel, so the rows still line up with the heading above them. */
-.joints {
-  margin: 4px -8px 0; padding: 6px 8px 8px;
-  flex: 1 1 auto; min-height: 0; overflow-y: auto;
-}
-.joints::-webkit-scrollbar { width: 8px; }
-.joints::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+/* Every slider sits under the joint it turns, in the tree. Indented past the
+ * twisty so it starts where the joint's name does, and quiet enough that a
+ * branch of thirty still reads as a list of joints rather than of controls. */
+.tree-slider { margin: 0 2px 5px 19px; }
+/* The slider takes the width, the angle it is at holds a fixed column at the
+ * end of it — so the numbers down a branch line up and none of them moves while
+ * a thumb is being dragged. */
+.slider-line { display: flex; align-items: center; gap: 8px; }
+.slider-line input[type='range'] { flex: 1 1 auto; min-width: 0; }
 
-.joint {
-  padding: 6px 0; border-bottom: 1px solid var(--border-soft);
-  /* Room for the flash when the joint tree scrolls a row to the edge of the
-   * list: without it `scrollIntoView` parks the row flush against the edge
-   * and the ring above or below it is the part that gets cut. */
-  scroll-margin-block: 8px;
-  transition: background var(--transition), box-shadow var(--transition);
-}
-/* Where the joint tree just sent the reader: the row is marked for a couple of
- * seconds, because a list this long scrolled silently would look like nothing
- * happened. */
-.joint.is-target { background: var(--accent-soft); box-shadow: 0 0 0 6px var(--accent-soft); border-radius: 3px; }
-.joint:last-child { border-bottom: 0; }
-.joint-head { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; }
-.joint-name { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.joint-value { font-family: var(--font-mono); font-size: 11.5px; color: var(--accent); font-variant-numeric: tabular-nums; }
-/* What the URDF declares for the joint under the slider: travel, and the effort
- * and velocity ceilings. Three short chips rather than a table — they sit under
- * every slider, so they have to stay quiet. */
+/* What the URDF declares for the joint above: travel, and the speed and effort
+ * ceilings. Three short chips rather than a table — they sit under every
+ * slider, so they have to stay quiet. */
 .joint-limits {
   display: flex; flex-wrap: wrap; gap: 2px 10px;
   font-family: var(--font-mono); font-size: 10.5px; line-height: 1.5;
@@ -722,37 +701,48 @@ html[lang^='zh'] .footer-text-zh { display: block; }
  * fingertip cannot land on it, and even a mouse has to be precise. So the input
  * itself is a finger-sized transparent strip and the groove is painted on the
  * track pseudo-element instead. `touch-action: pan-y` completes it: a sideways
- * drag belongs to the thumb, while a vertical swipe still scrolls the joint
- * list rather than being swallowed by the slider. */
-.joint input[type='range'] {
+ * drag belongs to the thumb, while a vertical swipe still scrolls the tree
+ * rather than being swallowed by the slider. */
+.tree-slider input[type='range'] {
   -webkit-appearance: none; appearance: none;
-  display: block; width: 100%; height: 26px; margin: 0;
+  display: block; width: 100%; height: 24px; margin: 0;
   background: transparent; border-radius: 20px; outline: none;
   touch-action: pan-y;
   -webkit-tap-highlight-color: transparent;
 }
-.joint input[type='range']::-webkit-slider-runnable-track {
+.tree-slider input[type='range']::-webkit-slider-runnable-track {
   height: 3px; border-radius: 20px; background: var(--border);
 }
-.joint input[type='range']::-moz-range-track {
+.tree-slider input[type='range']::-moz-range-track {
   height: 3px; border-radius: 20px; background: var(--border);
 }
-.joint input[type='range']::-webkit-slider-thumb {
+.tree-slider input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
   background: var(--accent); cursor: pointer; border: 2px solid var(--surface);
   margin-top: -6.5px; /* centre the 16px thumb on the 3px track */
 }
-.joint input[type='range']::-moz-range-thumb {
+.tree-slider input[type='range']::-moz-range-thumb {
   width: 16px; height: 16px; border-radius: 50%; background: var(--accent);
   cursor: pointer; border: 2px solid var(--surface);
 }
-.joint input[type='range']:focus-visible {
+.tree-slider input[type='range']:focus-visible {
   outline: 2px solid var(--accent); outline-offset: 2px;
 }
-.joint input[type='range']:active::-webkit-slider-thumb { background: var(--accent-hover); }
-.joint input[type='range']:active::-moz-range-thumb { background: var(--accent-hover); }
+.tree-slider input[type='range']:active::-webkit-slider-thumb { background: var(--accent-hover); }
+.tree-slider input[type='range']:active::-moz-range-thumb { background: var(--accent-hover); }
 
 /* ── Joint tree ─────────────────────────────────────────── */
+
+/* The tree is a fullscreen tool: on the page this card is not rendered at all,
+ * and the fullscreen rules below lift the same markup — pose, scroll position
+ * and every listener intact — onto the render as a floating column. */
+.tree-block { display: none; }
+
+/* What stands in its place: where the tree and the sliders went, and the door
+ * to them. Wide, because it is the one thing under the stage that is about the
+ * viewer rather than about the file. */
+.pose-block { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.pose-hint { margin: 0; font-size: 13px; line-height: 1.6; color: var(--text-muted); max-width: 68ch; }
 
 /* The shape of the description, under the stage where a deep chain has the
  * width to stay on one line. The card takes whatever height the tree asks for,
@@ -761,19 +751,21 @@ html[lang^='zh'] .footer-text-zh { display: block; }
  * wider than the card scrolls, and only sideways. */
 .tree-host {
   margin-top: 10px;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
+  overflow-x: hidden;
 }
 .tree-host::-webkit-scrollbar { width: 8px; height: 8px; }
 .tree-host::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-/* min-content width so a row's background — and the value column its
- * `margin-left: auto` pins to the right — span the widest branch rather than
- * stopping at the edge of the scroll port. */
-.tree { min-width: max-content; }
+/* The tree fits the column: every row carries a slider now, and a tree wide
+ * enough to scroll sideways would take the far end of each one off screen. A
+ * long link name gives way instead — it is the one part of a row that can be
+ * read from its first half. */
+.tree { min-width: 0; }
 .tree, .tree ul { list-style: none; margin: 0; padding: 0; }
-/* One guide line per level of nesting, so a branch can be followed by eye. */
-.tree ul { margin-left: 7px; padding-left: 11px; border-left: 1px solid var(--border-soft); }
+/* One guide line per level of nesting, so a branch can be followed by eye. A
+ * narrow step, because a six-joint arm is six steps deep and every one of them
+ * comes off the width its rows and its sliders have left. */
+.tree ul { margin-left: 5px; padding-left: 9px; border-left: 1px solid var(--border-soft); }
 .tree-node[aria-expanded='false'] > ul { display: none; }
 .tree-node:focus { outline: none; }
 .tree-node:focus-visible > .tree-row { outline: 2px solid var(--accent); outline-offset: -2px; }
@@ -782,6 +774,7 @@ html[lang^='zh'] .footer-text-zh { display: block; }
   display: flex; align-items: baseline; gap: 6px;
   padding: 2px 6px 2px 0; border-radius: var(--radius-sm);
   font-size: 12px; line-height: 1.7; white-space: nowrap; cursor: pointer;
+  overflow: hidden;
 }
 .tree-row:hover { background: var(--bg-alt); }
 .tree-node[aria-selected='true'] > .tree-row { background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent-line); }
@@ -797,15 +790,22 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 .tree-node[aria-expanded='false'] > .tree-row > .tree-twisty { transform: rotate(-90deg); }
 .tree-twisty:hover { color: var(--text); }
 
-.tree-joint { font-family: var(--font-mono); font-size: 11.5px; color: var(--text); }
-.tree-to { color: var(--text-faint); font-size: 10px; }
-.tree-link {
-  font-family: var(--font-mono); font-size: 11.5px; color: var(--text-muted);
+/* The row has to fit the column, so the two names give when a generated URDF
+ * names a joint `face_front_to_depth_camera_front_lower_camera_parent_joint`.
+ * They give together, in proportion to how long they are, and each keeps a few
+ * characters and an ellipsis — a name clipped to nothing says less than a
+ * clipped name does, and either one alone can identify the row. */
+.tree-joint, .tree-link {
+  flex: 1 1 auto; min-width: 3em;
   overflow: hidden; text-overflow: ellipsis;
+  font-family: var(--font-mono); font-size: 11.5px;
 }
+.tree-joint { color: var(--text); }
+.tree-link { color: var(--text-muted); }
+.tree-to { flex: 0 0 auto; color: var(--text-faint); font-size: 10px; }
 .tree-bare { color: var(--text-faint); font-style: normal; margin-left: 4px; }
 .tree-value {
-  margin-left: auto; padding-left: 12px;
+  flex: 0 0 auto; min-width: 4.6em; text-align: right;
   font-family: var(--font-mono); font-size: 11px; color: var(--accent);
   font-variant-numeric: tabular-nums;
 }
@@ -826,6 +826,8 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 .jt.mimic { color: var(--warn); border-color: var(--border); }
 .jt.root { color: var(--text-faint); }
 
+.tree-none { margin: 8px 0 0; font-size: 12.5px; color: var(--text-muted); }
+
 .tree-summary {
   font-family: var(--font-mono); font-size: 11px; color: var(--text-faint);
   font-variant-numeric: tabular-nums;
@@ -834,11 +836,11 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 
 /* ── Fullscreen stage ───────────────────────────────────── */
 
-/* The stage on its own screen. Nothing is moved in the DOM: the joint tree and
- * the slider panel stay exactly where the markup puts them — pose, scroll
- * position and every listener with them — and this lifts the two of them out of
- * the page grid onto the render as floating columns, while the cards that
- * describe the file rather than the pose step aside for the duration.
+/* The stage on its own screen. Nothing is moved in the DOM: the joint tree
+ * stays exactly where the markup puts it — pose, scroll position and every
+ * listener with it — and this lifts it out of the page grid onto the render as
+ * a floating column, while the cards that describe the file rather than the
+ * pose step aside for the duration.
  *
  * js/detail.js also asks for native fullscreen, which takes the browser's own
  * chrome with it. These rules are what makes the mode work when that request is
@@ -854,16 +856,13 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 
 /* Everything that is not the render or a control for the pose. */
 #view-detail.stage-fullscreen .detail-head,
-#view-detail.stage-fullscreen .stage-extra > .panel-block:not(.tree-block),
-#view-detail.stage-fullscreen .panel > .panel-block:not(.joints-block) { display: none; }
+#view-detail.stage-fullscreen .stage-extra > .panel-block:not(.tree-block) { display: none; }
 
 /* Every child still on screen is taken out of flow below, so the grids have
  * nothing left to lay out — as tracks they would go on reserving the 340px
  * side column and the gaps between the cards. */
-#view-detail.stage-fullscreen .detail-body,
 #view-detail.stage-fullscreen .stage-col,
-#view-detail.stage-fullscreen .stage-extra,
-#view-detail.stage-fullscreen .panel { display: block; gap: 0; }
+#view-detail.stage-fullscreen .stage-extra { display: block; gap: 0; }
 
 #view-detail.stage-fullscreen .stage {
   position: fixed; inset: 0; z-index: 1400;
@@ -871,36 +870,36 @@ html[lang^='zh'] .footer-text-zh { display: block; }
   border: 0; border-radius: 0; box-shadow: none;
 }
 
-/* The two panels that drive the pose, as floating columns over the render: the
- * tree on the left, where following a chain wants the height, and the sliders
- * on the right, where they were already. Same chrome as the toolbar below them
- * — they sit on the render, so they have to read against it rather than
- * against the page. */
-#view-detail.stage-fullscreen .tree-block,
-#view-detail.stage-fullscreen .joints-block {
+/* The one panel that drives the pose, as a floating column on the left of the
+ * render: the tree, with every slider under the joint it turns. Following a
+ * chain is what wants the height, and reading down it is what a reader does
+ * while posing. Same chrome as the toolbar — it sits on the render, so it has
+ * to read against it rather than against the page. */
+#view-detail.stage-fullscreen .tree-block {
   position: fixed; z-index: 1410;
   top: calc(52px + env(safe-area-inset-top, 0px));
   bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+  left: calc(14px + env(safe-area-inset-left, 0px));
+  width: var(--fs-tree-w, clamp(240px, 22vw, 340px));
   display: flex; flex-direction: column; min-height: 0;
   background: var(--stage-chrome-bg);
   border-color: var(--stage-chrome-border);
   box-shadow: var(--shadow-lg);
   backdrop-filter: blur(10px);
 }
-/* The width is a variable, because the inner edge of each column is a handle:
- * js/detail.js writes the dragged width onto the view in pixels, and the
- * `clamp()` here is what a column is worth until someone drags it — and all it
- * is ever worth where the handle is not offered (a phone, or no script at
- * all). The two stay in step: js/detail.js repeats the same three numbers. */
-#view-detail.stage-fullscreen .tree-block {
-  left: calc(14px + env(safe-area-inset-left, 0px));
-  width: var(--fs-tree-w, clamp(240px, 22vw, 340px));
-}
-#view-detail.stage-fullscreen .joints-block {
-  right: calc(14px + env(safe-area-inset-right, 0px));
-  width: var(--fs-joints-w, clamp(240px, 22vw, 340px));
-}
 
+/* What is left of the screen once the column has its width: that is the render,
+ * and the robot is centred in it rather than behind the panel. The renderer
+ * follows its host, so insetting the host is all it takes — widening the column
+ * narrows the render and the robot re-centres in what remains.
+ *
+ * The floor clears the toolbar rather than running under it: the bar is below
+ * the URDF, not on top of it. The width is the same variable the column reads,
+ * so the two can never disagree about where the render starts. */
+#view-detail.stage-fullscreen .canvas-host {
+  left: calc(var(--fs-tree-w, clamp(240px, 22vw, 340px)) + 28px + env(safe-area-inset-left, 0px));
+  bottom: calc(58px + env(safe-area-inset-bottom, 0px));
+}
 /* The handle itself, on the edge that faces the render: a strip straddling the
  * border, so the target is a comfortable width without the panel having to
  * leave a gutter for it. It exists only in fullscreen — on the page these two
@@ -918,7 +917,6 @@ html[lang^='zh'] .footer-text-zh { display: block; }
   touch-action: none;
 }
 #view-detail.stage-fullscreen .tree-block .panel-resize { right: -6px; }
-#view-detail.stage-fullscreen .joints-block .panel-resize { left: -6px; }
 /* A grip down the middle of that strip: faint enough to sit on the render
  * unasked, lit while the pointer is on it or the drag is running, so the
  * column edge says it can be moved before it is tried. */
@@ -938,34 +936,28 @@ html[lang^='zh'] .footer-text-zh { display: block; }
  * has got to — not to the text it happens to be over. */
 body.panel-resizing { cursor: ew-resize; user-select: none; }
 
-/* Each panel is now as tall as the screen allows rather than as tall as its
- * content, so the list inside it is what absorbs the difference. The tree also
- * gains a vertical scroll it does not have on the page, where the card simply
- * grows to fit all sixty rows of a humanoid. */
-#view-detail.stage-fullscreen .tree-host { flex: 1 1 auto; min-height: 0; overflow: auto; }
-#view-detail.stage-fullscreen .joints { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+/* The panel is as tall as the screen allows rather than as tall as its
+ * content, so the tree inside it is what absorbs the difference — sixty rows of
+ * a humanoid, each with a slider, scroll within the column. */
+#view-detail.stage-fullscreen .tree-host {
+  flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden;
+}
 
-/* Between the two columns, where the render is — but centred on the window, not
- * on the strip: the bar carries the way back out of fullscreen, so it belongs
- * where the eye already is rather than sliding sideways every time a column is
- * dragged. Both insets are therefore the same number, the wider column's, which
- * is what keeps the bar's centre the window's centre whatever the columns are
- * doing and still keeps it out from under either of them — it could not climb
- * over them anyway (each column is a stacking context above the stage the bar
- * belongs to). js/detail.js caps a column at the width that leaves this strip
- * wide enough for the icon row. */
+/* The bar under the URDF: it takes the render's own span — the same left edge
+ * the canvas has, the same right edge — and centres its two rows in it, so the
+ * legend and the way back out of fullscreen sit on the robot's own centre line.
+ * Widen the column and the render, the robot and the bar all move together.
+ *
+ * It is below the render rather than on it: the canvas floor stops short of
+ * this band, so nothing here overlaps the robot. */
 #view-detail.stage-fullscreen .stage-toolbar {
   justify-content: center;
-  --fs-bar-edge: max(
-    calc(var(--fs-tree-w, clamp(240px, 22vw, 340px)) + env(safe-area-inset-left, 0px)),
-    calc(var(--fs-joints-w, clamp(240px, 22vw, 340px)) + env(safe-area-inset-right, 0px))
-  );
-  left: calc(var(--fs-bar-edge) + 28px);
-  right: calc(var(--fs-bar-edge) + 28px);
+  left: calc(var(--fs-tree-w, clamp(240px, 22vw, 340px)) + 28px + env(safe-area-inset-left, 0px));
+  right: env(safe-area-inset-right, 0px);
 }
-/* The overlay legend is the one row too wide for a strip like that; it scrolls
- * inside what is left rather than spilling under the columns — the same answer
- * the phone layout gives it. */
+/* A render narrow enough for the legend to outgrow it: the legend scrolls
+ * inside its own row rather than wrapping the icon row out of reach — the same
+ * answer the phone layout gives it. */
 #view-detail.stage-fullscreen #overlay-toggles {
   max-width: 100%; overflow-x: auto; scrollbar-width: none;
 }
@@ -1024,15 +1016,11 @@ body.stage-fullscreen-open { overflow: hidden; }
 /* ── Responsive ─────────────────────────────────────────── */
 
 @media (max-width: 1000px) {
-  .detail-body { grid-template-columns: minmax(0, 1fr); }
-  /* One column: the stage's children join the page grid directly so the specs
-   * and sliders can sit right under the viewer, and the reference cards drop
-   * to the end rather than pushing them off screen. */
-  .stage-col { display: contents; }
-  .stage-extra { order: 1; }
+  /* The row of three is all three or none: two of them across leaves the third
+   * alone on a row of its own, half a card wide with a half card of nothing
+   * beside it. Stacked, every card has the width and none is an odd one out. */
+  .stage-extra { grid-template-columns: minmax(0, 1fr); }
   .stage { height: min(56vh, 500px); }
-  .joints-block { display: block; flex: 0 0 auto; }
-  .joints { flex: none; }
 }
 
 @media (max-width: 720px) {
@@ -1077,29 +1065,28 @@ body.stage-fullscreen-open { overflow: hidden; }
   .hero-stats > div + div { padding-left: 0; border-left: 0; }
   .hero-stats dd { font-size: 17px; }
   .stage-hint { display: none; }
-  .stage-extra { grid-template-columns: minmax(0, 1fr); }
   /* The overlay toggles do not fit on one narrow line; let them scroll rather
    * than pushing the rest of the toolbar off screen. */
   .stage-toolbar { flex-direction: column; align-items: flex-start; }
   #overlay-toggles { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
   #overlay-toggles::-webkit-scrollbar { display: none; }
-  /* Two full-height columns would leave a phone a sliver of render between
-   * them, so in fullscreen they become a bottom row instead: side by side
-   * still, the tree on the left and the sliders on the right, with the robot
-   * in the half of the screen above them and the toolbar in between. */
-  #view-detail.stage-fullscreen .tree-block,
-  #view-detail.stage-fullscreen .joints-block {
+  /* A full-height column would leave a phone a sliver of render beside it, so
+   * in fullscreen it becomes a bottom row instead: the tree across the foot of
+   * the screen, the robot centred in the space above it, and the toolbar in
+   * between — the same order as the desktop, stacked instead of side by side. */
+  #view-detail.stage-fullscreen .tree-block {
     top: auto;
     height: min(38vh, 320px);
     bottom: calc(12px + env(safe-area-inset-bottom, 0px));
-    width: calc(50vw - 18px);
+    left: 12px; right: 12px; width: auto;
   }
-  #view-detail.stage-fullscreen .tree-block { left: 12px; }
-  #view-detail.stage-fullscreen .joints-block { right: 12px; }
-  /* Half the screen each is already the whole width there is, and the columns
-   * are below the render rather than beside it, so there is nothing left for a
-   * width handle to win. */
+  /* The row is the whole width there is, and it is below the render rather than
+   * beside it, so there is nothing left for a width handle to win. */
   #view-detail.stage-fullscreen .panel-resize { display: none; }
+  #view-detail.stage-fullscreen .canvas-host {
+    left: 0;
+    bottom: calc(min(38vh, 320px) + 66px + env(safe-area-inset-bottom, 0px));
+  }
   #view-detail.stage-fullscreen .stage-toolbar {
     align-items: center;
     left: 12px; right: 12px;
