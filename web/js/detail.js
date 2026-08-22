@@ -333,6 +333,26 @@ export class Detail {
 
     this.bindTree();
     this.bindPanelResize();
+    this.watchToolbarHeight();
+  }
+
+  /**
+   * How much room the bar under the render takes, written onto the view for the
+   * fullscreen rules to read. They stop the render's floor above the bar rather
+   * than behind it, and how tall it is is a rendered fact rather than a number
+   * a stylesheet can know: one row on a wide screen, two on a phone, and two
+   * again wherever the legend outgrows the width beside the icons — in whatever
+   * language the labels are in. So it is measured, and the render clears it on
+   * any screen without either side having guessed.
+   */
+  watchToolbarHeight() {
+    const bar = el('stage-toolbar');
+    const write = () => {
+      const { height } = bar.getBoundingClientRect();
+      if (height) el('view-detail').style.setProperty('--fs-bar-h', `${Math.round(height)}px`);
+    };
+    new ResizeObserver(write).observe(bar);
+    write();
   }
 
   /**
