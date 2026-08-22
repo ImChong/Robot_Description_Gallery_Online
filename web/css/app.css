@@ -24,15 +24,19 @@
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
   --shadow-lg: 0 12px 32px -12px rgba(0, 0, 0, 0.6);
 
-  /* The detail page's stage follows the theme — js/viewer.js relights the scene
-     to match, so a light stage gets a darker default mesh grey and the robots
-     keep their edges. The gallery cards do not: their thumbnails are rendered
-     offline against the dark palette, and a pale robot on a pale card would
-     disappear, so the card wells stay a dark studio in both themes. */
+  /* Both studios follow the theme: the detail page relights its scene to match
+     (js/viewer.js), while the card wells are only a backdrop — the thumbnails
+     are rendered once against transparency, so the same image has to sit on
+     either. The light well is therefore kept just off white, enough of a tint
+     that a white robot still has an edge to show against. */
   --stage-top: #262a30;
   --stage-bottom: #191b1f;
   --card-stage-top: #262a30;
   --card-stage-bottom: #191b1f;
+  /* The category pill floats over the card well, so it reads against the
+     thumbnail rather than the card. */
+  --card-cat-bg: rgba(20, 20, 20, 0.66);
+  --card-cat-text: #d8d8d4;
   /* Chrome that floats over the stage: it has to read against the render, not
      against the page, so it gets its own set rather than reusing --surface. */
   --stage-chrome-bg: rgba(25, 25, 25, 0.82);
@@ -103,6 +107,13 @@
   --stage-error-text: #b3261e;
   --stage-faint: #787774;
   --stage-track: #e0dfda;
+  /* Barely tinted: the cards read as white wells beside the white card body,
+     with just enough of a floor at the bottom of the gradient to keep a pale
+     robot from melting into the page. */
+  --card-stage-top: #ffffff;
+  --card-stage-bottom: #eceef2;
+  --card-cat-bg: rgba(255, 255, 255, 0.78);
+  --card-cat-text: #4b4a47;
 }
 
 /* Same reset as the reference site: zeroing margins matters here because
@@ -412,7 +423,7 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
   position: absolute; top: 9px; left: 9px;
   font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
   padding: 3px 9px; border-radius: 20px;
-  background: rgba(20, 20, 20, 0.66); color: #d8d8d4;
+  background: var(--card-cat-bg); color: var(--card-cat-text);
   backdrop-filter: blur(6px);
 }
 
