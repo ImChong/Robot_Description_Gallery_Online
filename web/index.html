@@ -110,8 +110,16 @@
             <button class="icon-btn" data-action="snapshot" data-icon="camera"
                     data-i18n-title="viewer.snapshot" title="Save PNG"
                     data-i18n-aria-label="viewer.snapshot" aria-label="Save PNG"></button>
+            <!-- A mode rather than an action, so it is the one button in the row
+                 that stays lit while it is on. -->
+            <button class="icon-btn" data-action="fullscreen" data-icon="expand" aria-pressed="false"
+                    data-i18n-title="viewer.fullscreen" title="Fullscreen"
+                    data-i18n-aria-label="viewer.fullscreen" aria-label="Fullscreen"></button>
           </div>
         </div>
+        <!-- Only ever on screen in fullscreen, where the page's own heading is
+             not: it is then the only thing that says which robot this is. -->
+        <p class="stage-title" id="stage-title"></p>
         <p class="stage-hint" data-i18n="viewer.hint">Drag to orbit · scroll to zoom · right-drag to pan</p>
       </div>
 
@@ -122,7 +130,7 @@
         <!-- The kinematic tree, which is the shape of the description rather
              than a property of it: the joint panel beside the stage lists the
              joints flat, this says how they hang together. -->
-        <section class="panel-block span-full">
+        <section class="panel-block span-full tree-block">
           <div class="panel-block-head">
             <h3 data-i18n="panel.tree">Joint tree</h3>
             <div class="head-actions">

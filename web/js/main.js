@@ -110,6 +110,10 @@ async function main() {
   async function route() {
     const { robot: id, category } = parseHash();
     if (!id) {
+      // The gallery cannot be read through a stage that covers the screen —
+      // reachable through the browser's back button, since the detail view's
+      // own way out is off screen in fullscreen.
+      if (detail?.isFullscreen()) detail.exitFullscreen();
       views.detail.hidden = true;
       views.gallery.hidden = false;
       document.title = 'Robot URDF Gallery · 机器人 URDF 合集';
@@ -162,10 +166,25 @@ async function main() {
 
   window.addEventListener('hashchange', route);
   window.addEventListener('keydown', (event) => {
+    // Escape leaves the fullscreen stage from wherever the focus is, the joint
+    // sliders included — in fullscreen they are what the visitor is holding
+    // when they want out, and the guard below would swallow it. Only once the
+    // stage is back in the page does Escape mean "leave this robot".
+    // (Where the browser runs a native fullscreen it closes that on Escape
+    // itself; `fullscreenchange` then brings the class down.)
+    if (event.key === 'Escape' && detail?.isFullscreen()) {
+      detail.exitFullscreen();
+      return;
+    }
     if (event.target.matches('input, textarea')) return;
     if (event.key === 'Escape' && parseHash().robot) toGallery();
     if (event.key === 'ArrowLeft') document.getElementById('prev-robot')?.click();
     if (event.key === 'ArrowRight') document.getElementById('next-robot')?.click();
+    // `f` for the stage, as every video player has it — bare, so the browser
+    // keeps Ctrl/⌘-F for its own find bar.
+    if (event.key === 'f' && !event.ctrlKey && !event.metaKey && !event.altKey && parseHash().robot) {
+      detail?.toggleFullscreen();
+    }
     if (event.key === '/') {
       event.preventDefault();
       document.getElementById('search').focus();

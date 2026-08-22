@@ -832,6 +832,92 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 }
 .tree-hint { margin: 9px 0 0; font-size: 11px; color: var(--text-faint); }
 
+/* ── Fullscreen stage ───────────────────────────────────── */
+
+/* The stage on its own screen. Nothing is moved in the DOM: the joint tree and
+ * the slider panel stay exactly where the markup puts them — pose, scroll
+ * position and every listener with them — and this lifts the two of them out of
+ * the page grid onto the render as floating columns, while the cards that
+ * describe the file rather than the pose step aside for the duration.
+ *
+ * js/detail.js also asks for native fullscreen, which takes the browser's own
+ * chrome with it. These rules are what makes the mode work when that request is
+ * refused — an iPhone has no element fullscreen at all — so they cover the
+ * viewport on their own rather than relying on `:fullscreen`. */
+
+/* The name over the render, which only fullscreen has a use for: on the page
+ * the heading two lines above the stage already says whose robot this is. */
+.stage-title { display: none; }
+
+#view-detail.stage-fullscreen { padding: 0; max-width: none; background: var(--bg); }
+#view-detail.stage-fullscreen::backdrop { background: var(--bg); }
+
+/* Everything that is not the render or a control for the pose. */
+#view-detail.stage-fullscreen .detail-head,
+#view-detail.stage-fullscreen .stage-extra > .panel-block:not(.tree-block),
+#view-detail.stage-fullscreen .panel > .panel-block:not(.joints-block) { display: none; }
+
+/* Every child still on screen is taken out of flow below, so the grids have
+ * nothing left to lay out — as tracks they would go on reserving the 340px
+ * side column and the gaps between the cards. */
+#view-detail.stage-fullscreen .detail-body,
+#view-detail.stage-fullscreen .stage-col,
+#view-detail.stage-fullscreen .stage-extra,
+#view-detail.stage-fullscreen .panel { display: block; gap: 0; }
+
+#view-detail.stage-fullscreen .stage {
+  position: fixed; inset: 0; z-index: 1400;
+  height: auto; min-height: 0; max-height: none;
+  border: 0; border-radius: 0; box-shadow: none;
+}
+
+/* The two panels that drive the pose, as floating columns over the render: the
+ * tree on the left, where following a chain wants the height, and the sliders
+ * on the right, where they were already. Same chrome as the toolbar below them
+ * — they sit on the render, so they have to read against it rather than
+ * against the page. */
+#view-detail.stage-fullscreen .tree-block,
+#view-detail.stage-fullscreen .joints-block {
+  position: fixed; z-index: 1410;
+  top: calc(52px + env(safe-area-inset-top, 0px));
+  bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+  width: clamp(240px, 22vw, 340px);
+  display: flex; flex-direction: column; min-height: 0;
+  background: var(--stage-chrome-bg);
+  border-color: var(--stage-chrome-border);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(10px);
+}
+#view-detail.stage-fullscreen .tree-block { left: calc(14px + env(safe-area-inset-left, 0px)); }
+#view-detail.stage-fullscreen .joints-block { right: calc(14px + env(safe-area-inset-right, 0px)); }
+
+/* Each panel is now as tall as the screen allows rather than as tall as its
+ * content, so the list inside it is what absorbs the difference. The tree also
+ * gains a vertical scroll it does not have on the page, where the card simply
+ * grows to fit all sixty rows of a humanoid. */
+#view-detail.stage-fullscreen .tree-host { flex: 1 1 auto; min-height: 0; overflow: auto; }
+#view-detail.stage-fullscreen .joints { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+
+/* Between the two columns, where the render is. */
+#view-detail.stage-fullscreen .stage-toolbar { justify-content: center; }
+
+#view-detail.stage-fullscreen .stage-title {
+  display: block;
+  position: absolute; z-index: 2;
+  top: calc(12px + env(safe-area-inset-top, 0px));
+  left: calc(14px + env(safe-area-inset-left, 0px));
+  padding: 3px 10px;
+  border: 1px solid var(--stage-chrome-border); border-radius: var(--radius);
+  background: var(--stage-chrome-bg); backdrop-filter: blur(10px);
+  font-size: 12.5px; font-weight: 600; line-height: 1.6;
+  color: var(--stage-chrome-text-strong);
+  pointer-events: none;
+}
+
+/* The page behind the overlay must not scroll under it — it is still there
+ * whenever the native request was refused. */
+body.stage-fullscreen-open { overflow: hidden; }
+
 /* ── Resources & snippets ───────────────────────────────── */
 
 .resources { list-style: none; margin: 10px 0 0; padding: 0; }
@@ -927,6 +1013,27 @@ html[lang^='zh'] .footer-text-zh { display: block; }
   .stage-toolbar { flex-direction: column; align-items: flex-start; }
   #overlay-toggles { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
   #overlay-toggles::-webkit-scrollbar { display: none; }
+  /* Two full-height columns would leave a phone a sliver of render between
+   * them, so in fullscreen they become a bottom row instead: side by side
+   * still, the tree on the left and the sliders on the right, with the robot
+   * in the half of the screen above them and the toolbar in between. */
+  #view-detail.stage-fullscreen .tree-block,
+  #view-detail.stage-fullscreen .joints-block {
+    top: auto;
+    height: min(38vh, 320px);
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    width: calc(50vw - 18px);
+  }
+  #view-detail.stage-fullscreen .tree-block { left: 12px; }
+  #view-detail.stage-fullscreen .joints-block { right: 12px; }
+  #view-detail.stage-fullscreen .stage-toolbar {
+    align-items: center;
+    bottom: calc(min(38vh, 320px) + 20px + env(safe-area-inset-bottom, 0px));
+  }
+  /* Three lines of instructions in a panel this narrow cost more rows of tree
+   * than they are worth — and hovering, which is half of what they describe,
+   * is not what a phone does anyway. */
+  #view-detail.stage-fullscreen .tree-hint { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
