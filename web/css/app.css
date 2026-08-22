@@ -688,6 +688,18 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 .slider-line { display: flex; align-items: center; gap: 8px; }
 .slider-line input[type='range'] { flex: 1 1 auto; min-width: 0; }
 
+/* A joint that mimics another has no slider — its value is written by the joint
+ * it follows. What stands in that place is the name of that joint, quiet enough
+ * that the branch still reads as the row of controls it mostly is, while the
+ * readout keeps the column the sliders keep theirs in. */
+.tree-slider.is-follow .slider-line { min-height: 24px; cursor: help; }
+.tree-follow {
+  flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--text-faint);
+}
+.tree-follow i { font-style: normal; margin-right: 5px; color: var(--text-muted); }
+.tree-slider.is-follow .tree-value { color: var(--text-muted); }
+
 /* What the URDF declares for the joint above: travel, and the speed and effort
  * ceilings. Three short chips rather than a table — they sit under every
  * slider, so they have to stay quiet. */

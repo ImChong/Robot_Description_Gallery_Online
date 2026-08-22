@@ -104,6 +104,8 @@ const STRINGS = {
     'limit.velocityFull': 'Velocity limit, from <limit velocity>',
     'limit.effortFull': 'Effort limit, from <limit effort>',
     'limit.mimicFull': 'Follows another joint: value = multiplier × source + offset',
+    'limit.mimicDriven':
+      'Driven by the joint it follows — value = multiplier × source + offset, so it has no slider of its own',
     'limit.continuous': 'continuous',
     'limit.none': 'no <limit> declared',
   },
@@ -210,6 +212,7 @@ const STRINGS = {
     'limit.velocityFull': '速度限制，来自 <limit velocity>',
     'limit.effortFull': '力矩限制，来自 <limit effort>',
     'limit.mimicFull': '跟随另一个关节：数值 = 倍率 × 源关节 + 偏置',
+    'limit.mimicDriven': '由所跟随的关节驱动：数值 = 倍率 × 源关节 + 偏置，因此没有自己的滑块',
     'limit.continuous': '连续旋转',
     'limit.none': '未声明 <limit>',
   },

@@ -1180,6 +1180,11 @@ export class RobotViewer {
         continue;
       }
       if (joint.jointType === 'fixed') continue;
+      // A joint that mimics another has no rest position of its own: the joint
+      // it follows writes its value, and does so below in this same pass.
+      // Giving it one here would only hold until that joint next moves.
+      const source = joint.mimicJoint ? this.robot.joints[joint.mimicJoint] : null;
+      if (source && source.jointType !== 'fixed') continue;
       const lower = Number.isFinite(joint.limit?.lower) ? joint.limit.lower : null;
       const upper = Number.isFinite(joint.limit?.upper) ? joint.limit.upper : null;
       let rest = 0;

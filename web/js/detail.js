@@ -375,15 +375,15 @@ export class Detail {
       else this.selectTreeNode(node);
     });
 
-    // Every slider in the tree, read off the row it sits under.
+    // Every slider in the tree, read off the row it sits under. The whole panel
+    // is repainted from the pose that results, not just the row dragged: a
+    // joint that mimics this one has no slider of its own, and its readout is
+    // only right if it follows the drag the way the model does.
     tree.addEventListener('input', (event) => {
       const input = event.target;
       if (input.type !== 'range') return;
-      const name = decodeURIComponent(input.dataset.joint);
-      const value = parseFloat(input.value);
-      this.viewer.setJoint(name, value);
-      const cell = this.treeValues?.get(name);
-      if (cell) cell.textContent = fmt(value, input.dataset.rot === 'true');
+      this.viewer.setJoint(decodeURIComponent(input.dataset.joint), parseFloat(input.value));
+      this.syncTreeValues(input);
     });
 
     tree.addEventListener('pointerover', (event) => {
@@ -730,14 +730,18 @@ export class Detail {
 
   /** Repaint the tree from the pose the viewer is actually in — the readout on
    *  every row, and the slider under the ones that move. A reset moves the
-   *  robot and nothing else; this is what puts the panel back in step. */
-  syncTreeValues() {
+   *  robot and nothing else; this is what puts the panel back in step.
+   *
+   *  `dragging`, when a slider is being held, is left alone: the thumb is where
+   *  the hand put it, and writing a clamped value back under the pointer would
+   *  fight the drag. */
+  syncTreeValues(dragging = null) {
     if (!this.treeValues?.size && !this.treeSliders?.size) return;
     for (const joint of this.viewer.jointList()) {
       const cell = this.treeValues.get(joint.name);
       if (cell) cell.textContent = fmt(joint.value, joint.type !== 'prismatic');
       const input = this.treeSliders.get(joint.name);
-      if (input) input.value = String(joint.value);
+      if (input && input !== dragging) input.value = String(joint.value);
     }
   }
 
@@ -1042,17 +1046,27 @@ function treeNode(node, isRoot = false, joints = null) {
     `<span class="tree-link"${bare ? ` title="${t('tree.noMesh')}"` : ''}>${esc(node.link)}` +
     `${bare ? '<i class="tree-bare" aria-hidden="true">∅</i>' : ''}</span>` +
     '</span>' +
-    (moving ? sliderBlock(moving) : '') +
+    (moving ? jointBlock(moving) : '') +
     children +
     '</li>'
   );
 }
 
 /**
- * What a joint that moves carries under its row: the slider that moves it, the
- * angle it is at, and what the URDF declares about it. Folding the row folds
- * the branch below it, never this — the slider belongs to the joint on the row,
- * not to its children.
+ * What a joint that moves carries under its row. Folding the row folds the
+ * branch below it, never this — the block belongs to the joint on the row, not
+ * to its children.
+ *
+ * A joint that mimics another gets no slider: its value is not its own to set.
+ * The rest get the slider that moves them.
+ */
+function jointBlock(joint) {
+  return joint.mimic?.joint ? followBlock(joint) : sliderBlock(joint);
+}
+
+/**
+ * The slider that moves one joint, the angle it is at, and what the URDF
+ * declares about it.
  *
  * The readout sits beside the slider rather than up on the row: the row is
  * already carrying two names and a type, and a deep chain leaves it no width to
@@ -1070,6 +1084,27 @@ function sliderBlock(joint) {
     `<span class="tree-value" data-tree-value="${esc(joint.name)}">—</span>` +
     '</div>' +
     limitsRow(joint) +
+    '</div>'
+  );
+}
+
+/**
+ * What a joint that follows another carries instead: where it stands, and the
+ * joint it takes that from. A mimic joint has no travel of its own — its value
+ * is rewritten as multiplier × source + offset every time the joint it follows
+ * moves — so a slider here would be a control that undoes itself, and hands a
+ * reader a pose the description cannot hold. The number stays, in the column
+ * the sliders keep theirs in, and moves when the source does.
+ */
+function followBlock(joint) {
+  return (
+    '<div class="tree-slider is-follow">' +
+    `<div class="slider-line" title="${t('limit.mimicDriven')}">` +
+    `<span class="tree-follow"><i aria-hidden="true">↳</i>${esc(mimicText(joint.mimic))}</span>` +
+    `<span class="tree-value" data-tree-value="${esc(joint.name)}">—</span>` +
+    '</div>' +
+    // The relation is on the line above, so it is not repeated in the chips.
+    limitsRow(joint, false) +
     '</div>'
   );
 }
@@ -1142,9 +1177,10 @@ function sliderStep(isRotational) {
  * The limits the URDF declares for one joint: travel, and the effort and
  * velocity ceilings a controller is supposed to respect. Shown as-is —
  * `effort="0"` means the upstream file left it at zero, not that the joint is
- * unlimited.
+ * unlimited. A mimic joint adds what it follows, unless the block above these
+ * chips is already saying it.
  */
-function limitsRow(joint) {
+function limitsRow(joint, withMimic = true) {
   const isRot = joint.type !== 'prismatic';
   const chips = [
     chip(t('limit.range'), rangeText(joint), rangeTitle(joint)),
@@ -1159,17 +1195,17 @@ function limitsRow(joint) {
       t('limit.effortFull'),
     ),
   ];
-  if (joint.mimic?.joint) {
-    const { joint: source, multiplier, offset } = joint.mimic;
-    chips.push(
-      chip(
-        t('limit.mimic'),
-        `${source} ×${num(multiplier)}${offset ? ` ${offset > 0 ? '+' : '−'}${num(Math.abs(offset))}` : ''}`,
-        t('limit.mimicFull'),
-      ),
-    );
+  if (withMimic && joint.mimic?.joint) {
+    chips.push(chip(t('limit.mimic'), esc(mimicText(joint.mimic)), t('limit.mimicFull')));
   }
   return `<div class="joint-limits">${chips.join('')}</div>`;
+}
+
+/** The mimic relation as the URDF declares it: `source ×multiplier +offset`,
+ *  with the offset left off when there is none to state. */
+function mimicText({ joint: source, multiplier, offset }) {
+  const shift = offset ? ` ${offset > 0 ? '+' : '−'}${num(Math.abs(offset))}` : '';
+  return `${source} ×${num(multiplier)}${shift}`;
 }
 
 function chip(label, value, title) {
