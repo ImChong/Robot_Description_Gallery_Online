@@ -798,13 +798,17 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 .tree-node[aria-expanded='false'] > .tree-row > .tree-twisty { transform: rotate(-90deg); }
 .tree-twisty:hover { color: var(--text); }
 
-/* The row has to fit the column, so the two names give when a generated URDF
- * names a joint `face_front_to_depth_camera_front_lower_camera_parent_joint`.
- * They give together, in proportion to how long they are, and each keeps a few
- * characters and an ellipsis — a name clipped to nothing says less than a
- * clipped name does, and either one alone can identify the row. */
+/* The row reads as one phrase — joint, type, link — so the names take the width
+ * they need and no more: the chip and the link follow the joint name wherever it
+ * ends, and stay there while the column is dragged wider.
+ *
+ * They still have to fit the column, and give when a generated URDF names a
+ * joint `face_front_to_depth_camera_front_lower_camera_parent_joint`. They give
+ * together, in proportion to how long they are, and each keeps a few characters
+ * and an ellipsis — a name clipped to nothing says less than a clipped name
+ * does, and either one alone can identify the row. */
 .tree-joint, .tree-link {
-  flex: 1 1 auto; min-width: 3em;
+  flex: 0 1 auto; min-width: 3em;
   overflow: hidden; text-overflow: ellipsis;
   font-family: var(--font-mono); font-size: 11.5px;
 }
@@ -1087,6 +1091,36 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
   .stage-toolbar { flex-direction: column; align-items: center; }
   #overlay-toggles { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
   #overlay-toggles::-webkit-scrollbar { display: none; }
+
+  /* Two stacked rows of chrome is a fifth of a phone's stage, and floating them
+   * on the render puts that fifth over the robot's feet — which is where a
+   * humanoid stands. So on the page the bar steps off the render and takes a
+   * strip of its own along the foot of the frame: the stage becomes a column,
+   * the render above and the controls below, nothing covering anything. The
+   * fullscreen layout has room to float them and keeps doing so. */
+  #view-detail:not(.stage-fullscreen) .stage {
+    --stage-canvas-h: min(52vh, 440px);
+    display: flex; flex-direction: column;
+    height: auto; min-height: 0;
+  }
+  /* Out of the corner it was pinned to and into the column, with the height the
+   * render used to take from the frame. The renderer follows its host, so this
+   * is all it takes for the robot to re-centre in what is left. */
+  #view-detail:not(.stage-fullscreen) .canvas-host {
+    position: relative; inset: auto;
+    height: var(--stage-canvas-h);
+  }
+  /* The veil belongs to the render, not to the controls: a load or a failure
+   * covers the picture and leaves the bar under it legible. */
+  #view-detail:not(.stage-fullscreen) .stage-loading,
+  #view-detail:not(.stage-fullscreen) .stage-error {
+    bottom: auto; height: var(--stage-canvas-h);
+  }
+  #view-detail:not(.stage-fullscreen) .stage-toolbar {
+    position: static;
+    padding: 10px 12px;
+    border-top: 1px solid var(--stage-chrome-border);
+  }
   /* A full-height column would leave a phone a sliver of render beside it, so
    * in fullscreen it becomes a bottom row instead: the tree across the foot of
    * the screen, the robot centred in the space above it, and the toolbar in
