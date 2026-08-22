@@ -33,6 +33,12 @@ const MULTI_DOF = { floating: 6, planar: 3 };
  * Lighting travels with the palette too: the strong rim light exists to lift a
  * matte-black robot off a dark backdrop, and on a bright stage it only blows
  * out the highlights, so it is turned most of the way down.
+ *
+ * `background` is the one value here the stylesheet also holds: css/app.css
+ * paints the stage around the canvas in `--studio`, and in fullscreen that
+ * surface is most of the window — the band under the render, the strip behind
+ * the joint tree. The two have to stay equal or the canvas edge shows as a
+ * seam, so change them together.
  */
 export const THEMES = {
   dark: {
