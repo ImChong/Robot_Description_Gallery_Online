@@ -25,6 +25,27 @@ const OVERLAYS = [
 const hex = (color) => `#${color.toString(16).padStart(6, '0')}`;
 
 /**
+ * Native fullscreen, through both spellings and prepared for neither: Safari
+ * only dropped the `webkit` prefix in 16.4, and the iPhone has never had
+ * element fullscreen at all. Every call here may therefore come to nothing,
+ * which is why the mode itself is a class the CSS acts on rather than
+ * `:fullscreen` — a refused request still gets the big stage, minus the
+ * browser's own chrome.
+ */
+const fsElement = () => document.fullscreenElement ?? document.webkitFullscreenElement ?? null;
+
+function fsRequest(node) {
+  const request = node.requestFullscreen ?? node.webkitRequestFullscreen;
+  if (!request) return Promise.reject(new Error('no element fullscreen here'));
+  return Promise.resolve(request.call(node, { navigationUI: 'hide' }));
+}
+
+function fsExit() {
+  const exit = document.exitFullscreen ?? document.webkitExitFullscreen;
+  return exit ? Promise.resolve(exit.call(document)) : Promise.resolve();
+}
+
+/**
  * Angles are radians everywhere below the UI — that is what the URDF declares
  * and what the viewer is driven with. Degrees are only ever a rendering of
  * them, so switching units re-labels the panel and never touches the pose.
@@ -169,8 +190,18 @@ export class Detail {
         this.viewer.frameCamera();
       } else if (action === 'snapshot') {
         this.download();
+      } else if (action === 'fullscreen') {
+        this.toggleFullscreen();
       }
     });
+
+    // Fullscreen can also be left without touching that button — Escape, F11,
+    // switching tabs — so the class follows the document, not the click.
+    for (const event of ['fullscreenchange', 'webkitfullscreenchange']) {
+      document.addEventListener(event, () => {
+        if (!fsElement() && this.isFullscreen()) this.applyFullscreen(false);
+      });
+    }
 
     el('joints-reset').addEventListener('click', () => {
       this.viewer.resetJoints();
@@ -363,6 +394,7 @@ export class Detail {
     el('d-sub').textContent = [robot.maker, categoryLabel(robot.category, this.data.categories)]
       .filter(Boolean)
       .join(' · ');
+    el('stage-title').textContent = [robot.name, robot.maker].filter(Boolean).join(' · ');
     document.title = `${robot.name} · Robot URDF Gallery`;
 
     this.renderSpecs();
@@ -681,6 +713,66 @@ export class Detail {
       default: return;
     }
     event.preventDefault();
+  }
+
+  // ------------------------------------------------------------- fullscreen
+
+  isFullscreen() {
+    return el('view-detail').classList.contains('stage-fullscreen');
+  }
+
+  toggleFullscreen() {
+    if (this.isFullscreen()) this.exitFullscreen();
+    else this.enterFullscreen();
+  }
+
+  /**
+   * The whole detail view goes fullscreen rather than the stage alone: the two
+   * panels that stay on screen are elsewhere in the markup, and a native
+   * fullscreen renders nothing outside the element it was asked for.
+   */
+  async enterFullscreen() {
+    try {
+      await fsRequest(el('view-detail'));
+    } catch {
+      /* refused, or a browser without it — the class alone covers the page */
+    }
+    this.applyFullscreen(true);
+  }
+
+  async exitFullscreen() {
+    if (fsElement()) {
+      try {
+        await fsExit();
+      } catch {
+        /* already on the way out */
+      }
+    }
+    this.applyFullscreen(false);
+  }
+
+  /** Enter or leave the mode. Called again on the way back from the document's
+   * own `fullscreenchange`, so it has to be safe to repeat. */
+  applyFullscreen(on) {
+    el('view-detail').classList.toggle('stage-fullscreen', on);
+    document.body.classList.toggle('stage-fullscreen-open', on);
+
+    const button = el('stage-toolbar').querySelector('[data-action="fullscreen"]');
+    const name = on ? 'minimize' : 'expand';
+    const key = on ? 'viewer.exitFullscreen' : 'viewer.fullscreen';
+    button.setAttribute('aria-pressed', String(on));
+    button.dataset.icon = name;
+    button.innerHTML = icon(name);
+    // Both the live attributes and the keys a language switch re-reads them
+    // from: the button says what the next press will do, in either mode.
+    button.dataset.i18nTitle = key;
+    button.dataset.i18nAriaLabel = key;
+    button.title = t(key);
+    button.setAttribute('aria-label', t(key));
+
+    // The canvas host has just changed size; the viewer's own ResizeObserver
+    // does the resizing, this only asks for the frame that shows it.
+    this.viewer.invalidate();
   }
 
   relayout() {

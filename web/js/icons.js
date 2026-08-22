@@ -33,6 +33,16 @@ const ICONS = {
     '<path d="M21 15.5V19a2 2 0 0 1-2 2h-3.5"/><path d="M8.5 21H5a2 2 0 0 1-2-2v-3.5"/>' +
     '<rect x="8.5" y="9.5" width="7" height="5" rx="1"/>',
 
+  /**
+   * Fullscreen: the diagonal pair of arrows pushing out to opposite corners.
+   * Deliberately not the corner brackets — those are `fit`, two buttons along,
+   * and the two marks would be told apart only by the rect in the middle.
+   */
+  expand: '<path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7.5 7.5"/><path d="M3 21l7.5-7.5"/>',
+
+  /** Leave fullscreen: the same arrows, coming back in. */
+  minimize: '<path d="M4 14h6v6"/><path d="M20 10h-6V4"/><path d="M14 10l7-7"/><path d="M3 21l7-7"/>',
+
   /** Save PNG: a camera, because the file it saves is a picture of the stage. */
   camera:
     '<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>' +
