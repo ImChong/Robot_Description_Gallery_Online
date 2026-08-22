@@ -46,91 +46,67 @@ function fsExit() {
 }
 
 /**
- * Fullscreen lifts the joint tree and the slider list onto the render as two
- * floating columns, sized for a glance at them. A deep chain, or the joint
- * names a generated URDF tends to carry, wants more than a glance — so on a
- * desktop the inner edge of each column is a handle: drag it and the column
- * grows, as far as half the page.
+ * Fullscreen lifts the joint tree — sliders and all — onto the render as a
+ * floating column, sized for a glance at it. A deep chain, or the joint names a
+ * generated URDF tends to carry, wants more than a glance, so on a desktop the
+ * inner edge of the column is a handle: drag it and the column grows, as far as
+ * half the page.
  *
  * The width is written onto the detail view as a pixel variable the fullscreen
- * rules read; the same panels stay ordinary cards on the page, where the grid
- * sizes them. The numbers below are the ones css/app.css falls back to when
- * nobody has dragged anything — the floor of its `clamp()`, and its `22vw`
- * ceiling of `340px`.
+ * rules read: they inset the render by it, so widening the column narrows the
+ * render rather than covering it, and the robot stays centred in what is left.
+ * The numbers below are the ones css/app.css falls back to when nobody has
+ * dragged anything — the floor of its `clamp()`, and its `22vw` ceiling of
+ * `340px`.
  */
 const PANEL_MIN_W = 240;
-const PANEL_VAR = { tree: '--fs-tree-w', joints: '--fs-joints-w' };
+const PANEL_VAR = { tree: '--fs-tree-w' };
 const PANEL_W_KEY = 'cl-fs-panel-w';
 
 /**
- * What the two columns may never close over between them: the 14px each sits in
- * from its own edge of the screen, and a strip of render wide enough for the
- * toolbar's icon row. A column is a stacking context of its own, so a handle
- * buried under the opposite column could not be dug back out with the pointer —
- * and the way out of fullscreen lives in that strip too.
+ * What the column may never close over: the 14px it sits in from its own edge
+ * of the screen and the 14px between it and the render, and a strip of render
+ * wide enough to still be showing a robot. Only a window far narrower than
+ * fullscreen is ever meant for brings this bound into play; half the page is
+ * what stops the drag on any real screen.
  */
 const PANEL_GUTTERS = 28;
-const PANEL_MIN_GAP = 200;
+const PANEL_MIN_RENDER = 320;
 
-/** Half the page: as wide as a column may be dragged. */
+/** Half the page: as wide as the column may be dragged. */
 const panelMaxW = () => Math.round(window.innerWidth / 2);
 
-/** As far as a column can actually be dragged, which on a window with room to
- *  spare is that same half. What it takes to keep the far column at its
- *  narrowest and the strip of render between them comes out first. */
+/** As far as the column can actually be dragged — that same half, unless the
+ *  window is too narrow to spare it and still be showing the robot. */
 function panelCeilingW() {
   const half = panelMaxW();
-  const floor = Math.min(PANEL_MIN_W, half);
-  return Math.max(floor, Math.min(half, window.innerWidth - PANEL_GUTTERS - PANEL_MIN_GAP - floor));
+  return Math.max(
+    Math.min(PANEL_MIN_W, half),
+    Math.min(half, window.innerWidth - PANEL_GUTTERS - PANEL_MIN_RENDER),
+  );
 }
 
-/** What a column is worth before anyone drags it. */
+/** What the column is worth before anyone drags it. */
 const panelDefaultW = () =>
   Math.round(Math.min(340, Math.max(PANEL_MIN_W, window.innerWidth * 0.22)));
 
-/** Never past half the page, never under the floor — and on a window too narrow
- *  for both bounds to hold at once, half the page is the one that wins. */
+/** Never past the ceiling, never under the floor — and on a window too narrow
+ *  for both bounds to hold at once, the ceiling is the one that wins. */
 function clampPanelW(px) {
-  const max = panelMaxW();
+  const max = panelCeilingW();
   return Math.round(Math.min(Math.max(px, Math.min(PANEL_MIN_W, max)), max));
 }
 
 /**
- * The two widths as they can actually be shown: each column is what it was
- * dragged to, up to half the page, and the strip of render between them is
- * never closed up.
- *
- * The column being dragged is the one that keeps its width — the other gives
- * way, as far down as its own floor. So half the page is always there to be
- * dragged to, on any window with room for the far column at its narrowest and
- * the strip between them (a real fullscreen on a real desktop, several times
- * over); it is only a small window that has to stop a drag short of it.
- *
- * Nothing here is written back to the dragged widths, so the column that gave
- * way opens out again the moment there is room for it.
+ * The column as it can actually be shown: what it was dragged to, within what
+ * this window allows it. Nothing is written back to the dragged width, so a
+ * column the window has brought in opens out again the moment there is room.
  */
-function resolvePanelWidths(widths, dragged = null) {
-  const floor = Math.min(PANEL_MIN_W, panelMaxW());
+function resolvePanelWidths(widths) {
   const out = {};
   for (const key of Object.keys(PANEL_VAR)) {
     out[key] = clampPanelW(widths[key] ?? panelDefaultW());
   }
-
-  let over = out.tree + out.joints - (window.innerWidth - PANEL_GUTTERS - PANEL_MIN_GAP);
-  if (over <= 0) return out;
-
-  // Nobody is being dragged when it is the window that moved; then the wider
-  // column is the one with something to give.
-  const gives = dragged
-    ? (dragged === 'tree' ? 'joints' : 'tree')
-    : (out.tree >= out.joints ? 'tree' : 'joints');
-  const keeps = gives === 'tree' ? 'joints' : 'tree';
-  const given = Math.min(over, Math.max(0, out[gives] - floor));
-  out[gives] -= given;
-  over -= given;
-  // A window with no room for both floors and the strip is the phone layout,
-  // where the columns are a bottom row and the stylesheet reads none of this.
-  if (over > 0) out[keeps] = Math.max(floor, out[keeps] - over);
   return out;
 }
 
@@ -297,7 +273,7 @@ export class Detail {
       const { action } = button.dataset;
       if (action === 'reset') {
         this.viewer.resetJoints();
-        this.renderJoints();
+        this.syncTreeValues();
       } else if (action === 'rotate') {
         this.viewer.autoRotate = !this.viewer.autoRotate;
         button.setAttribute('aria-pressed', String(!!this.viewer.autoRotate));
@@ -320,7 +296,7 @@ export class Detail {
 
     el('joints-reset').addEventListener('click', () => {
       this.viewer.resetJoints();
-      this.renderJoints();
+      this.syncTreeValues();
     });
 
     this.renderUnitToggle();
@@ -329,8 +305,12 @@ export class Detail {
       if (!button || button.dataset.unit === angleUnit) return;
       setAngleUnit(button.dataset.unit);
       this.renderUnitToggle();
-      this.renderJoints();
+      this.renderTree();
     });
+
+    // The card that stands where the tree used to be on the page, saying where
+    // it went. Its button is the same door the toolbar's expand icon opens.
+    el('pose-fullscreen').addEventListener('click', () => this.toggleFullscreen());
 
     el('snippet-copy').addEventListener('click', async () => {
       await navigator.clipboard?.writeText(el('snippet-code').textContent);
@@ -356,20 +336,34 @@ export class Detail {
   }
 
   /**
-   * The joint tree talks to two things at once: the stage, where the link under
-   * the pointer lights up, and the slider list, which it scrolls to the joint
-   * that was clicked. Hovering is a preview — leaving the tree puts the pinned
-   * link back — and clicking pins.
+   * The joint tree drives the stage: the link under the pointer lights up,
+   * hovering is a preview — leaving the tree puts the pinned link back — and
+   * clicking pins. The sliders live in the tree too, and they are the one part
+   * of a row that is not the row: a drag along one is not a click on the joint
+   * it belongs to, and its arrow keys are its own, not the tree's.
    */
   bindTree() {
     const tree = el('d-tree');
+    const onSlider = (event) => !!event.target.closest('.tree-slider');
 
     tree.addEventListener('click', (event) => {
+      if (onSlider(event)) return;
       const twisty = event.target.closest('.tree-twisty');
       const node = event.target.closest('.tree-node');
       if (!node) return;
       if (twisty) this.toggleTreeNode(node);
       else this.selectTreeNode(node);
+    });
+
+    // Every slider in the tree, read off the row it sits under.
+    tree.addEventListener('input', (event) => {
+      const input = event.target;
+      if (input.type !== 'range') return;
+      const name = decodeURIComponent(input.dataset.joint);
+      const value = parseFloat(input.value);
+      this.viewer.setJoint(name, value);
+      const cell = this.treeValues?.get(name);
+      if (cell) cell.textContent = fmt(value, input.dataset.rot === 'true');
     });
 
     tree.addEventListener('pointerover', (event) => {
@@ -386,7 +380,10 @@ export class Detail {
       if (node) this.viewer.highlightLink(node.dataset.link);
     });
 
-    tree.addEventListener('keydown', (event) => this.onTreeKey(event));
+    tree.addEventListener('keydown', (event) => {
+      if (onSlider(event)) return;
+      this.onTreeKey(event);
+    });
 
     el('tree-expand').addEventListener('click', () => this.setTreeExpanded(true));
     el('tree-collapse').addEventListener('click', () => this.setTreeExpanded(false));
@@ -517,7 +514,6 @@ export class Detail {
     this.renderDownloads();
     this.renderResources();
     this.renderSnippet();
-    el('d-joints').innerHTML = '';
     el('joint-unit').hidden = true;
     this.clearTree();
 
@@ -554,7 +550,6 @@ export class Detail {
         this.viewer.setJointMeta(xml);
       }
       loading.hidden = true;
-      this.renderJoints();
       this.renderTree();
       this.renderSpecs(); // fills in the measured height
       // Published for the headless scripts: how much geometry arrived, and how
@@ -651,67 +646,36 @@ export class Detail {
     }
   }
 
-  renderJoints() {
-    const joints = this.viewer.jointList();
-    const host = el('d-joints');
-    // Nothing to switch on a robot whose only joints slide rather than turn.
-    el('joint-unit').hidden = !joints.some((joint) => joint.type !== 'prismatic');
-    if (!joints.length) {
-      host.innerHTML = `<p class="muted" style="font-size:12.5px">${t('joints.none')}</p>`;
-      return;
-    }
-    host.innerHTML = joints
-      .map((joint, index) => {
-        const isRot = joint.type !== 'prismatic';
-        const [lower, upper] = sliderRange(joint);
-        return `<div class="joint" data-index="${index}">
-          <div class="joint-head">
-            <span class="joint-name" title="${joint.name}">${joint.name}</span>
-            <span class="joint-value" data-value>${fmt(joint.value, isRot)}</span>
-          </div>
-          <input type="range" min="${lower}" max="${upper}" step="${sliderStep(isRot)}" value="${joint.value}"
-                 data-joint="${encodeURIComponent(joint.name)}" data-rot="${isRot}">
-          ${limitsRow(joint)}
-        </div>`;
-      })
-      .join('');
-
-    host.oninput = (event) => {
-      const input = event.target;
-      if (input.type !== 'range') return;
-      const name = decodeURIComponent(input.dataset.joint);
-      const value = parseFloat(input.value);
-      this.viewer.setJoint(name, value);
-      input.closest('.joint').querySelector('[data-value]').textContent =
-        fmt(value, input.dataset.rot === 'true');
-      const cell = this.treeValues?.get(name);
-      if (cell) cell.textContent = fmt(value, input.dataset.rot === 'true');
-    };
-    // A re-render is a reset, a unit switch or a new robot; either way the
-    // tree's own readouts are showing the previous state.
-    this.syncTreeValues();
-  }
-
   // ------------------------------------------------------------- joint tree
 
   clearTree() {
     el('d-tree').innerHTML = '';
     el('tree-summary').textContent = '';
     this.treeValues = new Map();
+    this.treeSliders = new Map();
     this.pinnedLink = null;
   }
 
   /**
-   * The kinematic tree: the root link, then one row per joint with the link it
-   * carries. The joint panel beside the stage is a flat list of everything that
-   * moves — this is where a visitor can see that four of those sliders are one
-   * leg, and which link each of them actually swings.
+   * The kinematic tree, and the pose. One row per joint with the link it
+   * carries, and under every row that moves, the slider that moves it and what
+   * the URDF declares about it: travel, top speed, top effort.
+   *
+   * The two used to be separate panels, a flat list of sliders beside a tree
+   * that could only scroll to them. Together they read as one thing — four of
+   * these sliders are a leg, and the slider is where the eye already is when it
+   * has found the joint it wants.
    */
   renderTree() {
     this.clearTree();
     const root = this.viewer.kinematicTree();
     const host = el('d-tree');
     if (!root) return;
+
+    const joints = this.viewer.jointList();
+    // Nothing to switch on a robot whose only joints slide rather than turn.
+    el('joint-unit').hidden = !joints.some((joint) => joint.type !== 'prismatic');
+    el('joints-reset').hidden = !joints.length;
 
     const counts = { links: 0, joints: 0 };
     countTree(root, counts);
@@ -724,23 +688,36 @@ export class Detail {
       return;
     }
 
+    // The tree carries a joint's name and type; its travel and its limits are
+    // in the flat list, so the two are read together to build a row.
+    const byName = new Map(joints.map((joint) => [joint.name, joint]));
     host.innerHTML =
-      `<ul class="tree" role="tree" aria-label="${t('tree.aria')}">${treeNode(root, true)}</ul>`;
+      // A robot whose joints are all fixed has a tree and not one slider in it;
+      // said once at the top, rather than left to be inferred from the absence.
+      (joints.length ? '' : `<p class="tree-none">${t('joints.none')}</p>`) +
+      `<ul class="tree" role="tree" aria-label="${t('tree.aria')}">${treeNode(root, true, byName)}</ul>`;
     // The rows carry a roving tabindex: one stop for the whole tree, arrow keys
     // to move inside it, rather than sixty tab stops on a humanoid.
     host.querySelector('.tree-node')?.setAttribute('tabindex', '0');
     for (const cell of host.querySelectorAll('[data-tree-value]')) {
       this.treeValues.set(cell.dataset.treeValue, cell);
     }
+    for (const input of host.querySelectorAll('input[data-joint]')) {
+      this.treeSliders.set(decodeURIComponent(input.dataset.joint), input);
+    }
     this.syncTreeValues();
   }
 
-  /** Repaint the tree's angle readouts from the pose the viewer is actually in. */
+  /** Repaint the tree from the pose the viewer is actually in — the readout on
+   *  every row, and the slider under the ones that move. A reset moves the
+   *  robot and nothing else; this is what puts the panel back in step. */
   syncTreeValues() {
-    if (!this.treeValues?.size) return;
+    if (!this.treeValues?.size && !this.treeSliders?.size) return;
     for (const joint of this.viewer.jointList()) {
       const cell = this.treeValues.get(joint.name);
       if (cell) cell.textContent = fmt(joint.value, joint.type !== 'prismatic');
+      const input = this.treeSliders.get(joint.name);
+      if (input) input.value = String(joint.value);
     }
   }
 
@@ -759,8 +736,7 @@ export class Detail {
   }
 
   /**
-   * Pin a row: its link stays lit on the stage after the pointer leaves, and if
-   * the joint above it is one that moves, the slider panel scrolls to it.
+   * Pin a row: its link stays lit on the stage after the pointer leaves.
    * Clicking the pinned row again lets go.
    */
   selectTreeNode(node) {
@@ -778,24 +754,8 @@ export class Detail {
     } else {
       node.setAttribute('aria-selected', 'true');
       this.pinnedLink = node.dataset.link;
-      if (node.dataset.joint && node.dataset.movable === 'true') {
-        this.revealJoint(node.dataset.joint);
-      }
     }
     this.viewer.highlightLink(this.pinnedLink);
-  }
-
-  /** Bring one joint's slider into view and mark it, so the jump is visible. */
-  revealJoint(name) {
-    const host = el('d-joints');
-    const input = host.querySelector(`input[data-joint="${CSS.escape(encodeURIComponent(name))}"]`);
-    const row = input?.closest('.joint');
-    if (!row) return;
-    for (const other of host.querySelectorAll('.joint.is-target')) other.classList.remove('is-target');
-    row.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-    row.classList.add('is-target');
-    clearTimeout(this._targetTimer);
-    this._targetTimer = setTimeout(() => row.classList.remove('is-target'), 2200);
   }
 
   /** Arrow-key navigation, as a tree widget is expected to have. */
@@ -951,8 +911,8 @@ export class Detail {
       handle.addEventListener('keydown', (event) => this.onPanelResizeKey(event, key, grow));
     }
 
-    // A narrower window is a lower ceiling: the columns come down to it, and go
-    // back out to the width they were dragged to once the room returns.
+    // A narrower window is a lower ceiling: the column comes down to it, and
+    // goes back out to the width it was dragged to once the room returns.
     window.addEventListener('resize', () => this.syncPanelWidths());
     this.syncPanelWidths();
   }
@@ -982,10 +942,7 @@ export class Detail {
   /** Give one column a width in pixels, within what the window allows. */
   setPanelWidth(key, px) {
     this.panelWidths[key] = clampPanelW(px);
-    // The pair may allow less than that. Whatever it allows is what the column
-    // was dragged to, or dragging back off the limit would move nothing until
-    // the pointer had caught up with a number it cannot see.
-    this.panelWidths[key] = this.syncPanelWidths(key)[key];
+    this.syncPanelWidths();
   }
 
   /** Hand one column back to the width it has when nobody has dragged it. */
@@ -994,10 +951,10 @@ export class Detail {
     this.syncPanelWidths();
   }
 
-  /** Both columns against the window as it is now. A dragged width is kept as
-   *  it was dragged — only what it is allowed to be moves with the window. */
-  syncPanelWidths(dragged = null) {
-    const widths = resolvePanelWidths(this.panelWidths, dragged);
+  /** The column against the window as it is now. A dragged width is kept as it
+   *  was dragged — only what it is allowed to be moves with the window. */
+  syncPanelWidths() {
+    const widths = resolvePanelWidths(this.panelWidths);
     for (const key of Object.keys(this.resizers)) this.applyPanelWidth(key, widths[key]);
     return widths;
   }
@@ -1008,7 +965,7 @@ export class Detail {
   applyPanelWidth(key, width) {
     const { handle } = this.resizers[key];
     el('view-detail').style.setProperty(PANEL_VAR[key], `${width}px`);
-    handle.setAttribute('aria-valuemin', String(Math.min(PANEL_MIN_W, panelMaxW())));
+    handle.setAttribute('aria-valuemin', String(Math.min(PANEL_MIN_W, panelCeilingW())));
     handle.setAttribute('aria-valuemax', String(panelCeilingW()));
     handle.setAttribute('aria-valuenow', String(width));
     handle.setAttribute('aria-valuetext', `${width}px`);
@@ -1023,15 +980,16 @@ export class Detail {
  * One node of the joint tree, and everything under it. Each row is the joint
  * that attaches this link to its parent plus the link itself, so reading down a
  * branch reads the chain the way the URDF declares it; the root has no joint
- * above it and says so.
+ * above it and says so. A joint that moves also carries its slider, from
+ * `joints` — the flat list, which is where the travel and the limits are.
  *
  * Names come out of an upstream URDF, so they are escaped on the way into the
  * markup and into the attributes the panel reads them back out of.
  */
-function treeNode(node, isRoot = false) {
+function treeNode(node, isRoot = false, joints = null) {
   const { joint } = node;
   const children = node.children.length
-    ? `<ul role="group">${node.children.map((child) => treeNode(child)).join('')}</ul>`
+    ? `<ul role="group">${node.children.map((child) => treeNode(child, false, joints)).join('')}</ul>`
     : '';
   const type = joint ? joint.type : null;
   const label = joint
@@ -1047,9 +1005,14 @@ function treeNode(node, isRoot = false) {
   // nothing up on the stage.
   const bare = node.meshes.visual === 0 && node.meshes.collision === 0;
 
+  const moving = joint?.movable ? joints?.get(joint.name) : null;
+
   return (
     `<li class="tree-node${isRoot ? ' is-root' : ''}" role="treeitem" tabindex="-1"` +
     `${node.children.length ? ' aria-expanded="true"' : ''}` +
+    // The row's own name, pinned: a slider and three chips of small print hang
+    // inside this item, and without it they would all be read as its label.
+    ` aria-label="${joint ? `${esc(joint.name)} → ` : ''}${esc(node.link)}"` +
     ` data-link="${esc(node.link)}"` +
     (joint ? ` data-joint="${esc(joint.name)}" data-movable="${joint.movable}"` : '') +
     '>' +
@@ -1058,10 +1021,36 @@ function treeNode(node, isRoot = false) {
     label +
     `<span class="tree-link"${bare ? ` title="${t('tree.noMesh')}"` : ''}>${esc(node.link)}` +
     `${bare ? '<i class="tree-bare" aria-hidden="true">∅</i>' : ''}</span>` +
-    (joint?.movable ? `<span class="tree-value" data-tree-value="${esc(joint.name)}">—</span>` : '') +
     '</span>' +
+    (moving ? sliderBlock(moving) : '') +
     children +
     '</li>'
+  );
+}
+
+/**
+ * What a joint that moves carries under its row: the slider that moves it, the
+ * angle it is at, and what the URDF declares about it. Folding the row folds
+ * the branch below it, never this — the slider belongs to the joint on the row,
+ * not to its children.
+ *
+ * The readout sits beside the slider rather than up on the row: the row is
+ * already carrying two names and a type, and a deep chain leaves it no width to
+ * spare — while the number belongs next to the thing that changes it anyway.
+ */
+function sliderBlock(joint) {
+  const isRot = joint.type !== 'prismatic';
+  const [lower, upper] = sliderRange(joint);
+  return (
+    '<div class="tree-slider">' +
+    '<div class="slider-line">' +
+    `<input type="range" min="${lower}" max="${upper}" step="${sliderStep(isRot)}"` +
+    ` value="${joint.value}" data-joint="${encodeURIComponent(joint.name)}" data-rot="${isRot}"` +
+    ` aria-label="${esc(joint.name)}">` +
+    `<span class="tree-value" data-tree-value="${esc(joint.name)}">—</span>` +
+    '</div>' +
+    limitsRow(joint) +
+    '</div>'
   );
 }
 

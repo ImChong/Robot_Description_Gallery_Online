@@ -130,13 +130,26 @@
         <!-- The kinematic tree, which is the shape of the description rather
              than a property of it: the joint panel beside the stage lists the
              joints flat, this says how they hang together. -->
+        <!-- Where the tree and its sliders have gone: they are a fullscreen
+             tool now, and this is the door to them. -->
+        <section class="panel-block span-full pose-block">
+          <h3 data-i18n="panel.pose">Joint tree &amp; pose</h3>
+          <p class="pose-hint" data-i18n="pose.inFullscreen"></p>
+          <button class="ghost-btn" id="pose-fullscreen" data-i18n="pose.enter">Open fullscreen</button>
+        </section>
+
         <section class="panel-block span-full tree-block">
           <div class="panel-block-head">
             <h3 data-i18n="panel.tree">Joint tree</h3>
             <div class="head-actions">
               <span class="tree-summary" id="tree-summary"></span>
+              <div class="unit-toggle" id="joint-unit" role="group" data-i18n-aria-label="joints.unit">
+                <button type="button" data-unit="deg" aria-pressed="true" data-i18n-title="joints.unitDeg">deg</button>
+                <button type="button" data-unit="rad" aria-pressed="false" data-i18n-title="joints.unitRad">rad</button>
+              </div>
               <button class="link-btn" id="tree-expand" data-i18n="tree.expandAll">expand all</button>
               <button class="link-btn" id="tree-collapse" data-i18n="tree.collapseAll">collapse all</button>
+              <button class="link-btn" id="joints-reset" data-i18n="panel.resetAll">reset all</button>
             </div>
           </div>
           <div class="tree-host" id="d-tree"></div>
@@ -147,6 +160,11 @@
           <div class="panel-resize" data-resize="tree" role="separator" aria-orientation="vertical" tabindex="0"
                data-i18n-title="panel.resize" title="Drag to resize · double-click to reset"
                data-i18n-aria-label="panel.resizeTree" aria-label="Joint tree panel width"></div>
+        </section>
+
+        <section class="panel-block">
+          <h3 data-i18n="panel.specs">Specs</h3>
+          <dl class="specs" id="d-specs"></dl>
         </section>
 
         <section class="panel-block">
@@ -170,29 +188,6 @@
       </div>
     </div>
 
-    <aside class="panel">
-      <section class="panel-block">
-        <h3 data-i18n="panel.specs">Specs</h3>
-        <dl class="specs" id="d-specs"></dl>
-      </section>
-
-      <section class="panel-block joints-block">
-        <div class="panel-block-head">
-          <h3 data-i18n="panel.joints">Joints</h3>
-          <div class="head-actions">
-            <div class="unit-toggle" id="joint-unit" role="group" data-i18n-aria-label="joints.unit">
-              <button type="button" data-unit="deg" aria-pressed="true" data-i18n-title="joints.unitDeg">deg</button>
-              <button type="button" data-unit="rad" aria-pressed="false" data-i18n-title="joints.unitRad">rad</button>
-            </div>
-            <button class="link-btn" id="joints-reset" data-i18n="panel.resetAll">reset all</button>
-          </div>
-        </div>
-        <div class="joints" id="d-joints"></div>
-        <div class="panel-resize" data-resize="joints" role="separator" aria-orientation="vertical" tabindex="0"
-             data-i18n-title="panel.resize" title="Drag to resize · double-click to reset"
-             data-i18n-aria-label="panel.resizeJoints" aria-label="Joint slider panel width"></div>
-      </section>
-    </aside>
   </div>
 </main>
 
