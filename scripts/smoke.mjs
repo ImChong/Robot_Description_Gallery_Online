@@ -84,11 +84,14 @@ for (const robot of targets) {
         }
         if (stage?.dataset.loaded !== id) return false;
         return {
-          // Every joint that moves carries its slider in the tree, under the
-          // row for the joint it turns.
+          // Every joint that moves carries a block in the tree, under the row
+          // for the joint it turns: a slider, or — for one that mimics another
+          // and so has no value of its own to set — the joint it follows.
           joints: document.querySelectorAll('#d-tree .tree-slider').length,
-          // Every slider carries the limits its URDF declares; a joint without
-          // that row means the raw XML never made it into the panel.
+          sliders: document.querySelectorAll('#d-tree .tree-slider input[type="range"]').length,
+          follows: document.querySelectorAll('#d-tree .tree-slider.is-follow').length,
+          // Every one of them carries the limits its URDF declares; a joint
+          // without that row means the raw XML never made it into the panel.
           limits: document.querySelectorAll('#d-tree .tree-slider .joint-limits').length,
           specs: document.querySelectorAll('#d-specs dt').length,
           // The joint tree walks the loaded scene graph, so an empty one means
@@ -127,12 +130,22 @@ for (const robot of targets) {
     failures += 1;
     continue;
   }
-  // The sliders are in the tree, one per row that moves: a count that does not
+  // The blocks are in the tree, one per row that moves: a count that does not
   // match means rows and joints were built from different robots.
   if (result.treeMovable !== result.joints) {
     console.error(
-      `  ✗ ${robot.id.padEnd(26)} ${result.joints} joint sliders but ` +
+      `  ✗ ${robot.id.padEnd(26)} ${result.joints} joint blocks but ` +
         `${result.treeMovable} movable joints in the tree`,
+    );
+    failures += 1;
+    continue;
+  }
+  // And each of those is one or the other: a joint that follows another is
+  // shown, but never with a slider that would set a value it cannot keep.
+  if (result.sliders + result.follows !== result.joints) {
+    console.error(
+      `  ✗ ${robot.id.padEnd(26)} ${result.joints} joint blocks split into ` +
+        `${result.sliders} sliders and ${result.follows} followers`,
     );
     failures += 1;
     continue;
@@ -153,7 +166,8 @@ for (const robot of targets) {
   }
 
   console.log(
-    `  ✓ ${robot.id.padEnd(26)} ${String(result.joints).padStart(3)} joints  ` +
+    `  ✓ ${robot.id.padEnd(26)} ${String(result.sliders).padStart(3)} joints` +
+      `${result.follows ? `+${String(result.follows).padStart(2)} mimic` : '         '}  ` +
       `${String(result.meshes).padStart(3)} meshes  ${seconds.padStart(5)}s  ` +
       `${result.height.toFixed(2)} m`,
   );
