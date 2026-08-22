@@ -747,7 +747,10 @@ html[lang^='zh'] .footer-text-zh { display: block; }
  * to them. Wide, because it is the one thing under the stage that is about the
  * viewer rather than about the file. */
 .pose-block { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
-.pose-hint { margin: 0; font-size: 13px; line-height: 1.6; color: var(--text-muted); max-width: 68ch; }
+/* No measure of its own: the card is one row wide and two sentences long, so a
+ * reading width would only break the line early and leave half the card empty.
+ * The column is the measure — the text wraps where the card ends. */
+.pose-hint { margin: 0; font-size: 13px; line-height: 1.6; color: var(--text-muted); }
 
 /* The shape of the description, under the stage where a deep chain has the
  * width to stay on one line. The card takes whatever height the tree asks for,
@@ -1077,8 +1080,11 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
   .hero-stats dd { font-size: 17px; }
   .stage-hint { display: none; }
   /* The overlay toggles do not fit on one narrow line; let them scroll rather
-   * than pushing the rest of the toolbar off screen. */
-  .stage-toolbar { flex-direction: column; align-items: flex-start; }
+   * than pushing the rest of the toolbar off screen. Stacked, the legend takes
+   * the full width — it is scrolling, so it always has more to show — and the
+   * icon row is the narrow one, centred under it rather than hanging off the
+   * left edge with the width of the stage empty beside it. */
+  .stage-toolbar { flex-direction: column; align-items: center; }
   #overlay-toggles { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
   #overlay-toggles::-webkit-scrollbar { display: none; }
   /* A full-height column would leave a phone a sliver of render beside it, so
@@ -1099,7 +1105,6 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
     bottom: calc(min(38vh, 320px) + 66px + env(safe-area-inset-bottom, 0px));
   }
   #view-detail.stage-fullscreen .stage-toolbar {
-    align-items: center;
     left: 12px; right: 12px;
     bottom: calc(min(38vh, 320px) + 20px + env(safe-area-inset-bottom, 0px));
   }
