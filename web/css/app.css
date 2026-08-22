@@ -1016,9 +1016,10 @@ body.stage-fullscreen-open { overflow: hidden; }
 /* ── Responsive ─────────────────────────────────────────── */
 
 @media (max-width: 1000px) {
-  /* Three short cards across is one card too many once the page is this
-   * narrow — the specs table is the first to run out of room. */
-  .stage-extra { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* The row of three is all three or none: two of them across leaves the third
+   * alone on a row of its own, half a card wide with a half card of nothing
+   * beside it. Stacked, every card has the width and none is an odd one out. */
+  .stage-extra { grid-template-columns: minmax(0, 1fr); }
   .stage { height: min(56vh, 500px); }
 }
 
@@ -1064,7 +1065,6 @@ body.stage-fullscreen-open { overflow: hidden; }
   .hero-stats > div + div { padding-left: 0; border-left: 0; }
   .hero-stats dd { font-size: 17px; }
   .stage-hint { display: none; }
-  .stage-extra { grid-template-columns: minmax(0, 1fr); }
   /* The overlay toggles do not fit on one narrow line; let them scroll rather
    * than pushing the rest of the toolbar off screen. */
   .stage-toolbar { flex-direction: column; align-items: flex-start; }
