@@ -945,16 +945,23 @@ body.panel-resizing { cursor: ew-resize; user-select: none; }
 #view-detail.stage-fullscreen .tree-host { flex: 1 1 auto; min-height: 0; overflow: auto; }
 #view-detail.stage-fullscreen .joints { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
 
-/* Between the two columns, where the render is: the bar is inset by whatever
- * width the columns currently have, so it stays centred on the render rather
- * than on the screen — and stays out from under them, which it could not climb
- * over (each column is a stacking context above the stage the bar belongs to).
- * js/detail.js keeps the strip between the columns wide enough for the icon
- * row below, which is the way back out of fullscreen. */
+/* Between the two columns, where the render is — but centred on the window, not
+ * on the strip: the bar carries the way back out of fullscreen, so it belongs
+ * where the eye already is rather than sliding sideways every time a column is
+ * dragged. Both insets are therefore the same number, the wider column's, which
+ * is what keeps the bar's centre the window's centre whatever the columns are
+ * doing and still keeps it out from under either of them — it could not climb
+ * over them anyway (each column is a stacking context above the stage the bar
+ * belongs to). js/detail.js caps a column at the width that leaves this strip
+ * wide enough for the icon row. */
 #view-detail.stage-fullscreen .stage-toolbar {
   justify-content: center;
-  left: calc(var(--fs-tree-w, clamp(240px, 22vw, 340px)) + 28px + env(safe-area-inset-left, 0px));
-  right: calc(var(--fs-joints-w, clamp(240px, 22vw, 340px)) + 28px + env(safe-area-inset-right, 0px));
+  --fs-bar-edge: max(
+    calc(var(--fs-tree-w, clamp(240px, 22vw, 340px)) + env(safe-area-inset-left, 0px)),
+    calc(var(--fs-joints-w, clamp(240px, 22vw, 340px)) + env(safe-area-inset-right, 0px))
+  );
+  left: calc(var(--fs-bar-edge) + 28px);
+  right: calc(var(--fs-bar-edge) + 28px);
 }
 /* The overlay legend is the one row too wide for a strip like that; it scrolls
  * inside what is left rather than spilling under the columns — the same answer
