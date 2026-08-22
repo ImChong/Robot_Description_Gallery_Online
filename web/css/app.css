@@ -24,13 +24,18 @@
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
   --shadow-lg: 0 12px 32px -12px rgba(0, 0, 0, 0.6);
 
-  /* Both studios follow the theme: the detail page relights its scene to match
-     (js/viewer.js), while the card wells are only a backdrop — the thumbnails
-     are rendered once against transparency, so the same image has to sit on
-     either. The light well is therefore kept just off white, enough of a tint
-     that a white robot still has an edge to show against. */
-  --stage-top: #262a30;
-  --stage-bottom: #191b1f;
+  /* The studio: the one colour the WebGL scene clears to, so everything the
+     stage paints around the render is the same colour as the render's own
+     backdrop. Fullscreen is where that matters — the stage covers the window
+     and the canvas does not, so the tree column and the toolbar sit on this
+     rather than on a shade of their own. It has to stay equal to
+     THEMES.dark.background in js/viewer.js: a gradient, or any other value,
+     would draw a seam along the edge of the canvas.
+
+     The card wells are a different problem and keep their own gradient: the
+     thumbnails are rendered once against transparency, so the same image has
+     to sit on both themes' wells. */
+  --studio: #0e1116;
   --card-stage-top: #262a30;
   --card-stage-bottom: #191b1f;
   /* The category pill floats over the card well, so it reads against the
@@ -94,9 +99,9 @@
 
   /* Daylight studio. Kept a touch cooler and darker than the page so the stage
      still reads as a separate surface, and so a white robot has something to
-     sit against — it matches THEMES.light.background in js/viewer.js. */
-  --stage-top: #f2f3f6;
-  --stage-bottom: #e5e7ec;
+     sit against — and equal to THEMES.light.background in js/viewer.js, for
+     the reason the dark studio above gives. */
+  --studio: #eceef2;
   --stage-chrome-bg: rgba(255, 255, 255, 0.86);
   --stage-chrome-border: #d9d8d3;
   --stage-chrome-text: #5f5e5b;
@@ -491,7 +496,7 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 
 .stage {
   position: relative;
-  background: linear-gradient(180deg, var(--stage-top), var(--stage-bottom));
+  background: var(--studio);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
@@ -742,7 +747,10 @@ html[lang^='zh'] .footer-text-zh { display: block; }
  * to them. Wide, because it is the one thing under the stage that is about the
  * viewer rather than about the file. */
 .pose-block { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
-.pose-hint { margin: 0; font-size: 13px; line-height: 1.6; color: var(--text-muted); max-width: 68ch; }
+/* No measure of its own: the card is one row wide and two sentences long, so a
+ * reading width would only break the line early and leave half the card empty.
+ * The column is the measure — the text wraps where the card ends. */
+.pose-hint { margin: 0; font-size: 13px; line-height: 1.6; color: var(--text-muted); }
 
 /* The shape of the description, under the stage where a deep chain has the
  * width to stay on one line. The card takes whatever height the tree asks for,
@@ -851,8 +859,12 @@ html[lang^='zh'] .footer-text-zh { display: block; }
  * the heading two lines above the stage already says whose robot this is. */
 .stage-title { display: none; }
 
-#view-detail.stage-fullscreen { padding: 0; max-width: none; background: var(--bg); }
-#view-detail.stage-fullscreen::backdrop { background: var(--bg); }
+/* The studio colour, not the page's: fullscreen is one surface with the render
+ * in the middle of it, and the view behind the stage shows through wherever the
+ * stage cannot reach — the strip an iOS toolbar animates over, the overscroll
+ * above a native-fullscreen element's backdrop. */
+#view-detail.stage-fullscreen { padding: 0; max-width: none; background: var(--studio); }
+#view-detail.stage-fullscreen::backdrop { background: var(--studio); }
 
 /* Everything that is not the render or a control for the pose. */
 #view-detail.stage-fullscreen .detail-head,
@@ -977,8 +989,10 @@ body.panel-resizing { cursor: ew-resize; user-select: none; }
 }
 
 /* The page behind the overlay must not scroll under it — it is still there
- * whenever the native request was refused. */
-body.stage-fullscreen-open { overflow: hidden; }
+ * whenever the native request was refused — and what little of it a phone can
+ * still expose, at the top of an overscroll or under a retracting browser bar,
+ * is the studio rather than the page. */
+body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
 
 /* ── Resources & snippets ───────────────────────────────── */
 
@@ -1066,8 +1080,11 @@ body.stage-fullscreen-open { overflow: hidden; }
   .hero-stats dd { font-size: 17px; }
   .stage-hint { display: none; }
   /* The overlay toggles do not fit on one narrow line; let them scroll rather
-   * than pushing the rest of the toolbar off screen. */
-  .stage-toolbar { flex-direction: column; align-items: flex-start; }
+   * than pushing the rest of the toolbar off screen. Stacked, the legend takes
+   * the full width — it is scrolling, so it always has more to show — and the
+   * icon row is the narrow one, centred under it rather than hanging off the
+   * left edge with the width of the stage empty beside it. */
+  .stage-toolbar { flex-direction: column; align-items: center; }
   #overlay-toggles { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
   #overlay-toggles::-webkit-scrollbar { display: none; }
   /* A full-height column would leave a phone a sliver of render beside it, so
@@ -1088,7 +1105,6 @@ body.stage-fullscreen-open { overflow: hidden; }
     bottom: calc(min(38vh, 320px) + 66px + env(safe-area-inset-bottom, 0px));
   }
   #view-detail.stage-fullscreen .stage-toolbar {
-    align-items: center;
     left: 12px; right: 12px;
     bottom: calc(min(38vh, 320px) + 20px + env(safe-area-inset-bottom, 0px));
   }
