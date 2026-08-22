@@ -93,10 +93,21 @@ export function groupRobots(data, state = {}) {
 
 export function stats(data) {
   const makers = new Set();
+  const categories = new Set();
+  const repos = new Set();
   for (const robot of data.robots) {
     if (robot.maker) makers.add(robot.maker);
+    if (robot.category) categories.add(robot.category);
+    // Several robots share one upstream description repository, so this counts
+    // the repositories the gallery streams from, not the robots in them.
+    if (robot.source?.github) repos.add(robot.source.github);
   }
-  return { robots: data.robots.length, makers: makers.size };
+  return {
+    robots: data.robots.length,
+    makers: makers.size,
+    categories: categories.size,
+    repos: repos.size,
+  };
 }
 
 export function urdfUrl(robot) {
