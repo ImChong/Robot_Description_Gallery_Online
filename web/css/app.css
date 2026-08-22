@@ -910,11 +910,15 @@ html[lang^='zh'] .footer-text-zh { display: block; }
  * narrows the render and the robot re-centres in what remains.
  *
  * The floor clears the toolbar rather than running under it: the bar is below
- * the URDF, not on top of it. The width is the same variable the column reads,
- * so the two can never disagree about where the render starts. */
+ * the URDF, not on top of it. Both insets are read from variables the layout
+ * itself writes — the column's width, and the bar's measured height — so the
+ * render can never disagree with either about where it ends. The bar's height
+ * is not a number a stylesheet can know: it is one row on a wide screen and two
+ * wherever the legend outgrows the width beside the icons, so js/detail.js
+ * measures it. The fallback is one row, and 8px of air above the bar. */
 #view-detail.stage-fullscreen .canvas-host {
   left: calc(var(--fs-tree-w, clamp(240px, 22vw, 340px)) + 28px + env(safe-area-inset-left, 0px));
-  bottom: calc(58px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(var(--fs-bar-h, 40px) + 20px + env(safe-area-inset-bottom, 0px));
 }
 /* The handle itself, on the edge that faces the render: a strip straddling the
  * border, so the target is a comfortable width without the panel having to
@@ -1131,23 +1135,32 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
   /* A full-height column would leave a phone a sliver of render beside it, so
    * in fullscreen it becomes a bottom row instead: the tree across the foot of
    * the screen, the robot centred in the space above it, and the toolbar in
-   * between — the same order as the desktop, stacked instead of side by side. */
+   * between — the same order as the desktop, stacked instead of side by side.
+   *
+   * Three bands, stacked from the bottom up, each measured off the one below
+   * it: the tree's own height and the bar's measured one are what the render's
+   * floor is made of, so the robot stands clear of both however tall the bar
+   * turns out to be — two rows on a phone, where the legend takes a line of its
+   * own and the icons another. */
+  #view-detail.stage-fullscreen { --fs-tree-h: min(38vh, 320px); }
   #view-detail.stage-fullscreen .tree-block {
     top: auto;
-    height: min(38vh, 320px);
+    height: var(--fs-tree-h);
     bottom: calc(12px + env(safe-area-inset-bottom, 0px));
     left: 12px; right: 12px; width: auto;
   }
   /* The row is the whole width there is, and it is below the render rather than
    * beside it, so there is nothing left for a width handle to win. */
   #view-detail.stage-fullscreen .panel-resize { display: none; }
-  #view-detail.stage-fullscreen .canvas-host {
-    left: 0;
-    bottom: calc(min(38vh, 320px) + 66px + env(safe-area-inset-bottom, 0px));
-  }
   #view-detail.stage-fullscreen .stage-toolbar {
     left: 12px; right: 12px;
-    bottom: calc(min(38vh, 320px) + 20px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(var(--fs-tree-h) + 20px + env(safe-area-inset-bottom, 0px));
+  }
+  /* Everything above the bar. The fallback is the two rows a phone always
+   * gives it, so the render clears them even before the measurement lands. */
+  #view-detail.stage-fullscreen .canvas-host {
+    left: 0;
+    bottom: calc(var(--fs-tree-h) + var(--fs-bar-h, 86px) + 30px + env(safe-area-inset-bottom, 0px));
   }
   /* Three lines of instructions in a panel this narrow cost more rows of tree
    * than they are worth — and hovering, which is half of what they describe,
