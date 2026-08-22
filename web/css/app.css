@@ -520,10 +520,10 @@ html[lang^='zh'] .footer-text-zh { display: block; }
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
-  /* Each card is as tall as what it holds. Stretched to the row instead, the
-   * short ones would carry a third of a card of empty space apiece — the specs
-   * table is half again the height of the two beside it. */
-  align-items: start;
+  /* Cards in a row share its height, so specs, downloads and links line up
+   * along the bottom as well as the top — three panels of one height read as
+   * one band under the stage, where three ragged ones read as leftovers. */
+  align-items: stretch;
 }
 .stage-extra > .span-full { grid-column: 1 / -1; }
 
