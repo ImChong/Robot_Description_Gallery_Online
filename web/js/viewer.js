@@ -229,6 +229,32 @@ function ownGeometry(link, visit) {
 }
 
 /**
+ * The link a mesh belongs to, for a mesh the raycaster just handed back: the
+ * nearest link above it in the scene graph, or null when the mesh is not the
+ * model's to pick — an overlay helper parked on a link, or geometry that is not
+ * currently being drawn.
+ *
+ * Both exclusions have to be checked the whole way up. An overlay is switched
+ * off by hiding the URDFVisual or URDFCollider that holds the meshes rather
+ * than the meshes themselves, and a raycaster walks the graph without asking
+ * either of them whether they are visible.
+ *
+ * @param {import('three').Object3D} mesh
+ * @param {import('three').Object3D} robot
+ * @returns {?import('three').Object3D}
+ */
+function pickedLink(mesh, robot) {
+  let link = null;
+  for (let node = mesh; node; node = node.parent) {
+    if (!node.visible || node.userData?.helper) return null;
+    if (!link && node.isURDFLink) link = node;
+    // URDFRobot is itself the root link, so the walk always ends on a link.
+    if (node === robot) return link;
+  }
+  return null; // a hit from outside the robot; nothing here owns it
+}
+
+/**
  * Bounding box of what is actually on screen. Ancestor visibility matters:
  * collision geometry is hidden by switching off its URDFCollider parent, and
  * counting it here would both mis-measure the robot and hide the case where the
@@ -285,6 +311,10 @@ export class RobotViewer {
     // material was swapped for a tinted copy, and the originals to put back.
     this._highlight = [];
     this._highlighted = null;
+    // Picking a link off the render. Both are held rather than made per click:
+    // a raycaster carries the ray it was last set from and nothing else.
+    this._raycaster = new THREE.Raycaster();
+    this._pointer = new THREE.Vector2();
     this._raf = null;
     this._needsRender = true;
 
@@ -1179,6 +1209,35 @@ export class RobotViewer {
       });
     }
     this.invalidate();
+  }
+
+  /**
+   * The link drawn at a point on the canvas: how a click on the model finds its
+   * way back to the row that describes it. Page coordinates in — a pointer
+   * event's `clientX`/`clientY` — link name out, or null where the ray misses
+   * the robot.
+   *
+   * What is pickable is what is on screen, so the answer is always the thing
+   * the visitor thinks they clicked: with the visual meshes switched off, the
+   * collision hull under the pointer answers instead, and an inspection overlay
+   * in front of a link steps aside rather than swallowing the click.
+   *
+   * @param {number} clientX
+   * @param {number} clientY
+   * @returns {?string} link name
+   */
+  linkAt(clientX, clientY) {
+    if (!this.robot) return null;
+    const { left, top, width, height } = this.renderer.domElement.getBoundingClientRect();
+    if (!width || !height) return null;
+    this._pointer.set(((clientX - left) / width) * 2 - 1, -((clientY - top) / height) * 2 + 1);
+    this._raycaster.setFromCamera(this._pointer, this.camera);
+    // Hits arrive nearest first, and the nearest that belongs to the model wins.
+    for (const hit of this._raycaster.intersectObject(this.robot, true)) {
+      const link = pickedLink(hit.object, this.robot);
+      if (link) return link.urdfName || link.name;
+    }
+    return null;
   }
 
   /** Which link is lit, if any. */
