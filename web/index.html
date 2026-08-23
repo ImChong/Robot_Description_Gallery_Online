@@ -58,6 +58,25 @@
       <div><dt data-i18n="stats.categories">Categories</dt><dd id="stat-categories">—</dd></div>
       <div><dt data-i18n="stats.repos">Upstream repos</dt><dd id="stat-repos">—</dd></div>
     </dl>
+
+    <!-- The one thing on this page that is not a hosted model. It sits with the
+         hero rather than at the end of the grid because the visitor who has
+         their own URDF open in a folder should not have to scroll past 98
+         robots to find out this is possible. The promise about where the files
+         go is next to the button, not only inside the dialog it opens. -->
+    <div class="hero-custom">
+      <button id="custom-open" class="primary-btn">
+        <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false" class="upload-mark">
+          <path d="M10 13.5V3.5M10 3.5 6.2 7.3M10 3.5l3.8 3.8M3.5 12.5v2.2a1.8 1.8 0 0 0 1.8 1.8h9.4a1.8 1.8 0 0 0 1.8-1.8v-2.2"/>
+        </svg>
+        <span data-i18n="custom.cta">预览我自己的 URDF</span>
+      </button>
+      <p class="hero-custom-note">
+        <span aria-hidden="true">🔒</span>
+        <span data-i18n="custom.heroNote"></span>
+      </p>
+      <p class="hero-custom-current" id="custom-current" hidden></p>
+    </div>
   </section>
 
   <!-- Jump chips, not filters: the grid below carries every category at once
@@ -76,6 +95,7 @@
     <div class="detail-title">
       <h2 id="d-name">—</h2>
       <p id="d-sub" class="muted"></p>
+      <p id="d-local-badge" class="local-badge" hidden><span aria-hidden="true">🔒</span> <span data-i18n="custom.localOnly"></span></p>
     </div>
     <div class="detail-nav">
       <button id="prev-robot" class="ghost-btn" title="Previous">←</button>
@@ -162,22 +182,33 @@
                data-i18n-aria-label="panel.resizeTree" aria-label="Joint tree panel width"></div>
         </section>
 
-        <section class="panel-block">
+        <section id="panel-specs" class="panel-block">
           <h3 data-i18n="panel.specs">Specs</h3>
           <dl class="specs" id="d-specs"></dl>
         </section>
 
-        <section class="panel-block">
+        <!-- Only for a model the visitor picked off their own disk: what those
+             files were, and the same promise the picker made about them. -->
+        <section id="panel-local" class="panel-block" hidden>
+          <h3 data-i18n="panel.localFiles">Local files</h3>
+          <dl class="specs" id="d-local"></dl>
+          <p class="local-privacy">
+            <span aria-hidden="true">🔒</span>
+            <span data-i18n="custom.privacy"></span>
+          </p>
+        </section>
+
+        <section id="panel-download" class="panel-block">
           <h3 data-i18n="panel.download">Download</h3>
           <div class="downloads" id="d-downloads"></div>
         </section>
 
-        <section class="panel-block">
+        <section id="panel-resources" class="panel-block">
           <h3 data-i18n="panel.resources">Resources</h3>
           <ul class="resources" id="d-resources"></ul>
         </section>
 
-        <section class="panel-block span-full">
+        <section id="panel-reuse" class="panel-block span-full">
           <h3 data-i18n="panel.reuse">Use this model</h3>
           <div class="snippet">
             <div class="snippet-tabs" id="snippet-tabs"></div>
@@ -198,6 +229,50 @@
     <p class="footer-text footer-text-zh">© <a href="https://imchong.github.io/index.html" class="footer-author-link" target="_blank" rel="noopener noreferrer">刘冲</a> <span data-year>2026</span> · 机器人 URDF 合集</p>
   </div>
 </footer>
+
+<!-- ---------------------------- custom URDF ------------------------------ -->
+<!-- Nothing in here posts anywhere: js/custom.js reads the files with the File
+     API and hands the viewer blob: URLs. See the module header. -->
+<dialog id="custom-dialog" class="custom-dialog" aria-labelledby="custom-dialog-title">
+  <div class="custom-head">
+    <h2 id="custom-dialog-title" data-i18n="custom.title">预览我自己的 URDF</h2>
+    <button type="button" class="dialog-close" id="custom-cancel"
+            data-i18n-aria-label="custom.close" aria-label="Close">✕</button>
+  </div>
+
+  <p class="custom-privacy">
+    <span class="lock" aria-hidden="true">🔒</span>
+    <span data-i18n="custom.privacy"></span>
+  </p>
+
+  <div class="drop-zone" id="custom-drop">
+    <p class="drop-line" data-i18n="custom.drop"></p>
+    <p class="drop-or" data-i18n="custom.or">or</p>
+    <div class="drop-picks">
+      <button type="button" class="ghost-btn" id="custom-pick-files" data-i18n="custom.pickFiles"></button>
+      <button type="button" class="ghost-btn" id="custom-pick-dir" data-i18n="custom.pickFolder"></button>
+    </div>
+  </div>
+  <!-- Two inputs because they ask two different questions of the file manager:
+       a folder and its subfolders, or a handful of files from anywhere. No
+       `accept` on either: a description drags along whatever its meshes need —
+       a .bin beside a .gltf, an image beside a .dae — and a filtered picker
+       that greys those out is a worse failure than an unfiltered one. -->
+  <input type="file" id="custom-files" multiple hidden>
+  <input type="file" id="custom-dir" webkitdirectory directory multiple hidden>
+
+  <div class="custom-report" id="custom-report" role="status" hidden></div>
+
+  <div class="custom-actions">
+    <label class="custom-choice" id="custom-choice" hidden>
+      <span data-i18n="custom.whichUrdf">Description</span>
+      <select id="custom-urdf"></select>
+    </label>
+    <button type="button" class="primary-btn" id="custom-go" disabled data-i18n="custom.preview">预览</button>
+  </div>
+
+  <p class="custom-hint" data-i18n="custom.hint"></p>
+</dialog>
 
 <script type="module" src="./js/main.js"></script>
 </body>

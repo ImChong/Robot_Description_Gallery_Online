@@ -6,6 +6,10 @@
 在浏览器里加载 **98 个**开源机器人 URDF：拖关节、看碰撞体与惯量，一键下载 URDF、
 网格 zip 或可直接 `colcon build` 的 ROS 2 功能包。
 
+首页开头还有「预览我自己的 URDF」：把自己的模型目录（或几个文件）交给同一个查看器，
+关节滑块、碰撞体、惯量一样能用。**文件只在浏览器里解析，不会上传到任何服务器** ——
+本站是纯静态页面，也没有可以接收文件的后端。
+
 在线访问：<https://imchong.github.io/Robot_URDF_Gallery/>
 
 人形 33 · 四足 18 · 机械臂 17 · 灵巧手 10 · 移动操作 9 · 双臂 7 · 双足 4
@@ -43,7 +47,8 @@ npm run check:downloads         # 校验下载包
 
 ## 已知限制
 
-- 暂不支持只提供 xacro 的模型（UR 系列、Shadow Hand、Fetch 等）。
+- 暂不支持只提供 xacro 的模型（UR 系列、Shadow Hand、Fetch 等）；自己上传时也一样，
+  请先 `xacro robot.urdf.xacro > robot.urdf` 再选择展开后的文件。
 - jsDelivr 单文件上限 20 MB，个别含超大网格的模型（Go1、B1、B2-W）无法收录。
 
 ## 许可
@@ -63,4 +68,6 @@ overlays collision geometry, joint axes and inertia. No model files are hosted h
 each entry pins an upstream repository and commit, and streams from jsDelivr's GitHub
 CDN. Every robot downloads in one click as a `.urdf`, a zip of URDF + meshes, or a
 ready-to-build ROS 2 package. Run it locally with `npm install && npm run dev`. Code is
-MIT; each model keeps its own upstream licence, some non-commercial.
+MIT; each model keeps its own upstream licence, some non-commercial. A "Preview your own
+URDF" button at the top of the gallery opens the same viewer on a description from your own
+disk — parsed in the browser, never uploaded anywhere.

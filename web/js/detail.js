@@ -523,17 +523,37 @@ export class Detail {
     const stage = el('canvas-host').parentElement;
     delete stage.dataset.loaded;
     this.robot = robot;
+    // A file the visitor picked off their own disk has no maker, no upstream
+    // and nothing to download that they do not already have, so those panels
+    // step aside for one that says what was read and where it stayed.
+    const local = robot.local === true;
     el('d-name').textContent = robot.name;
-    el('d-sub').textContent = [robot.maker, categoryLabel(robot.category, this.data.categories)]
-      .filter(Boolean)
-      .join(' · ');
-    el('stage-title').textContent = [robot.name, robot.maker].filter(Boolean).join(' · ');
+    el('d-sub').textContent = local
+      ? robot.source.fileName
+      : [robot.maker, categoryLabel(robot.category, this.data.categories)]
+          .filter(Boolean)
+          .join(' · ');
+    el('stage-title').textContent = local
+      ? robot.name
+      : [robot.name, robot.maker].filter(Boolean).join(' · ');
     document.title = `${robot.name} · Robot URDF Gallery`;
+    el('d-local-badge').hidden = !local;
+    el('panel-local').hidden = !local;
+    for (const id of ['panel-download', 'panel-resources', 'panel-reuse']) el(id).hidden = local;
+    // Two cards fill the row the gallery's three leave, rather than one card
+    // and a third of a band of empty surface.
+    document.querySelector('.stage-extra').dataset.mode = local ? 'local' : 'registry';
+    // Prev/next walk the gallery; the local model is not in it.
+    document.querySelector('.detail-nav').hidden = local;
 
     this.renderSpecs();
-    this.renderDownloads();
-    this.renderResources();
-    this.renderSnippet();
+    if (local) {
+      this.renderLocalFiles();
+    } else {
+      this.renderDownloads();
+      this.renderResources();
+      this.renderSnippet();
+    }
     el('joint-unit').hidden = true;
     this.clearTree();
 
@@ -595,8 +615,17 @@ export class Detail {
     // Prefer the live measurement; fall back to the value recorded at build time
     // so the panel is populated before the meshes arrive.
     const measured = this.viewer.measured || r.measured;
+    // The provenance rows — who made it, under what licence, at which commit —
+    // are the registry's answers. A local file has none of them, and blank rows
+    // saying so would only pad the card.
+    const upstream = r.local
+      ? []
+      : [
+          [t('spec.license'), r.license || '—'],
+          [t('spec.commit'), `<span class="sub">${r.source.commit.slice(0, 10)}</span>`],
+        ];
     const rows = [
-      [t('spec.maker'), r.maker || '—'],
+      ...(r.local ? [] : [[t('spec.maker'), r.maker || '—']]),
       [t('spec.category'), categoryLabel(r.category, this.data.categories)],
       [t('spec.dof'), r.dof || r.urdf.moving_joints || '—'],
       [t('spec.links'), r.urdf.links],
@@ -609,14 +638,46 @@ export class Detail {
           : '—',
       ],
       [t('spec.formats'), r.formats.map((f) => f.toUpperCase()).join(' / ')],
-      [t('spec.license'), r.license || '—'],
-      [t('spec.assets'), `${r.assets.mesh_files} × ${r.assets.mesh_formats.join('/')}<br><span class="sub">${formatBytes(r.assets.mesh_bytes)}</span>`],
-      [t('spec.commit'), `<span class="sub">${r.source.commit.slice(0, 10)}</span>`],
+      [t('spec.assets'), `${r.assets.mesh_files} × ${r.assets.mesh_formats.join('/') || '—'}<br><span class="sub">${formatBytes(r.assets.mesh_bytes)}</span>`],
+      ...upstream,
     ];
     const note = lang() === 'zh' ? r.notes_zh || r.notes : r.notes;
     el('d-specs').innerHTML =
       rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('') +
       (note ? `<dd class="full sub" style="text-align:left">${note}</dd>` : '');
+  }
+
+  /**
+   * What the visitor handed over, for a model that came off their own disk: the
+   * description, how much of what it references was found, and how many files
+   * were read in all. The missing count is the one that earns its place — a
+   * robot with holes in it is almost always a folder picked one level too deep,
+   * and the number says so before the render has to be puzzled over.
+   */
+  renderLocalFiles() {
+    const r = this.robot;
+    const missing = r.assets.missing?.length || 0;
+    const rows = [
+      [t('local.urdfFile'), `<span class="sub">${esc(r.source.file)}</span>`],
+      // A description built out of primitives references no meshes, and a row
+      // reading "0 / 0" is a row about nothing.
+      ...(r.assets.referenced
+        ? [
+            [
+              t('local.meshes'),
+              `${r.assets.mesh_files} / ${r.assets.referenced}` +
+                (missing
+                  ? `<br><span class="sub warn">${t(missing === 1 ? 'local.missing1' : 'local.missing').replace('{n}', missing)}</span>`
+                  : ''),
+            ],
+          ]
+        : []),
+      [
+        t('local.picked'),
+        `${r.source.picked}<br><span class="sub">${formatBytes(r.source.picked_bytes)}</span>`,
+      ],
+    ];
+    el('d-local').innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
   }
 
   renderResources() {
