@@ -73,6 +73,13 @@ const PANEL_W_KEY = 'cl-fs-panel-w';
 const PANEL_GUTTERS = 28;
 const PANEL_MIN_RENDER = 320;
 
+/**
+ * How far the pointer may travel between press and release and still count as a
+ * click on the render rather than an orbit of it. A drag that ends on a link is
+ * a camera move: the visitor was aiming the stage, not picking a part of it.
+ */
+const CLICK_SLOP = 4;
+
 /** Half the page: as wide as the column may be dragged. */
 const panelMaxW = () => Math.round(window.innerWidth / 2);
 
@@ -332,6 +339,7 @@ export class Detail {
     });
 
     this.bindTree();
+    this.bindStage();
     this.bindPanelResize();
     this.watchToolbarHeight();
   }
@@ -407,6 +415,125 @@ export class Detail {
 
     el('tree-expand').addEventListener('click', () => this.setTreeExpanded(true));
     el('tree-collapse').addEventListener('click', () => this.setTreeExpanded(false));
+  }
+
+  /**
+   * And the stage drives the tree: a click that lands on the model selects the
+   * row for the link it hit — the same selection a click on the row makes, so
+   * the link stays lit, the joint that carries it is on screen with its slider,
+   * and the branch it hangs off is unfolded to show it. A click that lands on
+   * the backdrop lets the selection go.
+   *
+   * An orbit is a click that moved, so the two are told apart by how far the
+   * pointer went while it was down rather than by the button alone — how far it
+   * went, not where it ended up: an orbit that comes back round to where it
+   * started is still an orbit, and releasing it would otherwise pick whatever
+   * the camera had been dragged onto.
+   *
+   * OrbitControls captures the pointer on the canvas for the duration of a
+   * drag, which retargets the moves and the release but does not stop them
+   * reaching the host — so the whole gesture is read here, whether or not the
+   * camera moved in between.
+   */
+  bindStage() {
+    const host = el('canvas-host');
+    let from = null;
+
+    host.addEventListener('pointerdown', (event) => {
+      // The middle and right buttons belong to the camera; so does a second
+      // finger, which is a pinch rather than a tap.
+      from =
+        event.button === 0 && event.isPrimary
+          ? { x: event.clientX, y: event.clientY, id: event.pointerId, moved: false }
+          : null;
+    });
+    host.addEventListener('pointermove', (event) => {
+      if (!from || event.pointerId !== from.id || from.moved) return;
+      if (Math.hypot(event.clientX - from.x, event.clientY - from.y) > CLICK_SLOP) from.moved = true;
+    });
+    host.addEventListener('pointerup', (event) => {
+      const start = from;
+      from = null;
+      if (!start || start.moved || event.pointerId !== start.id || event.button !== 0) return;
+      this.pickOnStage(event.clientX, event.clientY);
+    });
+    host.addEventListener('pointercancel', () => {
+      from = null;
+    });
+  }
+
+  /**
+   * A click on the render, resolved against the model. Off the model is how the
+   * stage lets a selection go — the backdrop is a big target, and on the page
+   * it is the only one, since the tree is not on screen to be clicked.
+   *
+   * Clicking a link that is already pinned keeps it, where clicking its row
+   * again would let it go: from the stage a second click on the same part is
+   * aim rather than a second thought, and there is already a gesture for
+   * letting go that does not ask the visitor to hit anything.
+   */
+  pickOnStage(clientX, clientY) {
+    const link = this.viewer.linkAt(clientX, clientY);
+    const node = link ? this.treeNodeFor(link) : null;
+    if (!node) {
+      this.clearTreeSelection();
+      return;
+    }
+    if (node.dataset.link !== this.pinnedLink) this.selectTreeNode(node);
+    this.revealTreeNode(node);
+  }
+
+  /**
+   * Nothing selected, nothing lit. The roving tab stop stays where it is: the
+   * tree keeps its one way in whether or not a row is pinned.
+   */
+  clearTreeSelection() {
+    if (!this.pinnedLink && !el('d-tree').querySelector('.tree-node[aria-selected="true"]')) return;
+    for (const node of el('d-tree').querySelectorAll('.tree-node[aria-selected="true"]')) {
+      node.removeAttribute('aria-selected');
+    }
+    this.pinnedLink = null;
+    this.viewer.highlightLink(null);
+  }
+
+  /** The row a link name belongs to. Read off the rows rather than queried, so
+   *  a name carrying whatever punctuation an upstream URDF likes needs no
+   *  escaping to be looked up with. */
+  treeNodeFor(link) {
+    for (const node of el('d-tree').querySelectorAll('.tree-node')) {
+      if (node.dataset.link === link) return node;
+    }
+    return null;
+  }
+
+  /**
+   * Bring a row into view: unfold whatever branch it hangs off, then scroll it
+   * to the nearest edge of whatever is doing the scrolling — the column when
+   * the tree is open in fullscreen, the page when it is a card on it.
+   *
+   * The row rather than the item it sits in: the item carries its whole subtree,
+   * and scrolling a branch taller than the panel into view would put the top of
+   * the branch on screen instead of the row that was picked.
+   */
+  revealTreeNode(node) {
+    const above = (row) => row.parentElement?.closest('.tree-node') ?? null;
+    for (let up = above(node); up; up = above(up)) {
+      if (up.getAttribute('aria-expanded') === 'false') up.setAttribute('aria-expanded', 'true');
+    }
+    const row = node.querySelector(':scope > .tree-row');
+    // The tree is a fullscreen tool: on the page it is in the markup but not
+    // rendered, and there is nothing to scroll to until fullscreen opens it.
+    if (!row?.offsetParent) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    row.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: reduced ? 'auto' : 'smooth' });
+  }
+
+  /** The pinned row, brought into view wherever the tree currently is. This is
+   *  what fullscreen owes a link picked on the page: it was selected in a tree
+   *  that was not being rendered, so nothing could scroll to it at the time. */
+  revealTreeSelection() {
+    const node = el('d-tree').querySelector('.tree-node[aria-selected="true"]');
+    if (node) this.revealTreeNode(node);
   }
 
   /** Paint the overlay legend dots in the palette the stage is currently using. */
@@ -934,6 +1061,13 @@ export class Detail {
     // The canvas host has just changed size; the viewer's own ResizeObserver
     // does the resizing, this only asks for the frame that shows it.
     this.viewer.invalidate();
+    // The tree is on screen now, so a row picked off the render while it was
+    // not can finally be scrolled to. On the way out it stops being rendered,
+    // and a link left lit on the page would be a selection with nothing on
+    // screen to say what it is or how to let it go — so the stage goes back to
+    // nothing lit, and the page starts clean.
+    if (on) this.revealTreeSelection();
+    else this.clearTreeSelection();
   }
 
   // -------------------------------------------------- fullscreen panel width
