@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-08-20T13:43:44Z",
+ "generated": "2026-08-23T06:12:14Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -56,6 +56,7 @@
    "notes": "The 29-DOF variant; upstream also ships 12/23-DOF and dexterous-hand versions.",
    "notes_zh": "此处为 29 自由度版本；上游仓库还提供 12/23 自由度以及带灵巧手的版本。",
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.4522,
@@ -116,6 +117,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.391,
@@ -178,6 +180,7 @@
    "notes": "H1-2 includes the three-finger hands, hence the high joint count.",
    "notes_zh": "H1-2 含三指手，因此关节数较多。",
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.5918,
@@ -238,6 +241,7 @@
    "notes": "Upstream also ships the same robot with Collada meshes and a closed-loop variant.",
    "notes_zh": "上游同一台机器人还提供 Collada 网格版本与闭链版本。",
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.5607,
@@ -298,6 +302,7 @@
    "notes": "H2 with two dexterous hands, hence 75 moving joints against H2's 31.",
    "notes_zh": "H2 加装两只灵巧手，因此有 75 个可动关节，而 H2 只有 31 个。",
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.6141,
@@ -359,6 +364,7 @@
    "notes": "The ankles are parallel linkages. URDF cannot close a loop, so upstream ships the rods hanging free with constraint frames marking where they meet.",
    "notes_zh": "踝关节是并联机构。URDF 无法描述闭链，上游把连杆画成断开的，并用 constraint 坐标系标出本应连接的位置。",
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.3691,
@@ -419,6 +425,7 @@
    "notes": "A lighter R1: 20 moving joints instead of 26, with the same parallel ankles.",
    "notes_zh": "R1 的轻量版本：20 个可动关节而非 26 个，踝部同样是并联机构。",
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.3646,
@@ -480,6 +487,7 @@
    "notes": "The v1.4.0 hardware — the revision whose nameplate ends in X2 Ultra -N. Upstream also ships v1.3.0 with the same 31 joints, and a 27-DOF fist variant whose arms stop at the wrist yaw.",
    "notes_zh": "v1.4.0 硬件版本，即铭牌结尾是 X2 Ultra -N 的那一台。上游还提供关节数相同的 v1.3.0，以及手臂停在腕部 yaw 的 27 自由度假拳版本。",
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.3091,
@@ -541,6 +549,7 @@
    "notes": "The base A3 on T3.0 hardware. The repository carries an A3 T2.5 as well, but its URDF resolves every mesh through a robot_descriptions package the repository does not contain, so it cannot be loaded as published.",
    "notes_zh": "T3.0 硬件的基础版 A3。同一仓库还有 A3 T2.5，但它的 URDF 把所有网格指向仓库里并不存在的 robot_descriptions 包，按原样无法加载。",
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.5793,
@@ -602,6 +611,7 @@
    "notes": "A3 Ultra on T2.5 hardware: the same 31 joints as the base A3, plus the head and torso RealSense cameras carried as extra fixed frames.",
    "notes_zh": "T2.5 硬件的 A3 Ultra：关节与基础版 A3 一样是 31 个，另外把头部和躯干的 RealSense 相机建成了额外的固定坐标系。",
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.5247,
@@ -663,6 +673,7 @@
    "notes": "A3 Ultra with two dexterous hands: 63 moving joints against the 31 of the hand-less variants, sixteen per hand.",
    "notes_zh": "带两只灵巧手的 A3 Ultra：63 个可动关节，而不带手的版本只有 31 个，每只手十六个。",
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.6028,
@@ -724,6 +735,7 @@
    "notes": "30 joints: six per leg, seven per arm, a two-axis waist and a two-axis neck. The hands are one rigid part here; upstream's MAGICBOT_with_hand.urdf splits each into a five-finger hand with 11 more joints.",
    "notes_zh": "30 个关节：单腿 6 个、单臂 7 个，外加两轴腰部与两轴颈部。这里的手掌是一整块，上游的 MAGICBOT_with_hand.urdf 把它拆成五指手，每只手多出 11 个关节。",
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.34,
@@ -790,6 +802,7 @@
     "left_elbow_joint": 1.4,
     "right_elbow_joint": 1.4
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.2247,
@@ -852,6 +865,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.3138,
@@ -912,6 +926,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.31,
@@ -970,6 +985,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.2249,
@@ -1028,6 +1044,7 @@
    "notes": "22 joints: two in the neck, four per arm and six per leg, with the ankles driven through a parallel four-bar. Upstream also ships a ZED-camera head and a locomotion variant that fixes everything above the waist.",
    "notes_zh": "22 个关节：颈部 2 个、单臂 4 个、单腿 6 个，踝部由四连杆并联驱动。上游还提供换装 ZED 相机头部的版本，以及把腰部以上全部固定的运动控制版本。",
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.1854,
@@ -1088,6 +1105,7 @@
    "notes": "The seven-DOF-arm T1: same head, waist and legs as the 23-DOF Booster T1 above, with three more joints in each arm. Only the 23-DOF layout has an MJCF upstream.",
    "notes_zh": "七自由度手臂版 T1：头部、腰部和双腿与上面 23 自由度的 Booster T1 相同，每条手臂多出 3 个关节。上游只为 23 自由度版本提供了 MJCF。",
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.2249,
@@ -1148,6 +1166,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.2513,
@@ -1205,6 +1224,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.411,
@@ -1266,6 +1286,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.2265,
@@ -1328,6 +1349,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.2198,
@@ -1389,6 +1411,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.3311,
@@ -1451,6 +1474,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.4375,
@@ -1515,6 +1539,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.7222,
@@ -1575,6 +1600,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.2846,
@@ -1635,6 +1661,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.6238,
@@ -1697,6 +1724,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.6238,
@@ -1759,6 +1787,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.5193,
@@ -1821,6 +1850,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.345,
@@ -1883,6 +1913,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.3452,
@@ -1944,6 +1975,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.4931,
@@ -2004,6 +2036,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.7703,
@@ -2079,6 +2112,7 @@
     "RR_thigh_joint": 0.78,
     "RR_calf_joint": -1.55
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.7197,
@@ -2155,6 +2189,7 @@
     "RR_thigh_joint": 0.78,
     "RR_calf_joint": -1.55
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.7332,
@@ -2232,6 +2267,7 @@
     "RR_thigh_joint": 0.72,
     "RR_calf_joint": -1.45
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 1.058,
@@ -2307,6 +2343,7 @@
     "RR_thigh_joint": 0.78,
     "RR_calf_joint": -1.55
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.6441,
@@ -2380,6 +2417,7 @@
     "RR_thigh_joint": 0.78,
     "RR_calf_joint": -1.55
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.8932,
@@ -2453,6 +2491,7 @@
     "RR_thigh_joint": 0.78,
     "RR_calf_joint": -1.55
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.7413,
@@ -2525,6 +2564,7 @@
     "RR_thigh_joint": 0.78,
     "RR_calf_joint": -1.55
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.8028,
@@ -2599,6 +2639,7 @@
     "RR_thigh_joint": 0.7,
     "RR_calf_joint": -1.4
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.7221,
@@ -2666,6 +2707,7 @@
     "RH_HFE": -0.4,
     "RH_KFE": 0.8
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.984,
@@ -2737,6 +2779,7 @@
     "RH_HFE": -0.4,
     "RH_KFE": 0.8
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 1.0516,
@@ -2808,6 +2851,7 @@
     "RH_HFE": -0.4,
     "RH_KFE": 0.8
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 1.079,
@@ -2879,6 +2923,7 @@
     "rh_hfe_joint": -0.5,
     "rh_kfe_joint": 1.1
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 1.2898,
@@ -2948,6 +2993,7 @@
     "HR_HFE": -0.6,
     "HR_KFE": 1.2
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.4482,
@@ -3011,6 +3057,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 1.0188,
@@ -3072,6 +3119,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 1.1534,
@@ -3145,6 +3193,7 @@
     "leg3_hl_joint1": -0.7,
     "leg3_hl_joint2": 1.4
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 1.2015,
@@ -3220,6 +3269,7 @@
     "RR_thigh_joint": 0.78,
     "RR_calf_joint": -1.55
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.7649,
@@ -3297,6 +3347,7 @@
     "RR_thigh_joint": 0.78,
     "RR_calf_joint": -1.55
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.8036,
@@ -3364,6 +3415,7 @@
     "joint3": -1.2,
     "joint4": 0.4
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.4221,
@@ -3427,6 +3479,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.7022,
@@ -3495,6 +3548,7 @@
     "iiwa_joint_4": -1.3,
     "iiwa_joint_6": 0.6
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.8502,
@@ -3562,6 +3616,7 @@
     "j2s6s200_joint_4": 1.0,
     "j2s6s200_joint_5": 3.1
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.1393,
@@ -3623,6 +3678,7 @@
    "notes": "Visual-only description: no inertial parameters upstream.",
    "notes_zh": "仅含可视化几何，上游未提供惯性参数。",
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 1.649,
@@ -3687,6 +3743,7 @@
     "joint_3": 1.0,
     "joint_5": 0.6
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.5381,
@@ -3746,6 +3803,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.5141,
@@ -3809,6 +3867,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.5326,
@@ -3868,6 +3927,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.1109,
@@ -3927,6 +3987,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.1109,
@@ -3984,6 +4045,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.3299,
@@ -4047,6 +4109,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.3779,
@@ -4107,6 +4170,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.3332,
@@ -4171,6 +4235,7 @@
     "joint3": 1.0,
     "joint4": 0.6
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.6041,
@@ -4235,6 +4300,7 @@
     "joint3": 1.0,
     "joint4": 0.6
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.6537,
@@ -4299,6 +4365,7 @@
     "joint3": 1.0,
     "joint4": 0.6
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.635,
@@ -4359,6 +4426,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.15,
@@ -4421,13 +4489,17 @@
    "notes": "A parallel gripper: two prismatic jaws.",
    "notes_zh": "平行夹爪：两个移动关节驱动的夹指。",
    "pose": null,
+   "preview_frame": {
+    "palm": "+z",
+    "fingers": "+y"
+   },
    "measured": {
     "size": {
-     "x": 0.0811,
-     "y": 0.124,
-     "z": 0.1473
+     "x": 0.124,
+     "y": 0.1473,
+     "z": 0.0811
     },
-    "height_m": 0.124
+    "height_m": 0.1473
    },
    "urdf": {
     "xml_name": "dex1_1",
@@ -4481,13 +4553,17 @@
    "notes": "The right hand; upstream also ships the left one and both with a G1 wrist attached.",
    "notes_zh": "此处为右手；上游还提供左手，以及带 G1 手腕的两个版本。",
    "pose": null,
+   "preview_frame": {
+    "palm": "+y",
+    "fingers": "+x"
+   },
    "measured": {
     "size": {
-     "x": 0.151,
-     "y": 0.0702,
-     "z": 0.0974
+     "x": 0.0974,
+     "y": 0.151,
+     "z": 0.0702
     },
-    "height_m": 0.0702
+    "height_m": 0.151
    },
    "urdf": {
     "xml_name": "right",
@@ -4540,13 +4616,17 @@
    "notes": "The right hand; upstream also ships the left one.",
    "notes_zh": "此处为右手；上游还提供左手。",
    "pose": null,
+   "preview_frame": {
+    "palm": "+y",
+    "fingers": "+x"
+   },
    "measured": {
     "size": {
-     "x": 0.1755,
-     "y": 0.0878,
-     "z": 0.1385
+     "x": 0.1385,
+     "y": 0.1755,
+     "z": 0.0878
     },
-    "height_m": 0.0878
+    "height_m": 0.1755
    },
    "urdf": {
     "xml_name": "dex3_1_r",
@@ -4620,13 +4700,17 @@
     "Pitch_53R": 0.5,
     "Pitch_54R": 0.4
    },
+   "preview_frame": {
+    "palm": "+z",
+    "fingers": "+y"
+   },
    "measured": {
     "size": {
-     "x": 0.1304,
-     "y": 0.1603,
-     "z": 0.187
+     "x": 0.1603,
+     "y": 0.187,
+     "z": 0.1304
     },
-    "height_m": 0.1603
+    "height_m": 0.187
    },
    "urdf": {
     "xml_name": "Dex5-URDF-R",
@@ -4679,13 +4763,17 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": {
+    "palm": "-z",
+    "fingers": "+x"
+   },
    "measured": {
     "size": {
-     "x": 0.2325,
-     "y": 0.0632,
+     "x": 0.0632,
+     "y": 0.2325,
      "z": 0.2396
     },
-    "height_m": 0.0632
+    "height_m": 0.2325
    },
    "urdf": {
     "xml_name": "onshape",
@@ -4739,6 +4827,10 @@
    "notes": "Left hand; the same package also ships the right hand.",
    "notes_zh": "此处为左手，同一目录下还有右手模型。",
    "pose": null,
+   "preview_frame": {
+    "palm": "+x",
+    "fingers": "+z"
+   },
    "measured": {
     "size": {
      "x": 0.1432,
@@ -4801,13 +4893,17 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": {
+    "palm": "+y",
+    "fingers": "+z"
+   },
    "measured": {
     "size": {
-     "x": 0.1648,
-     "y": 0.1825,
-     "z": 0.0734
+     "x": 0.0671,
+     "y": 0.1892,
+     "z": 0.1639
     },
-    "height_m": 0.1825
+    "height_m": 0.1892
    },
    "urdf": {
     "xml_name": "ability_hand",
@@ -4861,11 +4957,15 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": {
+    "palm": "-y",
+    "fingers": "+z"
+   },
    "measured": {
     "size": {
-     "x": 0.1943,
+     "x": 0.053,
      "y": 0.1978,
-     "z": 0.053
+     "z": 0.1943
     },
     "height_m": 0.1978
    },
@@ -4921,11 +5021,15 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": {
+    "palm": "+y",
+    "fingers": "+z"
+   },
    "measured": {
     "size": {
-     "x": 0.1424,
+     "x": 0.075,
      "y": 0.1622,
-     "z": 0.075
+     "z": 0.1424
     },
     "height_m": 0.1622
    },
@@ -4982,14 +5086,25 @@
    ],
    "notes": null,
    "notes_zh": null,
-   "pose": null,
+   "pose": {
+    "finger_1_med_joint": -1.4,
+    "finger_1_dist_joint": -0.31,
+    "finger_2_med_joint": -1.4,
+    "finger_2_dist_joint": -0.31,
+    "finger_3_med_joint": -1.4,
+    "finger_3_dist_joint": -0.31
+   },
+   "preview_frame": {
+    "palm": "-x",
+    "fingers": "+z"
+   },
    "measured": {
     "size": {
      "x": 0.089,
-     "y": 0.1194,
-     "z": 0.3353
+     "y": 0.1934,
+     "z": 0.1515
     },
-    "height_m": 0.1194
+    "height_m": 0.1934
    },
    "urdf": {
     "xml_name": "bhand_model",
@@ -5053,6 +5168,7 @@
     "RightTarsusPitch": 1.3,
     "RightFootPitch": -1.6
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.5536,
@@ -5115,6 +5231,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.13,
@@ -5177,6 +5294,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.1545,
@@ -5237,6 +5355,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.435,
@@ -5296,6 +5415,7 @@
    "notes": "R1's upper body on its own: waist yaw, a two-axis head and two 5-DOF arms.",
    "notes_zh": "R1 的上半身：腰部偏航、两自由度头部，以及两条 5 自由度手臂。",
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.3691,
@@ -5355,6 +5475,7 @@
    "notes": "The same upper body as R1-A5 with 7-DOF arms — the wrists gain pitch and yaw.",
    "notes_zh": "与 R1-A5 相同的上半身，换成 7 自由度手臂——手腕多了俯仰与偏航。",
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.5087,
@@ -5414,6 +5535,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 1.4212,
@@ -5477,6 +5599,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 1.3548,
@@ -5538,6 +5661,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 1.3082,
@@ -5599,6 +5723,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.5874,
@@ -5658,6 +5783,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.9309,
@@ -5718,6 +5844,7 @@
    "notes": "G1's upper body and two-finger grippers on a two-wheel base with a prismatic lifting column.",
    "notes_zh": "G1 的上半身与两指夹爪装在两轮底盘上，中间是一根可升降的直线导轨。",
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.7391,
@@ -5780,6 +5907,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.3386,
@@ -5845,6 +5973,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.5339,
@@ -5910,6 +6039,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.567,
@@ -5972,6 +6102,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.6626,
@@ -6034,6 +6165,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.5944,
@@ -6093,6 +6225,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.4931,
@@ -6161,6 +6294,7 @@
     "right_arm_joint3": 0.4,
     "right_arm_joint4": -1.2
    },
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.8599,
@@ -6225,6 +6359,7 @@
    "notes": "A warehouse picker: four steered and driven wheels, a prismatic torso lift, a two-axis head and two 7-DOF arms with three-jaw grippers. Four of the 31 movable joints mimic the gripper drives, leaving 27 driven.",
    "notes_zh": "仓储拣选机器人：四个可转向的驱动轮、一根直线升降立柱、两轴头部，以及两条带三指夹爪的 7 自由度手臂。31 个可动关节里有 4 个是夹爪的 mimic 关节，实际驱动 27 个。",
    "pose": null,
+   "preview_frame": null,
    "measured": {
     "size": {
      "x": 0.736,
