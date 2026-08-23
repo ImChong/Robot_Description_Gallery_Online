@@ -282,6 +282,57 @@ function boundingBox(root) {
   return box;
 }
 
+/**
+ * Unit axes of the model's own root frame, spelled the way
+ * data/curation.json's `preview_frame` writes them.
+ */
+const AXIS_LETTERS = {
+  '+x': [1, 0, 0], '-x': [-1, 0, 0],
+  '+y': [0, 1, 0], '-y': [0, -1, 0],
+  '+z': [0, 0, 1], '-z': [0, 0, -1],
+};
+
+/**
+ * The rotation that stands a hand up the same way as every other hand.
+ *
+ * Nothing in URDF says which way a description has to face, and the hands prove
+ * it: Allegro grows its fingers along +Z, the Unitree Dex hands along +X or +Y,
+ * LEAP lies flat with its palm looking down -Z. Left to themselves the cards
+ * come out as ten unrelated objects — one hand standing, one on its back, one
+ * seen edge-on — and no two of them can be compared at a glance.
+ *
+ * So an entry may name the two axes that give its own frame meaning, and the
+ * gallery turns them onto the same pair of world axes for every hand: the palm
+ * faces world +X, and the fingers point along world +Z. `palm` is the direction
+ * the palm looks — the way a fingertip travels when the finger flexes — and
+ * `fingers` is the direction the four fingers grow. For a gripper, which has no
+ * palm to speak of, the same two directions read as the axis the jaws reach
+ * along and the side you see them spread across.
+ *
+ * The third axis follows from the two, so the frame is fully determined and the
+ * hands keep their own handedness: after the turn a right hand's thumb sits on
+ * the +Y side and a left hand's on -Y, which is the one thing about a hand that
+ * is not ours to normalise.
+ *
+ * @param {{palm: string, fingers: string}} [frame] as carried in the registry
+ * @returns {import('three').Quaternion|null} null when the entry has no frame
+ */
+function previewRotation(frame) {
+  const palm = AXIS_LETTERS[frame?.palm];
+  const fingers = AXIS_LETTERS[frame?.fingers];
+  // Two axes on the same line describe no frame at all; the registry build
+  // rejects that, and a hand-edited file is not worth a NaN robot.
+  if (!palm || !fingers || palm.findIndex(Boolean) === fingers.findIndex(Boolean)) return null;
+  const u = new THREE.Vector3().fromArray(palm);
+  const v = new THREE.Vector3().fromArray(fingers);
+  const model = new THREE.Matrix4().makeBasis(u, v, new THREE.Vector3().crossVectors(u, v));
+  // The target basis (+X, +Z, +X×+Z) is a quarter turn about X, so the rotation
+  // that carries the model's frame onto it is that turn times the model basis
+  // inverted — and an orthonormal basis inverts by transposing.
+  const target = new THREE.Matrix4().makeRotationX(Math.PI / 2);
+  return new THREE.Quaternion().setFromRotationMatrix(target.multiply(model.transpose()));
+}
+
 export class RobotViewer {
   /**
    * @param {HTMLElement} container
@@ -641,6 +692,13 @@ export class RobotViewer {
     parsed = true;
     this.robot = robot;
     this.world.add(robot);
+    // On the way in rather than at portrait time, because everything after this
+    // measures the robot where it leaves it: the camera fit at the end of this
+    // method, the bounding box the card image is cropped to, and the height the
+    // detail page quotes. Joint moves never touch the root, so the card and the
+    // detail page agree on which way the hand faces.
+    const upright = previewRotation(entry.preview_frame);
+    if (upright) robot.quaternion.copy(upright);
     this.entry = entry;
     // Primitive geometry (<box>, <cylinder>, <sphere>) exists immediately;
     // mesh files arrive over the network, so styling runs again after they land.

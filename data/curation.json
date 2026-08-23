@@ -12,6 +12,15 @@
     "name -> position, used for card renders when the zero pose looks broken).",
     "Pose joint names are validated against the URDF at build time.",
     "",
+    "preview_frame{palm,fingers} names two axes of the model's own root frame,",
+    "as \"+x\" .. \"-z\", and the viewer turns them onto the same world axes for",
+    "every entry that has one: palm -> +X, fingers -> +Z. It exists because URDF",
+    "fixes no facing, so the hands arrive pointing six different ways and no two",
+    "cards can be compared. `palm` is the way a fingertip travels when the finger",
+    "flexes, `fingers` the direction the four fingers grow; on a gripper, the side",
+    "you see the jaws spread across and the direction they reach. The two must be",
+    "different axes — the build rejects the pair otherwise.",
+    "",
     "A robot that robot_descriptions.py does not ship (unitree_ros carries a dozen",
     "such) replaces `description` with an `upstream` block naming the repository,",
     "the commit to pin, the URDF path and the licence — everything the build would",
@@ -1025,6 +1034,10 @@
       "name": "Dex1-1",
       "maker": "UNITREE Robotics",
       "category": "hand",
+      "preview_frame": {
+        "palm": "+z",
+        "fingers": "+y"
+      },
       "upstream": {
         "github": "unitreerobotics/unitree_ros",
         "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
@@ -1047,6 +1060,10 @@
       "name": "Dex2-5",
       "maker": "UNITREE Robotics",
       "category": "hand",
+      "preview_frame": {
+        "palm": "+y",
+        "fingers": "+x"
+      },
       "upstream": {
         "github": "unitreerobotics/unitree_ros",
         "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
@@ -1069,6 +1086,10 @@
       "name": "Dex3-1",
       "maker": "UNITREE Robotics",
       "category": "hand",
+      "preview_frame": {
+        "palm": "+y",
+        "fingers": "+x"
+      },
       "upstream": {
         "github": "unitreerobotics/unitree_ros",
         "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
@@ -1091,6 +1112,10 @@
       "name": "Dex5-1",
       "maker": "UNITREE Robotics",
       "category": "hand",
+      "preview_frame": {
+        "palm": "+z",
+        "fingers": "+y"
+      },
       "upstream": {
         "github": "unitreerobotics/unitree_ros",
         "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
@@ -1133,6 +1158,10 @@
     {
       "description": "leap_hand_v1_description",
       "category": "hand",
+      "preview_frame": {
+        "palm": "-z",
+        "fingers": "+x"
+      },
       "links": {
         "official": "https://leaphand.com/",
         "paper": "https://arxiv.org/abs/2309.06440"
@@ -1141,6 +1170,10 @@
     {
       "description": "allegro_hand_description",
       "category": "hand",
+      "preview_frame": {
+        "palm": "+x",
+        "fingers": "+z"
+      },
       "links": {
         "official": "https://www.wonikrobotics.com/research-robot-hand"
       },
@@ -1150,17 +1183,29 @@
     {
       "description": "ability_hand_description",
       "category": "hand",
+      "preview_frame": {
+        "palm": "+y",
+        "fingers": "+z"
+      },
       "links": {
         "official": "https://www.psyonic.io/"
       }
     },
     {
       "description": "aero_hand_open_description",
-      "category": "hand"
+      "category": "hand",
+      "preview_frame": {
+        "palm": "-y",
+        "fingers": "+z"
+      }
     },
     {
       "description": "robotiq_2f85_description",
       "category": "hand",
+      "preview_frame": {
+        "palm": "+y",
+        "fingers": "+z"
+      },
       "links": {
         "official": "https://robotiq.com/products/adaptive-grippers"
       }
@@ -1168,8 +1213,20 @@
     {
       "description": "barrett_hand_description",
       "category": "hand",
+      "preview_frame": {
+        "palm": "-x",
+        "fingers": "+z"
+      },
       "links": {
         "official": "https://barrett.com/barretthand/"
+      },
+      "pose": {
+        "finger_1_med_joint": -1.4,
+        "finger_1_dist_joint": -0.31,
+        "finger_2_med_joint": -1.4,
+        "finger_2_dist_joint": -0.31,
+        "finger_3_med_joint": -1.4,
+        "finger_3_dist_joint": -0.31
       }
     },
     {

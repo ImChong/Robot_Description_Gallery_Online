@@ -393,6 +393,28 @@ def curated_id(item: dict[str, Any]) -> str:
     return item.get("id") or curated_key(item).removesuffix("_description")
 
 
+AXIS_LETTERS = ("+x", "-x", "+y", "-y", "+z", "-z")
+
+
+def preview_frame_problem(frame: Any) -> str | None:
+    """Reject a ``preview_frame`` the viewer could not turn into a rotation.
+
+    The two named axes have to be real axes of the model's own frame and lie on
+    different lines: two axes on the same line span a plane rather than a frame,
+    and the cross product that completes it would come out zero.
+    """
+    if frame is None:
+        return None
+    if not isinstance(frame, dict) or set(frame) != {"palm", "fingers"}:
+        return f"preview_frame needs exactly a palm and a fingers axis, got {frame!r}"
+    bad = [f"{k}={v!r}" for k, v in frame.items() if v not in AXIS_LETTERS]
+    if bad:
+        return f"preview_frame has non-axis {', '.join(bad)} (expected one of {', '.join(AXIS_LETTERS)})"
+    if frame["palm"][1] == frame["fingers"][1]:
+        return f"preview_frame palm and fingers are the same axis ({frame['palm']}, {frame['fingers']})"
+    return None
+
+
 def upstream_from_curation(item: dict[str, Any]) -> Upstream:
     """Build an ``Upstream`` from a hand-written ``upstream`` block.
 
@@ -447,6 +469,9 @@ def entry_for(
         "notes_zh": curated.get("notes_zh"),
         # Optional joint configuration for still frames and the initial view.
         "pose": curated.get("pose"),
+        # Optional pair of model axes that lets the viewer stand every hand up
+        # the same way — palm towards world +X, fingers along world +Z.
+        "preview_frame": curated.get("preview_frame"),
         # Bounding box of the loaded visual meshes, measured by the thumbnail
         # renderer (data/measured.json). Only the geometry knows how big a robot
         # really is, and having it here means a card can show the size without
@@ -582,6 +607,9 @@ def main() -> int:
         unknown = sorted(set(item.get("pose") or ()) - set(facts.joint_names))
         if unknown:
             return item, None, f"{key}: pose names unknown joints {unknown}"
+        problem = preview_frame_problem(item.get("preview_frame"))
+        if problem:
+            return item, None, f"{key}: {problem}"
         return item, entry_for(up, facts, item, measured.get(curated_id(item))), None
 
     with ThreadPoolExecutor(args.jobs) as ex:

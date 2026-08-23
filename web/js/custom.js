@@ -273,6 +273,9 @@ function buildEntry(fileSet, text) {
     notes: null,
     notes_zh: null,
     pose: null,
+    // A visitor's own model is shown in the frame its URDF was written in:
+    // nothing here knows which way its palm looks.
+    preview_frame: null,
     measured: null,
     urdf: {
       xml_name: parsed.name,
