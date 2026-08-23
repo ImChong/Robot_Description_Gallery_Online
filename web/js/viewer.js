@@ -15,6 +15,19 @@ import URDFLoader from 'urdf-loader';
 const UP_Z = -Math.PI / 2; // URDF is Z-up, three.js is Y-up.
 
 /**
+ * The scheme a locally picked model is loaded through.
+ *
+ * A file the visitor chose off their own disk is reachable only as a `blob:`
+ * URL, which carries neither a directory nor a file name — so a URDF handed to
+ * the parser that way loses both the path its `package://` and relative
+ * references resolve against and the extension that picks a mesh loader. The
+ * parser is therefore given the paths the URDF itself writes, under this
+ * scheme, and the loading manager swaps in the blob at fetch time. js/custom.js
+ * builds the other half.
+ */
+export const LOCAL_URL_PREFIX = 'urdfgallery-local://';
+
+/**
  * Joints that take more than one value. urdf-loader expects every component to
  * be passed at once — `setJointValue(name, 0)` on a floating joint leaves five
  * arguments undefined and turns the entire subtree's transform into NaN — and
@@ -477,28 +490,45 @@ export class RobotViewer {
   async load(entry, onProgress) {
     this.clear();
     const base = entry.assets.base;
+    // A model the visitor picked off their own disk carries a file set instead
+    // of a base URL: it resolves the paths the URDF writes against the files
+    // they handed over, and answers in `blob:` URLs. See js/custom.js.
+    const local = entry.assets.local || null;
     // Every request either loader makes goes through this manager, which is
-    // what lets `outstanding` below see the loads the mesh counter cannot.
+    // what lets `outstanding` below see the loads the mesh counter cannot —
+    // and, for a local model, what puts the blob in front of the scheme.
     const manager = new THREE.LoadingManager();
     const loader = new URDFLoader(manager);
     loader.parseCollision = true;
-    // urdf-loader joins with '/', so package roots must not end in one — a
-    // package mapped to the repository root would otherwise produce '//meshes'.
-    loader.packages = Object.fromEntries(
-      Object.entries(entry.assets.packages).map(([name, root]) => [
-        name,
-        (base + root).replace(/\/+$/, ''),
-      ]),
-    );
-    // Meshes referenced without a package:// prefix are relative to the URDF
-    // file, which is not where this page lives.
-    loader.workingPath = base + entry.assets.urdf.replace(/[^/]+$/, '');
+    if (local) {
+      loader.packages = (pkg) => `${LOCAL_URL_PREFIX}pkg/${pkg}`;
+      loader.workingPath = `${LOCAL_URL_PREFIX}rel/${local.dir}`;
+      // Catches what the mesh callback below never sees: the textures a Collada
+      // file asks for once it has been parsed, resolved by its own parser
+      // against the path it was handed.
+      manager.setURLModifier((url) => local.resolve(url) || url);
+    } else {
+      // urdf-loader joins with '/', so package roots must not end in one — a
+      // package mapped to the repository root would otherwise produce '//meshes'.
+      loader.packages = Object.fromEntries(
+        Object.entries(entry.assets.packages).map(([name, root]) => [
+          name,
+          (base + root).replace(/\/+$/, ''),
+        ]),
+      );
+      // Meshes referenced without a package:// prefix are relative to the URDF
+      // file, which is not where this page lives.
+      loader.workingPath = base + entry.assets.urdf.replace(/[^/]+$/, '');
+    }
 
     // urdf-loader handles STL and DAE; OBJ and glTF need to be plugged in.
     // Galbot ships its visual meshes as .glb, and urdf-loader answers a format
     // it does not know by logging a warning and never calling back — which
     // would leave the load counter one short of `total` forever.
-    const objLoader = new OBJLoader();
+    // Both take the manager: for a local model that is what applies the URL
+    // rewrite above, and for a hosted one it only means these loads are counted
+    // alongside every other request the page makes.
+    const objLoader = new OBJLoader(manager);
     const gltfLoader = new GLTFLoader(manager);
     const defaultLoad = loader.loadMeshCb.bind(loader);
 
@@ -549,6 +579,14 @@ export class RobotViewer {
           check();
         }
       };
+      // A mesh the visitor did not hand over is failed here rather than
+      // requested: three.js' STL and Collada loaders are called without an
+      // error callback, so a request that cannot succeed would never call back
+      // at all and the counter below would wait for it until the timeout.
+      if (local && !local.resolve(path)) {
+        finish(null, new Error(`mesh not among the picked files: ${path}`));
+        return;
+      }
       const lower = path.toLowerCase();
       if (lower.endsWith('.obj')) {
         objLoader.load(path, (obj) => finish(obj), undefined, (err) => finish(null, err));

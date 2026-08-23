@@ -5,6 +5,7 @@ import { Detail } from './detail.js';
 import { applyStatic, detectLang, setLang, lang, LANGS } from './i18n.js';
 import { paintIcons } from './icons.js';
 import { theme, toggleTheme } from './theme.js';
+import { customEntry, setupCustomPicker } from './custom.js';
 
 const views = {
   gallery: document.getElementById('view-gallery'),
@@ -15,15 +16,20 @@ function parseHash() {
   const params = new URLSearchParams(location.hash.replace(/^#/, ''));
   return {
     robot: params.get('robot'),
+    // The model the visitor picked off their own disk. It has no id worth
+    // putting in the address — the files behind it live in this tab and
+    // nowhere else — so the address only records that the stage is on it.
+    custom: params.has('custom'),
     category: params.get('category') || 'all',
     q: params.get('q') || '',
   };
 }
 
 /** The address for a state: a robot, or the gallery at a section and a query. */
-function hashFor({ robot, category, q }) {
+function hashFor({ robot, custom, category, q }) {
   const params = new URLSearchParams();
-  if (robot) params.set('robot', robot);
+  if (custom) params.set('custom', '1');
+  else if (robot) params.set('robot', robot);
   else {
     if (category && category !== 'all') params.set('category', category);
     if (q) params.set('q', q);
@@ -101,15 +107,25 @@ async function main() {
   gallery.renderStats();
   gallery.render();
   gallery.onStateChange = (state) => {
-    if (!parseHash().robot) writeHash({ category: state.category, q: state.query });
+    // The search box is in the header, so it is reachable from a stage too —
+    // and writing the gallery's address while one is open would close it.
+    const at = parseHash();
+    if (!at.robot && !at.custom) writeHash({ category: state.category, q: state.query });
   };
   // The gallery is long now that every category is on it at once, so coming
   // back from a detail page returns to the card that was clicked, not the top.
   let galleryScroll = 0;
 
   async function route() {
-    const { robot: id, category } = parseHash();
-    if (!id) {
+    const { robot: id, category, custom } = parseHash();
+    // Nothing is stored for a picked model: a reload, or this address opened on
+    // another machine, has no files behind it and belongs back at the gallery.
+    const picked = custom ? customEntry() : null;
+    if (custom && !picked) {
+      location.hash = '';
+      return;
+    }
+    if (!id && !picked) {
       // The gallery cannot be read through a stage that covers the screen —
       // reachable through the browser's back button, since the detail view's
       // own way out is off screen in fullscreen.
@@ -127,7 +143,7 @@ async function main() {
       writeHash(gallery.state);
       return;
     }
-    const robot = byId(data, id);
+    const robot = picked || byId(data, id);
     if (!robot) {
       location.hash = '';
       return;
@@ -138,7 +154,7 @@ async function main() {
     window.scrollTo({ top: 0 });
     detail = detail || new Detail(data);
     detail.relayout();
-    setupNeighbours(robot);
+    if (!picked) setupNeighbours(robot);
     await detail.show(robot);
   }
 
@@ -164,6 +180,21 @@ async function main() {
   };
   document.getElementById('back-btn').addEventListener('click', toGallery);
 
+  setupCustomPicker({
+    onPreview: () => {
+      // Picking a second file without leaving the stage lands on the address
+      // already showing, and an unchanged hash fires no `hashchange`.
+      if (parseHash().custom) route();
+      else location.hash = 'custom=1';
+    },
+  });
+
+  /** Both kinds of stage: a gallery robot, and the visitor's own file. */
+  const onStage = () => {
+    const state = parseHash();
+    return !!(state.robot || state.custom);
+  };
+
   window.addEventListener('hashchange', route);
   window.addEventListener('keydown', (event) => {
     // Escape leaves the fullscreen stage from wherever the focus is, the joint
@@ -177,12 +208,16 @@ async function main() {
       return;
     }
     if (event.target.matches('input, textarea')) return;
-    if (event.key === 'Escape' && parseHash().robot) toGallery();
-    if (event.key === 'ArrowLeft') document.getElementById('prev-robot')?.click();
-    if (event.key === 'ArrowRight') document.getElementById('next-robot')?.click();
+    if (event.key === 'Escape' && onStage()) toGallery();
+    // Prev/next walk the gallery, so they are for a gallery robot: the picked
+    // model has no neighbours, and the buttons still hold the last robot's.
+    if (parseHash().robot) {
+      if (event.key === 'ArrowLeft') document.getElementById('prev-robot')?.click();
+      if (event.key === 'ArrowRight') document.getElementById('next-robot')?.click();
+    }
     // `f` for the stage, as every video player has it — bare, so the browser
     // keeps Ctrl/⌘-F for its own find bar.
-    if (event.key === 'f' && !event.ctrlKey && !event.metaKey && !event.altKey && parseHash().robot) {
+    if (event.key === 'f' && !event.ctrlKey && !event.metaKey && !event.altKey && onStage()) {
       detail?.toggleFullscreen();
     }
     if (event.key === '/') {
