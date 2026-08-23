@@ -421,8 +421,7 @@ export class Detail {
    * And the stage drives the tree: a click that lands on the model selects the
    * row for the link it hit — the same selection a click on the row makes, so
    * the link stays lit, the joint that carries it is on screen with its slider,
-   * and the branch it hangs off is unfolded to show it. A click that lands on
-   * the backdrop lets the selection go.
+   * and the branch it hangs off is unfolded to show it.
    *
    * An orbit is a click that moved, so the two are told apart by how far the
    * pointer went while it was down rather than by the button alone — how far it
@@ -463,22 +462,23 @@ export class Detail {
   }
 
   /**
-   * A click on the render, resolved against the model.
+   * A click on the render, resolved against the model. It selects the link's
+   * row exactly as clicking the row does — clicking the lit link again lets it
+   * go, which on the page is the only way to, since the tree is not on screen
+   * to be clicked.
    *
-   * Clicking a link that is already pinned keeps it: from the stage a second
-   * click on the same part is aim rather than a second thought, where clicking
-   * the row again is the way a reader lets it go. Missing the robot is the
-   * stage's own way of doing that.
+   * A click that misses the model changes nothing. The backdrop is most of the
+   * stage and it is where a visitor aims the camera from, so a click that lands
+   * there is a miss rather than an instruction; and on the page, where the lit
+   * link is the whole of what the selection shows, letting a stray click put
+   * the stage back to nothing lit would be the surprise.
    */
   pickOnStage(clientX, clientY) {
     const link = this.viewer.linkAt(clientX, clientY);
     const node = link ? this.treeNodeFor(link) : null;
-    if (!node) {
-      if (this.pinnedLink) this.selectTreeNode(null);
-      return;
-    }
-    if (node.dataset.link !== this.pinnedLink) this.selectTreeNode(node, { toggle: false });
-    this.revealTreeNode(node);
+    if (!node) return;
+    this.selectTreeNode(node);
+    if (this.pinnedLink) this.revealTreeNode(node);
   }
 
   /** The row a link name belongs to. Read off the rows rather than queried, so
@@ -934,29 +934,25 @@ export class Detail {
 
   /**
    * Pin a row: its link stays lit on the stage after the pointer leaves.
-   * Clicking the pinned row again lets go — which is what `toggle` is: the
-   * stage picks with it off, because a second click there is aim rather than a
-   * second thought. A null node clears the selection without pinning anything.
-   *
-   * @param {?HTMLElement} node the row to pin, or null to clear
-   * @param {{toggle?: boolean}} [options]
+   * Clicking the pinned row again lets go — and so does clicking its link on
+   * the stage a second time, which is the only way to on the page.
    */
-  selectTreeNode(node, { toggle = true } = {}) {
+  selectTreeNode(node) {
     const host = el('d-tree');
-    const pin = node && !(toggle && node.getAttribute('aria-selected') === 'true');
+    const wasPinned = node.getAttribute('aria-selected') === 'true';
     for (const other of host.querySelectorAll('.tree-node[aria-selected="true"]')) {
       other.removeAttribute('aria-selected');
     }
-    // The tab stop follows the row that was acted on. Clearing leaves it where
-    // it is: the tree keeps its one way in whether or not anything is pinned.
-    if (node) {
-      for (const other of host.querySelectorAll('.tree-node[tabindex="0"]')) {
-        other.setAttribute('tabindex', '-1');
-      }
-      node.setAttribute('tabindex', '0');
+    for (const other of host.querySelectorAll('.tree-node[tabindex="0"]')) {
+      other.setAttribute('tabindex', '-1');
     }
-    if (pin) node.setAttribute('aria-selected', 'true');
-    this.pinnedLink = pin ? node.dataset.link : null;
+    node.setAttribute('tabindex', '0');
+    if (wasPinned) {
+      this.pinnedLink = null;
+    } else {
+      node.setAttribute('aria-selected', 'true');
+      this.pinnedLink = node.dataset.link;
+    }
     this.viewer.highlightLink(this.pinnedLink);
   }
 
