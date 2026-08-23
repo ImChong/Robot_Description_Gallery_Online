@@ -421,7 +421,8 @@ export class Detail {
    * And the stage drives the tree: a click that lands on the model selects the
    * row for the link it hit — the same selection a click on the row makes, so
    * the link stays lit, the joint that carries it is on screen with its slider,
-   * and the branch it hangs off is unfolded to show it.
+   * and the branch it hangs off is unfolded to show it. A click that lands on
+   * the backdrop lets the selection go.
    *
    * An orbit is a click that moved, so the two are told apart by how far the
    * pointer went while it was down rather than by the button alone — how far it
@@ -462,23 +463,37 @@ export class Detail {
   }
 
   /**
-   * A click on the render, resolved against the model. It selects the link's
-   * row exactly as clicking the row does — clicking the lit link again lets it
-   * go, which on the page is the only way to, since the tree is not on screen
-   * to be clicked.
+   * A click on the render, resolved against the model. Off the model is how the
+   * stage lets a selection go — the backdrop is a big target, and on the page
+   * it is the only one, since the tree is not on screen to be clicked.
    *
-   * A click that misses the model changes nothing. The backdrop is most of the
-   * stage and it is where a visitor aims the camera from, so a click that lands
-   * there is a miss rather than an instruction; and on the page, where the lit
-   * link is the whole of what the selection shows, letting a stray click put
-   * the stage back to nothing lit would be the surprise.
+   * Clicking a link that is already pinned keeps it, where clicking its row
+   * again would let it go: from the stage a second click on the same part is
+   * aim rather than a second thought, and there is already a gesture for
+   * letting go that does not ask the visitor to hit anything.
    */
   pickOnStage(clientX, clientY) {
     const link = this.viewer.linkAt(clientX, clientY);
     const node = link ? this.treeNodeFor(link) : null;
-    if (!node) return;
-    this.selectTreeNode(node);
-    if (this.pinnedLink) this.revealTreeNode(node);
+    if (!node) {
+      this.clearTreeSelection();
+      return;
+    }
+    if (node.dataset.link !== this.pinnedLink) this.selectTreeNode(node);
+    this.revealTreeNode(node);
+  }
+
+  /**
+   * Nothing selected, nothing lit. The roving tab stop stays where it is: the
+   * tree keeps its one way in whether or not a row is pinned.
+   */
+  clearTreeSelection() {
+    if (!this.pinnedLink && !el('d-tree').querySelector('.tree-node[aria-selected="true"]')) return;
+    for (const node of el('d-tree').querySelectorAll('.tree-node[aria-selected="true"]')) {
+      node.removeAttribute('aria-selected');
+    }
+    this.pinnedLink = null;
+    this.viewer.highlightLink(null);
   }
 
   /** The row a link name belongs to. Read off the rows rather than queried, so
@@ -934,8 +949,7 @@ export class Detail {
 
   /**
    * Pin a row: its link stays lit on the stage after the pointer leaves.
-   * Clicking the pinned row again lets go — and so does clicking its link on
-   * the stage a second time, which is the only way to on the page.
+   * Clicking the pinned row again lets go.
    */
   selectTreeNode(node) {
     const host = el('d-tree');
@@ -1048,8 +1062,12 @@ export class Detail {
     // does the resizing, this only asks for the frame that shows it.
     this.viewer.invalidate();
     // The tree is on screen now, so a row picked off the render while it was
-    // not can finally be scrolled to.
+    // not can finally be scrolled to. On the way out it stops being rendered,
+    // and a link left lit on the page would be a selection with nothing on
+    // screen to say what it is or how to let it go — so the stage goes back to
+    // nothing lit, and the page starts clean.
     if (on) this.revealTreeSelection();
+    else this.clearTreeSelection();
   }
 
   // -------------------------------------------------- fullscreen panel width
