@@ -338,10 +338,17 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
 
 .hero-custom { margin: 24px 0 0; display: flex; flex-direction: column; align-items: flex-start; gap: 9px; }
 /* The promise, in the smallest type on the page but never behind a click: the
- * visitor decides whether to hand over a file while reading this line. */
+ * visitor decides whether to hand over a file while reading this line.
+ *
+ * No measure of its own. It is one sentence, and at the hero's own 760px it is
+ * one line in both languages — narrowing it to a reading measure would only
+ * break that line early and leave a two-word stub under a column edge that
+ * lines up with nothing. `align-items: flex-start` on the parent already keeps
+ * it to its content, so it never runs wider than the lede above it, and on a
+ * phone it wraps against the same edge as everything else. */
 .hero-custom-note {
   display: flex; gap: 7px; align-items: baseline;
-  margin: 0; max-width: 62ch;
+  margin: 0;
   color: var(--text-faint); font-size: 12.5px; line-height: 1.55;
 }
 .hero-custom-current { margin: 0; font-size: 12.5px; }
@@ -1083,9 +1090,12 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
 /* A <dialog>, so the browser owns the modality: the backdrop, the focus trap
  * and Escape all come for free, and the page behind it keeps its scroll. */
 .custom-dialog {
-  /* The reset zeroes every margin, and `margin: auto` is exactly how a modal
-     <dialog> centres itself in the viewport — without this it opens in the
-     top-left corner. */
+  /* Centred on both axes. A modal <dialog> is laid out against `inset: 0`, so
+     `margin: auto` is what centres it horizontally *and* vertically — and the
+     reset at the top of this file zeroes every margin, which is what would
+     otherwise park it in the top-left corner. The max-height keeps a dialog
+     taller than a short window inside it, scrolling its own content rather
+     than growing off both edges. */
   margin: auto;
   width: min(560px, calc(100vw - 32px));
   max-height: calc(100vh - 32px);
