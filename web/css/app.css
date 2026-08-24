@@ -297,7 +297,13 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
 
 .hero { padding: clamp(32px, 5vw, 60px) 0 22px; max-width: 760px; }
 .hero h1 { font-size: clamp(28px, 4.4vw, 40px); line-height: 1.15; }
-.hero p { color: var(--text-muted); font-size: clamp(14px, 1.3vw, 15.5px); margin: 14px 0 0; }
+/* The lede, and only the lede: as `.hero p` this outranked every rule below
+ * that styles a paragraph further down the hero by class alone, so the note
+ * and the link under the button were both wearing the lede's size and its
+ * 14px top margin — and inside a centred flex row that margin is centred
+ * with the box, which dropped the link half a margin below the button's
+ * middle. The child combinator keeps it to the paragraph it was written for. */
+.hero > p { color: var(--text-muted); font-size: clamp(14px, 1.3vw, 15.5px); margin: 14px 0 0; }
 
 /* The counters are a caption for the lede, not a dashboard: on one baseline
  * they read as a sentence — "75 robots, 33 makers" — and the hero no longer
