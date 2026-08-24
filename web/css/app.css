@@ -337,6 +337,10 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
 }
 
 .hero-custom { margin: 24px 0 0; display: flex; flex-direction: column; align-items: flex-start; gap: 9px; }
+/* Button and the way back to the last file previewed, on one line. The
+ * link is a second door to the same dialog, so it reads beside the button
+ * rather than under the promise; it wraps below when the line runs out. */
+.hero-custom-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
 /* The promise, in the smallest type on the page but never behind a click: the
  * visitor decides whether to hand over a file while reading this line.
  *
@@ -1248,6 +1252,8 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
   .hero-stats > div + div { padding-left: 0; border-left: 0; }
   /* Nothing sits beside it at this width, so it may as well be the full row. */
   .hero-custom { align-self: stretch; }
+  /* No room beside a full-width button: the link takes the line under it. */
+  .hero-custom-row { align-self: stretch; flex-direction: column; align-items: flex-start; gap: 9px; }
   .hero-custom .primary-btn { width: 100%; }
   .custom-dialog { padding: 18px; }
   .custom-actions .primary-btn { margin-left: 0; width: 100%; }

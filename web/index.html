@@ -65,17 +65,23 @@
          robots to find out this is possible. The promise about where the files
          go is next to the button, not only inside the dialog it opens. -->
     <div class="hero-custom">
-      <button id="custom-open" class="primary-btn">
-        <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false" class="upload-mark">
-          <path d="M10 13.5V3.5M10 3.5 6.2 7.3M10 3.5l3.8 3.8M3.5 12.5v2.2a1.8 1.8 0 0 0 1.8 1.8h9.4a1.8 1.8 0 0 0 1.8-1.8v-2.2"/>
-        </svg>
-        <span data-i18n="custom.cta">预览我自己的 URDF</span>
-      </button>
+      <!-- The way back to a model already previewed sits on the button's own
+           line, beside it: it is the same action as the button, only for a file
+           this visitor has already handed over, and the promise below belongs
+           under both of them. -->
+      <div class="hero-custom-row">
+        <button id="custom-open" class="primary-btn">
+          <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false" class="upload-mark">
+            <path d="M10 13.5V3.5M10 3.5 6.2 7.3M10 3.5l3.8 3.8M3.5 12.5v2.2a1.8 1.8 0 0 0 1.8 1.8h9.4a1.8 1.8 0 0 0 1.8-1.8v-2.2"/>
+          </svg>
+          <span data-i18n="custom.cta">预览我自己的 URDF</span>
+        </button>
+        <p class="hero-custom-current" id="custom-current" hidden></p>
+      </div>
       <p class="hero-custom-note">
         <span aria-hidden="true">🔒</span>
         <span data-i18n="custom.heroNote"></span>
       </p>
-      <p class="hero-custom-current" id="custom-current" hidden></p>
     </div>
   </section>
 
