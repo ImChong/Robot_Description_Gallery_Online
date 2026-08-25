@@ -94,8 +94,8 @@
       "links": {
         "official": "https://www.unitree.com/g1"
       },
-      "notes": "Upstream ships twenty-two G1 descriptions in one folder: 23- and 29-DOF bodies, locked waists, three-finger and Inspire hands, Dex1-1 grippers, and the arms on their own. The version picker swaps between them — each one's mode_machine ID and hardware are in its own note. Pinned past the commit robot_descriptions.py carries, which predates the mode 18 and Dex1-1 files.",
-      "notes_zh": "上游在同一个目录里提供 22 个 G1 描述文件：23/29 自由度本体、锁腰版本、三指手与 Inspire 手、Dex1-1 夹爪，以及单独的双臂。用版本选择器切换——每个版本的 mode_machine 号与硬件差异写在它自己的说明里。这里固定的 commit 比 robot_descriptions.py 记录的更新，后者还没有 mode 18 与 Dex1-1 两个文件。",
+      "notes": "Upstream ships twenty-two G1 descriptions in one folder and twenty-one of them are this robot: 23- and 29-DOF bodies, locked waists, three-finger and Inspire hands, Dex1-1 grippers. The version picker swaps between them — each one's mode_machine ID and hardware are in its own note. The twenty-second, g1_dual_arm, has no legs and is filed under dual arm. Pinned past the commit robot_descriptions.py carries, which predates the mode 18 and Dex1-1 files.",
+      "notes_zh": "上游在同一个目录里提供 22 个 G1 描述文件，其中 21 个是这台机器：23/29 自由度本体、锁腰版本、三指手与 Inspire 手、Dex1-1 夹爪。用版本选择器切换——每个版本的 mode_machine 号与硬件差异写在它自己的说明里。第 22 个 g1_dual_arm 没有腿，收录在双臂分类下。这里固定的 commit 比 robot_descriptions.py 记录的更新，后者还没有 mode 18 与 Dex1-1 两个文件。",
       "variants": [
         {
           "urdf": "robots/g1_description/g1_29dof_rev_1_0.urdf",
@@ -186,12 +186,6 @@
           "urdf": "robots/g1_description/g1_comp.urdf",
           "notes": "The competition build: the 23-DOF body plus a two-axis head — an XL330 servo that pans it and a RealSense D455 that tilts — which is what takes it to 25 moving joints.",
           "notes_zh": "比赛构型：23 自由度本体，外加一个两自由度头部——XL330 舵机负责水平转动，RealSense D455 负责俯仰——因此可动关节是 25 个。"
-        },
-        {
-          "urdf": "robots/g1_description/g1_dual_arm.urdf",
-          "mjcf": "robots/g1_description/g1_dual_arm.xml",
-          "notes": "mode_machine 9: G1 from the waist up — torso, head and two seven-DOF arms with 4010 wrists, ending in fixed rubber hands. The waist joints are modelled but locked, so all 14 moving joints are in the arms.",
-          "notes_zh": "mode_machine 9：腰部以上的 G1——躯干、头部与两条七自由度手臂（腕部 4010 电机），末端是固定的橡胶手。腰部关节保留但已锁定，14 个可动关节全在手臂上。"
         },
         {
           "urdf": "robots/g1_description/g1_29dof.urdf",
@@ -1474,6 +1468,33 @@
     {
       "description": "poppy_torso_description",
       "category": "dual_arm"
+    },
+    {
+      "id": "g1_dual_arm",
+      "name": "G1 Dual Arm",
+      "maker": "UNITREE Robotics",
+      "category": "dual_arm",
+      "upstream": {
+        "github": "unitreerobotics/unitree_ros",
+        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+        "package": "robots/g1_description",
+        "urdf": "robots/g1_description/g1_dual_arm.urdf",
+        "mjcf": "robots/g1_description/g1_dual_arm.xml",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "dual_arm"
+        ]
+      },
+      "links": {
+        "official": "https://www.unitree.com/g1"
+      },
+      "notes": "mode_machine 9 of the G1 description: the torso, head and two seven-DOF arms with 4010 wrists, ending in fixed rubber hands. The waist joints are modelled but locked, so all 14 moving joints are in the arms. Filed here rather than with the G1's other versions because without the legs it is a different machine, as G1-D is.",
+      "notes_zh": "G1 描述目录里的 mode_machine 9：躯干、头部与两条七自由度手臂（腕部 4010 电机），末端是固定的橡胶手。腰部关节保留但已锁定，14 个可动关节全在手臂上。没有和 G1 的其他版本放在一起，是因为去掉双腿之后它已经是另一台机器了——G1-D 也是这样处理的。"
     },
     {
       "id": "g1_d",

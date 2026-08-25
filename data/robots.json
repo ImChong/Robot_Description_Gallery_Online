@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-08-25T06:34:19Z",
+ "generated": "2026-08-25T07:04:06Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -54,8 +54,8 @@
     "mjcf",
     "urdf"
    ],
-   "notes": "Upstream ships twenty-two G1 descriptions in one folder: 23- and 29-DOF bodies, locked waists, three-finger and Inspire hands, Dex1-1 grippers, and the arms on their own. The version picker swaps between them — each one's mode_machine ID and hardware are in its own note. Pinned past the commit robot_descriptions.py carries, which predates the mode 18 and Dex1-1 files.",
-   "notes_zh": "上游在同一个目录里提供 22 个 G1 描述文件：23/29 自由度本体、锁腰版本、三指手与 Inspire 手、Dex1-1 夹爪，以及单独的双臂。用版本选择器切换——每个版本的 mode_machine 号与硬件差异写在它自己的说明里。这里固定的 commit 比 robot_descriptions.py 记录的更新，后者还没有 mode 18 与 Dex1-1 两个文件。",
+   "notes": "Upstream ships twenty-two G1 descriptions in one folder and twenty-one of them are this robot: 23- and 29-DOF bodies, locked waists, three-finger and Inspire hands, Dex1-1 grippers. The version picker swaps between them — each one's mode_machine ID and hardware are in its own note. The twenty-second, g1_dual_arm, has no legs and is filed under dual arm. Pinned past the commit robot_descriptions.py carries, which predates the mode 18 and Dex1-1 files.",
+   "notes_zh": "上游在同一个目录里提供 22 个 G1 描述文件，其中 21 个是这台机器：23/29 自由度本体、锁腰版本、三指手与 Inspire 手、Dex1-1 夹爪。用版本选择器切换——每个版本的 mode_machine 号与硬件差异写在它自己的说明里。第 22 个 g1_dual_arm 没有腿，收录在双臂分类下。这里固定的 commit 比 robot_descriptions.py 记录的更新，后者还没有 mode 18 与 Dex1-1 两个文件。",
    "pose": null,
    "preview_frame": null,
    "measured": {
@@ -817,49 +817,6 @@
       "packages": {},
       "mesh_files": 30,
       "mesh_bytes": 28207570,
-      "mesh_formats": [
-       ".stl"
-      ]
-     }
-    },
-    {
-     "id": "g1_dual_arm",
-     "name": "g1_dual_arm",
-     "deprecated": false,
-     "dof": 14,
-     "formats": [
-      "mjcf",
-      "urdf"
-     ],
-     "notes": "mode_machine 9: G1 from the waist up — torso, head and two seven-DOF arms with 4010 wrists, ending in fixed rubber hands. The waist joints are modelled but locked, so all 14 moving joints are in the arms.",
-     "notes_zh": "mode_machine 9：腰部以上的 G1——躯干、头部与两条七自由度手臂（腕部 4010 电机），末端是固定的橡胶手。腰部关节保留但已锁定，14 个可动关节全在手臂上。",
-     "measured": {
-      "size": {
-       "x": 0.4457,
-       "y": 0.5302,
-       "z": 0.3714
-      },
-      "height_m": 0.5302
-     },
-     "mjcf": "robots/g1_description/g1_dual_arm.xml",
-     "urdf": {
-      "xml_name": "g1_dual_arm",
-      "links": 26,
-      "joints": {
-       "fixed": 11,
-       "revolute": 14
-      },
-      "moving_joints": 14,
-      "mass_kg": 16.929,
-      "has_collision": true,
-      "has_inertia": true,
-      "bytes": 21483
-     },
-     "assets": {
-      "urdf": "robots/g1_description/g1_dual_arm.urdf",
-      "packages": {},
-      "mesh_files": 22,
-      "mesh_bytes": 11770748,
       "mesh_formats": [
        ".stl"
       ]
@@ -6764,6 +6721,68 @@
     "mjcf": null
    },
    "links": {}
+  },
+  {
+   "id": "g1_dual_arm",
+   "name": "G1 Dual Arm",
+   "maker": "UNITREE Robotics",
+   "category": "dual_arm",
+   "tags": [
+    "dual_arm"
+   ],
+   "dof": 14,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "mode_machine 9 of the G1 description: the torso, head and two seven-DOF arms with 4010 wrists, ending in fixed rubber hands. The waist joints are modelled but locked, so all 14 moving joints are in the arms. Filed here rather than with the G1's other versions because without the legs it is a different machine, as G1-D is.",
+   "notes_zh": "G1 描述目录里的 mode_machine 9：躯干、头部与两条七自由度手臂（腕部 4010 电机），末端是固定的橡胶手。腰部关节保留但已锁定，14 个可动关节全在手臂上。没有和 G1 的其他版本放在一起，是因为去掉双腿之后它已经是另一台机器了——G1-D 也是这样处理的。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4457,
+     "y": 0.5302,
+     "z": 0.3714
+    },
+    "height_m": 0.5302
+   },
+   "urdf": {
+    "xml_name": "g1_dual_arm",
+    "links": 26,
+    "joints": {
+     "fixed": 11,
+     "revolute": 14
+    },
+    "moving_joints": 14,
+    "mass_kg": 16.929,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 21483
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_dual_arm.urdf",
+    "packages": {},
+    "mesh_files": 22,
+    "mesh_bytes": 11770748,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": "robots/g1_description/g1_dual_arm.xml"
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
   },
   {
    "id": "g1_d",

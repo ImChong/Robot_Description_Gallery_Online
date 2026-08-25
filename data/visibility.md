@@ -117,7 +117,7 @@ human readers.
 - [x] `bolt` **Bolt** — ODRI — [Gepetto/example-robot-data · bolt_description](https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/bolt_description)
 - [x] `rhea` **Rhea** — Gabrael Levine — [G-Levine/rhea_description · rhea_description](https://github.com/G-Levine/rhea_description/tree/1dc0f1abcf51b5d8a8f7ff8a548399ff0df1414f)
 
-## 双臂 Dual arm · 7
+## 双臂 Dual arm · 8
 
 - [x] `r1_a5` **R1-A5** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_a5_description)
 - [x] `r1_a7` **R1-A7** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_a7_description)
@@ -126,6 +126,7 @@ human readers.
 - [x] `pr2` **PR2** — Willow Garage — [ankurhanda/robot-assets · pr2_description](https://github.com/ankurhanda/robot-assets/tree/12f1a3c89c9975194551afaed0dfae1e09fdb27c/urdfs/robots/pr2)
 - [x] `nextage` **NEXTAGE** — Kawada Robotics — [tork-a/rtmros_nextage · nextage_description](https://github.com/tork-a/rtmros_nextage/tree/ac270fb969fa54abeb6863f9b388a9e20c1f14e0/nextage_description)
 - [x] `poppy_torso` **Poppy Torso** — Poppy Project — [poppy-project/poppy_torso_description · poppy_torso_description](https://github.com/poppy-project/poppy_torso_description/tree/6beeec3d76fb72b7548cce7c73aad722f8884522)
+- [x] `g1_dual_arm` **G1 Dual Arm** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description)
 
 ## 移动操作 Mobile manipulator · 9
 
