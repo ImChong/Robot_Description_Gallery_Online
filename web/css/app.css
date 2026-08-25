@@ -470,6 +470,7 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
   white-space: nowrap;
 }
 .tag.dof { color: var(--accent); border-color: var(--accent-line); background: var(--accent-soft); }
+.tag.versions { color: var(--text); border-style: dashed; }
 .tag.mjcf { color: var(--warn); border-color: rgba(255, 200, 87, 0.3); background: rgba(255, 200, 87, 0.1); }
 
 .card-cat {
@@ -560,6 +561,86 @@ html[lang^='zh'] .footer-text-zh { display: block; }
  * tool now, so the render takes the width back and everything that describes
  * the file reads underneath it. */
 .detail-body { display: block; }
+
+/* ── Which URDF of this machine ──────────────────────────────
+ *
+ * Above the stage rather than beside the specs: it decides what the whole page
+ * is about — the render, the joint tree, the downloads — so it reads before
+ * any of them rather than as one more field among the numbers. Only the
+ * handful of machines upstream publishes as several files ever show it.
+ */
+.version-bar {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px;
+  margin-bottom: 14px; padding: 10px 12px;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--bg-alt);
+}
+.version-pick { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1 1 320px; }
+.version-pick > span { flex-shrink: 0; color: var(--text-muted); font-size: 12.5px; }
+.version-pick select {
+  flex: 1 1 auto; min-width: 0; max-width: 100%;
+  height: 32px; padding: 0 8px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--bg); color: var(--text);
+  font: inherit; font-family: var(--font-mono); font-size: 12.5px;
+}
+.version-pick select:focus-visible { border-color: var(--accent); outline: 0; box-shadow: 0 0 0 3px var(--accent-soft); }
+
+/* Same box as the header's search, because it does the same job to a longer
+ * list: a native select's type-ahead only matches the start of an option, and
+ * these names differ in the middle. */
+.version-filter {
+  display: flex; align-items: center; gap: 8px; min-width: 0;
+  height: 32px; padding: 0 10px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--bg);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.version-filter:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.version-filter svg { width: 14px; height: 14px; flex-shrink: 0; fill: none; stroke: var(--text-faint); stroke-width: 1.9; }
+.version-filter input {
+  background: none; border: 0; outline: 0; color: var(--text);
+  min-width: 0; width: clamp(90px, 14vw, 160px); font: inherit; font-size: 12.5px;
+}
+.version-count { margin: 0; color: var(--text-faint); font-size: 12px; }
+/* A filter that matches nothing leaves the select holding only the version on
+ * the stage, which would otherwise look like a list that lost its contents. */
+.version-bar[data-empty='true'] .version-count { color: var(--warn); }
+.version-bar[data-empty='true'] .version-filter { border-color: var(--warn); }
+
+/* On a phone this row is spent out of the stage, and it was spending three
+ * lines on it: a label that indented the select past the filter box under it,
+ * so neither box shared an edge with anything. The word goes — the select
+ * carries its own aria-label — and the filter collapses to its icon the way
+ * the header's search does at this width, which leaves one row of controls
+ * over one line of type. The filter takes a row of its own while it is being
+ * used, and keeps it while it still holds something: collapsed over a filter
+ * nobody can see, a list that had quietly dropped half its options would have
+ * nothing on screen to explain itself. */
+@media (max-width: 720px) {
+  .version-bar { gap: 8px; padding: 9px 10px; }
+  /* Basis zero, not auto: the widest option is a 46-character file name, and a
+   * flex line sized from that wraps the icon beside it onto a row of its own
+   * before it ever thinks to shrink the select. */
+  .version-pick { flex: 1 1 0; }
+  .version-pick > span { display: none; }
+  /* A fingertip's target rather than a pointer's. */
+  .version-pick select, .version-filter { height: 38px; }
+  .version-filter { flex: 0 0 auto; padding: 0 9px; gap: 0; }
+  .version-filter:not(:focus-within) { justify-content: center; min-width: 38px; }
+  .version-filter input { width: 0; transition: width var(--transition); }
+  .version-bar[data-filtering='true'] .version-filter,
+  .version-filter:focus-within { flex: 1 1 100%; gap: 8px; justify-content: flex-start; }
+  .version-bar[data-filtering='true'] .version-filter input,
+  .version-filter:focus-within input { width: 100%; }
+  .version-count { flex: 1 1 100%; }
+}
+
+/* Under 16px a text field is a page zoom on iOS the moment it takes focus, and
+ * this one is only ever focused on the row it has to itself. */
+@media (pointer: coarse) {
+  .version-filter input { font-size: 16px; }
+}
 
 /* The viewer and everything that belongs to it rather than to the pose. Only
  * the specs and the joint sliders stay beside the stage; the reference cards

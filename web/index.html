@@ -49,7 +49,7 @@
     <h1 data-i18n="hero.title">机器人 URDF 合集</h1>
     <p data-i18n="hero.lede">Browse, inspect and compare open robot descriptions. Every model streams from its
       upstream repository at a pinned commit — nothing is re-hosted here.</p>
-    <!-- One line of counters, read as "96 robots" — the label follows its
+    <!-- One line of counters, read as "76 robots" — the label follows its
          number on screen (css/app.css reorders them) while the markup keeps
          the term-before-definition order a <dl> is defined by. -->
     <dl class="hero-stats">
@@ -61,7 +61,7 @@
 
     <!-- The one thing on this page that is not a hosted model. It sits with the
          hero rather than at the end of the grid because the visitor who has
-         their own URDF open in a folder should not have to scroll past 119
+         their own URDF open in a folder should not have to scroll past 99
          robots to find out this is possible. The promise about where the files
          go is next to the button, not only inside the dialog it opens. -->
     <div class="hero-custom">
@@ -107,6 +107,27 @@
       <button id="prev-robot" class="ghost-btn" title="Previous">←</button>
       <button id="next-robot" class="ghost-btn" title="Next">→</button>
     </div>
+  </div>
+
+  <!-- Upstream often publishes one machine as a folder of URDFs — the G1 has
+       twenty-two, one per `mode_machine` and hand combination. Those are one
+       card in the gallery and this row on its detail page: the whole page,
+       stage and downloads included, is about whichever one is picked here.
+       The box beside it filters the list, because a native select's type-ahead
+       only matches from the start of a name and these names differ in the
+       middle (`..._lock_waist_...`, `..._with_hand_...`). -->
+  <div class="version-bar" id="version-bar" hidden>
+    <label class="version-pick">
+      <span data-i18n="version.label">Version</span>
+      <select id="version-select" data-i18n-aria-label="version.aria"
+              aria-label="Which URDF of this model to show"></select>
+    </label>
+    <label class="version-filter">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M12.8 12.8 17 17"/></svg>
+      <input id="version-filter" type="search" autocomplete="off" spellcheck="false"
+             data-i18n-placeholder="version.filter" placeholder="Filter versions">
+    </label>
+    <p class="version-count" id="version-count"></p>
   </div>
 
   <div class="detail-body">

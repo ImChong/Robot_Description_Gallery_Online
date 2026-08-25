@@ -50,6 +50,10 @@ export async function loadRegistry(url = '../data/robots.json', { visibility = t
     robot._haystack = [
       robot.id, robot.name, robot.maker, robot.category,
       robot.source.description, robot.source.github, ...(robot.tags || []),
+      // A model's versions are on its detail page rather than on cards of
+      // their own, so searching for one of them has to reach the card that
+      // holds it: "mode_15" and "lock_waist" name G1 files, not robots.
+      ...(robot.variants || []).map((v) => v.name),
     ]
       .filter(Boolean)
       .join(' ')
@@ -60,6 +64,50 @@ export async function loadRegistry(url = '../data/robots.json', { visibility = t
   if (visibility) await applyVisibility(data, url.replace(/[^/]*$/, 'visibility.md'));
   cache = data;
   return data;
+}
+
+/**
+ * One version of a model, shaped like a registry entry.
+ *
+ * Upstream often publishes a machine as several URDFs — the G1 ships
+ * twenty-two, one per `mode_machine` and hand combination — and the gallery
+ * gives them one card and one detail page with a picker on it. Rather than
+ * teach the viewer, the spec table and the three download writers what a
+ * version is, the picked one is materialised into the shape a single-file
+ * entry already has: they go on reading `assets`, `urdf` and `formats` and
+ * never learn that a choice was made.
+ *
+ * `id` becomes the version's, because that is what a downloaded file, a saved
+ * PNG and a generated ROS 2 package should be called; `modelId` keeps the id
+ * the gallery, the address bar and prev/next are keyed on.
+ *
+ * @param {object} robot registry entry
+ * @param {string} [variantId] falls back to the model's default version
+ */
+export function variantView(robot, variantId) {
+  const variants = robot.variants || [];
+  if (!variants.length) return robot;
+  const variant = variants.find((v) => v.id === variantId) || variants[0];
+  return {
+    ...robot,
+    id: variant.id,
+    modelId: robot.id,
+    variant,
+    // Long enough to say which machine and which of its files, since this is
+    // the name that reaches the ROS 2 package and the fullscreen caption.
+    name: `${robot.name} · ${variant.name}`,
+    modelName: robot.name,
+    dof: variant.dof,
+    formats: variant.formats,
+    notes: variant.notes ?? robot.notes,
+    notes_zh: variant.notes_zh ?? robot.notes_zh,
+    measured: variant.measured,
+    urdf: variant.urdf,
+    // Every version of a model is read from the one repository at the one
+    // pinned commit, so only the paths below the base differ.
+    assets: { ...robot.assets, ...variant.assets },
+    source: { ...robot.source, mjcf: variant.mjcf },
+  };
 }
 
 export function byId(data, id) {

@@ -27,7 +27,16 @@
     "otherwise have read from a description module. Such an entry must set `id`,",
     "and should set `name`, `maker` and `upstream.tags` too, since nothing else",
     "supplies them. `upstream.package` names the ROS package directory; leave it",
-    "as \"\" when the repository root is itself the package."
+    "as \"\" when the repository root is itself the package.",
+    "",
+    "A machine that upstream ships as several URDFs in one folder (the G1 has",
+    "twenty-two, one per `mode_machine` and hand combination) is one entry with a",
+    "`variants` list, not one entry per file: the gallery gives it a single card",
+    "and its detail page a version picker. Each variant names an `urdf` — plus an",
+    "optional `mjcf`, `notes`, `notes_zh` and `deprecated` — and takes its id and",
+    "its picker label from the file's own name. The first one listed is what the",
+    "card and the detail page open on, so `upstream.urdf` may be left out; every",
+    "variant is parsed and mesh-probed exactly like an entry's own file."
   ],
   "categories": [
     {
@@ -68,79 +77,14 @@
   ],
   "robots": [
     {
-      "description": "g1_description",
-      "category": "humanoid",
-      "name": "G1 (29 DoF)",
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "The 29-DOF variant, and the file robot_descriptions.py pins. Upstream marks it deprecated (mode_machine 2, hip pitch and roll geared 14.3 and 14.5) in favour of the rev 1.0 and mode_machine 10-18 files, which are all in the gallery beside it.",
-      "notes_zh": "29 自由度版本，也是 robot_descriptions.py 固定的那个文件。上游已把它标记为弃用（mode_machine 2，髋 pitch、roll 减速比 14.3 与 14.5），改用 rev 1.0 与 mode_machine 10–18 系列，这些版本本合集里都收录在它旁边。"
-    },
-    {
-      "id": "g1_29dof_rev_1_0",
-      "name": "G1 (29 DoF, rev 1.0)",
+      "id": "g1",
+      "name": "G1",
       "maker": "UNITREE Robotics",
       "category": "humanoid",
       "upstream": {
         "github": "unitreerobotics/unitree_ros",
         "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
         "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_29dof_rev_1_0.urdf",
-        "mjcf": "robots/g1_description/g1_29dof_rev_1_0.xml",
-        "license": "BSD-3-Clause",
-        "license_file": "LICENSE",
-        "formats": [
-          "urdf",
-          "mjcf"
-        ],
-        "tags": [
-          "humanoid"
-        ]
-      },
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "Rev 1.0 hardware, mode_machine 5: hip pitch and roll geared 14.3 and 22.5, 4010 wrist motors. This is what upstream ships in place of the deprecated g1_29dof above.",
-      "notes_zh": "Rev 1.0 硬件，mode_machine 5：髋 pitch、roll 减速比分别为 14.3 和 22.5，腕部为 4010 电机。上游用它取代了上面已弃用的 g1_29dof。"
-    },
-    {
-      "id": "g1_29dof_with_hand_rev_1_0",
-      "name": "G1 (rev 1.0) + three-finger hands",
-      "maker": "UNITREE Robotics",
-      "category": "humanoid",
-      "upstream": {
-        "github": "unitreerobotics/unitree_ros",
-        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
-        "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_29dof_with_hand_rev_1_0.urdf",
-        "mjcf": "robots/g1_description/g1_29dof_with_hand_rev_1_0.xml",
-        "license": "BSD-3-Clause",
-        "license_file": "LICENSE",
-        "formats": [
-          "urdf",
-          "mjcf"
-        ],
-        "tags": [
-          "humanoid"
-        ]
-      },
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "The rev 1.0 body with Unitree's two three-finger hands: seven joints per hand on top of the 29, 43 in all.",
-      "notes_zh": "Rev 1.0 本体加两只宇树三指手：在 29 个关节之外每只手 7 个，合计 43 个。"
-    },
-    {
-      "id": "g1_29dof_rev_1_0_with_inspire_hand_dfq",
-      "name": "G1 (rev 1.0) + Inspire DFQ hands",
-      "maker": "UNITREE Robotics",
-      "category": "humanoid",
-      "upstream": {
-        "github": "unitreerobotics/unitree_ros",
-        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
-        "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_29dof_rev_1_0_with_inspire_hand_DFQ.urdf",
         "license": "BSD-3-Clause",
         "license_file": "LICENSE",
         "tags": [
@@ -150,412 +94,128 @@
       "links": {
         "official": "https://www.unitree.com/g1"
       },
-      "notes": "The rev 1.0 body with two Inspire DFQ hands: twelve joints per hand, 53 in all.",
-      "notes_zh": "Rev 1.0 本体加两只 Inspire DFQ 灵巧手：每只手 12 个关节，合计 53 个。"
-    },
-    {
-      "id": "g1_29dof_rev_1_0_with_inspire_hand_ftp",
-      "name": "G1 (rev 1.0) + Inspire FTP hands",
-      "maker": "UNITREE Robotics",
-      "category": "humanoid",
-      "upstream": {
-        "github": "unitreerobotics/unitree_ros",
-        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
-        "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_29dof_rev_1_0_with_inspire_hand_FTP.urdf",
-        "license": "BSD-3-Clause",
-        "license_file": "LICENSE",
-        "tags": [
-          "humanoid"
-        ]
-      },
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "The same 53 joints as the DFQ build, with Inspire's FTP hands instead. Their fingertip force sensors are modelled as links, which is why the tree carries 97 of them against the DFQ build's 63.",
-      "notes_zh": "关节数与 DFQ 版本同为 53，换成 Inspire FTP 灵巧手。它的指尖力传感器也建成了连杆，因此连杆数为 97，而 DFQ 版本是 63。"
-    },
-    {
-      "id": "g1_29dof_lock_waist_rev_1_0",
-      "name": "G1 (rev 1.0, locked waist)",
-      "maker": "UNITREE Robotics",
-      "category": "humanoid",
-      "upstream": {
-        "github": "unitreerobotics/unitree_ros",
-        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
-        "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_29dof_lock_waist_rev_1_0.urdf",
-        "mjcf": "robots/g1_description/g1_29dof_lock_waist_rev_1_0.xml",
-        "license": "BSD-3-Clause",
-        "license_file": "LICENSE",
-        "formats": [
-          "urdf",
-          "mjcf"
-        ],
-        "tags": [
-          "humanoid"
-        ]
-      },
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "Rev 1.0, mode_machine 6: the waist roll and pitch joints are fixed, so 27 of the 29 move.",
-      "notes_zh": "Rev 1.0，mode_machine 6：腰部 roll 与 pitch 固定，29 个关节里 27 个可动。"
-    },
-    {
-      "id": "g1_29dof_lock_waist_with_hand_rev_1_0",
-      "name": "G1 (rev 1.0, locked waist) + hands",
-      "maker": "UNITREE Robotics",
-      "category": "humanoid",
-      "upstream": {
-        "github": "unitreerobotics/unitree_ros",
-        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
-        "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_29dof_lock_waist_with_hand_rev_1_0.urdf",
-        "mjcf": "robots/g1_description/g1_29dof_lock_waist_with_hand_rev_1_0.xml",
-        "license": "BSD-3-Clause",
-        "license_file": "LICENSE",
-        "formats": [
-          "urdf",
-          "mjcf"
-        ],
-        "tags": [
-          "humanoid"
-        ]
-      },
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "The locked-waist rev 1.0 with the two three-finger hands: 41 moving joints.",
-      "notes_zh": "锁腰的 rev 1.0 加两只三指手：41 个可动关节。"
-    },
-    {
-      "id": "g1_23dof_rev_1_0",
-      "name": "G1 (23 DoF, rev 1.0)",
-      "maker": "UNITREE Robotics",
-      "category": "humanoid",
-      "upstream": {
-        "github": "unitreerobotics/unitree_ros",
-        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
-        "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_23dof_rev_1_0.urdf",
-        "mjcf": "robots/g1_description/g1_23dof_rev_1_0.xml",
-        "license": "BSD-3-Clause",
-        "license_file": "LICENSE",
-        "formats": [
-          "urdf",
-          "mjcf"
-        ],
-        "tags": [
-          "humanoid"
-        ]
-      },
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "Rev 1.0, mode_machine 4: one waist joint and five per arm — no wrist pitch or yaw, and no wrist motors.",
-      "notes_zh": "Rev 1.0，mode_machine 4：腰部 1 个关节、单臂 5 个——没有腕部 pitch 与 yaw，也没有腕部电机。"
-    },
-    {
-      "id": "g1_29dof_mode_11",
-      "name": "G1 (29 DoF, mode 11)",
-      "maker": "UNITREE Robotics",
-      "category": "humanoid",
-      "upstream": {
-        "github": "unitreerobotics/unitree_ros",
-        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
-        "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_29dof_mode_11.urdf",
-        "license": "BSD-3-Clause",
-        "license_file": "LICENSE",
-        "tags": [
-          "humanoid"
-        ]
-      },
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "mode_machine 11: hip pitch and roll both geared 22.5, 4010 wrist motors, waist free.",
-      "notes_zh": "mode_machine 11：髋 pitch 与 roll 减速比均为 22.5，腕部 4010 电机，腰部可动。"
-    },
-    {
-      "id": "g1_29dof_mode_12",
-      "name": "G1 (29 DoF, mode 12)",
-      "maker": "UNITREE Robotics",
-      "category": "humanoid",
-      "upstream": {
-        "github": "unitreerobotics/unitree_ros",
-        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
-        "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_29dof_mode_12.urdf",
-        "license": "BSD-3-Clause",
-        "license_file": "LICENSE",
-        "tags": [
-          "humanoid"
-        ]
-      },
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "mode_machine 12: mode 11's hardware with the waist roll and pitch fixed, so 27 joints move.",
-      "notes_zh": "mode_machine 12：硬件与 mode 11 相同，腰部 roll 与 pitch 固定，27 个关节可动。"
-    },
-    {
-      "id": "g1_29dof_mode_13",
-      "name": "G1 (29 DoF, mode 13)",
-      "maker": "UNITREE Robotics",
-      "category": "humanoid",
-      "upstream": {
-        "github": "unitreerobotics/unitree_ros",
-        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
-        "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_29dof_mode_13.urdf",
-        "license": "BSD-3-Clause",
-        "license_file": "LICENSE",
-        "tags": [
-          "humanoid"
-        ]
-      },
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "mode_machine 13: hip pitch geared 14.3 and roll 22.5, with the newer 5010 wrist motors.",
-      "notes_zh": "mode_machine 13：髋 pitch 减速比 14.3、roll 22.5，腕部换用较新的 5010 电机。"
-    },
-    {
-      "id": "g1_29dof_mode_14",
-      "name": "G1 (29 DoF, mode 14)",
-      "maker": "UNITREE Robotics",
-      "category": "humanoid",
-      "upstream": {
-        "github": "unitreerobotics/unitree_ros",
-        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
-        "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_29dof_mode_14.urdf",
-        "license": "BSD-3-Clause",
-        "license_file": "LICENSE",
-        "tags": [
-          "humanoid"
-        ]
-      },
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "mode_machine 14: mode 13's hardware with the waist roll and pitch fixed, so 27 joints move.",
-      "notes_zh": "mode_machine 14：硬件与 mode 13 相同，腰部 roll 与 pitch 固定，27 个关节可动。"
-    },
-    {
-      "id": "g1_29dof_mode_15",
-      "name": "G1 (29 DoF, mode 15)",
-      "maker": "UNITREE Robotics",
-      "category": "humanoid",
-      "upstream": {
-        "github": "unitreerobotics/unitree_ros",
-        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
-        "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_29dof_mode_15.urdf",
-        "license": "BSD-3-Clause",
-        "license_file": "LICENSE",
-        "tags": [
-          "humanoid"
-        ]
-      },
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "mode_machine 15: hip pitch and roll both geared 22.5, with the newer 5010 wrist motors.",
-      "notes_zh": "mode_machine 15：髋 pitch 与 roll 减速比均为 22.5，腕部为较新的 5010 电机。"
-    },
-    {
-      "id": "g1_29dof_mode_15_with_dex1_1",
-      "name": "G1 (mode 15) + Dex1-1 grippers",
-      "maker": "UNITREE Robotics",
-      "category": "humanoid",
-      "upstream": {
-        "github": "unitreerobotics/unitree_ros",
-        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
-        "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_29dof_mode_15_with_dex1_1.urdf",
-        "license": "BSD-3-Clause",
-        "license_file": "LICENSE",
-        "tags": [
-          "humanoid"
-        ]
-      },
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "The mode 15 body with a Dex1-1 two-finger gripper on each wrist: four prismatic finger joints on top of the 29.",
-      "notes_zh": "mode 15 本体加两只 Dex1-1 二指夹爪：在 29 个关节之外多出 4 个移动副手指关节。"
-    },
-    {
-      "id": "g1_29dof_mode_16",
-      "name": "G1 (29 DoF, mode 16)",
-      "maker": "UNITREE Robotics",
-      "category": "humanoid",
-      "upstream": {
-        "github": "unitreerobotics/unitree_ros",
-        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
-        "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_29dof_mode_16.urdf",
-        "license": "BSD-3-Clause",
-        "license_file": "LICENSE",
-        "tags": [
-          "humanoid"
-        ]
-      },
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "mode_machine 16: mode 15's hardware with the waist roll and pitch fixed, so 27 joints move.",
-      "notes_zh": "mode_machine 16：硬件与 mode 15 相同，腰部 roll 与 pitch 固定，27 个关节可动。"
-    },
-    {
-      "id": "g1_29dof_mode_18",
-      "name": "G1 (29 DoF, mode 18)",
-      "maker": "UNITREE Robotics",
-      "category": "humanoid",
-      "upstream": {
-        "github": "unitreerobotics/unitree_ros",
-        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
-        "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_29dof_mode_18.urdf",
-        "license": "BSD-3-Clause",
-        "license_file": "LICENSE",
-        "tags": [
-          "humanoid"
-        ]
-      },
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "mode_machine 18: geometrically identical to mode 15, with a stronger waist — roll and pitch are declared at 100 N·m and 26.9 rad/s there against mode 15's 35 N·m and 30 rad/s.",
-      "notes_zh": "mode_machine 18：几何与 mode 15 完全一致，腰部更强——roll 与 pitch 标称 100 N·m、26.9 rad/s，而 mode 15 是 35 N·m、30 rad/s。"
-    },
-    {
-      "id": "g1_23dof_mode_10",
-      "name": "G1 (23 DoF, mode 10)",
-      "maker": "UNITREE Robotics",
-      "category": "humanoid",
-      "upstream": {
-        "github": "unitreerobotics/unitree_ros",
-        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
-        "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_23dof_mode_10.urdf",
-        "license": "BSD-3-Clause",
-        "license_file": "LICENSE",
-        "tags": [
-          "humanoid"
-        ]
-      },
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "mode_machine 10: the 23-DOF layout on 22.5 hip gearing — one waist joint, five per arm, no wrist motors.",
-      "notes_zh": "mode_machine 10：23 自由度构型，髋部减速比 22.5——腰部 1 个关节、单臂 5 个，没有腕部电机。"
-    },
-    {
-      "id": "g1_comp",
-      "name": "G1 Comp",
-      "maker": "UNITREE Robotics",
-      "category": "humanoid",
-      "upstream": {
-        "github": "unitreerobotics/unitree_ros",
-        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
-        "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_comp.urdf",
-        "license": "BSD-3-Clause",
-        "license_file": "LICENSE",
-        "tags": [
-          "humanoid"
-        ]
-      },
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "The competition build: the 23-DOF body plus a two-axis head — an XL330 servo that pans it and a RealSense D455 that tilts — which is what takes it to 25 moving joints.",
-      "notes_zh": "比赛构型：23 自由度本体，外加一个两自由度头部——XL330 舵机负责水平转动，RealSense D455 负责俯仰——因此可动关节是 25 个。"
-    },
-    {
-      "id": "g1_23dof",
-      "name": "G1 (23 DoF, mode 1)",
-      "maker": "UNITREE Robotics",
-      "category": "humanoid",
-      "upstream": {
-        "github": "unitreerobotics/unitree_ros",
-        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
-        "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_23dof.urdf",
-        "mjcf": "robots/g1_description/g1_23dof.xml",
-        "license": "BSD-3-Clause",
-        "license_file": "LICENSE",
-        "formats": [
-          "urdf",
-          "mjcf"
-        ],
-        "tags": [
-          "humanoid"
-        ]
-      },
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "Deprecated upstream, kept for the robots already running it. mode_machine 1: hip pitch and roll geared 14.3 and 14.5, one waist joint, five per arm. g1_23dof_rev_1_0 replaces it.",
-      "notes_zh": "上游已弃用，留给还在使用它的机器人。mode_machine 1：髋 pitch、roll 减速比 14.3 与 14.5，腰部 1 个关节、单臂 5 个。替代它的是 g1_23dof_rev_1_0。"
-    },
-    {
-      "id": "g1_29dof_with_hand",
-      "name": "G1 (29 DoF) + three-finger hands",
-      "maker": "UNITREE Robotics",
-      "category": "humanoid",
-      "upstream": {
-        "github": "unitreerobotics/unitree_ros",
-        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
-        "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_29dof_with_hand.urdf",
-        "mjcf": "robots/g1_description/g1_29dof_with_hand.xml",
-        "license": "BSD-3-Clause",
-        "license_file": "LICENSE",
-        "formats": [
-          "urdf",
-          "mjcf"
-        ],
-        "tags": [
-          "humanoid"
-        ]
-      },
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "Deprecated upstream. The mode_machine 2 body with the two three-finger hands, 43 joints in all; g1_29dof_with_hand_rev_1_0 replaces it.",
-      "notes_zh": "上游已弃用。mode_machine 2 本体加两只三指手，合计 43 个关节；替代它的是 g1_29dof_with_hand_rev_1_0。"
-    },
-    {
-      "id": "g1_29dof_lock_waist",
-      "name": "G1 (29 DoF, locked waist)",
-      "maker": "UNITREE Robotics",
-      "category": "humanoid",
-      "upstream": {
-        "github": "unitreerobotics/unitree_ros",
-        "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
-        "package": "robots/g1_description",
-        "urdf": "robots/g1_description/g1_29dof_lock_waist.urdf",
-        "mjcf": "robots/g1_description/g1_29dof_lock_waist.xml",
-        "license": "BSD-3-Clause",
-        "license_file": "LICENSE",
-        "formats": [
-          "urdf",
-          "mjcf"
-        ],
-        "tags": [
-          "humanoid"
-        ]
-      },
-      "links": {
-        "official": "https://www.unitree.com/g1"
-      },
-      "notes": "Deprecated upstream. mode_machine 3: the mode 2 body with the waist roll and pitch fixed, so 27 joints move; g1_29dof_lock_waist_rev_1_0 replaces it.",
-      "notes_zh": "上游已弃用。mode_machine 3：mode 2 本体，腰部 roll 与 pitch 固定，27 个关节可动；替代它的是 g1_29dof_lock_waist_rev_1_0。"
+      "notes": "Upstream ships twenty-two G1 descriptions in one folder and twenty-one of them are this robot: 23- and 29-DOF bodies, locked waists, three-finger and Inspire hands, Dex1-1 grippers. The version picker swaps between them — each one's mode_machine ID and hardware are in its own note. The twenty-second, g1_dual_arm, has no legs and is filed under dual arm. Pinned past the commit robot_descriptions.py carries, which predates the mode 18 and Dex1-1 files.",
+      "notes_zh": "上游在同一个目录里提供 22 个 G1 描述文件，其中 21 个是这台机器：23/29 自由度本体、锁腰版本、三指手与 Inspire 手、Dex1-1 夹爪。用版本选择器切换——每个版本的 mode_machine 号与硬件差异写在它自己的说明里。第 22 个 g1_dual_arm 没有腿，收录在双臂分类下。这里固定的 commit 比 robot_descriptions.py 记录的更新，后者还没有 mode 18 与 Dex1-1 两个文件。",
+      "variants": [
+        {
+          "urdf": "robots/g1_description/g1_29dof_rev_1_0.urdf",
+          "mjcf": "robots/g1_description/g1_29dof_rev_1_0.xml",
+          "notes": "Rev 1.0 hardware, mode_machine 5: hip pitch and roll geared 14.3 and 22.5, 4010 wrist motors. Upstream's current 29-DOF build, and what it ships in place of g1_29dof.",
+          "notes_zh": "Rev 1.0 硬件，mode_machine 5：髋 pitch、roll 减速比分别为 14.3 和 22.5，腕部为 4010 电机。上游当前的 29 自由度版本，用来取代 g1_29dof。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_29dof_with_hand_rev_1_0.urdf",
+          "mjcf": "robots/g1_description/g1_29dof_with_hand_rev_1_0.xml",
+          "notes": "The rev 1.0 body with Unitree's two three-finger hands: seven joints per hand on top of the 29, 43 in all.",
+          "notes_zh": "Rev 1.0 本体加两只宇树三指手：在 29 个关节之外每只手 7 个，合计 43 个。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_29dof_rev_1_0_with_inspire_hand_DFQ.urdf",
+          "notes": "The rev 1.0 body with two Inspire DFQ hands: twelve joints per hand, 53 in all.",
+          "notes_zh": "Rev 1.0 本体加两只 Inspire DFQ 灵巧手：每只手 12 个关节，合计 53 个。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_29dof_rev_1_0_with_inspire_hand_FTP.urdf",
+          "notes": "The same 53 joints as the DFQ build, with Inspire's FTP hands instead. Their fingertip force sensors are modelled as links, which is why this one carries 97 of them against the DFQ build's 63.",
+          "notes_zh": "关节数与 DFQ 版本同为 53，换成 Inspire FTP 灵巧手。它的指尖力传感器也建成了连杆，因此连杆数为 97，而 DFQ 版本是 63。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_29dof_lock_waist_rev_1_0.urdf",
+          "mjcf": "robots/g1_description/g1_29dof_lock_waist_rev_1_0.xml",
+          "notes": "Rev 1.0, mode_machine 6: the waist roll and pitch joints are fixed, so 27 of the 29 move.",
+          "notes_zh": "Rev 1.0，mode_machine 6：腰部 roll 与 pitch 固定，29 个关节里 27 个可动。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_29dof_lock_waist_with_hand_rev_1_0.urdf",
+          "mjcf": "robots/g1_description/g1_29dof_lock_waist_with_hand_rev_1_0.xml",
+          "notes": "The locked-waist rev 1.0 with the two three-finger hands: 41 moving joints.",
+          "notes_zh": "锁腰的 rev 1.0 加两只三指手：41 个可动关节。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_23dof_rev_1_0.urdf",
+          "mjcf": "robots/g1_description/g1_23dof_rev_1_0.xml",
+          "notes": "Rev 1.0, mode_machine 4: one waist joint and five per arm — no wrist pitch or yaw, and no wrist motors.",
+          "notes_zh": "Rev 1.0，mode_machine 4：腰部 1 个关节、单臂 5 个——没有腕部 pitch 与 yaw，也没有腕部电机。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_29dof_mode_11.urdf",
+          "notes": "mode_machine 11: hip pitch and roll both geared 22.5, 4010 wrist motors, waist free.",
+          "notes_zh": "mode_machine 11：髋 pitch 与 roll 减速比均为 22.5，腕部 4010 电机，腰部可动。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_29dof_mode_12.urdf",
+          "notes": "mode_machine 12: mode 11's hardware with the waist roll and pitch fixed, so 27 joints move.",
+          "notes_zh": "mode_machine 12：硬件与 mode 11 相同，腰部 roll 与 pitch 固定，27 个关节可动。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_29dof_mode_13.urdf",
+          "notes": "mode_machine 13: hip pitch geared 14.3 and roll 22.5, with the newer 5010 wrist motors.",
+          "notes_zh": "mode_machine 13：髋 pitch 减速比 14.3、roll 22.5，腕部换用较新的 5010 电机。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_29dof_mode_14.urdf",
+          "notes": "mode_machine 14: mode 13's hardware with the waist roll and pitch fixed, so 27 joints move.",
+          "notes_zh": "mode_machine 14：硬件与 mode 13 相同，腰部 roll 与 pitch 固定，27 个关节可动。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_29dof_mode_15.urdf",
+          "notes": "mode_machine 15: hip pitch and roll both geared 22.5, with the newer 5010 wrist motors.",
+          "notes_zh": "mode_machine 15：髋 pitch 与 roll 减速比均为 22.5，腕部为较新的 5010 电机。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_29dof_mode_15_with_dex1_1.urdf",
+          "notes": "The mode 15 body with a Dex1-1 two-finger gripper on each wrist: four prismatic finger joints on top of the 29.",
+          "notes_zh": "mode 15 本体加两只 Dex1-1 二指夹爪：在 29 个关节之外多出 4 个移动副手指关节。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_29dof_mode_16.urdf",
+          "notes": "mode_machine 16: mode 15's hardware with the waist roll and pitch fixed, so 27 joints move.",
+          "notes_zh": "mode_machine 16：硬件与 mode 15 相同，腰部 roll 与 pitch 固定，27 个关节可动。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_29dof_mode_18.urdf",
+          "notes": "mode_machine 18: geometrically identical to mode 15, with a stronger waist — roll and pitch are declared at 100 N·m and 26.9 rad/s here against mode 15's 35 N·m and 30 rad/s.",
+          "notes_zh": "mode_machine 18：几何与 mode 15 完全一致，腰部更强——roll 与 pitch 标称 100 N·m、26.9 rad/s，而 mode 15 是 35 N·m、30 rad/s。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_23dof_mode_10.urdf",
+          "notes": "mode_machine 10: the 23-DOF layout on 22.5 hip gearing — one waist joint, five per arm, no wrist motors.",
+          "notes_zh": "mode_machine 10：23 自由度构型，髋部减速比 22.5——腰部 1 个关节、单臂 5 个，没有腕部电机。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_comp.urdf",
+          "notes": "The competition build: the 23-DOF body plus a two-axis head — an XL330 servo that pans it and a RealSense D455 that tilts — which is what takes it to 25 moving joints.",
+          "notes_zh": "比赛构型：23 自由度本体，外加一个两自由度头部——XL330 舵机负责水平转动，RealSense D455 负责俯仰——因此可动关节是 25 个。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_29dof.urdf",
+          "mjcf": "robots/g1_description/g1_29dof.xml",
+          "deprecated": true,
+          "notes": "mode_machine 2, and the file robot_descriptions.py pins. Hip pitch and roll both geared 14.3 and 14.5; g1_29dof_rev_1_0 replaces it.",
+          "notes_zh": "mode_machine 2，也是 robot_descriptions.py 固定的那个文件。髋 pitch、roll 减速比为 14.3 与 14.5；替代它的是 g1_29dof_rev_1_0。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_29dof_with_hand.urdf",
+          "mjcf": "robots/g1_description/g1_29dof_with_hand.xml",
+          "deprecated": true,
+          "notes": "The mode_machine 2 body with the two three-finger hands, 43 joints in all; g1_29dof_with_hand_rev_1_0 replaces it.",
+          "notes_zh": "mode_machine 2 本体加两只三指手，合计 43 个关节；替代它的是 g1_29dof_with_hand_rev_1_0。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_29dof_lock_waist.urdf",
+          "mjcf": "robots/g1_description/g1_29dof_lock_waist.xml",
+          "deprecated": true,
+          "notes": "mode_machine 3: the mode 2 body with the waist roll and pitch fixed, so 27 joints move; g1_29dof_lock_waist_rev_1_0 replaces it.",
+          "notes_zh": "mode_machine 3：mode 2 本体，腰部 roll 与 pitch 固定，27 个关节可动；替代它的是 g1_29dof_lock_waist_rev_1_0。"
+        },
+        {
+          "urdf": "robots/g1_description/g1_23dof.urdf",
+          "mjcf": "robots/g1_description/g1_23dof.xml",
+          "deprecated": true,
+          "notes": "mode_machine 1: hip pitch and roll geared 14.3 and 14.5, one waist joint, five per arm. g1_23dof_rev_1_0 replaces it.",
+          "notes_zh": "mode_machine 1：髋 pitch、roll 减速比 14.3 与 14.5，腰部 1 个关节、单臂 5 个。替代它的是 g1_23dof_rev_1_0。"
+        }
+      ]
     },
     {
       "description": "h1_description",
@@ -1833,8 +1493,8 @@
       "links": {
         "official": "https://www.unitree.com/g1"
       },
-      "notes": "mode_machine 9: G1 from the waist up — torso, head and two seven-DOF arms with 4010 wrists, ending in fixed rubber hands. The waist joints are modelled but locked, so all 14 moving joints are in the arms.",
-      "notes_zh": "mode_machine 9：腰部以上的 G1——躯干、头部与两条七自由度手臂（腕部 4010 电机），末端是固定的橡胶手。腰部关节保留但已锁定，14 个可动关节全在手臂上。"
+      "notes": "mode_machine 9 of the G1 description: the torso, head and two seven-DOF arms with 4010 wrists, ending in fixed rubber hands. The waist joints are modelled but locked, so all 14 moving joints are in the arms. Filed here rather than with the G1's other versions because without the legs it is a different machine, as G1-D is.",
+      "notes_zh": "G1 描述目录里的 mode_machine 9：躯干、头部与两条七自由度手臂（腕部 4010 电机），末端是固定的橡胶手。腰部关节保留但已锁定，14 个可动关节全在手臂上。没有和 G1 的其他版本放在一起，是因为去掉双腿之后它已经是另一台机器了——G1-D 也是这样处理的。"
     },
     {
       "id": "g1_d",

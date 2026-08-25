@@ -5,6 +5,9 @@
  *   node scripts/serve.mjs &
  *   node scripts/check_downloads.mjs [--robot <id>] [--all]
  *
+ * `--robot` and `--all` cover every version of a machine upstream publishes as
+ * several URDFs; the default sample takes only the one its card opens on.
+ *
  * The zip writer in web/js/download.js is hand-rolled, so "the button produced
  * a file" is not enough: every archive is unpacked with the system `unzip`,
  * checked against the mesh count the registry recorded, and the extracted URDF
@@ -42,12 +45,31 @@ const shown = registry.robots.filter((r) => visibility.get(r.id) !== false);
 const hidden = registry.robots.length - shown.length;
 if (hidden) console.log(`${hidden} robot(s) hidden by data/visibility.md`);
 
+/**
+ * What one set of download buttons is: a robot, or one version of a robot that
+ * upstream publishes as several URDFs. The buttons write whichever version the
+ * detail page is on, so each has to be reached by its own address and checked
+ * against its own file and mesh count.
+ */
+function loads(robot, everyVersion) {
+  const variants = robot.variants || [];
+  if (!variants.length) return [{ ...robot, url: `#robot=${robot.id}` }];
+  const wanted = everyVersion ? variants : variants.slice(0, 1);
+  return wanted.map((v) => ({
+    ...robot,
+    ...v,
+    id: v.id,
+    url: `#robot=${robot.id}${v.id === variants[0].id ? '' : `&v=${v.id}`}`,
+    assets: { ...robot.assets, ...v.assets },
+  }));
+}
+
 let targets;
 if (flag('--robot')) {
-  targets = shown.filter((r) => r.id === flag('--robot'));
+  targets = shown.filter((r) => r.id === flag('--robot')).flatMap((r) => loads(r, true));
   if (!targets.length) console.log(`${flag('--robot')}: not shown (or unknown) — nothing to test`);
 } else if (args.includes('--all')) {
-  targets = shown;
+  targets = shown.flatMap((r) => loads(r, true));
 } else {
   // Default: the lightest shown robot per mesh format, so every loader path that
   // the bundle has to copy is covered without downloading a gigabyte.
@@ -59,7 +81,7 @@ if (flag('--robot')) {
       byFormat.set(key, robot);
     }
   }
-  targets = [...byFormat.values()];
+  targets = [...byFormat.values()].flatMap((r) => loads(r, false));
 }
 
 if (!targets.length) {
@@ -181,7 +203,7 @@ console.log(`checking downloads for ${targets.length} robot(s) → ${workDir}`);
 for (const robot of targets) {
   const page = await browser.newPage({ acceptDownloads: true });
   try {
-    await page.goto(`${base}/web/#robot=${robot.id}`, { waitUntil: 'commit' });
+    await page.goto(`${base}/web/${robot.url}`, { waitUntil: 'commit' });
     await page.waitForSelector('button[data-download="bundle"]', { timeout: 60000 });
 
     // --- single URDF ---

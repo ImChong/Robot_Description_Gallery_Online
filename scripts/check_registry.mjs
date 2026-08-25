@@ -21,6 +21,7 @@ const warn = (id, message) => warnings.push(`${id}: ${message}`);
 
 const categories = new Set(registry.categories.map((c) => c.id));
 const ids = new Set();
+const variantIds = new Set();
 
 for (const robot of registry.robots) {
   const id = robot.id || '(missing id)';
@@ -65,6 +66,33 @@ for (const robot of registry.robots) {
   if (args.includes('--thumbs') && !existsSync(new URL(`web/thumbs/${robot.id}.webp`, root))) {
     fail(id, 'no thumbnail — run `npm run thumbs`');
   }
+
+  // A machine upstream publishes as several URDFs is one entry with a version
+  // picker on its detail page. The versions are addressed by id in the site's
+  // address bar and looked up by id in data/measured.json, so they share one
+  // namespace with the robots and have to be as unique.
+  for (const variant of robot.variants || []) {
+    const vid = variant.id || '(missing id)';
+    const at = `${id} · ${vid}`;
+    if (!variant.id) fail(at, 'version has no id');
+    if (!/^[a-z0-9_]+$/.test(vid)) fail(at, `version id is not a slug: ${vid}`);
+    if (ids.has(vid) || variantIds.has(vid)) fail(at, 'duplicate id');
+    variantIds.add(vid);
+    if (!variant.name) fail(at, 'version has no name');
+    if (!variant.assets?.urdf) fail(at, 'version has no URDF path');
+    if (!variant.urdf?.links) fail(at, 'no links parsed from the version URDF');
+    if (!variant.formats?.includes('urdf')) fail(at, 'version is not marked as a URDF');
+    for (const format of variant.formats || []) {
+      if (!robot.formats.includes(format)) {
+        fail(at, `version offers ${format} but the card does not say so`);
+      }
+    }
+  }
+  // The entry's own file is what the card is rendered from and what the detail
+  // page opens on, so it has to be one of the versions — the first one.
+  if (robot.variants?.length && robot.variants[0].assets.urdf !== assets.urdf) {
+    fail(id, `opens on ${assets.urdf}, which is not its first version`);
+  }
 }
 
 for (const category of registry.categories) {
@@ -90,6 +118,9 @@ if (existsSync(visibilityPath)) {
   }
   const shown = [...visibility.values()].filter(Boolean).length;
   console.log(`  visibility  ${shown}/${visibility.size} entries shown`);
+  if (variantIds.size) {
+    console.log(`  versions    ${variantIds.size} across ${registry.robots.filter((r) => r.variants?.length).length} entries`);
+  }
 } else {
   warn('visibility', 'data/visibility.md is missing — run `npm run visibility`');
 }

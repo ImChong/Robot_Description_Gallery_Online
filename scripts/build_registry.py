@@ -37,7 +37,7 @@ import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -415,6 +415,67 @@ def preview_frame_problem(frame: Any) -> str | None:
     return None
 
 
+def variant_name(spec: dict[str, Any]) -> str:
+    """What the version picker on the detail page shows for one version.
+
+    The upstream file's own name, because that is what the repository, the
+    README's ``mode_machine`` table and everyone's checkout call it — and
+    because a file name is the same in both of the site's languages.
+    """
+    return spec.get("name") or posixpath.basename(spec["urdf"]).removesuffix(".urdf")
+
+
+def variant_id(spec: dict[str, Any]) -> str:
+    """The slug a version is addressed by, in ``#robot=<id>&v=<variant>``."""
+    return spec.get("id") or variant_name(spec).lower()
+
+
+def variant_for(
+    spec: dict[str, Any],
+    up: Upstream,
+    facts: UrdfFacts,
+    measured: dict[str, Any] | None,
+) -> dict[str, Any]:
+    """One version of a model, shaped like the entry it lives in.
+
+    Same keys, same meanings — ``urdf`` is what the file says, ``assets`` is
+    where the file and its meshes are — so the viewer, the spec table and the
+    three download writers can be handed a version without being taught what a
+    version is. ``assets.base`` is not repeated: every version of a model is
+    read from the one repository at the one pinned commit.
+    """
+    return {
+        "id": variant_id(spec),
+        "name": variant_name(spec),
+        # Upstream keeps superseded files around for the machines still running
+        # them, so a version can be listed and discouraged at the same time.
+        "deprecated": bool(spec.get("deprecated")),
+        "dof": spec.get("dof") or facts.n_moving_joints,
+        "formats": sorted({"urdf", *(["mjcf"] if up.mjcf_path else [])}),
+        "notes": spec.get("notes"),
+        "notes_zh": spec.get("notes_zh"),
+        "measured": measured,
+        "mjcf": up.mjcf_path,
+        "urdf": {
+            "xml_name": facts.xml_name,
+            "links": facts.n_links,
+            "joints": facts.joint_counts,
+            "moving_joints": facts.n_moving_joints,
+            "mass_kg": facts.mass_kg,
+            "has_collision": facts.has_collision,
+            "has_inertia": facts.has_inertia,
+            "bytes": facts.urdf_bytes,
+        },
+        "assets": {
+            "urdf": up.urdf_path,
+            "packages": {k: v for k, v in sorted(facts.packages.items())},
+            "mesh_files": facts.mesh_files,
+            "mesh_bytes": facts.mesh_bytes,
+            "mesh_formats": facts.mesh_formats,
+        },
+    }
+
+
 def upstream_from_curation(item: dict[str, Any]) -> Upstream:
     """Build an ``Upstream`` from a hand-written ``upstream`` block.
 
@@ -425,7 +486,11 @@ def upstream_from_curation(item: dict[str, Any]) -> Upstream:
     same URDF parsing, same mesh probing, same failure modes.
     """
     spec = item["upstream"]
-    urdf_path = spec["urdf"]
+    # A machine with several upstream URDFs lists them all in `variants`, and
+    # the first one is what its card and its detail page open on — so the entry
+    # need not name that file a second time here.
+    first = (item.get("variants") or [{}])[0]
+    urdf_path = spec.get("urdf") or first["urdf"]
     return Upstream(
         key=curated_id(item),
         robot=item.get("name") or curated_id(item),
@@ -442,7 +507,7 @@ def upstream_from_curation(item: dict[str, Any]) -> Upstream:
         # absent key falls back to the directory holding the URDF.
         package_path=spec["package"] if spec.get("package") is not None else posixpath.dirname(urdf_path),
         urdf_path=urdf_path,
-        mjcf_path=spec.get("mjcf"),
+        mjcf_path=spec["mjcf"] if "mjcf" in spec else first.get("mjcf"),
         uses_xacro=False,
         from_descriptions=False,
     )
@@ -610,7 +675,37 @@ def main() -> int:
         problem = preview_frame_problem(item.get("preview_frame"))
         if problem:
             return item, None, f"{key}: {problem}"
-        return item, entry_for(up, facts, item, measured.get(curated_id(item))), None
+        entry = entry_for(up, facts, item, measured.get(curated_id(item)))
+
+        # One machine, several upstream URDFs — the G1 ships twenty-two of them
+        # — is one card with a version picker on its detail page, not twenty-two
+        # cards. Every version is parsed and mesh-probed exactly like the entry's
+        # own file, so a version whose meshes moved fails the build too.
+        specs = item.get("variants") or []
+        seen: set[str] = set()
+        variants = []
+        for spec in specs:
+            vid = variant_id(spec)
+            if vid in seen:
+                return item, None, f"{key}: two versions both called {vid}"
+            seen.add(vid)
+            vup = replace(up, urdf_path=spec["urdf"], mjcf_path=spec.get("mjcf"))
+            # The default version has already been read; the rest are new files.
+            vfacts = facts if vup.urdf_path == up.urdf_path else inspect_urdf(vup, http)
+            if not vfacts.ok:
+                return item, None, f"{key} · {vid}: {vfacts.error}"
+            if vfacts.missing:
+                return item, None, (
+                    f"{key} · {vid}: {len(vfacts.missing)} unresolved meshes, "
+                    f"e.g. {vfacts.missing[0]}"
+                )
+            variants.append(variant_for(spec, vup, vfacts, measured.get(vid)))
+        if variants:
+            entry["variants"] = variants
+            # The card stands for the machine rather than for one of its files,
+            # so it says MJCF when any version of it has one.
+            entry["formats"] = sorted({f for v in variants for f in v["formats"]})
+        return item, entry, None
 
     with ThreadPoolExecutor(args.jobs) as ex:
         for item, entry, problem in ex.map(build, curation["robots"]):
