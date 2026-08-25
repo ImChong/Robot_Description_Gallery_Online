@@ -919,6 +919,10 @@ export class Detail {
     // lost its contents when all it holds is the version already on the stage.
     const empty = hits.length === 0;
     el('version-bar').dataset.empty = String(empty);
+    // On a phone the box collapses to its icon when it is not in use, and a
+    // filter still narrowing the list from behind an icon would be a list that
+    // had lost options for no reason on screen.
+    el('version-bar').dataset.filtering = String(needle !== '');
     const old = variants.filter((v) => v.deprecated).length;
     el('version-count').textContent = empty
       ? t('version.none')
