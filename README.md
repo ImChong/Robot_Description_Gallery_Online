@@ -3,7 +3,7 @@
 [![Verify](https://github.com/ImChong/Robot_URDF_Gallery/actions/workflows/verify.yml/badge.svg)](https://github.com/ImChong/Robot_URDF_Gallery/actions/workflows/verify.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-在浏览器里加载 **119 个**开源机器人 URDF：拖关节、看碰撞体与惯量，一键下载 URDF、
+在浏览器里加载 **98 个**开源机器人 URDF：拖关节、看碰撞体与惯量，一键下载 URDF、
 网格 zip 或可直接 `colcon build` 的 ROS 2 功能包。
 
 首页开头还有「预览我自己的 URDF」：把自己的模型目录（或几个文件）交给同一个查看器，
@@ -12,7 +12,7 @@
 
 在线访问：<https://imchong.github.io/Robot_URDF_Gallery/>
 
-人形 53 · 四足 18 · 机械臂 17 · 灵巧手 10 · 移动操作 9 · 双臂 8 · 双足 4
+人形 33 · 四足 18 · 机械臂 17 · 灵巧手 10 · 移动操作 9 · 双臂 7 · 双足 4
 
 **本仓库不托管任何模型文件。** 每个条目只记录上游仓库 + 固定 commit，URDF 与网格
 访问时从 jsDelivr 的 GitHub CDN 流式加载。
@@ -45,6 +45,12 @@ npm run check:downloads         # 校验下载包
 `robot_descriptions.py` 没有收录时手写 `upstream`），加上 `category`，然后跑
 `registry → thumbs → registry`。用 `npm run candidates` 可以列出所有可加载的候选模型。
 
+**同一机型的多个 URDF 不各占一张卡片**：上游常把一台机器发布成一个目录的 URDF
+（G1 有 22 个，按 `mode_machine` 与手部配置区分）。这种条目在 `variants` 里逐个列出
+文件，合集里仍然只有一张卡，详情页顶部多一个版本选择器 —— 选中的版本决定整页内容，
+包括渲染、关节树和三种下载。版本的 id 与标签取自文件名本身，列在最前面的就是卡片和
+详情页默认打开的那个。
+
 ## 已知限制
 
 - 暂不支持只提供 xacro 的模型（UR 系列、Shadow Hand、Fetch 等）；自己上传时也一样，
@@ -62,9 +68,11 @@ npm run check:downloads         # 校验下载包
 
 ---
 
-**English** — A browsable 3D gallery of 119 open robot descriptions (humanoids,
+**English** — A browsable 3D gallery of 98 open robot descriptions (humanoids,
 quadrupeds, arms, hands) that loads URDFs in the browser, lets you drag joints, and
-overlays collision geometry, joint axes and inertia. No model files are hosted here:
+overlays collision geometry, joint axes and inertia. A machine upstream publishes as
+several URDFs — the Unitree G1 ships 22 — is one card, with a version picker on its
+detail page that swaps the whole page between them. No model files are hosted here:
 each entry pins an upstream repository and commit, and streams from jsDelivr's GitHub
 CDN. Every robot downloads in one click as a `.urdf`, a zip of URDF + meshes, or a
 ready-to-build ROS 2 package. Run it locally with `npm install && npm run dev`. Code is

@@ -32,12 +32,30 @@ const shown = registry.robots.filter((r) => visibility.get(r.id) !== false);
 const hidden = registry.robots.length - shown.length;
 if (hidden) console.log(`${hidden} robot(s) hidden by data/visibility.md`);
 
+/**
+ * What one page load is: a robot, or one version of a robot that upstream
+ * publishes as several URDFs. The stage stamps the version's id when it
+ * finishes, so that — not the entry's — is what the wait below looks for.
+ */
+function loads(robot, everyVersion) {
+  const variants = robot.variants || [];
+  if (!variants.length) return [{ robot, id: robot.id, url: `#robot=${robot.id}` }];
+  // The default version is reached by the address a card links to, which is
+  // the one worth testing when only one of them is being.
+  const wanted = everyVersion ? variants : variants.slice(0, 1);
+  return wanted.map((v) => ({
+    robot,
+    id: v.id,
+    url: `#robot=${robot.id}${v.id === variants[0].id ? '' : `&v=${v.id}`}`,
+  }));
+}
+
 let targets;
 if (flag('--robot')) {
-  targets = shown.filter((r) => r.id === flag('--robot'));
+  targets = shown.filter((r) => r.id === flag('--robot')).flatMap((r) => loads(r, true));
   if (!targets.length) console.log(`${flag('--robot')}: not shown (or unknown) — nothing to test`);
 } else if (args.includes('--all')) {
-  targets = shown;
+  targets = shown.flatMap((r) => loads(r, true));
 } else {
   // One representative (the lightest) per category keeps the default fast.
   const byCategory = new Map();
@@ -47,8 +65,12 @@ if (flag('--robot')) {
       byCategory.set(robot.category, robot);
     }
   }
-  targets = [...byCategory.values()];
+  targets = [...byCategory.values()].flatMap((r) => loads(r, false));
 }
+
+// Version ids are file names, which run longer than the robot ids the columns
+// below were sized for.
+const pad = Math.max(26, ...targets.map((t) => t.id.length));
 
 mkdirSync(new URL('../.cache/smoke', import.meta.url), { recursive: true });
 
@@ -69,9 +91,10 @@ if (cards !== shown.length) {
 }
 
 let failures = 0;
-for (const robot of targets) {
+for (const target of targets) {
+  const name = target.id.padEnd(pad);
   const started = Date.now();
-  await page.goto(`${base}/web/#robot=${robot.id}`, { waitUntil: 'commit' });
+  await page.goto(`${base}/web/${target.url}`, { waitUntil: 'commit' });
   let result;
   try {
     result = await page.waitForFunction(
@@ -104,7 +127,7 @@ for (const robot of targets) {
           name: document.getElementById('d-name').textContent,
         };
       },
-      robot.id,
+      target.id,
       { timeout: 180000, polling: 400 },
     ).then((handle) => handle.jsonValue());
   } catch (err) {
@@ -113,19 +136,19 @@ for (const robot of targets) {
 
   const seconds = ((Date.now() - started) / 1000).toFixed(1);
   if (result.error) {
-    console.error(`  ✗ ${robot.id.padEnd(26)} ${result.error}`);
+    console.error(`  ✗ ${name} ${result.error}`);
     failures += 1;
     continue;
   }
   // A URDF whose meshes 404 still "loads" — an empty scene is the real failure.
   if (!result.meshes) {
-    console.error(`  ✗ ${robot.id.padEnd(26)} loaded but no visual geometry rendered`);
+    console.error(`  ✗ ${name} loaded but no visual geometry rendered`);
     failures += 1;
     continue;
   }
   if (result.limits !== result.joints) {
     console.error(
-      `  ✗ ${robot.id.padEnd(26)} ${result.joints} joints but ${result.limits} limit rows`,
+      `  ✗ ${name} ${result.joints} joints but ${result.limits} limit rows`,
     );
     failures += 1;
     continue;
@@ -134,7 +157,7 @@ for (const robot of targets) {
   // match means rows and joints were built from different robots.
   if (result.treeMovable !== result.joints) {
     console.error(
-      `  ✗ ${robot.id.padEnd(26)} ${result.joints} joint blocks but ` +
+      `  ✗ ${name} ${result.joints} joint blocks but ` +
         `${result.treeMovable} movable joints in the tree`,
     );
     failures += 1;
@@ -144,21 +167,21 @@ for (const robot of targets) {
   // shown, but never with a slider that would set a value it cannot keep.
   if (result.sliders + result.follows !== result.joints) {
     console.error(
-      `  ✗ ${robot.id.padEnd(26)} ${result.joints} joint blocks split into ` +
+      `  ✗ ${name} ${result.joints} joint blocks split into ` +
         `${result.sliders} sliders and ${result.follows} followers`,
     );
     failures += 1;
     continue;
   }
   if (!result.treeNodes) {
-    console.error(`  ✗ ${robot.id.padEnd(26)} joint tree is empty`);
+    console.error(`  ✗ ${name} joint tree is empty`);
     failures += 1;
     continue;
   }
   // Meshes present but nothing measurable means broken transforms.
   if (!Number.isFinite(result.height) || result.height <= 0) {
     console.error(
-      `  ✗ ${robot.id.padEnd(26)} ${result.meshes} meshes but no measurable size ` +
+      `  ✗ ${name} ${result.meshes} meshes but no measurable size ` +
         `(height=${result.height})`,
     );
     failures += 1;
@@ -166,13 +189,13 @@ for (const robot of targets) {
   }
 
   console.log(
-    `  ✓ ${robot.id.padEnd(26)} ${String(result.sliders).padStart(3)} joints` +
+    `  ✓ ${name} ${String(result.sliders).padStart(3)} joints` +
       `${result.follows ? `+${String(result.follows).padStart(2)} mimic` : '         '}  ` +
       `${String(result.meshes).padStart(3)} meshes  ${seconds.padStart(5)}s  ` +
       `${result.height.toFixed(2)} m`,
   );
   if (args.includes('--shots')) {
-    await page.screenshot({ path: new URL(`../.cache/smoke/${robot.id}.png`, import.meta.url).pathname });
+    await page.screenshot({ path: new URL(`../.cache/smoke/${target.id}.png`, import.meta.url).pathname });
   }
 }
 

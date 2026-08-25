@@ -211,10 +211,14 @@ export class Gallery {
     const thumb = `./thumbs/${robot.id}.webp`;
     const dof = robot.dof || robot.urdf.moving_joints;
     const height = robot.measured?.height_m;
+    const versions = robot.variants?.length || 0;
     const tags = [
       dof ? `<span class="tag dof">${dof} ${t('unit.dof')}</span>` : '',
       // Measured from the meshes, so the gallery can be scanned by size.
       height ? `<span class="tag">${height < 1 ? `${Math.round(height * 100)} cm` : `${height.toFixed(2)} m`}</span>` : '',
+      // One card per machine, so a machine upstream publishes several URDFs of
+      // says so here — the numbers above are the one this card opens on.
+      versions > 1 ? `<span class="tag versions">${t('unit.versions').replace('{n}', versions)}</span>` : '',
       robot.formats.includes('mjcf') ? `<span class="tag mjcf">MJCF</span>` : '',
     ].join('');
     return `<a class="card" href="#robot=${robot.id}" data-id="${robot.id}">

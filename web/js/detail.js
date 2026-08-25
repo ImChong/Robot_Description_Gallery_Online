@@ -1,6 +1,6 @@
 /** The detail view: 3D stage, overlay toggles, joint sliders, spec table. */
 import { RobotViewer, THEMES } from './viewer.js';
-import { formatBytes, urdfUrl } from './registry.js';
+import { formatBytes, urdfUrl, variantView } from './registry.js';
 import { categoryLabel, lang, t } from './i18n.js';
 import { downloadBundle, downloadRos2, downloadUrdf, ros2PackageName } from './download.js';
 import { icon } from './icons.js';
@@ -318,6 +318,14 @@ export class Detail {
     // The card that stands where the tree used to be on the page, saying where
     // it went. Its button is the same door the toolbar's expand icon opens.
     el('pose-fullscreen').addEventListener('click', () => this.toggleFullscreen());
+
+    // Picking a version is a navigation, not a widget changing its own value:
+    // it goes through the address so the browser's back button walks the
+    // versions and a link can name one.
+    el('version-select').addEventListener('change', (event) => {
+      if (this.onPickVersion) this.onPickVersion(event.target.value);
+    });
+    el('version-filter').addEventListener('input', () => this.renderVersionOptions());
 
     el('snippet-copy').addEventListener('click', async () => {
       await navigator.clipboard?.writeText(el('snippet-code').textContent);
@@ -638,8 +646,16 @@ export class Detail {
     link.click();
   }
 
-  /** @param {object} robot registry entry */
-  async show(robot) {
+  /**
+   * @param {object} entry registry entry — the machine, not one of its files
+   * @param {string} [variantId] which of its versions to open on
+   */
+  async show(entry, variantId) {
+    // A machine upstream publishes as several URDFs arrives here as the whole
+    // machine; everything below this line works on the one version picked, in
+    // the shape a single-file entry already has.
+    const robot = variantView(entry, variantId);
+    this.model = entry;
     // Loads are asynchronous and a visitor can click through robots faster than
     // the meshes arrive, so every load carries a token and a superseded load
     // stops touching the DOM as soon as it notices it is stale.
@@ -654,7 +670,7 @@ export class Detail {
     // and nothing to download that they do not already have, so those panels
     // step aside for one that says what was read and where it stayed.
     const local = robot.local === true;
-    el('d-name').textContent = robot.name;
+    el('d-name').textContent = robot.modelName || robot.name;
     el('d-sub').textContent = local
       ? robot.source.fileName
       : [robot.maker, categoryLabel(robot.category, this.data.categories)]
@@ -673,6 +689,7 @@ export class Detail {
     // Prev/next walk the gallery; the local model is not in it.
     document.querySelector('.detail-nav').hidden = local;
 
+    this.renderVersions();
     this.renderSpecs();
     if (local) {
       this.renderLocalFiles();
@@ -845,6 +862,70 @@ export class Detail {
       )
       .join('');
     el('snippet-code').textContent = SNIPPETS[this.snippetKind](this.robot);
+  }
+
+  // ---------------------------------------------------------------- versions
+
+  /**
+   * The version row: which of a machine's upstream URDFs the page is about.
+   *
+   * Hidden for the great majority of the registry, where the machine and the
+   * file are the same thing, and for a model read off the visitor's own disk.
+   */
+  renderVersions() {
+    const bar = el('version-bar');
+    const variants = this.robot.local ? [] : this.model?.variants || [];
+    bar.hidden = variants.length < 2;
+    if (bar.hidden) return;
+    // A filter left over from the last robot would hide most of this one.
+    el('version-filter').value = '';
+    this.renderVersionOptions();
+  }
+
+  /**
+   * The options themselves, narrowed to what the filter box matches. Upstream
+   * keeps superseded files around for the machines still running them, so the
+   * two groups are worth telling apart before one is picked rather than after.
+   *
+   * The version on the stage is always an option, filtered out or not: a select
+   * has to be able to show its own value.
+   */
+  renderVersionOptions() {
+    const variants = this.model?.variants || [];
+    if (variants.length < 2) return;
+    const current = this.robot.variant?.id;
+    const needle = el('version-filter').value.trim().toLowerCase();
+    const hits = needle ? variants.filter((v) => v.name.toLowerCase().includes(needle)) : variants;
+    // The version on the stage stays an option whether it matched or not: a
+    // select has to be able to show its own value.
+    const matches = hits.some((v) => v.id === current)
+      ? hits
+      : [...variants.filter((v) => v.id === current), ...hits];
+    const group = (label, list) =>
+      list.length
+        ? `<optgroup label="${label}">${list
+            .map(
+              (v) =>
+                `<option value="${v.id}"${v.id === current ? ' selected' : ''}>` +
+                `${v.name} · ${v.dof} ${t('unit.dof')}</option>`,
+            )
+            .join('')}</optgroup>`
+        : '';
+    el('version-select').innerHTML =
+      group(t('version.current'), matches.filter((v) => !v.deprecated)) +
+      group(t('version.deprecated'), matches.filter((v) => v.deprecated));
+
+    // Nothing matched: say so, rather than leave a list that looks as though it
+    // lost its contents when all it holds is the version already on the stage.
+    const empty = hits.length === 0;
+    el('version-bar').dataset.empty = String(empty);
+    const old = variants.filter((v) => v.deprecated).length;
+    el('version-count').textContent = empty
+      ? t('version.none')
+      : t('version.count')
+          .replace('{n}', variants.length)
+          .replace('{shown}', variants.length - old)
+          .replace('{old}', old);
   }
 
   /** Which of the two units is in force, on the segmented control. */

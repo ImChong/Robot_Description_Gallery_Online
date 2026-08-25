@@ -16,6 +16,10 @@ function parseHash() {
   const params = new URLSearchParams(location.hash.replace(/^#/, ''));
   return {
     robot: params.get('robot'),
+    // Which of a machine's upstream URDFs the stage is on. Absent means its
+    // default, so the plain `#robot=g1` a card links to keeps working and only
+    // a version someone actually chose ends up in the address.
+    variant: params.get('v'),
     // The model the visitor picked off their own disk. It has no id worth
     // putting in the address — the files behind it live in this tab and
     // nowhere else — so the address only records that the stage is on it.
@@ -26,11 +30,13 @@ function parseHash() {
 }
 
 /** The address for a state: a robot, or the gallery at a section and a query. */
-function hashFor({ robot, custom, category, q }) {
+function hashFor({ robot, variant, custom, category, q }) {
   const params = new URLSearchParams();
   if (custom) params.set('custom', '1');
-  else if (robot) params.set('robot', robot);
-  else {
+  else if (robot) {
+    params.set('robot', robot);
+    if (variant) params.set('v', variant);
+  } else {
     if (category && category !== 'all') params.set('category', category);
     if (q) params.set('q', q);
   }
@@ -115,9 +121,12 @@ async function main() {
   // The gallery is long now that every category is on it at once, so coming
   // back from a detail page returns to the card that was clicked, not the top.
   let galleryScroll = 0;
+  // Which machine the stage is already on, so that swapping between two of its
+  // versions is not mistaken for arriving at a new robot.
+  let stagedId = null;
 
   async function route() {
-    const { robot: id, category, custom } = parseHash();
+    const { robot: id, variant, category, custom } = parseHash();
     // Nothing is stored for a picked model: a reload, or this address opened on
     // another machine, has no files behind it and belongs back at the gallery.
     const picked = custom ? customEntry() : null;
@@ -151,11 +160,20 @@ async function main() {
     if (!views.gallery.hidden) galleryScroll = window.scrollY;
     views.gallery.hidden = true;
     views.detail.hidden = false;
-    window.scrollTo({ top: 0 });
-    detail = detail || new Detail(data);
+    // A new robot starts at the top of its page; picking another version of the
+    // one already open leaves the reader where they were, since the version row
+    // they just used is halfway down a long page on a phone.
+    if (stagedId !== robot.id) window.scrollTo({ top: 0 });
+    stagedId = robot.id;
+    if (!detail) {
+      detail = new Detail(data);
+      detail.onPickVersion = (v) => {
+        location.hash = hashFor({ robot: detail.model.id, variant: v });
+      };
+    }
     detail.relayout();
     if (!picked) setupNeighbours(robot);
-    await detail.show(robot);
+    await detail.show(robot, variant);
   }
 
   function setupNeighbours(robot) {
