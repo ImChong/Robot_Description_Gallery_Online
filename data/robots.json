@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-08-23T06:12:14Z",
+ "generated": "2026-08-25T05:45:17Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -42,7 +42,7 @@
  "robots": [
   {
    "id": "g1",
-   "name": "G1",
+   "name": "G1 (29 DoF)",
    "maker": "UNITREE Robotics",
    "category": "humanoid",
    "tags": [
@@ -53,8 +53,8 @@
    "formats": [
     "urdf"
    ],
-   "notes": "The 29-DOF variant; upstream also ships 12/23-DOF and dexterous-hand versions.",
-   "notes_zh": "此处为 29 自由度版本；上游仓库还提供 12/23 自由度以及带灵巧手的版本。",
+   "notes": "The 29-DOF variant, and the file robot_descriptions.py pins. Upstream marks it deprecated (mode_machine 2, hip pitch and roll geared 14.3 and 14.5) in favour of the rev 1.0 and mode_machine 10-18 files, which are all in the gallery beside it.",
+   "notes_zh": "29 自由度版本，也是 robot_descriptions.py 固定的那个文件。上游已把它标记为弃用（mode_machine 2，髋 pitch、roll 减速比 14.3 与 14.5），改用 rev 1.0 与 mode_machine 10–18 系列，这些版本本合集里都收录在它旁边。",
    "pose": null,
    "preview_frame": null,
    "measured": {
@@ -96,6 +96,1235 @@
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/g1_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/g1_description/LICENSE",
     "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_29dof_rev_1_0",
+   "name": "G1 (29 DoF, rev 1.0)",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 29,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "Rev 1.0 hardware, mode_machine 5: hip pitch and roll geared 14.3 and 22.5, 4010 wrist motors. This is what upstream ships in place of the deprecated g1_29dof above.",
+   "notes_zh": "Rev 1.0 硬件，mode_machine 5：髋 pitch、roll 减速比分别为 14.3 和 22.5，腕部为 4010 电机。上游用它取代了上面已弃用的 g1_29dof。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4522,
+     "y": 1.3228,
+     "z": 0.3714
+    },
+    "height_m": 1.3228
+   },
+   "urdf": {
+    "xml_name": "g1_29dof_rev_1_0",
+    "links": 39,
+    "joints": {
+     "fixed": 9,
+     "revolute": 29
+    },
+    "moving_joints": 29,
+    "mass_kg": 33.341,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 34446
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_29dof_rev_1_0.urdf",
+    "packages": {},
+    "mesh_files": 35,
+    "mesh_bytes": 19666440,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": "robots/g1_description/g1_29dof_rev_1_0.xml"
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_29dof_with_hand_rev_1_0",
+   "name": "G1 (rev 1.0) + three-finger hands",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 43,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "The rev 1.0 body with Unitree's two three-finger hands: seven joints per hand on top of the 29, 43 in all.",
+   "notes_zh": "Rev 1.0 本体加两只宇树三指手：在 29 个关节之外每只手 7 个，合计 43 个。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4958,
+     "y": 1.3228,
+     "z": 0.3714
+    },
+    "height_m": 1.3228
+   },
+   "urdf": {
+    "xml_name": "g1_29dof_with_hand_rev_1_0",
+    "links": 53,
+    "joints": {
+     "fixed": 9,
+     "revolute": 43
+    },
+    "moving_joints": 43,
+    "mass_kg": 34.394,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 49271
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_29dof_with_hand_rev_1_0.urdf",
+    "packages": {},
+    "mesh_files": 49,
+    "mesh_bytes": 31471016,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": "robots/g1_description/g1_29dof_with_hand_rev_1_0.xml"
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_29dof_rev_1_0_with_inspire_hand_dfq",
+   "name": "G1 (rev 1.0) + Inspire DFQ hands",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 53,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The rev 1.0 body with two Inspire DFQ hands: twelve joints per hand, 53 in all.",
+   "notes_zh": "Rev 1.0 本体加两只 Inspire DFQ 灵巧手：每只手 12 个关节，合计 53 个。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.5382,
+     "y": 1.3228,
+     "z": 0.3714
+    },
+    "height_m": 1.3228
+   },
+   "urdf": {
+    "xml_name": "g1_29dof_rev_1_0_with_inspire_hand_DFQ",
+    "links": 63,
+    "joints": {
+     "fixed": 9,
+     "revolute": 53
+    },
+    "moving_joints": 53,
+    "mass_kg": 33.385,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 57670
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_29dof_rev_1_0_with_inspire_hand_DFQ.urdf",
+    "packages": {},
+    "mesh_files": 59,
+    "mesh_bytes": 27123056,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_29dof_rev_1_0_with_inspire_hand_ftp",
+   "name": "G1 (rev 1.0) + Inspire FTP hands",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 53,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The same 53 joints as the DFQ build, with Inspire's FTP hands instead. Their fingertip force sensors are modelled as links, which is why the tree carries 97 of them against the DFQ build's 63.",
+   "notes_zh": "关节数与 DFQ 版本同为 53，换成 Inspire FTP 灵巧手。它的指尖力传感器也建成了连杆，因此连杆数为 97，而 DFQ 版本是 63。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.5677,
+     "y": 1.3228,
+     "z": 0.3714
+    },
+    "height_m": 1.3228
+   },
+   "urdf": {
+    "xml_name": "g1_29dof_rev_1_0_with_inspire_hand_FTP",
+    "links": 97,
+    "joints": {
+     "fixed": 43,
+     "revolute": 53
+    },
+    "moving_joints": 53,
+    "mass_kg": 34.758,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 99579
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_29dof_rev_1_0_with_inspire_hand_FTP.urdf",
+    "packages": {},
+    "mesh_files": 93,
+    "mesh_bytes": 46611412,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_29dof_lock_waist_rev_1_0",
+   "name": "G1 (rev 1.0, locked waist)",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 27,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "Rev 1.0, mode_machine 6: the waist roll and pitch joints are fixed, so 27 of the 29 move.",
+   "notes_zh": "Rev 1.0，mode_machine 6：腰部 roll 与 pitch 固定，29 个关节里 27 个可动。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4522,
+     "y": 1.3228,
+     "z": 0.3714
+    },
+    "height_m": 1.3228
+   },
+   "urdf": {
+    "xml_name": "g1_29dof_lock_waist_rev_1_0",
+    "links": 39,
+    "joints": {
+     "fixed": 11,
+     "revolute": 27
+    },
+    "moving_joints": 27,
+    "mass_kg": 33.341,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 34409
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_29dof_lock_waist_rev_1_0.urdf",
+    "packages": {},
+    "mesh_files": 35,
+    "mesh_bytes": 19666440,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": "robots/g1_description/g1_29dof_lock_waist_rev_1_0.xml"
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_29dof_lock_waist_with_hand_rev_1_0",
+   "name": "G1 (rev 1.0, locked waist) + hands",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 41,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "The locked-waist rev 1.0 with the two three-finger hands: 41 moving joints.",
+   "notes_zh": "锁腰的 rev 1.0 加两只三指手：41 个可动关节。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4958,
+     "y": 1.3228,
+     "z": 0.3714
+    },
+    "height_m": 1.3228
+   },
+   "urdf": {
+    "xml_name": "g1_29dof_lock_waist_with_hand_rev_1_0",
+    "links": 53,
+    "joints": {
+     "fixed": 11,
+     "revolute": 41
+    },
+    "moving_joints": 41,
+    "mass_kg": 34.394,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 49276
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_29dof_lock_waist_with_hand_rev_1_0.urdf",
+    "packages": {},
+    "mesh_files": 49,
+    "mesh_bytes": 31471016,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": "robots/g1_description/g1_29dof_lock_waist_with_hand_rev_1_0.xml"
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_23dof_rev_1_0",
+   "name": "G1 (23 DoF, rev 1.0)",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 23,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "Rev 1.0, mode_machine 4: one waist joint and five per arm — no wrist pitch or yaw, and no wrist motors.",
+   "notes_zh": "Rev 1.0，mode_machine 4：腰部 1 个关节、单臂 5 个——没有腕部 pitch 与 yaw，也没有腕部电机。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4482,
+     "y": 1.3228,
+     "z": 0.3714
+    },
+    "height_m": 1.3228
+   },
+   "urdf": {
+    "xml_name": "g1_23dof_rev_1_0",
+    "links": 31,
+    "joints": {
+     "fixed": 7,
+     "revolute": 23
+    },
+    "moving_joints": 23,
+    "mass_kg": 32.107,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 27422
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_23dof_rev_1_0.urdf",
+    "packages": {},
+    "mesh_files": 27,
+    "mesh_bytes": 25163718,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": "robots/g1_description/g1_23dof_rev_1_0.xml"
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_29dof_mode_11",
+   "name": "G1 (29 DoF, mode 11)",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 29,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "mode_machine 11: hip pitch and roll both geared 22.5, 4010 wrist motors, waist free.",
+   "notes_zh": "mode_machine 11：髋 pitch 与 roll 减速比均为 22.5，腕部 4010 电机，腰部可动。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4522,
+     "y": 1.3228,
+     "z": 0.3714
+    },
+    "height_m": 1.3228
+   },
+   "urdf": {
+    "xml_name": "g1_29dof_mode_11",
+    "links": 38,
+    "joints": {
+     "fixed": 8,
+     "revolute": 29
+    },
+    "moving_joints": 29,
+    "mass_kg": 33.34,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 33684
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_29dof_mode_11.urdf",
+    "packages": {},
+    "mesh_files": 34,
+    "mesh_bytes": 18551556,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_29dof_mode_12",
+   "name": "G1 (29 DoF, mode 12)",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 27,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "mode_machine 12: mode 11's hardware with the waist roll and pitch fixed, so 27 joints move.",
+   "notes_zh": "mode_machine 12：硬件与 mode 11 相同，腰部 roll 与 pitch 固定，27 个关节可动。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4522,
+     "y": 1.3228,
+     "z": 0.3714
+    },
+    "height_m": 1.3228
+   },
+   "urdf": {
+    "xml_name": "g1_29dof_mode_12",
+    "links": 38,
+    "joints": {
+     "fixed": 10,
+     "revolute": 27
+    },
+    "moving_joints": 27,
+    "mass_kg": 33.34,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 33678
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_29dof_mode_12.urdf",
+    "packages": {},
+    "mesh_files": 34,
+    "mesh_bytes": 18551556,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_29dof_mode_13",
+   "name": "G1 (29 DoF, mode 13)",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 29,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "mode_machine 13: hip pitch geared 14.3 and roll 22.5, with the newer 5010 wrist motors.",
+   "notes_zh": "mode_machine 13：髋 pitch 减速比 14.3、roll 22.5，腕部换用较新的 5010 电机。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4572,
+     "y": 1.3228,
+     "z": 0.3714
+    },
+    "height_m": 1.3228
+   },
+   "urdf": {
+    "xml_name": "g1_29dof_mode_13",
+    "links": 39,
+    "joints": {
+     "fixed": 9,
+     "revolute": 29
+    },
+    "moving_joints": 29,
+    "mass_kg": 33.741,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 34468
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_29dof_mode_13.urdf",
+    "packages": {},
+    "mesh_files": 35,
+    "mesh_bytes": 21474740,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_29dof_mode_14",
+   "name": "G1 (29 DoF, mode 14)",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 27,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "mode_machine 14: mode 13's hardware with the waist roll and pitch fixed, so 27 joints move.",
+   "notes_zh": "mode_machine 14：硬件与 mode 13 相同，腰部 roll 与 pitch 固定，27 个关节可动。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4572,
+     "y": 1.3228,
+     "z": 0.3714
+    },
+    "height_m": 1.3228
+   },
+   "urdf": {
+    "xml_name": "g1_29dof_mode_14",
+    "links": 39,
+    "joints": {
+     "fixed": 11,
+     "revolute": 27
+    },
+    "moving_joints": 27,
+    "mass_kg": 33.741,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 34462
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_29dof_mode_14.urdf",
+    "packages": {},
+    "mesh_files": 35,
+    "mesh_bytes": 21474740,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_29dof_mode_15",
+   "name": "G1 (29 DoF, mode 15)",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 29,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "mode_machine 15: hip pitch and roll both geared 22.5, with the newer 5010 wrist motors.",
+   "notes_zh": "mode_machine 15：髋 pitch 与 roll 减速比均为 22.5，腕部为较新的 5010 电机。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4572,
+     "y": 1.3228,
+     "z": 0.3714
+    },
+    "height_m": 1.3228
+   },
+   "urdf": {
+    "xml_name": "g1_29dof_mode_15",
+    "links": 38,
+    "joints": {
+     "fixed": 8,
+     "revolute": 29
+    },
+    "moving_joints": 29,
+    "mass_kg": 33.74,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 33748
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_29dof_mode_15.urdf",
+    "packages": {},
+    "mesh_files": 34,
+    "mesh_bytes": 20359856,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_29dof_mode_15_with_dex1_1",
+   "name": "G1 (mode 15) + Dex1-1 grippers",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 33,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The mode 15 body with a Dex1-1 two-finger gripper on each wrist: four prismatic finger joints on top of the 29.",
+   "notes_zh": "mode 15 本体加两只 Dex1-1 二指夹爪：在 29 个关节之外多出 4 个移动副手指关节。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4686,
+     "y": 1.3228,
+     "z": 0.3754
+    },
+    "height_m": 1.3228
+   },
+   "urdf": {
+    "xml_name": "g1_29dof_mode_15",
+    "links": 42,
+    "joints": {
+     "fixed": 8,
+     "prismatic": 4,
+     "revolute": 29
+    },
+    "moving_joints": 33,
+    "mass_kg": 34.13,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 39706
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_29dof_mode_15_with_dex1_1.urdf",
+    "packages": {},
+    "mesh_files": 37,
+    "mesh_bytes": 19481208,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_29dof_mode_16",
+   "name": "G1 (29 DoF, mode 16)",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 27,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "mode_machine 16: mode 15's hardware with the waist roll and pitch fixed, so 27 joints move.",
+   "notes_zh": "mode_machine 16：硬件与 mode 15 相同，腰部 roll 与 pitch 固定，27 个关节可动。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4572,
+     "y": 1.3228,
+     "z": 0.3714
+    },
+    "height_m": 1.3228
+   },
+   "urdf": {
+    "xml_name": "g1_29dof_mode_16",
+    "links": 38,
+    "joints": {
+     "fixed": 10,
+     "revolute": 27
+    },
+    "moving_joints": 27,
+    "mass_kg": 33.74,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 33742
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_29dof_mode_16.urdf",
+    "packages": {},
+    "mesh_files": 34,
+    "mesh_bytes": 20359856,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_29dof_mode_18",
+   "name": "G1 (29 DoF, mode 18)",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 29,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "mode_machine 18: geometrically identical to mode 15, with a stronger waist — roll and pitch are declared at 100 N·m and 26.9 rad/s there against mode 15's 35 N·m and 30 rad/s.",
+   "notes_zh": "mode_machine 18：几何与 mode 15 完全一致，腰部更强——roll 与 pitch 标称 100 N·m、26.9 rad/s，而 mode 15 是 35 N·m、30 rad/s。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4572,
+     "y": 1.3228,
+     "z": 0.3714
+    },
+    "height_m": 1.3228
+   },
+   "urdf": {
+    "xml_name": "g1_29dof_mode_18",
+    "links": 38,
+    "joints": {
+     "fixed": 8,
+     "revolute": 29
+    },
+    "moving_joints": 29,
+    "mass_kg": 33.74,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 33754
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_29dof_mode_18.urdf",
+    "packages": {},
+    "mesh_files": 34,
+    "mesh_bytes": 20359856,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_23dof_mode_10",
+   "name": "G1 (23 DoF, mode 10)",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 23,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "mode_machine 10: the 23-DOF layout on 22.5 hip gearing — one waist joint, five per arm, no wrist motors.",
+   "notes_zh": "mode_machine 10：23 自由度构型，髋部减速比 22.5——腰部 1 个关节、单臂 5 个，没有腕部电机。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4482,
+     "y": 1.3228,
+     "z": 0.3714
+    },
+    "height_m": 1.3228
+   },
+   "urdf": {
+    "xml_name": "g1_23dof_mode_10",
+    "links": 30,
+    "joints": {
+     "fixed": 6,
+     "revolute": 23
+    },
+    "moving_joints": 23,
+    "mass_kg": 32.106,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 26702
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_23dof_mode_10.urdf",
+    "packages": {},
+    "mesh_files": 26,
+    "mesh_bytes": 24048834,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_comp",
+   "name": "G1 Comp",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 25,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The competition build: the 23-DOF body plus a two-axis head — an XL330 servo that pans it and a RealSense D455 that tilts — which is what takes it to 25 moving joints.",
+   "notes_zh": "比赛构型：23 自由度本体，外加一个两自由度头部——XL330 舵机负责水平转动，RealSense D455 负责俯仰——因此可动关节是 25 个。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4482,
+     "y": 1.3523,
+     "z": 0.3714
+    },
+    "height_m": 1.3523
+   },
+   "urdf": {
+    "xml_name": "g1_comp",
+    "links": 34,
+    "joints": {
+     "fixed": 8,
+     "revolute": 25
+    },
+    "moving_joints": 25,
+    "mass_kg": 32.798,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 30166
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_comp.urdf",
+    "packages": {},
+    "mesh_files": 30,
+    "mesh_bytes": 28207570,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_23dof",
+   "name": "G1 (23 DoF, mode 1)",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 23,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "Deprecated upstream, kept for the robots already running it. mode_machine 1: hip pitch and roll geared 14.3 and 14.5, one waist joint, five per arm. g1_23dof_rev_1_0 replaces it.",
+   "notes_zh": "上游已弃用，留给还在使用它的机器人。mode_machine 1：髋 pitch、roll 减速比 14.3 与 14.5，腰部 1 个关节、单臂 5 个。替代它的是 g1_23dof_rev_1_0。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4482,
+     "y": 1.3228,
+     "z": 0.3714
+    },
+    "height_m": 1.3228
+   },
+   "urdf": {
+    "xml_name": "g1_23dof",
+    "links": 33,
+    "joints": {
+     "fixed": 9,
+     "revolute": 23
+    },
+    "moving_joints": 23,
+    "mass_kg": 34.134,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 28832
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_23dof.urdf",
+    "packages": {},
+    "mesh_files": 29,
+    "mesh_bytes": 20058036,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": "robots/g1_description/g1_23dof.xml"
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_29dof_with_hand",
+   "name": "G1 (29 DoF) + three-finger hands",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 43,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "Deprecated upstream. The mode_machine 2 body with the two three-finger hands, 43 joints in all; g1_29dof_with_hand_rev_1_0 replaces it.",
+   "notes_zh": "上游已弃用。mode_machine 2 本体加两只三指手，合计 43 个关节；替代它的是 g1_29dof_with_hand_rev_1_0。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4958,
+     "y": 1.3228,
+     "z": 0.3714
+    },
+    "height_m": 1.3228
+   },
+   "urdf": {
+    "xml_name": "g1_29dof_with_hand",
+    "links": 54,
+    "joints": {
+     "fixed": 10,
+     "revolute": 43
+    },
+    "moving_joints": 43,
+    "mass_kg": 36.168,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 50047
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_29dof_with_hand.urdf",
+    "packages": {},
+    "mesh_files": 50,
+    "mesh_bytes": 30938500,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": "robots/g1_description/g1_29dof_with_hand.xml"
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "g1_29dof_lock_waist",
+   "name": "G1 (29 DoF, locked waist)",
+   "maker": "UNITREE Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 27,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "Deprecated upstream. mode_machine 3: the mode 2 body with the waist roll and pitch fixed, so 27 joints move; g1_29dof_lock_waist_rev_1_0 replaces it.",
+   "notes_zh": "上游已弃用。mode_machine 3：mode 2 本体，腰部 roll 与 pitch 固定，27 个关节可动；替代它的是 g1_29dof_lock_waist_rev_1_0。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4522,
+     "y": 1.3228,
+     "z": 0.3714
+    },
+    "height_m": 1.3228
+   },
+   "urdf": {
+    "xml_name": "g1_29dof_lock_waist",
+    "links": 40,
+    "joints": {
+     "fixed": 12,
+     "revolute": 27
+    },
+    "moving_joints": 27,
+    "mass_kg": 35.115,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 35185
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_29dof_lock_waist.urdf",
+    "packages": {},
+    "mesh_files": 36,
+    "mesh_bytes": 19133924,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": "robots/g1_description/g1_29dof_lock_waist.xml"
    },
    "links": {
     "official": "https://www.unitree.com/g1"
@@ -146,7 +1375,7 @@
      "h1_description": "robots/h1_description"
     },
     "mesh_files": 21,
-    "mesh_bytes": 17944694,
+    "mesh_bytes": 12707534,
     "mesh_formats": [
      ".dae"
     ]
@@ -329,7 +1558,7 @@
     "urdf": "robots/h2_plus/H2_Plus.urdf",
     "packages": {},
     "mesh_files": 93,
-    "mesh_bytes": 40407987,
+    "mesh_bytes": 27369645,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -1505,7 +2734,7 @@
      "val_description": "val_description"
     },
     "mesh_files": 56,
-    "mesh_bytes": 1307770,
+    "mesh_bytes": 672637,
     "mesh_formats": [
      ".dae"
     ]
@@ -1568,7 +2797,7 @@
      "r2_description": "r2_description"
     },
     "mesh_files": 30,
-    "mesh_bytes": 13322138,
+    "mesh_bytes": 2560339,
     "mesh_formats": [
      ".dae"
     ]
@@ -1629,7 +2858,7 @@
      "jvrc_description": ""
     },
     "mesh_files": 35,
-    "mesh_bytes": 659216,
+    "mesh_bytes": 468975,
     "mesh_formats": [
      ".dae"
     ]
@@ -1753,7 +2982,7 @@
      "multisense_sl_description": "roboschool/models_robot/multisense_sl_description"
     },
     "mesh_files": 23,
-    "mesh_bytes": 2228640,
+    "mesh_bytes": 2854632,
     "mesh_formats": [
      ".dae"
     ]
@@ -2004,7 +3233,7 @@
      "jaxon_description": ""
     },
     "mesh_files": 39,
-    "mesh_bytes": 25775051,
+    "mesh_bytes": 8052412,
     "mesh_formats": [
      ".dae"
     ]
@@ -2066,7 +3295,7 @@
      "romeo_description": "romeo_description"
     },
     "mesh_files": 93,
-    "mesh_bytes": 7385521,
+    "mesh_bytes": 3389429,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -2141,7 +3370,7 @@
      "go2_description": "robots/go2_description"
     },
     "mesh_files": 7,
-    "mesh_bytes": 20922900,
+    "mesh_bytes": 2250974,
     "mesh_formats": [
      ".dae"
     ]
@@ -2219,7 +3448,7 @@
      "go2w_description": "robots/go2w_description"
     },
     "mesh_files": 8,
-    "mesh_bytes": 16347000,
+    "mesh_bytes": 19152426,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -2296,7 +3525,7 @@
      "b2_description": "robots/b2_description"
     },
     "mesh_files": 13,
-    "mesh_bytes": 7082282,
+    "mesh_bytes": 10684077,
     "mesh_formats": [
      ".dae"
     ]
@@ -2372,7 +3601,7 @@
      "a1_description": "robots/a1_description"
     },
     "mesh_files": 5,
-    "mesh_bytes": 9013989,
+    "mesh_bytes": 1759398,
     "mesh_formats": [
      ".dae"
     ]
@@ -2594,7 +3823,7 @@
      "aliengo_description": "robots/aliengo_description"
     },
     "mesh_files": 5,
-    "mesh_bytes": 1862128,
+    "mesh_bytes": 1564708,
     "mesh_formats": [
      ".dae"
     ]
@@ -2736,7 +3965,7 @@
      "anymal_b_simple_description": ""
     },
     "mesh_files": 8,
-    "mesh_bytes": 20656287,
+    "mesh_bytes": 12526742,
     "mesh_formats": [
      ".dae"
     ]
@@ -2808,7 +4037,7 @@
      "anymal_c_simple_description": ""
     },
     "mesh_files": 19,
-    "mesh_bytes": 3325560,
+    "mesh_bytes": 966784,
     "mesh_formats": [
      ".dae"
     ]
@@ -2880,7 +4109,7 @@
      "anymal_d_simple_description": ""
     },
     "mesh_files": 17,
-    "mesh_bytes": 1219881,
+    "mesh_bytes": 471441,
     "mesh_formats": [
      ".dae"
     ]
@@ -2952,7 +4181,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 4,
-    "mesh_bytes": 471954,
+    "mesh_bytes": 433102,
     "mesh_formats": [
      ".dae"
     ]
@@ -3444,7 +4673,7 @@
      "z1_description": "robots/z1_description"
     },
     "mesh_files": 7,
-    "mesh_bytes": 3982537,
+    "mesh_bytes": 7220813,
     "mesh_formats": [
      ".dae"
     ]
@@ -3509,7 +4738,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 19,
-    "mesh_bytes": 8605712,
+    "mesh_bytes": 3632458,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -3646,7 +4875,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 11,
-    "mesh_bytes": 1066671,
+    "mesh_bytes": 4083927,
     "mesh_formats": [
      ".dae"
     ]
@@ -4455,7 +5684,7 @@
      "poppy_ergo_jr_description": ""
     },
     "mesh_files": 6,
-    "mesh_bytes": 7290640,
+    "mesh_bytes": 1786868,
     "mesh_formats": [
      ".dae"
     ]
@@ -5383,7 +6612,7 @@
     "urdf": "urdf/rhea.urdf",
     "packages": {},
     "mesh_files": 7,
-    "mesh_bytes": 13411463,
+    "mesh_bytes": 1397253,
     "mesh_formats": [
      ".dae"
     ]
@@ -5628,7 +6857,7 @@
      "baxter_description": "baxter_description"
     },
     "mesh_files": 13,
-    "mesh_bytes": 11264884,
+    "mesh_bytes": 7911367,
     "mesh_formats": [
      ".dae"
     ]
@@ -5690,7 +6919,7 @@
     "urdf": "urdfs/robots/pr2/pr2.urdf",
     "packages": {},
     "mesh_files": 31,
-    "mesh_bytes": 1068753,
+    "mesh_bytes": 781918,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -5751,7 +6980,7 @@
      "nextage_description": "nextage_description"
     },
     "mesh_files": 16,
-    "mesh_bytes": 1983554,
+    "mesh_bytes": 1598154,
     "mesh_formats": [
      ".dae"
     ]
@@ -5826,6 +7055,68 @@
     "mjcf": null
    },
    "links": {}
+  },
+  {
+   "id": "g1_dual_arm",
+   "name": "G1 Dual Arm",
+   "maker": "UNITREE Robotics",
+   "category": "dual_arm",
+   "tags": [
+    "dual_arm"
+   ],
+   "dof": 14,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "mode_machine 9: G1 from the waist up — torso, head and two seven-DOF arms with 4010 wrists, ending in fixed rubber hands. The waist joints are modelled but locked, so all 14 moving joints are in the arms.",
+   "notes_zh": "mode_machine 9：腰部以上的 G1——躯干、头部与两条七自由度手臂（腕部 4010 电机），末端是固定的橡胶手。腰部关节保留但已锁定，14 个可动关节全在手臂上。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.4457,
+     "y": 0.5302,
+     "z": 0.3714
+    },
+    "height_m": 0.5302
+   },
+   "urdf": {
+    "xml_name": "g1_dual_arm",
+    "links": 26,
+    "joints": {
+     "fixed": 11,
+     "revolute": 14
+    },
+    "moving_joints": 14,
+    "mass_kg": 16.929,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 21483
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/unitreerobotics/unitree_ros@daadf41ee9afce8f90fdc09a98506012691fa122/",
+    "urdf": "robots/g1_description/g1_dual_arm.urdf",
+    "packages": {},
+    "mesh_files": 22,
+    "mesh_bytes": 11770748,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "unitreerobotics/unitree_ros",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "repo_url": "https://github.com/unitreerobotics/unitree_ros",
+    "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
+    "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mjcf": "robots/g1_description/g1_dual_arm.xml"
+   },
+   "links": {
+    "official": "https://www.unitree.com/g1"
+   }
   },
   {
    "id": "g1_d",
@@ -5938,7 +7229,7 @@
      "stretch_description": ""
     },
     "mesh_files": 31,
-    "mesh_bytes": 41556359,
+    "mesh_bytes": 25773920,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -6004,7 +7295,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 34,
-    "mesh_bytes": 4958747,
+    "mesh_bytes": 4807749,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -6069,7 +7360,7 @@
      "pepper_description": ""
     },
     "mesh_files": 99,
-    "mesh_bytes": 2325200,
+    "mesh_bytes": 1777160,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -6131,7 +7422,7 @@
     "urdf": "models/rby1a/urdf/model.urdf",
     "packages": {},
     "mesh_files": 29,
-    "mesh_bytes": 22333617,
+    "mesh_bytes": 21814511,
     "mesh_formats": [
      ".dae"
     ]
@@ -6322,7 +7613,7 @@
     "urdf": "urdf/galbot_one_golf.urdf",
     "packages": {},
     "mesh_files": 118,
-    "mesh_bytes": 8244688,
+    "mesh_bytes": 4050344,
     "mesh_formats": [
      ".glb",
      ".stl"
@@ -6388,7 +7679,7 @@
     "urdf": "urdf/galbot_s1.urdf",
     "packages": {},
     "mesh_files": 82,
-    "mesh_bytes": 10127100,
+    "mesh_bytes": 8169252,
     "mesh_formats": [
      ".glb",
      ".stl"

@@ -1379,11 +1379,7 @@ function limitsRow(joint, withMimic = true) {
   const isRot = joint.type !== 'prismatic';
   const chips = [
     chip(t('limit.range'), rangeText(joint), rangeTitle(joint)),
-    chip(
-      t('limit.velocity'),
-      joint.velocity === null ? '—' : `${num(joint.velocity)} ${isRot ? 'rad/s' : 'm/s'}`,
-      t('limit.velocityFull'),
-    ),
+    chip(t('limit.velocity'), velocityText(joint), velocityTitle(joint)),
     chip(
       t('limit.effort'),
       joint.effort === null ? '—' : `${num(joint.effort)} ${isRot ? 'N·m' : 'N'}`,
@@ -1431,6 +1427,29 @@ function rangeTitle(joint) {
   return angleUnit === 'rad'
     ? `${t('limit.rangeFull')}: [${num(joint.lower * DEG, 1)}, ${num(joint.upper * DEG, 1)}]°`
     : `${t('limit.rangeFull')}: [${num(joint.lower)}, ${num(joint.upper)}] rad`;
+}
+
+/**
+ * Top speed, in the same unit as the travel chip above it and the readout on
+ * the slider: the URDF declares an angular limit in rad/s, and degree mode
+ * renders it as °/s. A prismatic joint's ceiling is a linear speed, which
+ * neither angle unit applies to.
+ */
+function velocityText(joint) {
+  if (joint.velocity === null) return '—';
+  if (joint.type === 'prismatic') return `${num(joint.velocity)} m/s`;
+  return angleUnit === 'rad'
+    ? `${num(joint.velocity)} rad/s`
+    : `${num(joint.velocity * DEG, 1)}°/s`;
+}
+
+/** Hover text for the top-speed chip: the same speed in the unit not on show. */
+function velocityTitle(joint) {
+  const full = t('limit.velocityFull');
+  if (joint.velocity === null || joint.type === 'prismatic') return full;
+  return angleUnit === 'rad'
+    ? `${full}: ${num(joint.velocity * DEG, 1)}°/s`
+    : `${full}: ${num(joint.velocity)} rad/s`;
 }
 
 /** Compact number: no trailing zeros, and no 14-digit float noise. */
