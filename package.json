@@ -1,5 +1,5 @@
 {
-  "name": "robot-urdf-gallery",
+  "name": "robot-urdf-gallery-online",
   "version": "0.1.0",
   "private": true,
   "description": "A browsable 3D gallery of common robot URDF descriptions",

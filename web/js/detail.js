@@ -679,7 +679,7 @@ export class Detail {
     el('stage-title').textContent = local
       ? robot.name
       : [robot.name, robot.maker].filter(Boolean).join(' · ');
-    document.title = `${robot.name} · Robot URDF Gallery`;
+    document.title = `${robot.name} · Robot URDF Gallery Online`;
     el('d-local-badge').hidden = !local;
     el('panel-local').hidden = !local;
     for (const id of ['panel-download', 'panel-resources', 'panel-reuse']) el(id).hidden = local;
