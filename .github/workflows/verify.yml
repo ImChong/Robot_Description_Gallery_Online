@@ -105,6 +105,20 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
+      # The compare page reads the same descriptions a second time — without
+      # the meshes — and lines their joints up against each other. This asserts
+      # the alignment's invariants rather than its taste: every joint placed
+      # once or left over, never dropped and never in two rows at once. It runs
+      # before the slow render check because it takes about a minute.
+      - name: Compare check
+        run: |
+          PORT=8081 node scripts/serve.mjs &
+          for i in $(seq 1 30); do
+            curl -sfo /dev/null http://localhost:8081/web/ && break
+            sleep 1
+          done
+          node scripts/check_compare.mjs --base http://localhost:8081
+
       # Loads every robot from the CDN in a real browser, so it is the slow
       # step; it is also the only one that catches a robot that silently stopped
       # rendering.

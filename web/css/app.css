@@ -1287,6 +1287,183 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
  * a lone card in a three-column band reads as two cards missing. */
 .stage-extra[data-mode='local'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
+/* ── Side-by-side comparison ─────────────────────────────── */
+
+/* The way in, under the hero's own button: a second thing this gallery can do,
+ * given the same weight as previewing your own file but not the same colour —
+ * one filled button per screen is enough. */
+.hero-compare { margin: 18px 0 0; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.hero-compare-btn {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 9px 16px; border-radius: var(--radius);
+  font-size: 13.5px; font-weight: 600; text-decoration: none;
+}
+.hero-compare-btn:hover { border-color: var(--accent); color: var(--accent); }
+.compare-mark { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; }
+.hero-compare-note { margin: 0; color: var(--text-faint); font-size: 12px; line-height: 1.6; max-width: 62ch; }
+
+#view-compare .detail-title p { margin: 4px 0 0; font-size: 13px; line-height: 1.6; max-width: 78ch; }
+
+.compare-body { display: flex; flex-direction: column; gap: 14px; }
+.cmp-picker { margin-bottom: 14px; }
+.cmp-picker .picker-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.cmp-picker .version-pick { flex: 0 1 260px; }
+.cmp-picker .version-filter { flex: 1 1 200px; max-width: 320px; }
+
+/* What is selected, and — where upstream ships a machine as several URDFs —
+ * which of them. The version box is on the chip rather than in the list: it is
+ * a property of a robot already chosen, not a way of choosing one. */
+.pick-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.pick-chips:empty { display: none; }
+.pick-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 6px 5px 11px;
+  border: 1px solid var(--accent-line); background: var(--accent-soft);
+  border-radius: 20px; font-size: 12.5px; max-width: 100%;
+}
+.pick-chip .chip-name { font-weight: 600; white-space: nowrap; }
+.pick-chip select {
+  max-width: 190px; padding: 2px 4px;
+  background: var(--bg-alt); color: var(--text);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  font-family: var(--font-mono); font-size: 11px;
+}
+.pick-chip button {
+  display: flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 0; background: none; color: var(--text-muted); cursor: pointer; font-size: 11px;
+}
+.pick-chip button:hover { background: var(--border); color: var(--text); }
+
+.pick-list {
+  display: grid; gap: 8px; margin-top: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+}
+.pick-list button {
+  display: grid; align-items: center; gap: 1px 10px; text-align: left;
+  grid-template-columns: 40px minmax(0, 1fr);
+  padding: 7px 9px;
+  background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius);
+  color: var(--text); font: inherit; font-size: 12.5px; cursor: pointer;
+  transition: border-color var(--transition), background var(--transition);
+}
+.pick-list button img { grid-row: 1 / 4; width: 40px; height: 40px; object-fit: contain; }
+.pick-list button:hover:not(:disabled) { border-color: var(--text-faint); }
+.pick-list button[aria-pressed='true'] { border-color: var(--accent); background: var(--accent-soft); }
+.pick-list button:disabled { opacity: 0.4; cursor: not-allowed; }
+.pick-list .pick-name { font-weight: 600; line-height: 1.3; }
+.pick-list .pick-sub { color: var(--text-muted); font-size: 11px; line-height: 1.3; }
+.pick-list .pick-dof { color: var(--text-faint); font-family: var(--font-mono); font-size: 10.5px; }
+
+.cmp-status { margin: 0 0 12px; color: var(--text-muted); font-size: 13px; }
+.warn-line { margin: 0 0 8px; color: var(--warn); font-size: 12.5px; }
+.warn-line code { font-family: var(--font-mono); font-size: 11px; }
+.cmp-export { display: flex; justify-content: flex-end; gap: 14px; }
+
+/* The tables themselves. Six columns of numbers do not fit a phone and should
+ * not try to: the table scrolls sideways inside its own card, with the row
+ * labels and the column heads pinned so a number is never orphaned from what
+ * it is about. */
+/* The table scrolls inside its own card rather than taking the page sideways
+ * with it, and it is capped at the height of a screen so that the pinning
+ * below has something to pin against: a sticky cell can only stay put inside
+ * the box that scrolls, and until this cap the box was the whole table. A
+ * table shorter than the cap is untouched. */
+.table-scroll {
+  margin-top: 12px;
+  max-height: calc(100vh - var(--header-h) - 40px);
+  overflow: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  /* A shadow at whichever edge the table continues past, and none at the edge
+     it has reached: the first two layers travel with the content and cover the
+     other two when the ends come into view. Without it a capped table reads as
+     a table that simply stops. */
+  background-image:
+    linear-gradient(to bottom, var(--surface), rgba(0, 0, 0, 0)),
+    linear-gradient(to top, var(--surface), rgba(0, 0, 0, 0)),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0)),
+    linear-gradient(to top, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0));
+  background-position: 0 0, 0 100%, 0 0, 0 100%;
+  background-size: 100% 16px, 100% 16px, 100% 7px, 100% 7px;
+  background-repeat: no-repeat;
+  background-attachment: local, local, scroll, scroll;
+}
+.table-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+.table-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.cmp-table { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 12.5px; }
+.cmp-table th, .cmp-table td { text-align: left; vertical-align: top; padding: 8px 12px; }
+.cmp-table tbody tr + tr th, .cmp-table tbody tr + tr td { border-top: 1px solid var(--border-soft); }
+.cmp-table thead th {
+  position: sticky; top: 0;
+  z-index: 3; background: var(--surface);
+  box-shadow: inset 0 -1px 0 var(--border);
+}
+.cmp-table tbody th[scope='row'] {
+  position: sticky; left: 0; z-index: 2;
+  background: var(--surface);
+  min-width: 132px; max-width: 220px;
+  color: var(--text-muted); font-weight: 500; cursor: help;
+}
+.cmp-table thead th.corner {
+  left: 0; z-index: 4;
+  color: var(--text-faint); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+}
+.cmp-table td { min-width: 148px; font-variant-numeric: tabular-nums; }
+.cmp-table td.is-absent { color: var(--text-faint); }
+
+/* One column head: the thumbnail, so the columns can be told apart at a
+ * glance, and a way back to the robot itself. */
+.col-head { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 0 9px; color: inherit; text-decoration: none; }
+.col-head img { grid-row: 1 / 4; width: 34px; height: 34px; object-fit: contain; }
+.col-head .col-name { font-size: 13px; font-weight: 700; line-height: 1.3; }
+.col-head .col-sub { color: var(--text-muted); font-size: 10.5px; font-weight: 400; line-height: 1.3; }
+.col-head .col-variant {
+  grid-column: 1 / -1; margin-top: 3px;
+  color: var(--text-faint); font-family: var(--font-mono); font-size: 10px; font-weight: 400;
+  overflow-wrap: anywhere;
+}
+.col-head:hover .col-name { color: var(--accent); }
+
+.cmp-table .group-row th {
+  position: sticky; left: 0;
+  background: var(--bg-alt); color: var(--text-faint);
+  font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em;
+  padding: 6px 12px;
+}
+
+.cell-value { display: block; line-height: 1.45; }
+.cell-value .sub, .cell-sub { display: block; color: var(--text-faint); font-size: 10.5px; line-height: 1.4; overflow-wrap: anywhere; }
+.cmp-table td.is-max .cell-value { color: var(--accent); font-weight: 700; }
+.cell-bar { display: block; height: 3px; margin: 5px 0 3px; border-radius: 2px; background: var(--border-soft); }
+.cell-bar i { display: block; height: 100%; border-radius: 2px; background: var(--accent-line); }
+.cmp-table td.is-max .cell-bar i { background: var(--accent); }
+
+/* A travel drawn where it lies. The whole row shares one scale, so two joints
+ * with the same span are not drawn the same when one of them is centred on
+ * zero and the other is not; the upright is where zero falls. */
+.range-bar { position: relative; display: block; height: 6px; margin: 6px 0 4px; border-radius: 3px; background: var(--border-soft); }
+.range-bar i { position: absolute; top: 0; height: 100%; min-width: 2px; border-radius: 3px; background: var(--accent-line); }
+.cmp-table td.is-max .range-bar i { background: var(--accent); }
+.range-bar b { position: absolute; top: -2px; width: 1px; height: 10px; background: var(--text-faint); }
+
+.spread-col { min-width: 56px; color: var(--text-faint); font-family: var(--font-mono); font-size: 11px; }
+.cell-sub .guess { color: var(--warn); font-style: normal; cursor: help; }
+
+.cmp-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 12px; }
+.cmp-tools:empty { display: none; }
+.tools-label { color: var(--text-faint); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
+.cmp-tools .link-btn[aria-pressed='true'] { color: var(--accent); }
+
+.cmp-note { margin: 10px 0 0; color: var(--text-faint); font-size: 11.5px; line-height: 1.65; max-width: 96ch; }
+.leftovers { margin-top: 12px; font-size: 12px; }
+.leftovers summary { color: var(--text-muted); cursor: pointer; }
+.leftovers p { display: flex; flex-wrap: wrap; gap: 4px 8px; margin: 8px 0 0; }
+.leftover-name { font-weight: 600; }
+.leftover-list { display: flex; flex-wrap: wrap; gap: 4px; }
+.leftovers code { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-faint); }
+
 /* ── Responsive ─────────────────────────────────────────── */
 
 @media (max-width: 1000px) {
@@ -1298,6 +1475,14 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
 }
 
 @media (max-width: 720px) {
+  /* A comparison is a wide thing on a narrow screen: the cards give up their
+   * side padding to the table, and the pinned row labels give up half their
+   * width, so that two columns of numbers still fit beside them. */
+  .pick-list { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+  .cmp-table tbody th[scope='row'] { min-width: 96px; }
+  .cmp-table td { min-width: 128px; }
+  .cmp-table th, .cmp-table td { padding: 7px 9px; }
+
   /* The bar stays one row at every width — a wrapping header would no longer
    * match the space `.view` reserves for the fixed bar. The title truncates to
    * make room. */
