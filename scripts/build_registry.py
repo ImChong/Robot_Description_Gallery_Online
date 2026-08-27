@@ -45,7 +45,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parent.parent
 CACHE = ROOT / ".cache"
 CDN = "https://cdn.jsdelivr.net/gh"
-UA = {"User-Agent": "robot-urdf-gallery-build"}
+UA = {"User-Agent": "robot-urdf-gallery-online-build"}
 # Deliberately no Accept-Encoding header: jsDelivr answers a compression-capable
 # client with the compressed Content-Length (a 10.7 MB Collada file reports
 # 2.6 MB under brotli), while "identity" makes it omit Content-Length entirely.

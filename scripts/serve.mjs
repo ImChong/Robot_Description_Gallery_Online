@@ -52,5 +52,5 @@ createServer((req, res) => {
     res.writeHead(404, { 'Content-Type': 'text/plain' }).end(`not found: ${path}`);
   }
 }).listen(port, () => {
-  console.log(`Robot URDF Gallery → http://localhost:${port}/web/`);
+  console.log(`Robot URDF Gallery Online → http://localhost:${port}/web/`);
 });

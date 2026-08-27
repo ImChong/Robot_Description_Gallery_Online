@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Idempotent bootstrap for the Robot URDF Gallery Cloud Agent environment.
+# Idempotent bootstrap for the Robot URDF Gallery Online Cloud Agent environment.
 #
 # The site itself has no build step (web/ is plain ES modules with the browser
 # deps already vendored under web/vendor/). What this installs is the tooling

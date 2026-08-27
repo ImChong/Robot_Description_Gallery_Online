@@ -2,7 +2,7 @@
 
 const STRINGS = {
   en: {
-    'hero.title': 'Robot URDF Gallery',
+    'hero.title': 'Robot URDF Gallery Online',
     'hero.lede':
       'Browse, inspect and compare open robot descriptions — humanoids, quadrupeds, arms and hands. Every model streams from its upstream repository at a pinned commit; nothing is re-hosted here.',
     'search.placeholder': 'Search robot, maker, category…',
@@ -355,7 +355,7 @@ const STRINGS = {
     'cmp.axis.tz': 'along Z',
   },
   zh: {
-    'hero.title': '机器人 URDF 合集',
+    'hero.title': '机器人 URDF 在线合集',
     'hero.lede':
       '浏览、查看并对比开源机器人模型——人形、四足、机械臂与灵巧手。每个模型都从上游仓库的固定 commit 直接加载，本站不二次托管任何模型文件。',
     'search.placeholder': '搜索机器人、厂商、类别…',

@@ -1,5 +1,5 @@
 {
-  "name": "Robot URDF Gallery",
+  "name": "Robot URDF Gallery Online",
   "install": ".cursor/install.sh",
   "terminals": [
     {

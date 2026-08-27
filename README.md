@@ -1,6 +1,6 @@
-# Robot URDF Gallery · 机器人 URDF 合集
+# Robot URDF Gallery Online · 机器人 URDF 在线合集
 
-[![Verify](https://github.com/ImChong/Robot_URDF_Gallery/actions/workflows/verify.yml/badge.svg)](https://github.com/ImChong/Robot_URDF_Gallery/actions/workflows/verify.yml)
+[![Verify](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml/badge.svg)](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 在浏览器里加载 **99 个**开源机器人 URDF：拖关节、看碰撞体与惯量，一键下载 URDF、
@@ -12,7 +12,7 @@
 
 还有「横向对比」：同一类别下选 2~6 台机器，把它们当成数据并排读。见下文。
 
-在线访问：<https://imchong.github.io/Robot_URDF_Gallery/>
+在线访问：<https://imchong.github.io/Robot_URDF_Gallery_Online/>
 
 人形 33 · 四足 18 · 机械臂 17 · 灵巧手 10 · 移动操作 9 · 双臂 8 · 双足 4
 
