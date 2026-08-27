@@ -2,14 +2,16 @@
 import { loadRegistry, byId } from './registry.js';
 import { Gallery } from './gallery.js';
 import { Detail } from './detail.js';
-import { applyStatic, detectLang, setLang, lang, LANGS } from './i18n.js';
+import { applyStatic, detectLang, setLang, lang, t, LANGS } from './i18n.js';
 import { paintIcons } from './icons.js';
 import { theme, toggleTheme } from './theme.js';
 import { customEntry, setupCustomPicker } from './custom.js';
+import { Compare } from './compare.js';
 
 const views = {
   gallery: document.getElementById('view-gallery'),
   detail: document.getElementById('view-detail'),
+  compare: document.getElementById('view-compare'),
 };
 
 function parseHash() {
@@ -24,13 +26,31 @@ function parseHash() {
     // putting in the address — the files behind it live in this tab and
     // nowhere else — so the address only records that the stage is on it.
     custom: params.has('custom'),
+    // Several robots at once rather than one: the category they are compared
+    // in, and which of them — `ids=g1.g1_23dof,h1` names a version of a model
+    // after a dot, so a comparison is a link someone can send.
+    compare: params.has('compare'),
+    compareCategory: params.get('cat') || '',
+    compareIds: (params.get('ids') || '').split(',').filter(Boolean),
     category: params.get('category') || 'all',
     q: params.get('q') || '',
   };
 }
 
-/** The address for a state: a robot, or the gallery at a section and a query. */
-function hashFor({ robot, variant, custom, category, q }) {
+/** The address for a state: a robot, a comparison, or the gallery at a section. */
+function hashFor({ robot, variant, custom, compare, compareCategory, compareIds, category, q }) {
+  // Written by hand rather than through URLSearchParams: the selection reads as
+  // a comma-separated list of ids, and percent-encoding the commas would only
+  // make a link nobody can read at a glance.
+  if (compare) {
+    return [
+      'compare=1',
+      compareCategory ? `cat=${compareCategory}` : '',
+      compareIds?.length ? `ids=${compareIds.join(',')}` : '',
+    ]
+      .filter(Boolean)
+      .join('&');
+  }
   const params = new URLSearchParams();
   if (custom) params.set('custom', '1');
   else if (robot) {
@@ -106,6 +126,17 @@ async function main() {
     location.hash = `robot=${id}`;
   });
   let detail = null;
+  let compare = null;
+
+  /** The compare view, built the first time it is asked for. */
+  function comparison() {
+    if (!compare) {
+      compare = new Compare(data, (state) =>
+        writeHash({ compare: true, compareCategory: state.category, compareIds: state.ids }),
+      );
+    }
+    return compare;
+  }
 
   const initial = parseHash();
   gallery.state.query = initial.q;
@@ -116,7 +147,9 @@ async function main() {
     // The search box is in the header, so it is reachable from a stage too —
     // and writing the gallery's address while one is open would close it.
     const at = parseHash();
-    if (!at.robot && !at.custom) writeHash({ category: state.category, q: state.query });
+    if (!at.robot && !at.custom && !at.compare) {
+      writeHash({ category: state.category, q: state.query });
+    }
   };
   // The gallery is long now that every category is on it at once, so coming
   // back from a detail page returns to the card that was clicked, not the top.
@@ -126,7 +159,21 @@ async function main() {
   let stagedId = null;
 
   async function route() {
-    const { robot: id, variant, category, custom } = parseHash();
+    const at = parseHash();
+    const { robot: id, variant, category, custom } = at;
+    if (at.compare) {
+      if (detail?.isFullscreen()) detail.exitFullscreen();
+      if (!views.gallery.hidden) galleryScroll = window.scrollY;
+      const arriving = views.compare.hidden;
+      views.gallery.hidden = true;
+      views.detail.hidden = true;
+      views.compare.hidden = false;
+      document.title = `${t('compare.title')} · Robot URDF Gallery`;
+      if (arriving) window.scrollTo({ top: 0 });
+      await comparison().show({ category: at.compareCategory, ids: at.compareIds });
+      return;
+    }
+    views.compare.hidden = true;
     // Nothing is stored for a picked model: a reload, or this address opened on
     // another machine, has no files behind it and belongs back at the gallery.
     const picked = custom ? customEntry() : null;
@@ -197,6 +244,22 @@ async function main() {
     location.hash = hashFor(gallery.state);
   };
   document.getElementById('back-btn').addEventListener('click', toGallery);
+  document.getElementById('compare-back').addEventListener('click', toGallery);
+
+  // From a robot to a comparison it is part of. The version on the stage is the
+  // one that goes in: on the G1 that is a choice between twenty-one files, and
+  // the one being looked at is the one meant.
+  document.getElementById('add-compare').addEventListener('click', () => {
+    const state = parseHash();
+    const robot = state.robot ? byId(data, state.robot) : null;
+    if (!robot) return;
+    comparison().add(robot, state.variant || null);
+    location.hash = hashFor({
+      compare: true,
+      compareCategory: comparison().category,
+      compareIds: comparison().ids,
+    });
+  });
 
   setupCustomPicker({
     onPreview: () => {
@@ -226,7 +289,7 @@ async function main() {
       return;
     }
     if (event.target.matches('input, textarea')) return;
-    if (event.key === 'Escape' && onStage()) toGallery();
+    if (event.key === 'Escape' && (onStage() || parseHash().compare)) toGallery();
     // Prev/next walk the gallery, so they are for a gallery robot: the picked
     // model has no neighbours, and the buttons still hold the last robot's.
     if (parseHash().robot) {

@@ -15,7 +15,8 @@
     "thumbs": "node scripts/render_thumbnails.mjs",
     "smoke": "node scripts/smoke.mjs",
     "check": "node scripts/check_registry.mjs",
-    "check:downloads": "node scripts/check_downloads.mjs"
+    "check:downloads": "node scripts/check_downloads.mjs",
+    "check:compare": "node scripts/check_compare.mjs"
   },
   "devDependencies": {
     "playwright": "^1.49.0",

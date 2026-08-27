@@ -83,6 +83,20 @@
         <span data-i18n="custom.heroNote"></span>
       </p>
     </div>
+
+    <!-- The other way to read this gallery: not one robot at a time but several
+         of one kind at once, as numbers. It sits with the hero because a
+         visitor who came to choose between two machines should not have to
+         open both of them to discover that they can be put side by side. -->
+    <div class="hero-compare">
+      <a class="ghost-btn hero-compare-btn" href="#compare=1">
+        <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false" class="compare-mark">
+          <path d="M4 16V8.5M10 16V4M16 16v-5.5"/>
+        </svg>
+        <span data-i18n="compare.cta">横向对比多台机器人</span>
+      </a>
+      <p class="hero-compare-note" data-i18n="compare.heroNote"></p>
+    </div>
   </section>
 
   <!-- Jump chips, not filters: the grid below carries every category at once
@@ -104,6 +118,11 @@
       <p id="d-local-badge" class="local-badge" hidden><span aria-hidden="true">🔒</span> <span data-i18n="custom.localOnly"></span></p>
     </div>
     <div class="detail-nav">
+      <!-- Adds this robot — at the version on the stage — to a comparison of
+           its own category, and opens it. -->
+      <button id="add-compare" class="ghost-btn"
+              data-i18n="compare.add" data-i18n-title="compare.addTitle"
+              title="Compare with others of its kind">对比</button>
       <button id="prev-robot" class="ghost-btn" title="Previous">←</button>
       <button id="next-robot" class="ghost-btn" title="Next">→</button>
     </div>
@@ -246,6 +265,77 @@
       </div>
     </div>
 
+  </div>
+</main>
+
+<!-- ------------------------------- compare ------------------------------- -->
+<!-- Two to six descriptions of one category, read as numbers rather than as
+     geometry: js/compare.js fetches the URDFs (never the meshes), js/urdf-spec.js
+     parses them and js/joint-align.js decides which joint of one machine is the
+     same joint of another. -->
+<main id="view-compare" class="view" hidden>
+  <div class="detail-head">
+    <button class="back-btn" id="compare-back"><span aria-hidden="true">←</span> <span data-i18n="detail.back">Gallery</span></button>
+    <div class="detail-title">
+      <h2 data-i18n="compare.title">横向对比</h2>
+      <p class="muted" data-i18n="compare.lede"></p>
+    </div>
+  </div>
+
+  <section class="panel-block span-full cmp-picker">
+    <div class="panel-block-head">
+      <h3 data-i18n="compare.pick">选择机器人</h3>
+      <div class="head-actions">
+        <span class="tree-summary" id="compare-count"></span>
+        <button class="link-btn" id="compare-clear" hidden data-i18n="compare.clear">清空</button>
+      </div>
+    </div>
+
+    <!-- The category is a required first choice rather than a filter: a row
+         reading "left knee" across a humanoid and a gripper is a row about
+         nothing, so only one kind of machine can be selected at a time. -->
+    <div class="picker-row">
+      <label class="version-pick">
+        <span data-i18n="compare.category">类别</span>
+        <select id="compare-category" data-i18n-aria-label="compare.categoryAria"
+                aria-label="Which kind of robot to compare"></select>
+      </label>
+      <label class="version-filter">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M12.8 12.8 17 17"/></svg>
+        <input id="compare-filter" type="search" autocomplete="off" spellcheck="false"
+               data-i18n-placeholder="compare.filter" placeholder="Filter this category">
+      </label>
+    </div>
+
+    <div class="pick-chips" id="compare-chips"></div>
+    <div class="pick-list" id="compare-list"></div>
+  </section>
+
+  <p class="empty" id="compare-empty" data-i18n="compare.needTwo"></p>
+  <p class="cmp-status" id="compare-status" hidden></p>
+
+  <div class="compare-body" id="compare-body" hidden>
+    <div id="compare-failed"></div>
+    <div class="cmp-export">
+      <button class="link-btn" id="compare-copy" data-i18n="compare.copyMd">复制 Markdown</button>
+      <button class="link-btn" id="compare-csv" data-i18n="compare.csv">下载 CSV</button>
+    </div>
+
+    <section class="panel-block span-full" id="compare-overview"></section>
+    <section class="panel-block span-full" id="compare-limbs" hidden></section>
+
+    <section class="panel-block span-full">
+      <div class="panel-block-head">
+        <h3 data-i18n="compare.joints">逐关节对比</h3>
+        <div class="head-actions">
+          <span class="tree-summary" id="compare-coverage"></span>
+        </div>
+      </div>
+      <!-- Outside the table it drives, so that redrawing the table does not
+           take the toolbar's own listener with it. -->
+      <div class="cmp-tools" id="compare-tools"></div>
+      <div id="compare-joints"></div>
+    </section>
   </div>
 </main>
 
