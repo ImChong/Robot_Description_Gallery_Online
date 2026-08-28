@@ -30,9 +30,12 @@
   合计与峰值、速度峰值、`effort × velocity` 给出的功率上限、力矩密度、总行程、
   腿部/手臂质量占比、肢体长度与站姿宽度、以及「模型完整度」一组 —— 有多少连杆声明了
   质量与惯量、多少关节没写限位、左右镜像关节的限位是否一致。
-- **分肢对比**：每条腿/每条臂的关节数、力矩合计、零位下的长度与承载质量。
+- **分肢对比**：每条腿/每条臂（灵巧手则是每根手指）的关节数、力矩合计、零位下的
+  长度与承载质量。
 - **逐关节对比**：每一行是一个关节位置，列出各机器对应关节的限位、最大速度、
-  最大力矩或功率上限，限位还会画在一条共享刻度的横条上。
+  最大力矩或功率上限，限位还会画在一条共享刻度的横条上。一条运动链 —— 一根手指、
+  一条臂、一条腿 —— 是从**根关节一路读到末端关节**的：行号写作「根关节 / 第 2 关节
+  / …… / 末端关节」，谁的链先到头，就在那一格标上「末端」。
 
 难点在于「哪个关节对哪个关节」：上游把左膝叫 `left_knee_joint`、`LeftKneePitch`、
 `l_leg_kny`、`leg_left_4_joint` 或 `FL_calf_joint`，按字符串是对不齐的。所以有两种
@@ -43,8 +46,19 @@
   看它挂在身体的哪一半。像 `leg_left_1..6` 这种只有编号的，就按腿的通常构型推断
   （髋 3 个、膝 1 个、踝 2 个），并在格子里标上 `~`。人形/四足/双足/双臂目前基本
   都能 100% 归位。
-- **按运动链顺序**：最长那条链的第 N 个关节对第 N 个关节。机械臂和灵巧手用这种 ——
-  上游本来就只给它们编号（`joint_1`…`joint_6`），部位无从谈起，页面会自动选它。
+- **按运动链顺序**：一条链的第 N 个关节，对上另一台机器同一条链的第 N 个关节。
+  链与链之间，能认出是什么的就按它是什么配对（左臂对左臂、拇指对拇指），认不出的
+  就按声明顺序配对 —— 机械臂用的正是后者，上游本来就只给它们编号
+  （`joint_1`…`joint_6`），部位无从谈起，页面会自动选它。
+
+**手指按链读**。一只手的每根手指本身就是一条链，所以两种方式下手都是一根一根手指
+读的：拇指、食指、中指、无名指、小指，每根从根关节排到末端关节。这样一来，指节叫
+`mcp/pip/dip`、叫 `q1/q2`、叫 `12/13/14` 的三只手仍然能逐关节对上。哪条链是哪根
+手指：名字里写了就用名字，没写就看手掌的形状 —— 四根手指的根关节排成一条线，拇指
+的不在这条线上，去掉谁能让剩下的最直，谁就是拇指，剩下的沿这条线从离拇指最近的一头
+数过去。夹爪那种左右对称、去掉谁都一样的，就不猜了，按顺序叫「手指 1、手指 2」。
+Allegro 的 `joint_0`…`joint_15`、Dex5-1 的 `Roll_21R`、Dex2-5 的 `right_31_joint`
+都是这样归位的，并在格子里标上 `~`。
 
 无论哪种方式，格子里都会同时显示原始关节名，归不了位的关节列在表格下方，不会被
 悄悄丢掉。表格可以复制成 Markdown 或下载 CSV；`#compare=1&cat=humanoid&ids=g1,h1`
@@ -109,7 +123,11 @@ puts two to six machines of one category side by side as numbers — joint limit
 speed and torque limits, mass, height, what the actuators add up to and how complete
 the description is — lining their joints up either by anatomy (side, body part and
 axis, read from the joint names and from the axis vectors where the names do not say)
-or by position along the kinematic chain, whichever suits the selection. Only the
+or by position along the kinematic chain, whichever suits the selection. A chain — a
+finger, an arm, a leg — is read from the joint it starts at to the joint it ends at,
+and a hand is read finger by finger: which chain is the thumb comes from the names
+where upstream wrote them and from the shape of the palm where it did not, so hands
+that number their knuckles differently still line up knuckle for knuckle. Only the
 `.urdf` files are fetched for it, never the meshes. A machine upstream publishes as
 several URDFs — the Unitree G1 ships 21 — is one card, with a version picker on its
 detail page that swaps the whole page between them. No model files are hosted here:

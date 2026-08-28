@@ -12,6 +12,9 @@
  *   - its limbs: how many joints each carries, how much torque, how long it is;
  *   - and every joint, lined up with the joint that does the same job on the
  *     others — travel, speed limit, torque limit, and the power those two imply.
+ *     A chain — a finger, an arm, a leg — is read down its length, from the
+ *     joint it starts at to the joint it ends at, so a thumb of four knuckles
+ *     can be read against a thumb of three.
  *
  * Only descriptions of one category can be selected together, because a row
  * reading "left knee" across a humanoid and a gripper is a row about nothing.
@@ -23,7 +26,7 @@
 import { categoryLabel, t } from './i18n.js';
 import { formatBytes, urdfUrl, variantView } from './registry.js';
 import { loadUrdfSpec } from './urdf-spec.js';
-import { align, defaultMode, limbs, REGION_ORDER, SIDE_ORDER } from './joint-align.js';
+import { align, defaultMode, fingerOrder, limbs, REGION_ORDER, SIDE_ORDER } from './joint-align.js';
 
 const el = (id) => document.getElementById(id);
 
@@ -215,7 +218,7 @@ function asymmetry(robot, spec) {
       if (!mirror) continue;
       const cell = row.cells.get('one');
       if (!cell) continue;
-      const key = `${row.region}|${row.segment}|${row.axis}|${row.dup}`;
+      const key = `${row.region}|${row.segment}|${row.axis}|${row.step ?? ''}|${row.dup}`;
       if (!rows.has(key)) rows.set(key, new Map());
       rows.get(key).set(row.side, cell.joint);
     }
@@ -869,31 +872,34 @@ export class Compare {
       </div>`;
   }
 
-  /** The limbs, one row per limb the anatomy could name on any of the machines. */
+  /**
+   * The limbs, one row per limb the anatomy could name on any of the machines —
+   * and on a hand, one row per finger, because five fingers is what there is to
+   * compare about a hand and a single row reading "hand" would be the machine.
+   */
   renderLimbs(columns) {
     const host = el('compare-limbs');
     const keys = new Map();
     for (const column of columns) {
       for (const limb of column.metrics.limbs) {
-        const key = `${limb.region}|${limb.side}`;
-        if (!keys.has(key)) keys.set(key, { region: limb.region, side: limb.side, key });
+        if (!keys.has(limb.key)) {
+          keys.set(limb.key, { region: limb.region, side: limb.side, part: limb.part, key: limb.key });
+        }
       }
     }
     const order = [...keys.values()].sort(
       (a, b) =>
         REGION_ORDER.indexOf(a.region) - REGION_ORDER.indexOf(b.region) ||
-        SIDE_ORDER.indexOf(a.side) - SIDE_ORDER.indexOf(b.side),
+        SIDE_ORDER.indexOf(a.side) - SIDE_ORDER.indexOf(b.side) ||
+        fingerOrder(a.part) - fingerOrder(b.part),
     );
     // A machine with no limbs anyone can name — a six-axis arm, whose joints
     // are `joint_1`…`joint_6` — would get a table of one row that only one
     // column has anything in. That is not a comparison, so there is no table.
     const shared = order.filter(
       (slot) =>
-        columns.filter((column) =>
-          column.metrics.limbs.some(
-            (limb) => limb.region === slot.region && limb.side === slot.side,
-          ),
-        ).length >= 2,
+        columns.filter((column) => column.metrics.limbs.some((limb) => limb.key === slot.key))
+          .length >= 2,
     );
     if (order.length < 2 || !shared.length || columns.length < 2) {
       host.innerHTML = '';
@@ -905,9 +911,7 @@ export class Compare {
       .map((slot) => {
         const cells = columns
           .map((column) => {
-            const limb = column.metrics.limbs.find(
-              (entry) => entry.region === slot.region && entry.side === slot.side,
-            );
+            const limb = column.metrics.limbs.find((entry) => entry.key === slot.key);
             if (!limb) return '<td class="is-absent">—</td>';
             return `<td>
               <span class="cell-value">${limb.dof} ${esc(t('unit.dof'))}</span>
@@ -960,12 +964,9 @@ export class Compare {
           (row) => !this.sharedOnly || row.cells.size === columns.length,
         );
         if (!visible.length) return '';
-        const label = group.chain
-          ? t('cmp.chain.title').replace('{n}', String(group.chain))
-          : groupLabel(group);
         return (
-          `<tr class="group-row"><th scope="rowgroup" colspan="${columns.length + 2}">${esc(label)}</th></tr>` +
-          visible.map((row) => this.jointRow(row, columns)).join('')
+          `<tr class="group-row"><th scope="rowgroup" colspan="${columns.length + 2}">${esc(groupLabel(group))}</th></tr>` +
+          visible.map((row) => this.jointRow(row, columns, group)).join('')
         );
       })
       .join('');
@@ -1056,9 +1057,13 @@ export class Compare {
     );
   }
 
-  /** One place on the body, across the columns. */
-  jointRow(row, columns) {
+  /** One place on the body — or one step down a chain — across the columns. */
+  jointRow(row, columns, group) {
     const metric = this.metric;
+    // The last row of the group is the end of the chain and says so in its own
+    // label; a machine whose chain ends earlier is marked in the cell instead,
+    // which is how a four-knuckle thumb reads against a three-knuckle one.
+    const lastRow = !group || row === group.rows[group.rows.length - 1];
     const values = columns.map((column) => {
       const cell = row.cells.get(column.key);
       return cell ? metricValue(cell.joint, metric) : null;
@@ -1092,6 +1097,20 @@ export class Compare {
         const name = this.showNames
           ? `<span class="cell-sub">${esc(joint.name)}${cell.inferred ? ` <i class="guess" title="${esc(t('compare.inferred'))}">~</i>` : ''}</span>`
           : '';
+        // On a chain the row is a position and not an axis, so the axis each
+        // machine turns about there is worth saying: one hand's second knuckle
+        // pitches where another's rolls.
+        const tags = row.step
+          ? [
+              cell.axis && cell.axis !== 'none'
+                ? `<i class="axis-tag">${esc(t(`cmp.axis.${cell.axis}`))}</i>`
+                : '',
+              cell.tip && !lastRow
+                ? `<i class="tip-tag" title="${esc(t('cmp.chain.tipTitle'))}">${esc(t('cmp.chain.tipShort'))}</i>`
+                : '',
+            ].join('')
+          : '';
+        const tagLine = tags ? `<span class="cell-tags">${tags}</span>` : '';
         if (metric === 'range') {
           const bar =
             joint.hasLimit && span > 0
@@ -1104,6 +1123,7 @@ export class Compare {
             <span class="cell-value">${esc(travelText(joint, this.unit))}</span>
             ${bar}
             <span class="cell-sub">${joint.hasLimit ? `${esc(t('compare.travel'))} ${esc(travelAmount(joint, this.unit))}` : ''}</span>
+            ${tagLine}
             ${name}
           </td>`;
         }
@@ -1112,13 +1132,14 @@ export class Compare {
         return `<td class="${best ? 'is-max' : ''}" title="${esc(joint.name)}">
           <span class="cell-value">${esc(text)}</span>
           <span class="cell-bar"><i style="width:${width.toFixed(1)}%"></i></span>
+          ${tagLine}
           ${name}
         </td>`;
       })
       .join('');
 
     const spread = numbers.length > 1 && min > 0 ? `×${fmt(max / min, 1)}` : '';
-    return `<tr><th scope="row">${esc(rowLabel(row))}</th>${cells}<td class="spread-col">${esc(spread)}</td></tr>`;
+    return `<tr><th scope="row">${esc(rowLabel(row, group))}</th>${cells}<td class="spread-col">${esc(spread)}</td></tr>`;
   }
 
   /* -- taking it away --------------------------------------------------- */
@@ -1156,15 +1177,14 @@ export class Compare {
       ...columns.map(() => ''),
     ]);
     for (const group of groups) {
-      const label = group.chain ? t('cmp.chain.title').replace('{n}', String(group.chain)) : groupLabel(group);
       const visible = group.rows.filter(
         (row) => !this.sharedOnly || row.cells.size === columns.length,
       );
       if (!visible.length) continue;
-      grid.push([label, ...columns.map(() => '')]);
+      grid.push([groupLabel(group), ...columns.map(() => '')]);
       for (const row of visible) {
         grid.push([
-          rowLabel(row),
+          rowLabel(row, group),
           ...columns.map((column) => {
             const cell = row.cells.get(column.key);
             if (!cell) return '—';
@@ -1216,16 +1236,42 @@ export class Compare {
 
 /* ── labels ─────────────────────────────────────────────────────────────── */
 
-function groupLabel(group) {
-  const region = t(`cmp.region.${group.region}`);
-  if (!group.side || group.side === 'center') return region;
-  return t('cmp.groupWith')
-    .replace('{side}', t(`cmp.side.${group.side}`))
-    .replace('{region}', region);
+/** A finger by name where the hand has one, by number where it does not. */
+function partLabel(part) {
+  const numbered = /^f(\d+)$/.exec(part);
+  return numbered ? t('cmp.finger.n').replace('{n}', numbered[1]) : t(`cmp.seg.${part}`);
 }
 
-function rowLabel(row) {
-  if (row.chain) return t('cmp.chain.step').replace('{n}', String(row.step));
+function groupLabel(group) {
+  // A chain nothing could name — the six axes of an industrial arm — is the
+  // chain it is: numbered, and the joint names in the cells say the rest.
+  if (!group.region) return t('cmp.chain.title').replace('{n}', String(group.chain || 1));
+  const region = t(`cmp.region.${group.region}`);
+  const sided = !group.side || group.side === 'center'
+    ? region
+    : t('cmp.groupWith')
+        .replace('{side}', t(`cmp.side.${group.side}`))
+        .replace('{region}', region);
+  if (!group.part) return sided;
+  const part = partLabel(group.part);
+  // A hand on its own is read as fingers and nothing else; a hand on a body
+  // has to say which hand first.
+  return !group.side || group.side === 'center'
+    ? part
+    : t('cmp.groupPart').replace('{group}', sided).replace('{part}', part);
+}
+
+/**
+ * One row's place. Along a chain that is how far down the chain it is, with the
+ * two ends named rather than numbered — the point of reading a finger or an arm
+ * this way is that it starts somewhere and ends somewhere.
+ */
+function rowLabel(row, group) {
+  if (row.step) {
+    if (row.step === 1) return t('cmp.chain.root');
+    if (group && row === group.rows[group.rows.length - 1]) return t('cmp.chain.tip');
+    return t('cmp.chain.step').replace('{n}', String(row.step));
+  }
   const segment = t(`cmp.seg.${row.segment}`);
   const axis = row.axis && row.axis !== 'none' ? t(`cmp.axis.${row.axis}`) : '';
   const ordinal = row.region === 'hand' && row.ordinal ? ` ${row.ordinal}` : '';

@@ -46,10 +46,20 @@ const CASES = [
   { category: 'quadruped', ids: ['go2', 'anymal_c', 'solo'], mode: 'anatomy', minCoverage: 1 },
   { category: 'biped', ids: ['cassie', 'bolt'], mode: 'anatomy', minCoverage: 1 },
   { category: 'dual_arm', ids: ['baxter', 'yumi'], mode: 'anatomy', minCoverage: 0.9 },
-  // Arms and hands are numbered rather than named upstream, so the page is
-  // expected to open on the other reading rather than to invent an anatomy.
+  // An arm is numbered rather than named upstream, so the page is expected to
+  // open on the other reading rather than to invent an anatomy for it.
   { category: 'arm', ids: ['panda', 'iiwa14', 'z1'], mode: 'chain', minCoverage: 0 },
-  { category: 'hand', ids: ['allegro_hand', 'dex5_1'], mode: 'chain', minCoverage: 0 },
+  // A hand is fingers, and a finger is a chain whether or not upstream named
+  // it: the Allegro's are `joint_0`…`joint_15` and Dex5-1's are `Roll_21R`, and
+  // both have to come out as five chains read root to tip.
+  {
+    category: 'hand',
+    ids: ['allegro_hand', 'dex5_1', 'ability_hand'],
+    mode: 'anatomy',
+    minCoverage: 1,
+    fingers: ['thumb', 'index', 'middle', 'ring', 'pinky'],
+  },
+  { category: 'hand', ids: ['barrett_hand', 'robotiq_2f85'], mode: 'anatomy', minCoverage: 1 },
 ];
 
 const browser = await launchBrowser();
@@ -135,8 +145,37 @@ for (const test of CASES) {
           problems.push(`${mode}: ${entry.id} coverage says ${stat.matched}, rows hold ${seen.size}`);
         }
       }
+      // A group whose rows are steps along a chain is only a chain if the steps
+      // run 1, 2, 3 … and each machine walks its own joints down it in the
+      // order the URDF hangs them, root first: a table that renumbered a
+      // finger, or read one backwards, would still look perfectly aligned.
+      for (const group of groups) {
+        if (!group.steps) continue;
+        const steps = group.rows.map((row) => row.step);
+        if (steps.some((step, index) => step !== index + 1)) {
+          problems.push(`${mode}: ${group.key} steps run ${steps.join(',')}`);
+        }
+        const walked = new Map();
+        for (const row of group.rows) {
+          for (const [id, cell] of row.cells) {
+            const previous = walked.get(id);
+            if (previous && cell.joint.branchIndex <= previous.branchIndex) {
+              problems.push(
+                `${mode}: ${group.key} reads ${id} ${previous.name} before ${cell.joint.name}`,
+              );
+            }
+            walked.set(id, { name: cell.joint.name, branchIndex: cell.joint.branchIndex });
+          }
+        }
+      }
       perMode[mode] = {
         rows,
+        groups: groups.map((group) => ({
+          key: group.key,
+          part: group.part || null,
+          steps: !!group.steps,
+          depth: group.rows.length,
+        })),
         coverage: entries.map((entry) => {
           const stat = coverage.get(entry.id);
           return { id: entry.id, matched: stat.matched, total: stat.total };
@@ -172,6 +211,13 @@ for (const test of CASES) {
     fail(`${label} — anatomy places only ${(worst * 100).toFixed(0)}% (${short})`);
   }
   if (!report.perMode[test.mode].rows) fail(`${label} — no rows in "${test.mode}"`);
+  // The fingers a hand is expected to come out as, in the order a hand is read.
+  if (test.fingers) {
+    const found = report.perMode[test.mode].groups.map((group) => group.part);
+    if (String(found) !== String(test.fingers)) {
+      fail(`${label} — fingers came out as ${found.join(', ') || '(none)'}`);
+    }
+  }
 
   // ---- and that the page draws it ----------------------------------------
   await page.goto(`${base}/web/#compare=1&cat=${test.category}&ids=${test.ids.join(',')}`, {
