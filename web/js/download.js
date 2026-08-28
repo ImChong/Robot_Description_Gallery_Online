@@ -851,27 +851,29 @@ function notice(robot, meshCount, ros2 = null) {
     ? `Downloaded from the Robot URDF Gallery Online and wrapped as the ROS 2 package
 \`${ros2.pkg}\`. The model itself is ${
         mirror
-          ? `a subset of a copy re-hosted by ${mirror.host}, which does not
-publish a revision to pin:`
+          ? `a subset of a copy re-hosted by
+${mirror.host}, which publishes no revision to pin:`
           : `a subset of an upstream repository at a
 pinned commit:`
       }`
-    : `Downloaded from the Robot URDF Gallery Online. This archive is ${
-        mirror
-          ? `a subset of a copy re-hosted by
-${mirror.host}, which does not publish a revision to pin:`
-          : `a subset of an upstream
-repository, unmodified, at a pinned commit:`
-      }`;
+    : mirror
+      ? `Downloaded from the Robot URDF Gallery Online. This archive is a subset of
+a copy re-hosted by ${mirror.host}, which publishes no revision to pin:`
+      : `Downloaded from the Robot URDF Gallery Online. This archive is a subset of an upstream
+repository, unmodified, at a pinned commit:`;
 
   const layout = ros2
     ? `The URDF is upstream's file with its mesh \`filename\` attributes rewritten to
 read \`package://${ros2.pkg}/...\`, so they resolve from this package alone.${
         ros2.skipped?.length
           ? `
-The ${ros2.skipped.length} <visual>/<collision> element${ros2.skipped.length === 1 ? '' : 's'} naming a mesh the host does not have
-${ros2.skipped.length === 1 ? 'was' : 'were'} dropped, because a URDF pointing at a file the package
-does not contain does not load at all.`
+The ${ros2.skipped.length} <visual>/<collision> element${
+              ros2.skipped.length === 1 ? '' : 's'
+            } naming a mesh the host does not
+have ${
+              ros2.skipped.length === 1 ? 'was' : 'were'
+            } dropped: a URDF that points at a file the package does not
+contain does not load at all.`
           : ''
       }
 Everything else — including where each mesh sits relative to the URDF — is as
