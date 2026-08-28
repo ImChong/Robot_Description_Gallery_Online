@@ -354,28 +354,48 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
   stroke-linecap: round; stroke-linejoin: round;
 }
 
-.hero-custom { margin: 24px 0 0; display: flex; flex-direction: column; align-items: flex-start; gap: 9px; }
-/* Button and the way back to the last file previewed, on one line. The
- * link is a second door to the same dialog, so it reads beside the button
- * rather than under the promise; it wraps below when the line runs out. */
-.hero-custom-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
-/* The promise, in the smallest type on the page but never behind a click: the
- * visitor decides whether to hand over a file while reading this line.
+/* Two actions on one row, each over one line of fine print. Stacked, as two
+ * blocks of button-plus-sentence, they cost a third of the first screen and
+ * read as a list of features; side by side they read as the two doors they
+ * are, and the grid ends a good deal higher up the page.
  *
- * No measure of its own. It is one sentence, and at the hero's own 760px it is
- * one line in both languages — narrowing it to a reading measure would only
- * break that line early and leave a two-word stub under a column edge that
- * lines up with nothing. `align-items: flex-start` on the parent already keeps
- * it to its content, so it never runs wider than the lede above it, and on a
- * phone it wraps against the same edge as everything else. */
-.hero-custom-note {
-  display: flex; gap: 7px; align-items: baseline;
-  margin: 0;
-  color: var(--text-faint); font-size: 12.5px; line-height: 1.55;
+ * Columns as wide as their content and no wider: the notes are one line each,
+ * so equal columns would only pad the shorter one out to a rule that is not
+ * there — and the second door still starts at a predictable place, because the
+ * first column is as wide as its own longest line. The row wraps rather than
+ * overflows if a translation ever makes both columns too wide for the hero. */
+.hero-actions {
+  display: flex; flex-wrap: wrap;
+  gap: 16px 36px;
+  margin: 26px 0 0;
 }
-.hero-custom-current { margin: 0; font-size: 12.5px; }
-.hero-custom-current a { color: var(--accent); text-decoration: none; }
-.hero-custom-current a:hover { text-decoration: underline; }
+.hero-action { display: flex; flex-direction: column; align-items: flex-start; gap: 9px; }
+/* Button and the way back to the last file previewed, on one line. The link is
+ * a second door to the same dialog, so it reads beside the button rather than
+ * under the promise; it wraps below when the line runs out. */
+.hero-action-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+/* The promise, and what a comparison is: the smallest type on the page but
+ * never behind a click — the visitor decides while reading it. One line each
+ * in both languages at this size, so no measure of its own; `align-items:
+ * flex-start` on the column already keeps every note to its own content. */
+.hero-action-note {
+  display: flex; gap: 6px; align-items: baseline;
+  margin: 0;
+  color: var(--text-faint); font-size: 12px; line-height: 1.55;
+}
+.hero-action-current { margin: 0; font-size: 12.5px; }
+.hero-action-current a { color: var(--accent); text-decoration: none; }
+.hero-action-current a:hover { text-decoration: underline; }
+
+/* A fingertip, not a cursor. These two are the only things in the hero that
+ * are aimed at rather than read, and where the pointer aiming at them is a
+ * thumb, 38px is a comfortable click and a near miss — so both doors take the
+ * 44px a touch target is measured against. By the pointer rather than by the
+ * width of the screen: a tablet reading the two-column layout is still being
+ * tapped at. */
+@media (pointer: coarse) {
+  .hero-action .primary-btn, .hero-action .hero-compare-btn { height: 44px; }
+}
 
 /* ── Filters ────────────────────────────────────────────── */
 
@@ -1242,10 +1262,27 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
   text-align: center; cursor: pointer;
   transition: border-color var(--transition), background var(--transition);
 }
-.drop-zone:hover, .drop-zone.is-over { border-color: var(--accent); background: var(--accent-soft); }
+/* `is-over` is a file being dragged over the zone; hover is a pointer resting
+ * on it. They light it the same way, but hover is asked for only where a
+ * pointer can rest — a tap leaves the hover state stuck on a touch screen, and
+ * a zone that stays lit reads as a zone that has already been given a file. */
+.drop-zone.is-over { border-color: var(--accent); background: var(--accent-soft); }
+@media (hover: hover) {
+  .drop-zone:hover { border-color: var(--accent); background: var(--accent-soft); }
+}
 .drop-line { font-size: 13.5px; }
 .drop-or { color: var(--text-faint); font-size: 12px; }
 .drop-picks { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+
+/* The same fingertip the hero's two doors are sized for: on a touch screen
+ * this dialog is the second half of that flow, and its pickers, its preview
+ * button and the way out of it are what gets tapped. A 28px ✕ beside the
+ * heading is a miss on a phone. */
+@media (pointer: coarse) {
+  .drop-picks .ghost-btn { height: 44px; }
+  .custom-actions .primary-btn { height: 44px; }
+  .dialog-close { width: 40px; height: 40px; font-size: 15px; }
+}
 
 /* What the picked files add up to, before anything is rendered — the count of
  * meshes found is what tells a visitor they picked one folder too deep. */
@@ -1301,18 +1338,18 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
 
 /* ── Side-by-side comparison ─────────────────────────────── */
 
-/* The way in, under the hero's own button: a second thing this gallery can do,
- * given the same weight as previewing your own file but not the same colour —
- * one filled button per screen is enough. */
-.hero-compare { margin: 18px 0 0; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+/* The way in, beside the hero's own button (see `.hero-actions`): a second
+ * thing this gallery can do, given the same weight as previewing your own file
+ * but not the same colour — one filled button per screen is enough. It carries
+ * the primary button's height rather than the ghost row's 34px, so the two
+ * doors sit on one baseline and share one line under them. */
 .hero-compare-btn {
   display: inline-flex; align-items: center; gap: 9px;
-  padding: 9px 16px; border-radius: var(--radius);
-  font-size: 13.5px; font-weight: 600; text-decoration: none;
+  height: 38px; padding: 0 16px; border-radius: var(--radius);
+  font-size: 14px; font-weight: 600; text-decoration: none;
 }
 .hero-compare-btn:hover { border-color: var(--accent); color: var(--accent); }
 .compare-mark { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; }
-.hero-compare-note { margin: 0; color: var(--text-faint); font-size: 12px; line-height: 1.6; max-width: 62ch; }
 
 #view-compare .detail-title p { margin: 4px 0 0; font-size: 13px; line-height: 1.6; max-width: 78ch; }
 
@@ -1592,15 +1629,30 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
   .filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
   .filters::-webkit-scrollbar { display: none; }
   .filters button { flex: 0 0 auto; }
+  /* Above the fold a phone has about 700px to spend, and the header, the
+   * heading, the lede and the counters were spending 300 of them before the
+   * first button: every band in the hero closes up a little so that the doors,
+   * and the first row of robots under them, arrive higher up the screen. */
+  .hero { padding: 24px 0 14px; }
+  .hero > p { margin-top: 10px; line-height: 1.6; }
   /* Wrapped onto two lines the hairlines would lead a row, so narrow screens
    * separate the counters by space alone. */
-  .hero-stats { gap: 2px 16px; }
+  .hero-stats { gap: 2px 16px; margin-top: 15px; }
   .hero-stats > div + div { padding-left: 0; border-left: 0; }
-  /* Nothing sits beside it at this width, so it may as well be the full row. */
-  .hero-custom { align-self: stretch; }
+  /* Two buttons never fit beside each other at this width, so the row becomes
+   * a stack of the same two blocks — each button the full width of the screen,
+   * its own note under it. Proximity does the grouping that the columns did:
+   * a note sits tight under the button it belongs to, and twice that space
+   * separates one door from the other, so the four lines still read as two
+   * things rather than as a list. */
+  .hero-actions { flex-direction: column; align-items: stretch; gap: 15px; margin-top: 18px; }
+  .hero-action { align-self: stretch; gap: 7px; }
   /* No room beside a full-width button: the link takes the line under it. */
-  .hero-custom-row { align-self: stretch; flex-direction: column; align-items: flex-start; gap: 9px; }
-  .hero-custom .primary-btn { width: 100%; }
+  .hero-action-row { align-self: stretch; flex-direction: column; align-items: stretch; gap: 9px; }
+  .hero-action .primary-btn, .hero-action .hero-compare-btn { width: 100%; }
+  /* A filename can be longer than the screen; it wraps rather than running out
+   * of it, and breaks mid-word if that is what it takes. */
+  .hero-action-current { overflow-wrap: anywhere; }
   .custom-dialog { padding: 18px; }
   .custom-actions .primary-btn { margin-left: 0; width: 100%; }
   .hero-stats dd { font-size: 17px; }

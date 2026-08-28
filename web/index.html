@@ -59,43 +59,50 @@
       <div><dt data-i18n="stats.repos">Upstream repos</dt><dd id="stat-repos">—</dd></div>
     </dl>
 
-    <!-- The one thing on this page that is not a hosted model. It sits with the
-         hero rather than at the end of the grid because the visitor who has
-         their own URDF open in a folder should not have to scroll past 99
-         robots to find out this is possible. The promise about where the files
-         go is next to the button, not only inside the dialog it opens. -->
-    <div class="hero-custom">
-      <!-- The way back to a model already previewed sits on the button's own
-           line, beside it: it is the same action as the button, only for a file
-           this visitor has already handed over, and the promise below belongs
-           under both of them. -->
-      <div class="hero-custom-row">
-        <button id="custom-open" class="primary-btn">
-          <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false" class="upload-mark">
-            <path d="M10 13.5V3.5M10 3.5 6.2 7.3M10 3.5l3.8 3.8M3.5 12.5v2.2a1.8 1.8 0 0 0 1.8 1.8h9.4a1.8 1.8 0 0 0 1.8-1.8v-2.2"/>
-          </svg>
-          <span data-i18n="custom.cta">预览我自己的 URDF</span>
-        </button>
-        <p class="hero-custom-current" id="custom-current" hidden></p>
+    <!-- The two things this gallery does besides being browsed: read a URDF
+         off your own disk, and read several of the hosted ones as numbers.
+         They are peers — one is not a footnote of the other — so they stand
+         side by side on one row rather than in two stacked blocks, each over
+         a single line of fine print of its own. That fine print is the
+         smallest type on the page but never behind a click: the visitor
+         decides whether to hand over a file, or whether a comparison is worth
+         opening, while reading it. -->
+    <div class="hero-actions">
+      <!-- Not at the end of the grid: the visitor who has their own URDF open
+           in a folder should not have to scroll past 99 robots to find out
+           this is possible. The promise about where the files go is next to
+           the button, not only inside the dialog it opens. -->
+      <div class="hero-action">
+        <!-- The way back to a model already previewed sits on the button's own
+             line, beside it: it is the same action as the button, only for a
+             file this visitor has already handed over. -->
+        <div class="hero-action-row">
+          <button id="custom-open" class="primary-btn">
+            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false" class="upload-mark">
+              <path d="M10 13.5V3.5M10 3.5 6.2 7.3M10 3.5l3.8 3.8M3.5 12.5v2.2a1.8 1.8 0 0 0 1.8 1.8h9.4a1.8 1.8 0 0 0 1.8-1.8v-2.2"/>
+            </svg>
+            <span data-i18n="custom.cta">预览我自己的 URDF</span>
+          </button>
+          <p class="hero-action-current" id="custom-current" hidden></p>
+        </div>
+        <p class="hero-action-note">
+          <span aria-hidden="true">🔒</span>
+          <span data-i18n="custom.heroNote"></span>
+        </p>
       </div>
-      <p class="hero-custom-note">
-        <span aria-hidden="true">🔒</span>
-        <span data-i18n="custom.heroNote"></span>
-      </p>
-    </div>
 
-    <!-- The other way to read this gallery: not one robot at a time but several
-         of one kind at once, as numbers. It sits with the hero because a
-         visitor who came to choose between two machines should not have to
-         open both of them to discover that they can be put side by side. -->
-    <div class="hero-compare">
-      <a class="ghost-btn hero-compare-btn" href="#compare=1">
-        <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false" class="compare-mark">
-          <path d="M4 16V8.5M10 16V4M16 16v-5.5"/>
-        </svg>
-        <span data-i18n="compare.cta">横向对比多台机器人</span>
-      </a>
-      <p class="hero-compare-note" data-i18n="compare.heroNote"></p>
+      <!-- Not one robot at a time but several of one kind at once. A visitor
+           who came to choose between two machines should not have to open both
+           of them to discover that they can be put side by side. -->
+      <div class="hero-action">
+        <a class="ghost-btn hero-compare-btn" href="#compare=1">
+          <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false" class="compare-mark">
+            <path d="M4 16V8.5M10 16V4M16 16v-5.5"/>
+          </svg>
+          <span data-i18n="compare.cta">横向对比多台机器人</span>
+        </a>
+        <p class="hero-action-note" data-i18n="compare.heroNote"></p>
+      </div>
     </div>
   </section>
 
