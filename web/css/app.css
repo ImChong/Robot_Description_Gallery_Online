@@ -354,28 +354,38 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
   stroke-linecap: round; stroke-linejoin: round;
 }
 
-.hero-custom { margin: 24px 0 0; display: flex; flex-direction: column; align-items: flex-start; gap: 9px; }
-/* Button and the way back to the last file previewed, on one line. The
- * link is a second door to the same dialog, so it reads beside the button
- * rather than under the promise; it wraps below when the line runs out. */
-.hero-custom-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
-/* The promise, in the smallest type on the page but never behind a click: the
- * visitor decides whether to hand over a file while reading this line.
+/* Two actions on one row, each over one line of fine print. Stacked, as two
+ * blocks of button-plus-sentence, they cost a third of the first screen and
+ * read as a list of features; side by side they read as the two doors they
+ * are, and the grid ends a good deal higher up the page.
  *
- * No measure of its own. It is one sentence, and at the hero's own 760px it is
- * one line in both languages — narrowing it to a reading measure would only
- * break that line early and leave a two-word stub under a column edge that
- * lines up with nothing. `align-items: flex-start` on the parent already keeps
- * it to its content, so it never runs wider than the lede above it, and on a
- * phone it wraps against the same edge as everything else. */
-.hero-custom-note {
-  display: flex; gap: 7px; align-items: baseline;
-  margin: 0;
-  color: var(--text-faint); font-size: 12.5px; line-height: 1.55;
+ * Columns as wide as their content and no wider: the notes are one line each,
+ * so equal columns would only pad the shorter one out to a rule that is not
+ * there — and the second door still starts at a predictable place, because the
+ * first column is as wide as its own longest line. The row wraps rather than
+ * overflows if a translation ever makes both columns too wide for the hero. */
+.hero-actions {
+  display: flex; flex-wrap: wrap;
+  gap: 16px 36px;
+  margin: 26px 0 0;
 }
-.hero-custom-current { margin: 0; font-size: 12.5px; }
-.hero-custom-current a { color: var(--accent); text-decoration: none; }
-.hero-custom-current a:hover { text-decoration: underline; }
+.hero-action { display: flex; flex-direction: column; align-items: flex-start; gap: 9px; }
+/* Button and the way back to the last file previewed, on one line. The link is
+ * a second door to the same dialog, so it reads beside the button rather than
+ * under the promise; it wraps below when the line runs out. */
+.hero-action-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+/* The promise, and what a comparison is: the smallest type on the page but
+ * never behind a click — the visitor decides while reading it. One line each
+ * in both languages at this size, so no measure of its own; `align-items:
+ * flex-start` on the column already keeps every note to its own content. */
+.hero-action-note {
+  display: flex; gap: 6px; align-items: baseline;
+  margin: 0;
+  color: var(--text-faint); font-size: 12px; line-height: 1.55;
+}
+.hero-action-current { margin: 0; font-size: 12.5px; }
+.hero-action-current a { color: var(--accent); text-decoration: none; }
+.hero-action-current a:hover { text-decoration: underline; }
 
 /* ── Filters ────────────────────────────────────────────── */
 
@@ -1301,18 +1311,18 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
 
 /* ── Side-by-side comparison ─────────────────────────────── */
 
-/* The way in, under the hero's own button: a second thing this gallery can do,
- * given the same weight as previewing your own file but not the same colour —
- * one filled button per screen is enough. */
-.hero-compare { margin: 18px 0 0; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+/* The way in, beside the hero's own button (see `.hero-actions`): a second
+ * thing this gallery can do, given the same weight as previewing your own file
+ * but not the same colour — one filled button per screen is enough. It carries
+ * the primary button's height rather than the ghost row's 34px, so the two
+ * doors sit on one baseline and share one line under them. */
 .hero-compare-btn {
   display: inline-flex; align-items: center; gap: 9px;
-  padding: 9px 16px; border-radius: var(--radius);
-  font-size: 13.5px; font-weight: 600; text-decoration: none;
+  height: 38px; padding: 0 16px; border-radius: var(--radius);
+  font-size: 14px; font-weight: 600; text-decoration: none;
 }
 .hero-compare-btn:hover { border-color: var(--accent); color: var(--accent); }
 .compare-mark { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; }
-.hero-compare-note { margin: 0; color: var(--text-faint); font-size: 12px; line-height: 1.6; max-width: 62ch; }
 
 #view-compare .detail-title p { margin: 4px 0 0; font-size: 13px; line-height: 1.6; max-width: 78ch; }
 
@@ -1596,11 +1606,15 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
    * separate the counters by space alone. */
   .hero-stats { gap: 2px 16px; }
   .hero-stats > div + div { padding-left: 0; border-left: 0; }
-  /* Nothing sits beside it at this width, so it may as well be the full row. */
-  .hero-custom { align-self: stretch; }
+  /* Two buttons never fit beside each other at this width, so the row becomes
+   * a stack of the same two blocks — each button the full width of the screen,
+   * its own note under it — and the pair keeps a wider gap than the 9px inside
+   * a block, so it still reads as two doors rather than four lines. */
+  .hero-actions { flex-direction: column; align-items: stretch; gap: 20px; }
+  .hero-action { align-self: stretch; }
   /* No room beside a full-width button: the link takes the line under it. */
-  .hero-custom-row { align-self: stretch; flex-direction: column; align-items: flex-start; gap: 9px; }
-  .hero-custom .primary-btn { width: 100%; }
+  .hero-action-row { align-self: stretch; flex-direction: column; align-items: stretch; gap: 9px; }
+  .hero-action .primary-btn, .hero-action .hero-compare-btn { width: 100%; }
   .custom-dialog { padding: 18px; }
   .custom-actions .primary-btn { margin-left: 0; width: 100%; }
   .hero-stats dd { font-size: 17px; }

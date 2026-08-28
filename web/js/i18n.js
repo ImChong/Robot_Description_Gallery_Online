@@ -16,8 +16,7 @@ const STRINGS = {
     // screen whose whole point is that nothing is being uploaded, so the
     // promise is repeated wherever a file is about to be handed over.
     'custom.cta': 'Preview your own URDF',
-    'custom.heroNote':
-      'Read in your browser — your files never leave this device and are not uploaded to any server.',
+    'custom.heroNote': 'Parsed in your browser — nothing is uploaded.',
     'custom.title': 'Preview your own URDF',
     'custom.privacy':
       'Your files stay on this device. They are parsed in the browser and never uploaded: this site is a static page with no server to send them to.',
@@ -158,9 +157,8 @@ const STRINGS = {
     'limit.none': 'no <limit> declared',
 
     // ---- side-by-side comparison ---------------------------------------
-    'compare.cta': 'Compare several robots side by side',
-    'compare.heroNote':
-      'Two to six machines of one kind, joint by joint: travel, speed and torque limits, mass, height and what the actuators add up to.',
+    'compare.cta': 'Compare robots side by side',
+    'compare.heroNote': 'Two to six of one kind, joint by joint — limits, mass, torque.',
     'compare.title': 'Side-by-side comparison',
     'compare.lede':
       'Two to six descriptions of one category, read as numbers. The URDFs are parsed in your browser and the meshes are never fetched, so a comparison costs less than opening one robot.',
@@ -377,7 +375,7 @@ const STRINGS = {
     'gallery.empty': '没有符合条件的机器人。',
 
     'custom.cta': '预览我自己的 URDF',
-    'custom.heroNote': '在浏览器里本地解析 —— 文件不会离开这台设备，也不会上传到任何服务器。',
+    'custom.heroNote': '在浏览器里本地解析，文件不会上传。',
     'custom.title': '预览我自己的 URDF',
     'custom.privacy':
       '文件只留在这台设备上：全部在浏览器里解析，不会上传到任何服务器 —— 本站是纯静态页面，根本没有可以接收文件的后端。',
@@ -517,8 +515,7 @@ const STRINGS = {
 
     // ---- 横向对比 -------------------------------------------------------
     'compare.cta': '横向对比多台机器人',
-    'compare.heroNote':
-      '同类型的 2~6 台机器，逐关节对比：限位、最大速度、最大力矩，以及质量、高度与整机执行能力。',
+    'compare.heroNote': '同类 2~6 台，逐关节对比限位、速度与力矩。',
     'compare.title': '横向对比',
     'compare.lede':
       '选择同一类别下的 2~6 个模型，把它们当作数据来读。URDF 在浏览器里解析，全程不下载网格文件，所以一次对比比打开一台机器还轻。',
