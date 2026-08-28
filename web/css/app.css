@@ -1451,6 +1451,18 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
 .spread-col { min-width: 56px; color: var(--text-faint); font-family: var(--font-mono); font-size: 11px; }
 .cell-sub .guess { color: var(--warn); font-style: normal; cursor: help; }
 
+/* On a chain the row says where along it a joint is, not what it does, so the
+ * cell says which way that joint turns — and marks the machine whose chain
+ * stops here while the others carry on. */
+.cell-tags { display: flex; flex-wrap: wrap; gap: 4px; margin: 5px 0 0; }
+.cell-tags i {
+  border-radius: 3px; padding: 1px 4px;
+  background: var(--bg-alt); color: var(--text-faint);
+  font-size: 9.5px; font-style: normal; letter-spacing: 0.05em; line-height: 1.5;
+  text-transform: uppercase;
+}
+.cell-tags .tip-tag { background: transparent; color: var(--warn); box-shadow: inset 0 0 0 1px currentColor; cursor: help; }
+
 .cmp-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 12px; }
 .cmp-tools:empty { display: none; }
 .tools-label { color: var(--text-faint); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
