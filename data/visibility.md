@@ -97,7 +97,7 @@ human readers.
 - [x] `omy_l100` **OMY-L100** — ROBOTIS — [ROBOTIS-GIT/open_manipulator · omy_l100_description](https://github.com/ROBOTIS-GIT/open_manipulator/tree/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description)
 - [ ] `poppy_ergo_jr` **Poppy Ergo Jr** — Poppy Project — [poppy-project/poppy_ergo_jr_description · poppy_ergo_jr_description](https://github.com/poppy-project/poppy_ergo_jr_description/tree/7eb32bd385afa11dea5e6a6b6a4a86a0243aaa2b)
 
-## 灵巧手 / 夹爪 Hand / Gripper · 19
+## 灵巧手 / 夹爪 Hand / Gripper · 23
 
 - [x] `dex1_1` **Dex1-1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex1_1)
 - [x] `dex2_5` **Dex2-5** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex2_5)
@@ -118,6 +118,10 @@ human readers.
 - [x] `wuji_hand` **Wuji Hand** — Wuji Technology — [wuji-technology/wuji-hand-description](https://github.com/wuji-technology/wuji-hand-description/tree/bbc2f64eec834aae616eacc2db1f69016f860c2d)
 - [x] `dg5f` **DG-5F** — Tesollo — [tesollodelto/tesollo_model](https://github.com/tesollodelto/tesollo_model/tree/6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2/dg5f)
 - [x] `dg5fs` **DG-5F-S** — Tesollo — [tesollodelto/tesollo_model](https://github.com/tesollodelto/tesollo_model/tree/6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2/dg5fs)
+- [x] `xhand1` **XHAND 1** — Robotera — [All Hands Up (mirror)](https://allhandsup.org/zh/#gallery)
+- [x] `hx5_d20` **HX5-D20** — ROBOTIS — [All Hands Up (mirror)](https://allhandsup.org/zh/#gallery)
+- [x] `rh56f1` **RH56F1** — Inspire Robots — [All Hands Up (mirror)](https://allhandsup.org/zh/#gallery)
+- [x] `omnihand_pro` **Omnihand Pro** — Agibot — [All Hands Up (mirror)](https://allhandsup.org/zh/#gallery)
 
 ## 双足 Biped · 4
 

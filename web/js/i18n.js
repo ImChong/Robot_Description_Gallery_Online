@@ -4,7 +4,7 @@ const STRINGS = {
   en: {
     'hero.title': 'Robot URDF Gallery Online',
     'hero.lede':
-      'Browse, inspect and compare open robot descriptions — humanoids, quadrupeds, arms and hands. Every model streams from its upstream repository at a pinned commit; nothing is re-hosted here.',
+      'Browse, inspect and compare open robot descriptions — humanoids, quadrupeds, arms and hands. Almost every model streams from its upstream repository at a pinned commit; a handful whose maker published none stream from an archive that re-hosts them, and say so. Nothing is re-hosted here.',
     'search.placeholder': 'Search robot, maker, category…',
     'stats.robots': 'Robots',
     'stats.makers': 'Makers',
@@ -121,8 +121,12 @@ const STRINGS = {
     'spec.license': 'Licence',
     'spec.assets': 'Mesh assets',
     'spec.commit': 'Pinned commit',
+    'spec.mirror': 'Re-hosted by',
     'spec.tags': 'Tags',
+    'assets.skipped': '{n} more the host does not have — skipped',
+    'assets.skipped1': '1 more the host does not have — skipped',
     'res.repo': 'Upstream repository',
+    'res.mirror': 'Archive page',
     'res.tree': 'Description folder',
     'res.urdf': 'URDF file',
     'res.mjcf': 'MJCF (MuJoCo)',
@@ -302,7 +306,9 @@ const STRINGS = {
     'cmp.row.license': 'Licence',
     'cmp.help.license': 'The upstream licence of the model, which is not this site\u2019s.',
     'cmp.row.upstream': 'Upstream',
-    'cmp.help.upstream': 'The repository and the commit this model is pinned to.',
+    'cmp.help.upstream':
+      'The repository and the commit this model is pinned to — or, for a model whose maker published none, the archive that re-hosts it.',
+    'cmp.mirror': 'no revision to pin',
     'cmp.help.spread': 'The largest value in the row over the smallest.',
 
     'cmp.region.torso': 'Torso',
@@ -368,7 +374,7 @@ const STRINGS = {
   zh: {
     'hero.title': '机器人 URDF 在线合集',
     'hero.lede':
-      '浏览、查看并对比开源机器人模型——人形、四足、机械臂与灵巧手。每个模型都从上游仓库的固定 commit 直接加载，本站不二次托管任何模型文件。',
+      '浏览、查看并对比开源机器人模型——人形、四足、机械臂与灵巧手。绝大多数模型都从上游仓库的固定 commit 直接加载；少数厂商没有公开可加载模型的，从转载它们的存档站加载，并在详情页注明。本站不二次托管任何模型文件。',
     'search.placeholder': '搜索机器人、厂商、类别…',
     'stats.robots': '机器人',
     'stats.makers': '厂商',
@@ -480,8 +486,12 @@ const STRINGS = {
     'spec.license': '许可',
     'spec.assets': '网格资源',
     'spec.commit': '固定 commit',
+    'spec.mirror': '转载自',
     'spec.tags': '标签',
+    'assets.skipped': '另有 {n} 个宿主没有提供，已跳过',
+    'assets.skipped1': '另有 1 个宿主没有提供，已跳过',
     'res.repo': '上游仓库',
+    'res.mirror': '存档页面',
     'res.tree': '模型目录',
     'res.urdf': 'URDF 文件',
     'res.mjcf': 'MJCF（MuJoCo）',
@@ -659,7 +669,8 @@ const STRINGS = {
     'cmp.row.license': '许可',
     'cmp.help.license': '模型自身的上游许可协议，与本站的许可无关。',
     'cmp.row.upstream': '上游',
-    'cmp.help.upstream': '模型所在仓库，以及固定到的 commit。',
+    'cmp.help.upstream': '模型所在仓库，以及固定到的 commit；厂商未公开仓库的模型，这里显示转载它的存档站。',
+    'cmp.mirror': '无可固定的版本',
     'cmp.help.spread': '该行最大值与最小值之比。',
 
     'cmp.region.torso': '躯干',

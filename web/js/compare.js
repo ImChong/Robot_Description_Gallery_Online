@@ -201,6 +201,9 @@ function metricsFor(robot, spec) {
     repo: robot.source?.github || null,
     commit: robot.source?.commit || null,
     treeUrl: robot.source?.tree_url || null,
+    // Set instead of the three above for a model read from an archive that
+    // re-hosts it, which has no repository and no revision to pin.
+    mirror: robot.source?.mirror || null,
     asymmetry: asymmetry(robot, spec),
     limbs: parts,
   };
@@ -487,11 +490,21 @@ function overviewRows(unit) {
         {
           key: 'upstream',
           value: () => null,
-          text: (m) =>
-            m.repo
-              ? `<a href="${esc(m.treeUrl || `https://github.com/${m.repo}`)}" target="_blank" rel="noopener noreferrer">${esc(m.repo)}</a>` +
+          text: (m) => {
+            if (m.repo) {
+              return (
+                `<a href="${esc(m.treeUrl || `https://github.com/${m.repo}`)}" target="_blank" rel="noopener noreferrer">${esc(m.repo)}</a>` +
                 `<br><span class="sub">${esc((m.commit || '').slice(0, 10))}</span>`
-              : '—',
+              );
+            }
+            if (m.mirror) {
+              return (
+                `<a href="${esc(m.mirror.site)}" target="_blank" rel="noopener noreferrer">${esc(m.mirror.host)}</a>` +
+                `<br><span class="sub">${esc(t('cmp.mirror'))}</span>`
+              );
+            }
+            return '—';
+          },
         },
       ],
     },

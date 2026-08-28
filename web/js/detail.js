@@ -183,7 +183,17 @@ from robot_descriptions.loaders.pinocchio import load_robot_description
 
 robot = load_robot_description("${r.source.description}")
 print(robot.model.nq, "DOF")`
-      : `# pip install pin
+      : r.source.mirror
+        ? `# pip install pin
+# ${r.name} has no upstream repository — unzip the gallery's bundle and
+# load it from there.
+import pinocchio
+
+robot = pinocchio.RobotWrapper.BuildFromURDF(
+    "${repoDir(r)}/${r.assets.urdf}",${packageDirs(r).length ? `\n    [${packageDirs(r).map((d) => `"${d}"`).join(', ')}],` : ''}
+)
+print(robot.model.nq, "DOF")`
+        : `# pip install pin
 # ${r.name} has no robot_descriptions entry — load it from the checkout
 # the git tab makes.
 import pinocchio
@@ -205,8 +215,9 @@ model = mujoco.MjModel.from_xml_path(${mjKey(r)}.MJCF_PATH)
 data = mujoco.MjData(model)`
       : r.source.mjcf
         ? `# pip install mujoco
-# ${r.name} has no robot_descriptions entry — load its MJCF from the checkout
-# the git tab makes.
+# ${r.name} has no robot_descriptions entry — load its MJCF from ${
+            r.source.mirror ? "the gallery's bundle" : 'the checkout\n# the git tab makes'
+          }.
 import mujoco
 
 model = mujoco.MjModel.from_xml_path("${repoDir(r)}/${r.source.mjcf}")
@@ -214,7 +225,17 @@ data = mujoco.MjData(model)`
         : `# ${r.name} has no MJCF${r.source.description ? ' in robot_descriptions' : ' upstream'}.
 # Convert the URDF with MuJoCo's compiler:
 #   python -m mujoco.urdf2mjcf ${r.assets.urdf.split('/').pop()}`,
-  git: (r) => `git clone ${r.source.repo_url}.git
+  // Nothing to clone for a mirrored entry: the archive it comes from serves
+  // files over HTTP and publishes no repository. Fetching the URDF and the
+  // meshes it still has is the equivalent, and it is what the gallery does.
+  git: (r) =>
+    r.source.mirror
+      ? `# ${r.name} has no upstream repository — ${r.source.mirror.host} re-hosts it over
+# HTTP, with no revision to pin. This is the copy the gallery reads:
+curl -O '${urdfUrl(r)}'
+# meshes resolve below ${r.assets.base}
+# — or use the gallery's zip button, which collects them for you.`
+      : `git clone ${r.source.repo_url}.git
 cd ${repoDir(r)}
 git checkout ${r.source.commit}
 # URDF: ${r.assets.urdf}`,
@@ -225,9 +246,13 @@ function mjKey(robot) {
   return robot.source.description.replace('_description', '_mj_description');
 }
 
-/** The directory `git clone` drops the upstream repository into. */
+/**
+ * The directory the model's files end up in locally: what `git clone` names the
+ * repository, or — for a mirrored entry, which has no repository to clone — the
+ * gallery id, which is what its zip unpacks into.
+ */
 function repoDir(robot) {
-  return robot.source.github.split('/')[1];
+  return robot.source.github ? robot.source.github.split('/')[1] : robot.id;
 }
 
 /**
@@ -778,11 +803,16 @@ export class Detail {
     // The provenance rows — who made it, under what licence, at which commit —
     // are the registry's answers. A local file has none of them, and blank rows
     // saying so would only pad the card.
+    // A mirrored entry has no commit to quote, because the archive it is read
+    // from publishes none. Saying which host it came from is the honest row in
+    // that slot, and the one a visitor needs to judge the model's provenance.
     const upstream = r.local
       ? []
       : [
           [t('spec.license'), r.license || '—'],
-          [t('spec.commit'), `<span class="sub">${r.source.commit.slice(0, 10)}</span>`],
+          r.source.mirror
+            ? [t('spec.mirror'), `<span class="sub">${esc(r.source.mirror.host)}</span>`]
+            : [t('spec.commit'), `<span class="sub">${r.source.commit.slice(0, 10)}</span>`],
         ];
     const rows = [
       ...(r.local ? [] : [[t('spec.maker'), r.maker || '—']]),
@@ -798,7 +828,7 @@ export class Detail {
           : '—',
       ],
       [t('spec.formats'), r.formats.map((f) => f.toUpperCase()).join(' / ')],
-      [t('spec.assets'), `${r.assets.mesh_files} × ${r.assets.mesh_formats.join('/') || '—'}<br><span class="sub">${formatBytes(r.assets.mesh_bytes)}</span>`],
+      [t('spec.assets'), assetsCell(r)],
       ...upstream,
     ];
     const note = lang() === 'zh' ? r.notes_zh || r.notes : r.notes;
@@ -843,8 +873,12 @@ export class Detail {
   renderResources() {
     const r = this.robot;
     const items = [
-      ['res.repo', r.source.repo_url, r.source.github],
-      ['res.tree', r.source.tree_url, 'tree'],
+      // A mirrored entry has no repository and no tree; the archive's own page
+      // is what stands in for both.
+      r.source.mirror
+        ? ['res.mirror', r.source.mirror.site, r.source.mirror.host]
+        : ['res.repo', r.source.repo_url, r.source.github],
+      r.source.tree_url ? ['res.tree', r.source.tree_url, 'tree'] : null,
       ['res.urdf', urdfUrl(r), r.assets.urdf.split('/').pop()],
       r.source.mjcf ? ['res.mjcf', r.assets.base + r.source.mjcf, r.source.mjcf.split('/').pop()] : null,
       r.source.license_url ? ['res.license', r.source.license_url, r.license || 'licence'] : null,
@@ -1437,6 +1471,24 @@ function esc(value) {
  * (BarrettHand's links add up to 264 tonnes); they are shown as-is with a
  * marker rather than silently corrected, since the URDF is the source of truth.
  */
+/**
+ * The mesh count, and — for a mirrored entry — how many meshes the URDF asks
+ * for that the host does not have. Those are skipped rather than requested, so
+ * the number is the difference between what the description describes and what
+ * this page can show, which is worth a line of its own.
+ */
+function assetsCell(robot) {
+  const { mesh_files: files, mesh_formats: formats, mesh_bytes: bytes } = robot.assets;
+  const skipped = robot.assets.skip_meshes?.length || 0;
+  return (
+    `${files} × ${formats.join('/') || '—'}` +
+    `<br><span class="sub">${formatBytes(bytes)}</span>` +
+    (skipped
+      ? `<br><span class="sub warn">${t(skipped === 1 ? 'assets.skipped1' : 'assets.skipped').replace('{n}', skipped)}</span>`
+      : '')
+  );
+}
+
 function massCell(robot) {
   const mass = robot.urdf.mass_kg;
   if (!mass) return '—';

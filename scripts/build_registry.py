@@ -15,6 +15,24 @@ commit. This script turns that upstream metadata into a self-contained registry:
      probing the CDN, so a broken entry fails the build instead of the browser
   5. merge the hand-curated bits from ``data/curation.json``
 
+A few models exist nowhere the four steps above can reach: their maker never
+published a description repository, or published only xacro, and the one public
+copy of the URDF is an archive that re-hosts it. Such an entry carries a
+``mirror`` block instead of an ``upstream`` one and is read from that host. Three
+things differ, and all three are the mirror's doing rather than a choice:
+
+  * there is no commit to pin, so ``source.commit`` is null and the entry says
+    which host it came from instead;
+  * an archive served as a single-page app answers a path it does not have with
+    200 and an HTML page, so a mirrored file's existence is decided by its
+    content type, not its status code (see ``Http.probe``);
+  * an archive keeps the meshes it renders and drops the rest, so a mirrored
+    entry may reference meshes that are not there. Those are skipped rather than
+    failing the build, recorded in ``assets.skip_meshes`` so the viewer and the
+    download writers skip them too, and subtracted from what the entry claims:
+    a model whose collision meshes are all absent reports no collision geometry
+    rather than an empty collision view.
+
 Usage::
 
     pip install -r scripts/requirements.txt
@@ -34,6 +52,7 @@ import posixpath
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
@@ -61,6 +80,20 @@ MOVING_JOINTS = ("revolute", "continuous", "prismatic", "planar", "floating")
 
 
 @dataclass
+class Mirror:
+    """An archive that re-hosts a URDF its maker never published loadably.
+
+    Not a repository: there is no commit, no tree to browse and no licence file
+    to link to, only a base URL and whatever the host says about provenance.
+    """
+
+    host: str
+    site: str
+    base: str
+    license_url: str | None = None
+
+
+@dataclass
 class Upstream:
     """What we know about a robot description before touching the network."""
 
@@ -84,6 +117,16 @@ class Upstream:
     # False for entries hand-written in data/curation.json, which have no
     # module in robot_descriptions.py to link to or load through.
     from_descriptions: bool = True
+    # Set for the handful of entries read from a re-hosting archive rather than
+    # from a repository at a pinned commit.
+    mirror: Mirror | None = None
+    # Package roots spelled out in the curation. A repository's roots are found
+    # by probing, which works because the paths are the ones the URDF was
+    # written against; an archive rearranges them, so it has to be told.
+    packages: dict[str, str] | None = None
+    # Substring substitutions applied to a resolved mesh path, for an archive
+    # that flattened the tree the URDF still refers to.
+    mesh_rewrite: list[tuple[str, str]] = field(default_factory=list)
 
 
 def _join_parts(node: ast.expr, env: dict[str, list[str]]) -> list[str]:
@@ -167,6 +210,19 @@ def read_upstream(descriptions_dir: Path) -> list[Upstream]:
 # --------------------------------------------------------------------------- #
 
 
+def request_url(url: str) -> str:
+    """Percent-encode a URL for urllib, which refuses a raw space in a path.
+
+    Only characters that cannot appear unencoded are touched, so every URL the
+    repository entries produce comes out of here unchanged; it is the mirrored
+    paths, one of which has a directory called ``XHAND1_URDF_ver 1.3``, that
+    need it.
+    """
+    scheme, _, rest = url.partition("://")
+    host, _, path = rest.partition("/")
+    return f"{scheme}://{host}/{urllib.parse.quote(path, safe='/@:,+&=~$!*();?#[]')}"
+
+
 class Http:
     """Tiny caching HTTP client: GET bodies on disk, HEAD results in a map."""
 
@@ -193,20 +249,28 @@ class Http:
 
     def head(self, url: str, attempts: int = 3) -> tuple[int, int]:
         """Return ``(status, content_length)``; conclusive answers are cached."""
+        return self._ask(url, self._head_once, attempts)
+
+    def probe(self, url: str, attempts: int = 3) -> tuple[int, int]:
+        """Same question as :meth:`head`, for a host where a 200 means nothing.
+
+        A single-page app serves its shell for every path it does not
+        recognise, so a missing mesh comes back 200 with ``text/html`` and a
+        HEAD-and-check-the-status probe declares every mesh present. What tells
+        the two apart is the content type. HEAD is no use either — the CDN in
+        front of the archive omits Content-Length on a HEAD and reports it on a
+        GET — so this opens a GET and never reads the body.
+        """
+        return self._ask(url, self._probe_once, attempts)
+
+    def _ask(self, url: str, once, attempts: int) -> tuple[int, int]:
         if url in self.heads:
             status, size = self.heads[url]
             return status, size
         if self.offline:
             return 0, 0
-        request = urllib.request.Request(url, method="HEAD", headers=UA)
         for attempt in range(attempts):
-            try:
-                with urllib.request.urlopen(request, timeout=60) as response:
-                    result = (response.status, int(response.headers.get("Content-Length") or 0))
-            except urllib.error.HTTPError as exc:
-                result = (exc.code, 0)
-            except Exception:  # noqa: BLE001 - network flake, treated as "unknown"
-                result = (0, 0)
+            result = once(url)
             if result[0] in self.CONCLUSIVE:
                 break
             if attempt + 1 < attempts:
@@ -219,18 +283,51 @@ class Http:
             self.save()
         return result
 
+    @staticmethod
+    def _head_once(url: str) -> tuple[int, int]:
+        request = urllib.request.Request(request_url(url), method="HEAD", headers=UA)
+        try:
+            with urllib.request.urlopen(request, timeout=60) as response:
+                return response.status, int(response.headers.get("Content-Length") or 0)
+        except urllib.error.HTTPError as exc:
+            return exc.code, 0
+        except Exception:  # noqa: BLE001 - network flake, treated as "unknown"
+            return 0, 0
+
+    @staticmethod
+    def _probe_once(url: str) -> tuple[int, int]:
+        request = urllib.request.Request(request_url(url), headers=UA)
+        try:
+            with urllib.request.urlopen(request, timeout=60) as response:
+                ctype = (response.headers.get("Content-Type") or "").split(";")[0].strip().lower()
+                if ctype == "text/html":
+                    return 404, 0
+                return response.status, int(response.headers.get("Content-Length") or 0)
+        except urllib.error.HTTPError as exc:
+            return exc.code, 0
+        except Exception:  # noqa: BLE001
+            return 0, 0
+
     def get(self, url: str) -> bytes | None:
         cached = self.body_dir / (
-            url.replace("https://", "").replace("/", "_").replace("@", "_at_")
+            url.replace("https://", "").replace("/", "_").replace("@", "_at_").replace(" ", "_")
         )
         if cached.exists():
             return cached.read_bytes()
         if self.offline:
             return None
         try:
-            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=120) as r:
+            with urllib.request.urlopen(
+                urllib.request.Request(request_url(url), headers=UA), timeout=120
+            ) as r:
+                ctype = (r.headers.get("Content-Type") or "").split(";")[0].strip().lower()
                 data = r.read()
         except Exception:  # noqa: BLE001
+            return None
+        # Same single-page-app trap as `probe`: a URDF path the archive does not
+        # have answers with its shell, and an HTML page parses as neither URDF
+        # nor error unless it is refused here.
+        if ctype == "text/html" and not url.endswith((".html", ".md")):
             return None
         cached.write_bytes(data)
         return data
@@ -261,10 +358,25 @@ class UrdfFacts:
     urdf_bytes: int = 0
     has_collision: bool = False
     has_inertia: bool = False
+    # Meshes the URDF references that the host does not have. Only a mirror can
+    # end up with any: a repository that is missing one is a broken entry, and
+    # they land in `missing` above, which fails the build.
+    skipped: list[str] = field(default_factory=list)
+    # The same meshes as host-relative paths, which is the form the viewer and
+    # the download writers see and can therefore skip.
+    skip_paths: list[str] = field(default_factory=list)
 
 
 def base_url(up: Upstream) -> str:
+    if up.mirror:
+        return up.mirror.base
     return f"{CDN}/{up.github}@{up.commit}/"
+
+
+def rewrite_mesh_path(path: str, rules: list[tuple[str, str]]) -> str:
+    for old, new in rules:
+        path = path.replace(old, new)
+    return path
 
 
 def package_candidates(up: Upstream, package: str) -> list[str]:
@@ -296,7 +408,7 @@ def package_candidates(up: Upstream, package: str) -> list[str]:
 
 def inspect_urdf(up: Upstream, http: Http, verify_meshes: bool = True) -> UrdfFacts:
     """Download the URDF, parse it, and check that its meshes are reachable."""
-    if not (up.github and up.commit and up.urdf_path):
+    if not up.urdf_path or not (up.mirror or (up.github and up.commit)):
         return UrdfFacts(ok=False, error="no urdf path")
     raw = http.get(base_url(up) + up.urdf_path)
     if raw is None:
@@ -326,6 +438,19 @@ def inspect_urdf(up: Upstream, http: Http, verify_meshes: bool = True) -> UrdfFa
         except ValueError:
             pass
 
+    # Which geometry a link owns decides what the entry may claim to have: a
+    # <collision> whose mesh the host dropped is not collision geometry the
+    # viewer can show.
+    collision_meshes: set[str] = set()
+    collision_primitives = False
+    for collision in root.iter("collision"):
+        for geometry in collision.iter("geometry"):
+            mesh = geometry.find("mesh")
+            if mesh is not None and mesh.get("filename"):
+                collision_meshes.add(mesh.get("filename"))
+            elif len(list(geometry)):
+                collision_primitives = True
+
     facts = UrdfFacts(
         ok=True,
         xml_name=root.get("name"),
@@ -334,7 +459,7 @@ def inspect_urdf(up: Upstream, http: Http, verify_meshes: bool = True) -> UrdfFa
         n_moving_joints=sum(n for t, n in joint_counts.items() if t in MOVING_JOINTS),
         mass_kg=round(mass, 3) if mass > 0 else None,
         urdf_bytes=len(raw),
-        has_collision=any(True for _ in root.iter("collision")),
+        has_collision=bool(collision_meshes) or collision_primitives,
         has_inertia=any(True for _ in root.iter("inertia")),
         joint_names=joint_names,
     )
@@ -345,36 +470,65 @@ def inspect_urdf(up: Upstream, http: Http, verify_meshes: bool = True) -> UrdfFa
         facts.mesh_files = len(meshes)
         return facts
 
+    # A repository has to have every mesh its URDF names; a mirror is an archive
+    # of someone else's files and keeps only what it renders, so what it does
+    # not have is skipped instead of failing the entry.
+    tolerate_missing = up.mirror is not None
+    exists = http.probe if up.mirror else http.head
     urdf_dir = posixpath.dirname(up.urdf_path)
+
+    def resolve(candidate: str, rel: str) -> tuple[str, int, int]:
+        path = posixpath.normpath(posixpath.join(candidate, rel)).lstrip("/")
+        path = rewrite_mesh_path(path, up.mesh_rewrite)
+        status, size = exists(base_url(up) + path)
+        return path, status, size
+
+    kept: list[str] = []
     for mesh in meshes:
         if mesh.startswith(("http://", "https://", "file://")):
             facts.missing.append(mesh)
             continue
         if mesh.startswith("package://"):
             package, _, rel = mesh[len("package://") :].partition("/")
-            known = facts.packages.get(package)
+            known = facts.packages.get(package) or (up.packages or {}).get(package)
             candidates = [known] if known is not None else package_candidates(up, package)
             hit = None
             for candidate in candidates:
-                path = posixpath.normpath(posixpath.join(candidate, rel)).lstrip("/")
-                status, size = http.head(base_url(up) + path)
+                path, status, size = resolve(candidate, rel)
                 if status == 200:
-                    hit = (candidate, size)
+                    hit = (candidate, path, size)
                     break
             if hit is None:
-                facts.missing.append(mesh)
-            else:
-                facts.packages[package] = hit[0]
-                facts.mesh_files += 1
-                facts.mesh_bytes += hit[1]
+                (facts.skipped if tolerate_missing else facts.missing).append(mesh)
+                if tolerate_missing:
+                    # Record the path it would have had, so the browser skips the
+                    # same request rather than parsing the fallback page.
+                    facts.skip_paths.append(resolve(known if known is not None else "", rel)[0])
+                continue
+            facts.packages[package] = hit[0]
+            facts.mesh_files += 1
+            facts.mesh_bytes += hit[2]
+            kept.append(mesh)
         else:
-            path = posixpath.normpath(posixpath.join(urdf_dir, mesh)).lstrip("/")
-            status, size = http.head(base_url(up) + path)
+            path, status, size = resolve(urdf_dir, mesh)
             if status == 200:
                 facts.mesh_files += 1
                 facts.mesh_bytes += size
+                kept.append(mesh)
             else:
-                facts.missing.append(mesh)
+                (facts.skipped if tolerate_missing else facts.missing).append(mesh)
+                if tolerate_missing:
+                    facts.skip_paths.append(path)
+
+    if facts.skipped:
+        # What the entry claims is what survived: the formats still referenced,
+        # and collision geometry only if some of it is still there.
+        facts.mesh_formats = sorted({posixpath.splitext(m)[1].lower() for m in kept if m})
+        facts.has_collision = collision_primitives or any(
+            m in collision_meshes for m in kept
+        )
+        facts.skipped.sort()
+        facts.skip_paths = sorted(set(facts.skip_paths))
     return facts
 
 
@@ -466,13 +620,7 @@ def variant_for(
             "has_inertia": facts.has_inertia,
             "bytes": facts.urdf_bytes,
         },
-        "assets": {
-            "urdf": up.urdf_path,
-            "packages": {k: v for k, v in sorted(facts.packages.items())},
-            "mesh_files": facts.mesh_files,
-            "mesh_bytes": facts.mesh_bytes,
-            "mesh_formats": facts.mesh_formats,
-        },
+        "assets": asset_block(up, facts),
     }
 
 
@@ -511,6 +659,65 @@ def upstream_from_curation(item: dict[str, Any]) -> Upstream:
         uses_xacro=False,
         from_descriptions=False,
     )
+
+
+def mirror_from_curation(item: dict[str, Any]) -> Upstream:
+    """Build an ``Upstream`` from a hand-written ``mirror`` block.
+
+    For a model whose maker published no repository the gallery can load — none
+    at all, or xacro only — and whose one public copy lives in an archive. The
+    entry names the host, the base URL and the package roots the archive
+    rearranged the meshes into, because there is nothing to probe them out of.
+    """
+    spec = item["mirror"]
+    first = (item.get("variants") or [{}])[0]
+    urdf_path = spec.get("urdf") or first["urdf"]
+    return Upstream(
+        key=curated_id(item),
+        robot=item.get("name") or curated_id(item),
+        maker=item.get("maker"),
+        dof=item.get("dof"),
+        tags=sorted(spec.get("tags") or []),
+        formats=sorted(spec.get("formats") or ["urdf"]),
+        license_spdx=spec.get("license"),
+        license_path=None,
+        github=None,
+        commit=None,
+        package_path=spec["package"] if spec.get("package") is not None else posixpath.dirname(urdf_path),
+        urdf_path=urdf_path,
+        mjcf_path=spec.get("mjcf") or first.get("mjcf"),
+        uses_xacro=False,
+        from_descriptions=False,
+        mirror=Mirror(
+            host=spec["host"],
+            site=spec["site"],
+            base=spec["base"] if spec["base"].endswith("/") else spec["base"] + "/",
+            license_url=spec.get("license_url"),
+        ),
+        packages=spec.get("packages") or {},
+        mesh_rewrite=[(r["from"], r["to"]) for r in spec.get("mesh_rewrite") or []],
+    )
+
+
+def asset_block(up: Upstream, facts: UrdfFacts) -> dict[str, Any]:
+    """Where an entry's files are, and which of them to leave alone.
+
+    ``skip_meshes`` and ``mesh_rewrite`` are only written when they have
+    something in them, so the hundred-odd entries read from a repository at a
+    pinned commit carry neither.
+    """
+    block: dict[str, Any] = {
+        "urdf": up.urdf_path,
+        "packages": {k: v for k, v in sorted(facts.packages.items())},
+        "mesh_files": facts.mesh_files,
+        "mesh_bytes": facts.mesh_bytes,
+        "mesh_formats": facts.mesh_formats,
+    }
+    if up.mesh_rewrite:
+        block["mesh_rewrite"] = [{"from": old, "to": new} for old, new in up.mesh_rewrite]
+    if facts.skip_paths:
+        block["skip_meshes"] = facts.skip_paths
+    return block
 
 
 def entry_for(
@@ -552,26 +759,31 @@ def entry_for(
             "has_inertia": facts.has_inertia,
             "bytes": facts.urdf_bytes,
         },
-        "assets": {
-            "base": base_url(up),
-            "urdf": up.urdf_path,
-            "packages": {k: v for k, v in sorted(facts.packages.items())},
-            "mesh_files": facts.mesh_files,
-            "mesh_bytes": facts.mesh_bytes,
-            "mesh_formats": facts.mesh_formats,
-        },
+        "assets": {"base": base_url(up), **asset_block(up, facts)},
         "source": {
             # Only entries that come from robot_descriptions.py carry a key the
             # site can link to or load with; hand-written ones leave it null.
             "description": up.key if up.from_descriptions else None,
+            # A mirrored entry has no repository and no commit. Everything that
+            # would be derived from them is null, and `mirror` says where the
+            # files actually came from instead.
             "github": up.github,
             "commit": up.commit,
-            "repo_url": f"https://github.com/{up.github}",
-            "tree_url": f"https://github.com/{up.github}/tree/{up.commit}/{up.package_path}".rstrip("/"),
+            "repo_url": f"https://github.com/{up.github}" if up.github else None,
+            "tree_url": (
+                f"https://github.com/{up.github}/tree/{up.commit}/{up.package_path}".rstrip("/")
+                if up.github
+                else None
+            ),
             "license_url": (
                 f"https://github.com/{up.github}/blob/{up.commit}/{up.license_path}"
-                if up.license_path
+                if up.github and up.license_path
+                else up.mirror.license_url
+                if up.mirror
                 else None
+            ),
+            "mirror": (
+                {"host": up.mirror.host, "site": up.mirror.site} if up.mirror else None
             ),
             "mjcf": up.mjcf_path,
         },
@@ -653,7 +865,14 @@ def main() -> int:
 
     def build(item: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any] | None, str | None]:
         key = curated_key(item)
-        if item.get("upstream"):
+        if item.get("upstream") and item.get("mirror"):
+            return item, None, f"{key}: has both an upstream and a mirror block"
+        if item.get("mirror"):
+            try:
+                up = mirror_from_curation(item)
+            except KeyError as exc:
+                return item, None, f"{key}: mirror block is missing {exc}"
+        elif item.get("upstream"):
             try:
                 up = upstream_from_curation(item)
             except KeyError as exc:
@@ -729,6 +948,15 @@ def main() -> int:
 
     total = sum(e["assets"]["mesh_bytes"] for e in entries)
     print(f"wrote {args.out}: {len(entries)} robots, {total / 1e6:.0f} MB of upstream meshes")
+    mirrored = [e for e in entries if e["source"]["mirror"]]
+    if mirrored:
+        print(f"  {len(mirrored)} entries read from a mirror rather than a pinned commit:")
+        for entry in mirrored:
+            skipped = len(entry["assets"].get("skip_meshes") or [])
+            note = f", {skipped} mesh(es) the host does not have — skipped" if skipped else ""
+            if skipped and not entry["urdf"]["has_collision"]:
+                note += ", no collision geometry left"
+            print(f"    {entry['id']:22s} {entry['source']['mirror']['host']}{note}")
     for problem in problems:
         print(f"  PROBLEM {problem}", file=sys.stderr)
     return 1 if problems else 0

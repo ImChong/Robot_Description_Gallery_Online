@@ -162,6 +162,24 @@ export function urdfUrl(robot) {
   return robot.assets.base + robot.assets.urdf;
 }
 
+/**
+ * Apply an entry's `assets.mesh_rewrite` substitutions to a resolved mesh path.
+ *
+ * Only mirrored entries have any. An archive that re-hosts someone else's URDF
+ * tends to flatten the mesh tree while leaving the references alone, so the
+ * paths the URDF writes are not the paths the host serves; these put them back.
+ * The build step applies the same rules, so what it recorded as present and
+ * what the browser asks for are the same files.
+ *
+ * @param {string} path
+ * @param {{from: string, to: string}[]} [rules]
+ */
+export function applyMeshRewrite(path, rules) {
+  let out = path;
+  for (const { from, to } of rules || []) out = out.split(from).join(to);
+  return out;
+}
+
 export function formatBytes(bytes) {
   if (!bytes) return '—';
   if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;

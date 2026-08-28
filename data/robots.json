@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-08-28T09:07:28Z",
+ "generated": "2026-08-28T10:41:50Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -96,6 +96,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mirror": null,
     "mjcf": "robots/g1_description/g1_29dof_rev_1_0.xml"
    },
    "links": {
@@ -1053,6 +1054,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -1114,6 +1116,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_2_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_2_description/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -1175,6 +1178,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/h2_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -1237,6 +1241,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/h2_plus",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -1298,6 +1303,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -1359,6 +1365,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_air_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -1421,6 +1428,7 @@
     "repo_url": "https://github.com/AgibotTech/agibot_x2_urdf",
     "tree_url": "https://github.com/AgibotTech/agibot_x2_urdf/tree/77f43eb0904dae4c48ccd9154fee824f8ffd4d38/X2_URDF-v1.4.0",
     "license_url": "https://github.com/AgibotTech/agibot_x2_urdf/blob/77f43eb0904dae4c48ccd9154fee824f8ffd4d38/LICENSE",
+    "mirror": null,
     "mjcf": "X2_URDF-v1.4.0/X2-Ultra.xml"
    },
    "links": {
@@ -1483,6 +1491,7 @@
     "repo_url": "https://github.com/AgibotTech/A3-A3U-robot-model",
     "tree_url": "https://github.com/AgibotTech/A3-A3U-robot-model/tree/589f508ff357447c610a3f3004419035ddc8f153/a3_t3d0",
     "license_url": "https://github.com/AgibotTech/A3-A3U-robot-model/blob/589f508ff357447c610a3f3004419035ddc8f153/LICENSE.txt",
+    "mirror": null,
     "mjcf": "a3_t3d0/mjcf/a3_t3d0.xml"
    },
    "links": {
@@ -1545,6 +1554,7 @@
     "repo_url": "https://github.com/AgibotTech/A3-A3U-robot-model",
     "tree_url": "https://github.com/AgibotTech/A3-A3U-robot-model/tree/589f508ff357447c610a3f3004419035ddc8f153/a3_ultra_t2d5",
     "license_url": "https://github.com/AgibotTech/A3-A3U-robot-model/blob/589f508ff357447c610a3f3004419035ddc8f153/LICENSE.txt",
+    "mirror": null,
     "mjcf": "a3_ultra_t2d5/mjcf/a3_ultra_t2d5.xml"
    },
    "links": {
@@ -1607,6 +1617,7 @@
     "repo_url": "https://github.com/AgibotTech/A3-A3U-robot-model",
     "tree_url": "https://github.com/AgibotTech/A3-A3U-robot-model/tree/589f508ff357447c610a3f3004419035ddc8f153/a3_ultra_t3d0",
     "license_url": "https://github.com/AgibotTech/A3-A3U-robot-model/blob/589f508ff357447c610a3f3004419035ddc8f153/LICENSE.txt",
+    "mirror": null,
     "mjcf": "a3_ultra_t3d0/mjcf/a3_ultra_t3d0.xml"
    },
    "links": {
@@ -1671,6 +1682,7 @@
     "repo_url": "https://github.com/MagiclabRobotics/magicbot-gen1_description",
     "tree_url": "https://github.com/MagiclabRobotics/magicbot-gen1_description/tree/413a3a50cee2013f654f7c436ac131b935be4e84",
     "license_url": "https://github.com/MagiclabRobotics/magicbot-gen1_description/blob/413a3a50cee2013f654f7c436ac131b935be4e84/LICENSE",
+    "mirror": null,
     "mjcf": "mjcf/MAGICBOT.xml"
    },
    "links": {
@@ -1738,6 +1750,7 @@
     "repo_url": "https://github.com/MagiclabRobotics/magicbot-z1_description",
     "tree_url": "https://github.com/MagiclabRobotics/magicbot-z1_description/tree/f58c620ac323fe8c1ffda410d9fdb9074fe8adfc",
     "license_url": "https://github.com/MagiclabRobotics/magicbot-z1_description/blob/f58c620ac323fe8c1ffda410d9fdb9074fe8adfc/LICENSE",
+    "mirror": null,
     "mjcf": "mjcf/MAGICBOTZ1.xml"
    },
    "links": {
@@ -1799,6 +1812,7 @@
     "repo_url": "https://github.com/FFTAI/Wiki-GRx-Models",
     "tree_url": "https://github.com/FFTAI/Wiki-GRx-Models/tree/351245ac8fa4bf6f4b0c41556e1e6976a438bcef/GRX/GR1/GR1T1",
     "license_url": "https://github.com/FFTAI/Wiki-GRx-Models/blob/351245ac8fa4bf6f4b0c41556e1e6976a438bcef/GRX/GR1/GR1T1/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -1860,6 +1874,7 @@
     "repo_url": "https://github.com/FFTAI/Wiki-GRx-Models",
     "tree_url": "https://github.com/FFTAI/Wiki-GRx-Models/tree/f8e683f00d1d99deb882deb9dfce6030095b466a/N1",
     "license_url": "https://github.com/FFTAI/Wiki-GRx-Models/blob/f8e683f00d1d99deb882deb9dfce6030095b466a/N1/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -1918,6 +1933,7 @@
     "repo_url": "https://github.com/BoosterRobotics/booster_gym",
     "tree_url": "https://github.com/BoosterRobotics/booster_gym/tree/687a33d08b08875fe45dc8d91b54db83766df8b9/resources/T1",
     "license_url": "https://github.com/BoosterRobotics/booster_gym/blob/687a33d08b08875fe45dc8d91b54db83766df8b9/resources/T1/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -1977,6 +1993,7 @@
     "repo_url": "https://github.com/BoosterRobotics/booster_assets",
     "tree_url": "https://github.com/BoosterRobotics/booster_assets/tree/508cbee6ca9ae6fbc8c0b38dd58785a6f3fc61a2/robots/K1",
     "license_url": "https://github.com/BoosterRobotics/booster_assets/blob/508cbee6ca9ae6fbc8c0b38dd58785a6f3fc61a2/LICENSE",
+    "mirror": null,
     "mjcf": "robots/K1/K1_22dof.xml"
    },
    "links": {
@@ -2038,6 +2055,7 @@
     "repo_url": "https://github.com/BoosterRobotics/booster_assets",
     "tree_url": "https://github.com/BoosterRobotics/booster_assets/tree/508cbee6ca9ae6fbc8c0b38dd58785a6f3fc61a2/robots/T1",
     "license_url": "https://github.com/BoosterRobotics/booster_assets/blob/508cbee6ca9ae6fbc8c0b38dd58785a6f3fc61a2/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -2099,6 +2117,7 @@
     "repo_url": "https://github.com/bxirobotics/robot_models",
     "tree_url": "https://github.com/bxirobotics/robot_models/tree/eabe24ce937f8e633077a163b883e92e8996c36e/elf2_dof25/urdf",
     "license_url": "https://github.com/bxirobotics/robot_models/blob/eabe24ce937f8e633077a163b883e92e8996c36e/elf2_dof25/urdf/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -2161,6 +2180,7 @@
     "repo_url": "https://github.com/gbionics/gb-robot-models",
     "tree_url": "https://github.com/gbionics/gb-robot-models/tree/ae990f38968c2ae29caee88851f9153168630b8f/share/gb_robot_models",
     "license_url": "https://github.com/gbionics/gb-robot-models/blob/ae990f38968c2ae29caee88851f9153168630b8f/share/gb_robot_models/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -2222,6 +2242,7 @@
     "repo_url": "https://github.com/HybridRobotics/berkeley_humanoid_description",
     "tree_url": "https://github.com/HybridRobotics/berkeley_humanoid_description/tree/d0d13d3f81d795480e25ed1910eaf83d5f0a1d0b",
     "license_url": "https://github.com/HybridRobotics/berkeley_humanoid_description/blob/d0d13d3f81d795480e25ed1910eaf83d5f0a1d0b/package.xml",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -2284,6 +2305,7 @@
     "repo_url": "https://github.com/hshi74/toddlerbot",
     "tree_url": "https://github.com/hshi74/toddlerbot/tree/067f9dc4f50143e36334877b9395b9c5c29ee30c/toddlerbot/descriptions/toddlerbot_2xc",
     "license_url": "https://github.com/hshi74/toddlerbot/blob/067f9dc4f50143e36334877b9395b9c5c29ee30c/toddlerbot/descriptions/toddlerbot_2xc/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -2347,6 +2369,7 @@
     "repo_url": "https://github.com/stack-of-tasks/talos-data",
     "tree_url": "https://github.com/stack-of-tasks/talos-data/tree/77169405d6a48a5d3f3f75eb014209f375ff23b6",
     "license_url": "https://github.com/stack-of-tasks/talos-data/blob/77169405d6a48a5d3f3f75eb014209f375ff23b6/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -2412,6 +2435,7 @@
     "repo_url": "https://github.com/gkjohnson/nasa-urdf-robots",
     "tree_url": "https://github.com/gkjohnson/nasa-urdf-robots/tree/54cdeb1dbfb529b79ae3185a53e24fce26e1b74b/val_description",
     "license_url": "https://github.com/gkjohnson/nasa-urdf-robots/blob/54cdeb1dbfb529b79ae3185a53e24fce26e1b74b/val_description/README.md",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -2475,6 +2499,7 @@
     "repo_url": "https://github.com/gkjohnson/nasa-urdf-robots",
     "tree_url": "https://github.com/gkjohnson/nasa-urdf-robots/tree/54cdeb1dbfb529b79ae3185a53e24fce26e1b74b/r2_description",
     "license_url": "https://github.com/gkjohnson/nasa-urdf-robots/blob/54cdeb1dbfb529b79ae3185a53e24fce26e1b74b/r2_description/README.md",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -2536,6 +2561,7 @@
     "repo_url": "https://github.com/jrl-umi3218/jvrc_description",
     "tree_url": "https://github.com/jrl-umi3218/jvrc_description/tree/9ff8efbc7043459a8f0892662bd030d8020fb682",
     "license_url": "https://github.com/jrl-umi3218/jvrc_description/blob/9ff8efbc7043459a8f0892662bd030d8020fb682/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -2597,6 +2623,7 @@
     "repo_url": "https://github.com/RobotLocomotion/drake",
     "tree_url": "https://github.com/RobotLocomotion/drake/tree/7abea0556ede980a5077fe1a8cfbae59b57c7c27/examples/atlas",
     "license_url": "https://github.com/RobotLocomotion/drake/blob/7abea0556ede980a5077fe1a8cfbae59b57c7c27/examples/atlas/LICENSE.TXT",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -2660,6 +2687,7 @@
     "repo_url": "https://github.com/openai/roboschool",
     "tree_url": "https://github.com/openai/roboschool/tree/1.0.49/roboschool/models_robot/atlas_description",
     "license_url": "https://github.com/openai/roboschool/blob/1.0.49/roboschool/models_robot/atlas_description/LICENSE.md",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -2723,6 +2751,7 @@
     "repo_url": "https://github.com/robotology/icub-models",
     "tree_url": "https://github.com/robotology/icub-models/tree/v1.25.0/iCub",
     "license_url": "https://github.com/robotology/icub-models/blob/v1.25.0/iCub/iCub/package.xml",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -2786,6 +2815,7 @@
     "repo_url": "https://github.com/icub-tech-iit/ergocub-software",
     "tree_url": "https://github.com/icub-tech-iit/ergocub-software/tree/v0.7.7/urdf/ergoCub",
     "license_url": "https://github.com/icub-tech-iit/ergocub-software/blob/v0.7.7/urdf/ergoCub/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -2850,6 +2880,7 @@
     "repo_url": "https://github.com/shbang91/draco3_description",
     "tree_url": "https://github.com/shbang91/draco3_description/tree/5afd19733d7b3e9f1135ba93e0aad90ed1a24cc7",
     "license_url": "https://github.com/shbang91/draco3_description/blob/5afd19733d7b3e9f1135ba93e0aad90ed1a24cc7/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -2911,6 +2942,7 @@
     "repo_url": "https://github.com/robot-descriptions/jaxon_description",
     "tree_url": "https://github.com/robot-descriptions/jaxon_description/tree/4a0cb7a4a737864312f8d6e3f89823a741539bfc",
     "license_url": "https://github.com/robot-descriptions/jaxon_description/blob/4a0cb7a4a737864312f8d6e3f89823a741539bfc/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -2974,6 +3006,7 @@
     "repo_url": "https://github.com/ros-aldebaran/romeo_robot",
     "tree_url": "https://github.com/ros-aldebaran/romeo_robot/tree/0.1.5/romeo_description",
     "license_url": "https://github.com/ros-aldebaran/romeo_robot/blob/0.1.5/romeo_description/romeo_description/package.xml",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -3048,6 +3081,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/go2_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/go2_description/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -3127,6 +3161,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/go2w_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -3203,6 +3238,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/b2_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/b2_description/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -3279,6 +3315,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/a1_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/a1_description/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -3351,6 +3388,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/a2_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -3426,6 +3464,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/as2_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -3501,6 +3540,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/aliengo_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/aliengo_description/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -3573,6 +3613,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_mujoco",
     "tree_url": "https://github.com/unitreerobotics/unitree_mujoco/tree/f3300ff1bf0ab9efbea0162717353480d9b05d73/data/laikago",
     "license_url": "https://github.com/unitreerobotics/unitree_mujoco/blob/f3300ff1bf0ab9efbea0162717353480d9b05d73/data/laikago/LICENSE",
+    "mirror": null,
     "mjcf": "data/laikago/xml/laikago.xml"
    },
    "links": {}
@@ -3643,6 +3684,7 @@
     "repo_url": "https://github.com/ANYbotics/anymal_b_simple_description",
     "tree_url": "https://github.com/ANYbotics/anymal_b_simple_description/tree/988b5df22b84761bdf08111b1c2ccc883793f456",
     "license_url": "https://github.com/ANYbotics/anymal_b_simple_description/blob/988b5df22b84761bdf08111b1c2ccc883793f456/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -3715,6 +3757,7 @@
     "repo_url": "https://github.com/ANYbotics/anymal_c_simple_description",
     "tree_url": "https://github.com/ANYbotics/anymal_c_simple_description/tree/f160b8f7fed840c47a6febe8e2bc78b32bf43a68",
     "license_url": "https://github.com/ANYbotics/anymal_c_simple_description/blob/f160b8f7fed840c47a6febe8e2bc78b32bf43a68/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -3787,6 +3830,7 @@
     "repo_url": "https://github.com/ANYbotics/anymal_d_simple_description",
     "tree_url": "https://github.com/ANYbotics/anymal_d_simple_description/tree/6adc14720aab583613975e5a9d6d4fa3cfcdd081",
     "license_url": "https://github.com/ANYbotics/anymal_d_simple_description/blob/6adc14720aab583613975e5a9d6d4fa3cfcdd081/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -3859,6 +3903,7 @@
     "repo_url": "https://github.com/Gepetto/example-robot-data",
     "tree_url": "https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/hyq_description",
     "license_url": "https://github.com/Gepetto/example-robot-data/blob/d0d9098d752014aec3725b07766962acf06c5418/robots/hyq_description/robots/hyq_description/README.md",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -3929,6 +3974,7 @@
     "repo_url": "https://github.com/Gepetto/example-robot-data",
     "tree_url": "https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/solo_description",
     "license_url": "https://github.com/Gepetto/example-robot-data/blob/d0d9098d752014aec3725b07766962acf06c5418/robots/solo_description/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -3993,6 +4039,7 @@
     "repo_url": "https://github.com/limxdynamics/robot-description",
     "tree_url": "https://github.com/limxdynamics/robot-description/tree/a097533372a08298d45af391cbdfc2fd2dc3da6f/wheellegged/WL_P311D",
     "license_url": "https://github.com/limxdynamics/robot-description/blob/a097533372a08298d45af391cbdfc2fd2dc3da6f/wheellegged/WL_P311D/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -4055,6 +4102,7 @@
     "repo_url": "https://github.com/limxdynamics/robot-description",
     "tree_url": "https://github.com/limxdynamics/robot-description/tree/a097533372a08298d45af391cbdfc2fd2dc3da6f/wheellegged/WL_P311E",
     "license_url": "https://github.com/limxdynamics/robot-description/blob/a097533372a08298d45af391cbdfc2fd2dc3da6f/wheellegged/WL_P311E/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -4129,6 +4177,7 @@
     "repo_url": "https://github.com/AgibotTech/Agibot_D1_MaxPro",
     "tree_url": "https://github.com/AgibotTech/Agibot_D1_MaxPro/tree/7828aef8238388c11267e56d5e44bac9f6dd2eb4/urdf/maxpro_description",
     "license_url": null,
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -4205,6 +4254,7 @@
     "repo_url": "https://github.com/MagiclabRobotics/magicdog_description",
     "tree_url": "https://github.com/MagiclabRobotics/magicdog_description/tree/e37cd1dca176b9aa19721bb5029dd377a1f3ed92",
     "license_url": "https://github.com/MagiclabRobotics/magicdog_description/blob/e37cd1dca176b9aa19721bb5029dd377a1f3ed92/LICENSE.txt",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -4284,6 +4334,7 @@
     "repo_url": "https://github.com/MagiclabRobotics/magicdog-w_description",
     "tree_url": "https://github.com/MagiclabRobotics/magicdog-w_description/tree/0de1ee339ca41c40c36b50eb51490df74291d2b2",
     "license_url": "https://github.com/MagiclabRobotics/magicdog-w_description/blob/0de1ee339ca41c40c36b50eb51490df74291d2b2/LICENSE",
+    "mirror": null,
     "mjcf": "mjcf/MAGICDOGW.xml"
    },
    "links": {
@@ -4351,6 +4402,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/z1_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/z1_description/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -4417,6 +4469,7 @@
     "repo_url": "https://github.com/Gepetto/example-robot-data",
     "tree_url": "https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/panda_description",
     "license_url": "https://github.com/Gepetto/example-robot-data/blob/d0d9098d752014aec3725b07766962acf06c5418/robots/panda_description/robots/panda_description/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -4484,6 +4537,7 @@
     "repo_url": "https://github.com/RobotLocomotion/drake",
     "tree_url": "https://github.com/RobotLocomotion/drake/tree/7abea0556ede980a5077fe1a8cfbae59b57c7c27/manipulation/models/iiwa_description",
     "license_url": "https://github.com/RobotLocomotion/drake/blob/7abea0556ede980a5077fe1a8cfbae59b57c7c27/manipulation/models/iiwa_description/manipulation/models/iiwa_description/LICENSE.TXT",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -4553,6 +4607,7 @@
     "repo_url": "https://github.com/Gepetto/example-robot-data",
     "tree_url": "https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/kinova_description",
     "license_url": "https://github.com/Gepetto/example-robot-data/blob/d0d9098d752014aec3725b07766962acf06c5418/robots/kinova_description/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -4614,6 +4669,7 @@
     "repo_url": "https://github.com/robot-descriptions/fanuc_m710ic_description",
     "tree_url": "https://github.com/robot-descriptions/fanuc_m710ic_description/tree/d12af44559cd7e46f7afd513237f159f82f8402e",
     "license_url": "https://github.com/robot-descriptions/fanuc_m710ic_description/blob/d12af44559cd7e46f7afd513237f159f82f8402e/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -4678,6 +4734,7 @@
     "repo_url": "https://github.com/ianathompson/eDO_description",
     "tree_url": "https://github.com/ianathompson/eDO_description/tree/17b3f92f834746106d6a4befaab8eeab3ac248e6",
     "license_url": "https://github.com/ianathompson/eDO_description/blob/17b3f92f834746106d6a4befaab8eeab3ac248e6/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -4740,6 +4797,7 @@
     "repo_url": "https://github.com/agilexrobotics/Piper_ros",
     "tree_url": "https://github.com/agilexrobotics/Piper_ros/tree/f2ec6a67e1f404bcb478529e89861ccdf43fa298/src/piper_description",
     "license_url": "https://github.com/agilexrobotics/Piper_ros/blob/f2ec6a67e1f404bcb478529e89861ccdf43fa298/src/piper_description/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -4802,6 +4860,7 @@
     "repo_url": "https://github.com/robot-descriptions/i2rt",
     "tree_url": "https://github.com/robot-descriptions/i2rt/tree/7809b5b17227162d265f922e2e10598c0e214322/i2rt/robot_models/yam",
     "license_url": "https://github.com/robot-descriptions/i2rt/blob/7809b5b17227162d265f922e2e10598c0e214322/i2rt/robot_models/yam/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -4860,6 +4919,7 @@
     "repo_url": "https://github.com/TheRobotStudio/SO-ARM100",
     "tree_url": "https://github.com/TheRobotStudio/SO-ARM100/tree/63eede5a636e548eb8f2854e558bd343c21db9f7/Simulation/SO100",
     "license_url": "https://github.com/TheRobotStudio/SO-ARM100/blob/63eede5a636e548eb8f2854e558bd343c21db9f7/Simulation/SO100/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -4920,6 +4980,7 @@
     "repo_url": "https://github.com/TheRobotStudio/SO-ARM100",
     "tree_url": "https://github.com/TheRobotStudio/SO-ARM100/tree/63eede5a636e548eb8f2854e558bd343c21db9f7/Simulation/SO101",
     "license_url": "https://github.com/TheRobotStudio/SO-ARM100/blob/63eede5a636e548eb8f2854e558bd343c21db9f7/Simulation/SO101/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -4982,6 +5043,7 @@
     "repo_url": "https://github.com/ROBOTIS-GIT/open_manipulator",
     "tree_url": "https://github.com/ROBOTIS-GIT/open_manipulator/tree/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description",
     "license_url": "https://github.com/ROBOTIS-GIT/open_manipulator/blob/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -5045,6 +5107,7 @@
     "repo_url": "https://github.com/ROBOTIS-GIT/open_manipulator",
     "tree_url": "https://github.com/ROBOTIS-GIT/open_manipulator/tree/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description",
     "license_url": "https://github.com/ROBOTIS-GIT/open_manipulator/blob/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -5106,6 +5169,7 @@
     "repo_url": "https://github.com/ROBOTIS-GIT/open_manipulator",
     "tree_url": "https://github.com/ROBOTIS-GIT/open_manipulator/tree/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description",
     "license_url": "https://github.com/ROBOTIS-GIT/open_manipulator/blob/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -5171,6 +5235,7 @@
     "repo_url": "https://github.com/ROBOTIS-GIT/open_manipulator",
     "tree_url": "https://github.com/ROBOTIS-GIT/open_manipulator/tree/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description",
     "license_url": "https://github.com/ROBOTIS-GIT/open_manipulator/blob/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -5236,6 +5301,7 @@
     "repo_url": "https://github.com/ROBOTIS-GIT/open_manipulator",
     "tree_url": "https://github.com/ROBOTIS-GIT/open_manipulator/tree/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description",
     "license_url": "https://github.com/ROBOTIS-GIT/open_manipulator/blob/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -5301,6 +5367,7 @@
     "repo_url": "https://github.com/ROBOTIS-GIT/open_manipulator",
     "tree_url": "https://github.com/ROBOTIS-GIT/open_manipulator/tree/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description",
     "license_url": "https://github.com/ROBOTIS-GIT/open_manipulator/blob/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -5362,6 +5429,7 @@
     "repo_url": "https://github.com/poppy-project/poppy_ergo_jr_description",
     "tree_url": "https://github.com/poppy-project/poppy_ergo_jr_description/tree/7eb32bd385afa11dea5e6a6b6a4a86a0243aaa2b",
     "license_url": "https://github.com/poppy-project/poppy_ergo_jr_description/blob/7eb32bd385afa11dea5e6a6b6a4a86a0243aaa2b/package.xml",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -5426,6 +5494,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex1_1",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -5489,6 +5558,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex2_5",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -5552,6 +5622,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex3_1",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -5636,6 +5707,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex5_1",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -5699,6 +5771,7 @@
     "repo_url": "https://github.com/leap-hand/LEAP_Hand_Sim",
     "tree_url": "https://github.com/leap-hand/LEAP_Hand_Sim/tree/150bc3d4b61fd6619193ba5a8ef209f3609ced89/assets/leap_hand",
     "license_url": "https://github.com/leap-hand/LEAP_Hand_Sim/blob/150bc3d4b61fd6619193ba5a8ef209f3609ced89/assets/leap_hand/LICENSE.txt",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -5766,6 +5839,7 @@
     "repo_url": "https://github.com/RobotLocomotion/drake",
     "tree_url": "https://github.com/RobotLocomotion/drake/tree/7abea0556ede980a5077fe1a8cfbae59b57c7c27/manipulation/models/allegro_hand_description",
     "license_url": "https://github.com/RobotLocomotion/drake/blob/7abea0556ede980a5077fe1a8cfbae59b57c7c27/manipulation/models/allegro_hand_description/manipulation/models/allegro_hand_description/LICENSE.TXT",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -5830,6 +5904,7 @@
     "repo_url": "https://github.com/psyonicinc/ability-hand-api",
     "tree_url": "https://github.com/psyonicinc/ability-hand-api/tree/89407424edfc22faceaedcd7c3ea2b7947cbbb2c/URDF",
     "license_url": "https://github.com/psyonicinc/ability-hand-api/blob/89407424edfc22faceaedcd7c3ea2b7947cbbb2c/URDF/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -5896,6 +5971,7 @@
     "repo_url": "https://github.com/TetherIA/aero-hand-open",
     "tree_url": "https://github.com/TetherIA/aero-hand-open/tree/ad7d4fc4078ceedfeefbf27aa5f058b622e18521/ros2/src/aero_hand_open_description",
     "license_url": "https://github.com/TetherIA/aero-hand-open/blob/ad7d4fc4078ceedfeefbf27aa5f058b622e18521/ros2/src/aero_hand_open_description/ros2/src/aero_hand_open_description/package.xml",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -5960,6 +6036,7 @@
     "repo_url": "https://github.com/a-price/robotiq_arg85_description",
     "tree_url": "https://github.com/a-price/robotiq_arg85_description/tree/a65190bdbb0666609fe7e8c3bb17341e09e81625",
     "license_url": "https://github.com/a-price/robotiq_arg85_description/blob/a65190bdbb0666609fe7e8c3bb17341e09e81625/package.xml",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -6032,6 +6109,7 @@
     "repo_url": "https://github.com/jhu-lcsr-attic/bhand_model",
     "tree_url": "https://github.com/jhu-lcsr-attic/bhand_model/tree/937f4186d6458bd682a7dae825fb6f4efe56ec69",
     "license_url": "https://github.com/jhu-lcsr-attic/bhand_model/blob/937f4186d6458bd682a7dae825fb6f4efe56ec69/manifest.xml",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -6098,6 +6176,7 @@
     "repo_url": "https://github.com/BrainCoTech/revo2_description",
     "tree_url": "https://github.com/BrainCoTech/revo2_description/tree/92cc697c7fa691db59404ce52344f3969a5ef7a6",
     "license_url": "https://github.com/BrainCoTech/revo2_description/blob/92cc697c7fa691db59404ce52344f3969a5ef7a6/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -6164,6 +6243,7 @@
     "repo_url": "https://github.com/BrainCoTech/brainco-description",
     "tree_url": "https://github.com/BrainCoTech/brainco-description/tree/f332a6f0dc944e26b82976b637074b03f7ee8a2c/revo3_system",
     "license_url": null,
+    "mirror": null,
     "mjcf": "revo3_system/mjcf/revo3_right.xml"
    },
    "links": {
@@ -6227,6 +6307,7 @@
     "repo_url": "https://github.com/linker-bot/linkerhand-urdf",
     "tree_url": "https://github.com/linker-bot/linkerhand-urdf/tree/075cc7d42cc1e756bdcbece0fc069a0779fc5237/L20/right",
     "license_url": "https://github.com/linker-bot/linkerhand-urdf/blob/075cc7d42cc1e756bdcbece0fc069a0779fc5237/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -6255,9 +6336,9 @@
    },
    "measured": {
     "size": {
-     "x": 0.1627,
+     "x": 0.1878,
      "y": 0.3308,
-     "z": 0.1878
+     "z": 0.1627
     },
     "height_m": 0.3308
    },
@@ -6293,6 +6374,7 @@
     "repo_url": "https://github.com/orcahand/orcahand_description",
     "tree_url": "https://github.com/orcahand/orcahand_description/tree/b9b349a21ee0238c62b6cf92ae7597027867adf8",
     "license_url": "https://github.com/orcahand/orcahand_description/blob/b9b349a21ee0238c62b6cf92ae7597027867adf8/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -6360,6 +6442,7 @@
     "repo_url": "https://github.com/oymotion/rohand_urdf_ros2",
     "tree_url": "https://github.com/oymotion/rohand_urdf_ros2/tree/363581e2f05a16085cb08ae64a0350484b5cee77",
     "license_url": "https://github.com/oymotion/rohand_urdf_ros2/blob/363581e2f05a16085cb08ae64a0350484b5cee77/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -6427,6 +6510,7 @@
     "repo_url": "https://github.com/sharpa-robotics/sharpa-urdf-usd-xml",
     "tree_url": "https://github.com/sharpa-robotics/sharpa-urdf-usd-xml/tree/6eea427eb24189519f32b9f21674cd534d3f973c/wave_01/right_sharpa_wave",
     "license_url": "https://github.com/sharpa-robotics/sharpa-urdf-usd-xml/blob/6eea427eb24189519f32b9f21674cd534d3f973c/LICENSE.txt",
+    "mirror": null,
     "mjcf": "wave_01/right_sharpa_wave/right_sharpa_wave.xml"
    },
    "links": {
@@ -6492,6 +6576,7 @@
     "repo_url": "https://github.com/wuji-technology/wuji-hand-description",
     "tree_url": "https://github.com/wuji-technology/wuji-hand-description/tree/bbc2f64eec834aae616eacc2db1f69016f860c2d",
     "license_url": "https://github.com/wuji-technology/wuji-hand-description/blob/bbc2f64eec834aae616eacc2db1f69016f860c2d/LICENSE",
+    "mirror": null,
     "mjcf": "mjcf/right.xml"
    },
    "links": {
@@ -6559,6 +6644,7 @@
     "repo_url": "https://github.com/tesollodelto/tesollo_model",
     "tree_url": "https://github.com/tesollodelto/tesollo_model/tree/6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2/dg5f",
     "license_url": "https://github.com/tesollodelto/tesollo_model/blob/6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -6627,10 +6713,313 @@
     "repo_url": "https://github.com/tesollodelto/tesollo_model",
     "tree_url": "https://github.com/tesollodelto/tesollo_model/tree/6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2/dg5fs",
     "license_url": "https://github.com/tesollodelto/tesollo_model/blob/6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2/LICENSE",
+    "mirror": null,
     "mjcf": "dg5fs/dg5fs_right.xml"
    },
    "links": {
     "official": "https://www.tesollo.com/"
+   }
+  },
+  {
+   "id": "xhand1",
+   "name": "XHAND 1",
+   "maker": "Robotera",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 12,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "Version 1.3 of the right hand. Robotera publishes no description repository, so this one is read from the All Hands Up archive rather than from a repository at a pinned commit.",
+   "notes_zh": "右手 1.3 版本。Robotera 没有公开 description 仓库，所以这一条是从 All Hands Up 存档读取的，而不是某个仓库的固定 commit。",
+   "pose": null,
+   "preview_frame": {
+    "palm": "+x",
+    "fingers": "+z"
+   },
+   "measured": {
+    "size": {
+     "x": 0.0664,
+     "y": 0.2077,
+     "z": 0.2099
+    },
+    "height_m": 0.2077
+   },
+   "urdf": {
+    "xml_name": "xhand_right",
+    "links": 30,
+    "joints": {
+     "fixed": 17,
+     "revolute": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": 1.101,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 42104
+   },
+   "assets": {
+    "base": "https://allhandsup.org/hands_urdf/",
+    "urdf": "xHand-1/XHAND1_URDF_ver 1.3/xhand1_right/urdf/xhand_right.urdf",
+    "packages": {
+     "xhand_right": "xHand-1/XHAND1_URDF_ver 1.3/xhand1_right"
+    },
+    "mesh_files": 30,
+    "mesh_bytes": 8429820,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": null,
+    "commit": null,
+    "repo_url": null,
+    "tree_url": null,
+    "license_url": null,
+    "mirror": {
+     "host": "All Hands Up",
+     "site": "https://allhandsup.org/zh/#gallery"
+    },
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.robotera.com/"
+   }
+  },
+  {
+   "id": "hx5_d20",
+   "name": "HX5-D20",
+   "maker": "ROBOTIS",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 20,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "Revision 2 of the right hand. ROBOTIS publishes this hand as xacro, which this gallery cannot load, so the entry reads the expanded URDF from the All Hands Up archive instead of from a repository at a pinned commit.",
+   "notes_zh": "右手 rev2。ROBOTIS 官方仓库只提供 xacro，本站无法直接加载，所以这一条读取的是 All Hands Up 存档里已展开的 URDF，而不是某个仓库的固定 commit。",
+   "pose": null,
+   "preview_frame": {
+    "palm": "+x",
+    "fingers": "+z"
+   },
+   "measured": {
+    "size": {
+     "x": 0.0654,
+     "y": 0.243,
+     "z": 0.2085
+    },
+    "height_m": 0.243
+   },
+   "urdf": {
+    "xml_name": "hx5_d20_right",
+    "links": 26,
+    "joints": {
+     "fixed": 5,
+     "revolute": 20
+    },
+    "moving_joints": 20,
+    "mass_kg": 0.92,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 30621
+   },
+   "assets": {
+    "base": "https://allhandsup.org/hands_urdf/",
+    "urdf": "Robotis-HX5-D20/urdf/hx5_d20_rev2/hx5_d20_right.urdf",
+    "packages": {
+     "robotis_hand_description": "Robotis-HX5-D20"
+    },
+    "mesh_files": 9,
+    "mesh_bytes": 6907756,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": null,
+    "commit": null,
+    "repo_url": null,
+    "tree_url": null,
+    "license_url": null,
+    "mirror": {
+     "host": "All Hands Up",
+     "site": "https://allhandsup.org/zh/#gallery"
+    },
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://en.robotis.com/",
+    "docs": "https://github.com/ROBOTIS-GIT/robotis_hand"
+   }
+  },
+  {
+   "id": "rh56f1",
+   "name": "RH56F1",
+   "maker": "Inspire Robots",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 6,
+   "license": "MIT",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The right hand, six motors behind twelve joints. Inspire publishes this hand as xacro, so the entry reads the expanded URDF from the All Hands Up archive; the archive also flattened the mesh tree the URDF still refers to, which `assets.mesh_rewrite` puts back.",
+   "notes_zh": "右手，12 个关节由 6 个电机驱动。Inspire 官方只提供 xacro，所以这一条读取 All Hands Up 存档里已展开的 URDF；存档还把 URDF 引用的网格目录压平了，由 `assets.mesh_rewrite` 还原。",
+   "pose": null,
+   "preview_frame": {
+    "palm": "+x",
+    "fingers": "+z"
+   },
+   "measured": {
+    "size": {
+     "x": 0.0558,
+     "y": 0.229,
+     "z": 0.159
+    },
+    "height_m": 0.229
+   },
+   "urdf": {
+    "xml_name": "RH56F1_R",
+    "links": 27,
+    "joints": {
+     "fixed": 14,
+     "revolute": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": 0.708,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 30474
+   },
+   "assets": {
+    "base": "https://allhandsup.org/hands_urdf/",
+    "urdf": "Inspire-F1/urdf/RH56F1_R.urdf",
+    "packages": {
+     "inspire_hand_description": "Inspire-F1"
+    },
+    "mesh_files": 27,
+    "mesh_bytes": 22382768,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "mesh_rewrite": [
+     {
+      "from": "RH56F1/right/meshes/",
+      "to": "meshes/"
+     }
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": null,
+    "commit": null,
+    "repo_url": null,
+    "tree_url": null,
+    "license_url": null,
+    "mirror": {
+     "host": "All Hands Up",
+     "site": "https://allhandsup.org/zh/#gallery"
+    },
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://en.inspire-robots.com/"
+   }
+  },
+  {
+   "id": "omnihand_pro",
+   "name": "Omnihand Pro",
+   "maker": "Agibot",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 12,
+   "license": "MulanPSL-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The right hand: nineteen joints, seven of them `mimic` followers, so twelve motors. Agibot publishes no description repository, so this one is read from the All Hands Up archive — which keeps only the meshes it renders, so the thirteen collision hulls are absent and skipped. The five primitive collision shapes the URDF also carries are all the collision view has to show here.",
+   "notes_zh": "右手：19 个关节中 7 个是 `mimic` 从动关节，实际 12 个电机。智元没有公开 description 仓库，所以这一条从 All Hands Up 存档读取；该存档只保留自己要渲染的网格，13 个碰撞包络因此缺失并被跳过。URDF 里另有 5 个原始碰撞形状，是这里碰撞体视图能显示的全部内容。",
+   "pose": null,
+   "preview_frame": {
+    "palm": "+x",
+    "fingers": "+z"
+   },
+   "measured": {
+    "size": {
+     "x": 0.1756,
+     "y": 0.2241,
+     "z": 0.152
+    },
+    "height_m": 0.2241
+   },
+   "urdf": {
+    "xml_name": "omnihand_pro_right",
+    "links": 26,
+    "joints": {
+     "fixed": 6,
+     "revolute": 19
+    },
+    "moving_joints": 19,
+    "mass_kg": 1.04,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 24465
+   },
+   "assets": {
+    "base": "https://allhandsup.org/hands_urdf/",
+    "urdf": "Agibot-Omnihand-Pro/assets/urdf_mesh_col/omnihand_pro_right.urdf",
+    "packages": {
+     "omnihand_pro_description": "Agibot-Omnihand-Pro/assets"
+    },
+    "mesh_files": 15,
+    "mesh_bytes": 10218910,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "skip_meshes": [
+     "Agibot-Omnihand-Pro/assets/meshes/collision/finger_dip_col.STL",
+     "Agibot-Omnihand-Pro/assets/meshes/collision/index_mcp_col.STL",
+     "Agibot-Omnihand-Pro/assets/meshes/collision/index_pip_col.STL",
+     "Agibot-Omnihand-Pro/assets/meshes/collision/middle_mcp_col.STL",
+     "Agibot-Omnihand-Pro/assets/meshes/collision/middle_pip_col.STL",
+     "Agibot-Omnihand-Pro/assets/meshes/collision/r_palm_col.STL",
+     "Agibot-Omnihand-Pro/assets/meshes/collision/r_thumb_abad_col.STL",
+     "Agibot-Omnihand-Pro/assets/meshes/collision/r_thumb_roll_col.STL",
+     "Agibot-Omnihand-Pro/assets/meshes/collision/ring_mcp_col.STL",
+     "Agibot-Omnihand-Pro/assets/meshes/collision/ring_pip_col.STL",
+     "Agibot-Omnihand-Pro/assets/meshes/collision/thumb_dip_col.STL",
+     "Agibot-Omnihand-Pro/assets/meshes/collision/thumb_mcp_col.STL",
+     "Agibot-Omnihand-Pro/assets/meshes/collision/thumb_pip_col.STL"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": null,
+    "commit": null,
+    "repo_url": null,
+    "tree_url": null,
+    "license_url": null,
+    "mirror": {
+     "host": "All Hands Up",
+     "site": "https://allhandsup.org/zh/#gallery"
+    },
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.zhiyuan-robot.com/"
    }
   },
   {
@@ -6698,6 +7087,7 @@
     "repo_url": "https://github.com/robot-descriptions/cassie_description",
     "tree_url": "https://github.com/robot-descriptions/cassie_description/tree/81a2d8bbd77201cc974afb127adda4e2857a6dbf",
     "license_url": "https://github.com/robot-descriptions/cassie_description/blob/81a2d8bbd77201cc974afb127adda4e2857a6dbf/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -6762,6 +7152,7 @@
     "repo_url": "https://github.com/upkie/upkie_description",
     "tree_url": "https://github.com/upkie/upkie_description/tree/19a91ce69cab6742c613cab104986e3f8a18d6a5",
     "license_url": "https://github.com/upkie/upkie_description/blob/19a91ce69cab6742c613cab104986e3f8a18d6a5/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -6825,6 +7216,7 @@
     "repo_url": "https://github.com/Gepetto/example-robot-data",
     "tree_url": "https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/bolt_description",
     "license_url": "https://github.com/Gepetto/example-robot-data/blob/d0d9098d752014aec3725b07766962acf06c5418/robots/bolt_description/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -6885,6 +7277,7 @@
     "repo_url": "https://github.com/G-Levine/rhea_description",
     "tree_url": "https://github.com/G-Levine/rhea_description/tree/1dc0f1abcf51b5d8a8f7ff8a548399ff0df1414f",
     "license_url": "https://github.com/G-Levine/rhea_description/blob/1dc0f1abcf51b5d8a8f7ff8a548399ff0df1414f/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -6943,6 +7336,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_a5_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -7003,6 +7397,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_a7_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -7067,6 +7462,7 @@
     "repo_url": "https://github.com/ankurhanda/robot-assets",
     "tree_url": "https://github.com/ankurhanda/robot-assets/tree/12f1a3c89c9975194551afaed0dfae1e09fdb27c/urdfs/robots/yumi",
     "license_url": "https://github.com/ankurhanda/robot-assets/blob/12f1a3c89c9975194551afaed0dfae1e09fdb27c/urdfs/robots/yumi/README.md",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -7130,6 +7526,7 @@
     "repo_url": "https://github.com/RethinkRobotics/baxter_common",
     "tree_url": "https://github.com/RethinkRobotics/baxter_common/tree/6c4b0f375fe4e356a3b12df26ef7c0d5e58df86e/baxter_description",
     "license_url": "https://github.com/RethinkRobotics/baxter_common/blob/6c4b0f375fe4e356a3b12df26ef7c0d5e58df86e/baxter_description/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -7193,6 +7590,7 @@
     "repo_url": "https://github.com/ankurhanda/robot-assets",
     "tree_url": "https://github.com/ankurhanda/robot-assets/tree/12f1a3c89c9975194551afaed0dfae1e09fdb27c/urdfs/robots/pr2",
     "license_url": "https://github.com/ankurhanda/robot-assets/blob/12f1a3c89c9975194551afaed0dfae1e09fdb27c/urdfs/robots/pr2/README.md",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -7253,6 +7651,7 @@
     "repo_url": "https://github.com/tork-a/rtmros_nextage",
     "tree_url": "https://github.com/tork-a/rtmros_nextage/tree/ac270fb969fa54abeb6863f9b388a9e20c1f14e0/nextage_description",
     "license_url": "https://github.com/tork-a/rtmros_nextage/blob/ac270fb969fa54abeb6863f9b388a9e20c1f14e0/nextage_description/nextage_description/package.xml",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -7313,6 +7712,7 @@
     "repo_url": "https://github.com/poppy-project/poppy_torso_description",
     "tree_url": "https://github.com/poppy-project/poppy_torso_description/tree/6beeec3d76fb72b7548cce7c73aad722f8884522",
     "license_url": "https://github.com/poppy-project/poppy_torso_description/blob/6beeec3d76fb72b7548cce7c73aad722f8884522/package.xml",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -7373,6 +7773,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mirror": null,
     "mjcf": "robots/g1_description/g1_dual_arm.xml"
    },
    "links": {
@@ -7437,6 +7838,7 @@
     "repo_url": "https://github.com/wirobotics-rih/allex_model",
     "tree_url": "https://github.com/wirobotics-rih/allex_model/tree/5e120529b106902898382fbd3eb9cec3188deaa2",
     "license_url": "https://github.com/wirobotics-rih/allex_model/blob/5e120529b106902898382fbd3eb9cec3188deaa2/LICENSE",
+    "mirror": null,
     "mjcf": "mjcf/ALLEX.xml"
    },
    "links": {
@@ -7501,6 +7903,7 @@
     "repo_url": "https://github.com/unitreerobotics/unitree_ros",
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_d_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -7567,6 +7970,7 @@
     "repo_url": "https://github.com/robot-descriptions/stretch_description",
     "tree_url": "https://github.com/robot-descriptions/stretch_description/tree/4b838429fe4c5d9f2937efe698444bd68968f376",
     "license_url": "https://github.com/robot-descriptions/stretch_description/blob/4b838429fe4c5d9f2937efe698444bd68968f376/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -7633,6 +8037,7 @@
     "repo_url": "https://github.com/Gepetto/example-robot-data",
     "tree_url": "https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/tiago_description",
     "license_url": "https://github.com/Gepetto/example-robot-data/blob/d0d9098d752014aec3725b07766962acf06c5418/robots/tiago_description/robots/tiago_description/README.md",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -7698,6 +8103,7 @@
     "repo_url": "https://github.com/jrl-umi3218/pepper_description",
     "tree_url": "https://github.com/jrl-umi3218/pepper_description/tree/cd9715bb5df7ad57445d953db7b1924255305944",
     "license_url": "https://github.com/jrl-umi3218/pepper_description/blob/cd9715bb5df7ad57445d953db7b1924255305944/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -7759,6 +8165,7 @@
     "repo_url": "https://github.com/uynitsuj/rby1_description",
     "tree_url": "https://github.com/uynitsuj/rby1_description/tree/e4c07203aa0a0d1b6b3b39da105cb00a77e2bc72/models/rby1a/urdf",
     "license_url": "https://github.com/uynitsuj/rby1_description/blob/e4c07203aa0a0d1b6b3b39da105cb00a77e2bc72/models/rby1a/urdf/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {
@@ -7821,6 +8228,7 @@
     "repo_url": "https://github.com/Rayckey/GingerURDF",
     "tree_url": "https://github.com/Rayckey/GingerURDF/tree/6a1307cd0ee2b77c82f8839cdce3a2e2eed2bd8f",
     "license_url": "https://github.com/Rayckey/GingerURDF/blob/6a1307cd0ee2b77c82f8839cdce3a2e2eed2bd8f/package.xml",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -7881,6 +8289,7 @@
     "repo_url": "https://github.com/timqian/bambot",
     "tree_url": "https://github.com/timqian/bambot/tree/04d902653794f9f72eeabb09ec90a9af8e397c5b/website/public/URDF",
     "license_url": "https://github.com/timqian/bambot/blob/04d902653794f9f72eeabb09ec90a9af8e397c5b/website/public/URDF/LICENSE",
+    "mirror": null,
     "mjcf": null
    },
    "links": {}
@@ -7951,6 +8360,7 @@
     "repo_url": "https://github.com/GalaxyGeneralRobotics/galbot_one_golf_description",
     "tree_url": "https://github.com/GalaxyGeneralRobotics/galbot_one_golf_description/tree/7c06d4ddc9c92658780c1ce24bc4531ab91300a5",
     "license_url": "https://github.com/GalaxyGeneralRobotics/galbot_one_golf_description/blob/7c06d4ddc9c92658780c1ce24bc4531ab91300a5/LICENSE",
+    "mirror": null,
     "mjcf": "mjcf/galbot_one_golf.xml"
    },
    "links": {
@@ -8017,6 +8427,7 @@
     "repo_url": "https://github.com/GalaxyGeneralRobotics/galbot_s1_description",
     "tree_url": "https://github.com/GalaxyGeneralRobotics/galbot_s1_description/tree/cb758e557a880c70260c7883207334aed2aa3c65",
     "license_url": "https://github.com/GalaxyGeneralRobotics/galbot_s1_description/blob/cb758e557a880c70260c7883207334aed2aa3c65/LICENSE",
+    "mirror": null,
     "mjcf": "mjcf/galbot_s1.xml"
    },
    "links": {
