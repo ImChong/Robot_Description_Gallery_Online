@@ -97,7 +97,7 @@ human readers.
 - [x] `omy_l100` **OMY-L100** — ROBOTIS — [ROBOTIS-GIT/open_manipulator · omy_l100_description](https://github.com/ROBOTIS-GIT/open_manipulator/tree/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description)
 - [ ] `poppy_ergo_jr` **Poppy Ergo Jr** — Poppy Project — [poppy-project/poppy_ergo_jr_description · poppy_ergo_jr_description](https://github.com/poppy-project/poppy_ergo_jr_description/tree/7eb32bd385afa11dea5e6a6b6a4a86a0243aaa2b)
 
-## 灵巧手 / 夹爪 Hand / Gripper · 10
+## 灵巧手 / 夹爪 Hand / Gripper · 19
 
 - [x] `dex1_1` **Dex1-1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex1_1)
 - [x] `dex2_5` **Dex2-5** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex2_5)
@@ -109,6 +109,15 @@ human readers.
 - [x] `aero_hand_open` **Aero Hand Open** — TetherIA — [TetherIA/aero-hand-open · aero_hand_open_description](https://github.com/TetherIA/aero-hand-open/tree/ad7d4fc4078ceedfeefbf27aa5f058b622e18521/ros2/src/aero_hand_open_description)
 - [x] `robotiq_2f85` **Robotiq 2F-85** — Robotiq — [a-price/robotiq_arg85_description · robotiq_2f85_description](https://github.com/a-price/robotiq_arg85_description/tree/a65190bdbb0666609fe7e8c3bb17341e09e81625)
 - [x] `barrett_hand` **BarrettHand** — Barrett Technology — [jhu-lcsr-attic/bhand_model · barrett_hand_description](https://github.com/jhu-lcsr-attic/bhand_model/tree/937f4186d6458bd682a7dae825fb6f4efe56ec69)
+- [x] `revo2` **Revo2** — BrainCo — [BrainCoTech/revo2_description](https://github.com/BrainCoTech/revo2_description/tree/92cc697c7fa691db59404ce52344f3969a5ef7a6)
+- [x] `revo3` **Revo3** — BrainCo — [BrainCoTech/brainco-description](https://github.com/BrainCoTech/brainco-description/tree/f332a6f0dc944e26b82976b637074b03f7ee8a2c/revo3_system)
+- [x] `linkerhand_l20` **LinkerHand L20** — LinkerBot — [linker-bot/linkerhand-urdf](https://github.com/linker-bot/linkerhand-urdf/tree/075cc7d42cc1e756bdcbece0fc069a0779fc5237/L20/right)
+- [x] `orcahand_v1` **ORCA Hand V1** — ETH Zurich (Soft Robotics Lab) — [orcahand/orcahand_description](https://github.com/orcahand/orcahand_description/tree/b9b349a21ee0238c62b6cf92ae7597027867adf8)
+- [x] `rohand` **ROHand** — OYMotion — [oymotion/rohand_urdf_ros2](https://github.com/oymotion/rohand_urdf_ros2/tree/363581e2f05a16085cb08ae64a0350484b5cee77)
+- [x] `sharpa_wave` **Sharpa Wave** — Sharpa Robotics — [sharpa-robotics/sharpa-urdf-usd-xml](https://github.com/sharpa-robotics/sharpa-urdf-usd-xml/tree/6eea427eb24189519f32b9f21674cd534d3f973c/wave_01/right_sharpa_wave)
+- [x] `wuji_hand` **Wuji Hand** — Wuji Technology — [wuji-technology/wuji-hand-description](https://github.com/wuji-technology/wuji-hand-description/tree/bbc2f64eec834aae616eacc2db1f69016f860c2d)
+- [x] `dg5f` **DG-5F** — Tesollo — [tesollodelto/tesollo_model](https://github.com/tesollodelto/tesollo_model/tree/6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2/dg5f)
+- [x] `dg5fs` **DG-5F-S** — Tesollo — [tesollodelto/tesollo_model](https://github.com/tesollodelto/tesollo_model/tree/6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2/dg5fs)
 
 ## 双足 Biped · 4
 
@@ -117,7 +126,7 @@ human readers.
 - [x] `bolt` **Bolt** — ODRI — [Gepetto/example-robot-data · bolt_description](https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/bolt_description)
 - [x] `rhea` **Rhea** — Gabrael Levine — [G-Levine/rhea_description · rhea_description](https://github.com/G-Levine/rhea_description/tree/1dc0f1abcf51b5d8a8f7ff8a548399ff0df1414f)
 
-## 双臂 Dual arm · 8
+## 双臂 Dual arm · 9
 
 - [x] `r1_a5` **R1-A5** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_a5_description)
 - [x] `r1_a7` **R1-A7** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_a7_description)
@@ -127,6 +136,7 @@ human readers.
 - [x] `nextage` **NEXTAGE** — Kawada Robotics — [tork-a/rtmros_nextage · nextage_description](https://github.com/tork-a/rtmros_nextage/tree/ac270fb969fa54abeb6863f9b388a9e20c1f14e0/nextage_description)
 - [x] `poppy_torso` **Poppy Torso** — Poppy Project — [poppy-project/poppy_torso_description · poppy_torso_description](https://github.com/poppy-project/poppy_torso_description/tree/6beeec3d76fb72b7548cce7c73aad722f8884522)
 - [x] `g1_dual_arm` **G1 Dual Arm** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description)
+- [x] `allex` **ALLEX** — WIRobotics — [wirobotics-rih/allex_model](https://github.com/wirobotics-rih/allex_model/tree/5e120529b106902898382fbd3eb9cec3188deaa2)
 
 ## 移动操作 Mobile manipulator · 9
 

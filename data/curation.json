@@ -1371,6 +1371,261 @@
       }
     },
     {
+      "id": "revo2",
+      "name": "Revo2",
+      "maker": "BrainCo",
+      "category": "hand",
+      "dof": 6,
+      "preview_frame": {
+        "palm": "-x",
+        "fingers": "+z"
+      },
+      "upstream": {
+        "github": "BrainCoTech/revo2_description",
+        "commit": "92cc697c7fa691db59404ce52344f3969a5ef7a6",
+        "package": "",
+        "urdf": "urdf/revo2_right_hand.urdf",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "tags": [
+          "end_effector"
+        ]
+      },
+      "links": {
+        "official": "https://www.brainco.tech/"
+      },
+      "notes": "The right hand; upstream also ships the left one. Eleven revolute joints, five of them driven by `mimic` off another joint, so six motors move the hand: one per finger plus the thumb's rotation.",
+      "notes_zh": "此处为右手；上游还提供左手。11 个 revolute 关节中有 5 个通过 `mimic` 跟随其他关节，因此真正驱动的是 6 个电机：每指一个，加上拇指的旋转。"
+    },
+    {
+      "id": "revo3",
+      "name": "Revo3",
+      "maker": "BrainCo",
+      "category": "hand",
+      "preview_frame": {
+        "palm": "+x",
+        "fingers": "+z"
+      },
+      "upstream": {
+        "github": "BrainCoTech/brainco-description",
+        "commit": "f332a6f0dc944e26b82976b637074b03f7ee8a2c",
+        "package": "revo3_system",
+        "urdf": "revo3_system/urdf/revo3_right.urdf",
+        "mjcf": "revo3_system/mjcf/revo3_right.xml",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "end_effector"
+        ]
+      },
+      "links": {
+        "official": "https://www.brainco.tech/"
+      },
+      "notes": "The right hand; upstream also ships the left one. Twenty-one independent revolute joints — four per finger plus five for the thumb — which is what makes it the wider hand next to the Revo2. The visual meshes are STL, the collision geometry a convex decomposition in OBJ. Upstream publishes these files without a licence file.",
+      "notes_zh": "此处为右手；上游还提供左手。21 个独立 revolute 关节——每指 4 个，拇指 5 个——这也是它比 Revo2 自由度高得多的原因。视觉网格为 STL，碰撞体是 OBJ 格式的凸分解。上游发布这些文件时没有附带许可证文件。"
+    },
+    {
+      "id": "linkerhand_l20",
+      "name": "LinkerHand L20",
+      "maker": "LinkerBot",
+      "category": "hand",
+      "dof": 16,
+      "preview_frame": {
+        "palm": "+x",
+        "fingers": "+z"
+      },
+      "upstream": {
+        "github": "linker-bot/linkerhand-urdf",
+        "commit": "075cc7d42cc1e756bdcbece0fc069a0779fc5237",
+        "package": "L20/right",
+        "urdf": "L20/right/linkerhand_l20_right.urdf",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "tags": [
+          "end_effector"
+        ]
+      },
+      "links": {
+        "official": "https://www.linkerbot.cn/"
+      },
+      "notes": "The right hand; upstream ships left and right for a dozen LinkerHand models in one repository. Twenty-one revolute joints, five of them `mimic` followers, leaving sixteen motors.",
+      "notes_zh": "此处为右手；上游在同一个仓库里提供十余款 LinkerHand 的左右手。21 个 revolute 关节中 5 个是 `mimic` 从动关节，实际驱动 16 个电机。"
+    },
+    {
+      "id": "orcahand_v1",
+      "name": "ORCA Hand V1",
+      "maker": "ETH Zurich (Soft Robotics Lab)",
+      "category": "hand",
+      "preview_frame": {
+        "palm": "+y",
+        "fingers": "+z"
+      },
+      "upstream": {
+        "github": "orcahand/orcahand_description",
+        "commit": "b9b349a21ee0238c62b6cf92ae7597027867adf8",
+        "package": "",
+        "urdf": "v1/models/urdf/orcahand_right.urdf",
+        "license": "MIT",
+        "license_file": "LICENSE",
+        "tags": [
+          "end_effector"
+        ]
+      },
+      "links": {
+        "official": "https://www.orcahand.com/"
+      },
+      "notes": "An open-hardware tendon-driven hand: the seventeen joints are pulled by cables from motors in the forearm rather than actuators at the joints, which is why the fingers are as slim as they are. Upstream also ships a v2 export, `extended` versions carrying the camera mount and electronics, and both hands.",
+      "notes_zh": "开源硬件的绳驱灵巧手：17 个关节由前臂电机通过绳索牵引，而不是在关节处放驱动器，手指才能做得这么细。上游还提供 v2 导出版本、带相机支架与电路板的 `extended` 版本，以及左右两只手。"
+    },
+    {
+      "id": "rohand",
+      "name": "ROHand",
+      "maker": "OYMotion",
+      "category": "hand",
+      "dof": 6,
+      "preview_frame": {
+        "palm": "+z",
+        "fingers": "-x"
+      },
+      "upstream": {
+        "github": "oymotion/rohand_urdf_ros2",
+        "commit": "363581e2f05a16085cb08ae64a0350484b5cee77",
+        "package": "",
+        "urdf": "urdf/rohand_right.urdf",
+        "license": "MIT",
+        "license_file": "LICENSE",
+        "tags": [
+          "end_effector"
+        ]
+      },
+      "links": {
+        "official": "https://www.oymotion.com/"
+      },
+      "notes": "The right hand; upstream also ships the left one. Six motors drive it, but the linkages that carry them are spelled out joint by joint — one revolute, nineteen continuous and five prismatic — so the viewer's sliders are the mechanism rather than the six commands you would send it.",
+      "notes_zh": "此处为右手；上游还提供左手。实际由 6 个电机驱动，但 URDF 把传动连杆逐个关节写了出来——1 个 revolute、19 个 continuous、5 个 prismatic——所以查看器里的滑块对应的是机构本身，而不是你实际下发的 6 条指令。"
+    },
+    {
+      "id": "sharpa_wave",
+      "name": "Sharpa Wave",
+      "maker": "Sharpa Robotics",
+      "category": "hand",
+      "preview_frame": {
+        "palm": "+x",
+        "fingers": "+z"
+      },
+      "upstream": {
+        "github": "sharpa-robotics/sharpa-urdf-usd-xml",
+        "commit": "6eea427eb24189519f32b9f21674cd534d3f973c",
+        "package": "wave_01/right_sharpa_wave",
+        "urdf": "wave_01/right_sharpa_wave/right_sharpa_wave.urdf",
+        "mjcf": "wave_01/right_sharpa_wave/right_sharpa_wave.xml",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE.txt",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "end_effector"
+        ]
+      },
+      "links": {
+        "official": "https://www.sharpa.com/"
+      },
+      "notes": "The right hand on its own; upstream also ships the left one, a dual-hand model, and versions with a flange or a wrist. Twenty-two revolute joints, five of them in the thumb.",
+      "notes_zh": "此处为单独的右手；上游还提供左手、双手模型，以及带法兰或带腕部的版本。22 个 revolute 关节，其中 5 个在拇指上。"
+    },
+    {
+      "id": "wuji_hand",
+      "name": "Wuji Hand",
+      "maker": "Wuji Technology",
+      "category": "hand",
+      "preview_frame": {
+        "palm": "+x",
+        "fingers": "+z"
+      },
+      "upstream": {
+        "github": "wuji-technology/wuji-hand-description",
+        "commit": "bbc2f64eec834aae616eacc2db1f69016f860c2d",
+        "package": "",
+        "urdf": "urdf/right.urdf",
+        "mjcf": "mjcf/right.xml",
+        "license": "MIT",
+        "license_file": "LICENSE",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "end_effector"
+        ]
+      },
+      "links": {
+        "official": "https://wuji.tech/"
+      },
+      "notes": "The right hand; upstream also ships the left one and a docking module. Twenty independent revolute joints, four to every finger including the thumb.",
+      "notes_zh": "此处为右手；上游还提供左手和一个对接模块。20 个独立 revolute 关节，每指 4 个，拇指也是 4 个。"
+    },
+    {
+      "id": "dg5f",
+      "name": "DG-5F",
+      "maker": "Tesollo",
+      "category": "hand",
+      "preview_frame": {
+        "palm": "+x",
+        "fingers": "+z"
+      },
+      "upstream": {
+        "github": "tesollodelto/tesollo_model",
+        "commit": "6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2",
+        "package": "dg5f",
+        "urdf": "dg5f/dg5f_right.urdf",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "end_effector"
+        ]
+      },
+      "links": {
+        "official": "https://www.tesollo.com/"
+      },
+      "notes": "The right hand; upstream also ships the left one and `short` versions of both. Twenty revolute joints, four per finger, and the only hand here whose visual meshes are Collada while its collision geometry is STL.",
+      "notes_zh": "此处为右手；上游还提供左手以及两者的 `short` 版本。20 个 revolute 关节，每指 4 个；也是这里唯一一只视觉网格用 Collada、碰撞体用 STL 的手。"
+    },
+    {
+      "id": "dg5fs",
+      "name": "DG-5F-S",
+      "maker": "Tesollo",
+      "category": "hand",
+      "preview_frame": {
+        "palm": "+x",
+        "fingers": "+z"
+      },
+      "upstream": {
+        "github": "tesollodelto/tesollo_model",
+        "commit": "6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2",
+        "package": "dg5fs",
+        "urdf": "dg5fs/dg5fs_right.urdf",
+        "mjcf": "dg5fs/dg5fs_right.xml",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "end_effector"
+        ]
+      },
+      "links": {
+        "official": "https://www.tesollo.com/"
+      },
+      "notes": "The smaller, lighter DG-5F: the same twenty joints in a hand roughly half the mass. Upstream also ships the left one, a fifteen-DOF cut, and versions with a mount.",
+      "notes_zh": "DG-5F 的小型轻量版本：关节数同样是 20 个，整手质量约为前者的一半。上游还提供左手、15 自由度精简版，以及带安装座的版本。"
+    },
+    {
       "description": "cassie_description",
       "category": "biped",
       "links": {
@@ -1495,6 +1750,34 @@
       },
       "notes": "mode_machine 9 of the G1 description: the torso, head and two seven-DOF arms with 4010 wrists, ending in fixed rubber hands. The waist joints are modelled but locked, so all 14 moving joints are in the arms. Filed here rather than with the G1's other versions because without the legs it is a different machine, as G1-D is.",
       "notes_zh": "G1 描述目录里的 mode_machine 9：躯干、头部与两条七自由度手臂（腕部 4010 电机），末端是固定的橡胶手。腰部关节保留但已锁定，14 个可动关节全在手臂上。没有和 G1 的其他版本放在一起，是因为去掉双腿之后它已经是另一台机器了——G1-D 也是这样处理的。"
+    },
+    {
+      "id": "allex",
+      "name": "ALLEX",
+      "maker": "WIRobotics",
+      "category": "dual_arm",
+      "dof": 48,
+      "upstream": {
+        "github": "wirobotics-rih/allex_model",
+        "commit": "5e120529b106902898382fbd3eb9cec3188deaa2",
+        "package": "",
+        "urdf": "urdf/ALLEX.urdf",
+        "mjcf": "mjcf/ALLEX.xml",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "dual_arm"
+        ]
+      },
+      "links": {
+        "official": "https://www.wirobotics.com/"
+      },
+      "notes": "An upper body: two seven-DOF arms ending in two fifteen-DOF five-finger hands, on a two-DOF waist, with a two-DOF neck. Sixty revolute joints, of which twelve are `mimic` followers — ten finger couplings and two waist linkages — leaving 48 actuated. Filed with the dual arms rather than the humanoids because it has no legs. Upstream calls it a research simulation model of hardware still in development, and ships MJCF and USD beside the URDF.",
+      "notes_zh": "一具上半身：两条七自由度手臂，末端是两只十五自由度的五指手，装在二自由度腰部上，另有二自由度颈部。60 个 revolute 关节中 12 个是 `mimic` 从动关节——10 个手指耦合、2 个腰部连杆——实际驱动 48 个。归入双臂而不是人形，因为它没有腿。上游说明这是仍在研发中的硬件的研究用仿真模型，除 URDF 外还提供 MJCF 与 USD。"
     },
     {
       "id": "g1_d",

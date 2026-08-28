@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-08-25T07:04:06Z",
+ "generated": "2026-08-28T09:03:49Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -1041,7 +1041,7 @@
      "h1_description": "robots/h1_description"
     },
     "mesh_files": 21,
-    "mesh_bytes": 12707534,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -1224,7 +1224,7 @@
     "urdf": "robots/h2_plus/H2_Plus.urdf",
     "packages": {},
     "mesh_files": 93,
-    "mesh_bytes": 27369645,
+    "mesh_bytes": 19049024,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -2400,7 +2400,7 @@
      "val_description": "val_description"
     },
     "mesh_files": 56,
-    "mesh_bytes": 672637,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -2463,7 +2463,7 @@
      "r2_description": "r2_description"
     },
     "mesh_files": 30,
-    "mesh_bytes": 2560339,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -2524,7 +2524,7 @@
      "jvrc_description": ""
     },
     "mesh_files": 35,
-    "mesh_bytes": 468975,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -2648,7 +2648,7 @@
      "multisense_sl_description": "roboschool/models_robot/multisense_sl_description"
     },
     "mesh_files": 23,
-    "mesh_bytes": 2854632,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -2899,7 +2899,7 @@
      "jaxon_description": ""
     },
     "mesh_files": 39,
-    "mesh_bytes": 8052412,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -2961,7 +2961,7 @@
      "romeo_description": "romeo_description"
     },
     "mesh_files": 93,
-    "mesh_bytes": 3389429,
+    "mesh_bytes": 1485064,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -3036,7 +3036,7 @@
      "go2_description": "robots/go2_description"
     },
     "mesh_files": 7,
-    "mesh_bytes": 2250974,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -3114,7 +3114,7 @@
      "go2w_description": "robots/go2w_description"
     },
     "mesh_files": 8,
-    "mesh_bytes": 19152426,
+    "mesh_bytes": 3899868,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -3191,7 +3191,7 @@
      "b2_description": "robots/b2_description"
     },
     "mesh_files": 13,
-    "mesh_bytes": 10684077,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -3267,7 +3267,7 @@
      "a1_description": "robots/a1_description"
     },
     "mesh_files": 5,
-    "mesh_bytes": 1759398,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -3489,7 +3489,7 @@
      "aliengo_description": "robots/aliengo_description"
     },
     "mesh_files": 5,
-    "mesh_bytes": 1564708,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -3631,7 +3631,7 @@
      "anymal_b_simple_description": ""
     },
     "mesh_files": 8,
-    "mesh_bytes": 12526742,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -3703,7 +3703,7 @@
      "anymal_c_simple_description": ""
     },
     "mesh_files": 19,
-    "mesh_bytes": 966784,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -3775,7 +3775,7 @@
      "anymal_d_simple_description": ""
     },
     "mesh_files": 17,
-    "mesh_bytes": 471441,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -3847,7 +3847,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 4,
-    "mesh_bytes": 433102,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -4339,7 +4339,7 @@
      "z1_description": "robots/z1_description"
     },
     "mesh_files": 7,
-    "mesh_bytes": 7220813,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -4404,7 +4404,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 19,
-    "mesh_bytes": 3632458,
+    "mesh_bytes": 115756,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -4541,7 +4541,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 11,
-    "mesh_bytes": 4083927,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -5350,7 +5350,7 @@
      "poppy_ergo_jr_description": ""
     },
     "mesh_files": 6,
-    "mesh_bytes": 1786868,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -6039,6 +6039,538 @@
    }
   },
   {
+   "id": "revo2",
+   "name": "Revo2",
+   "maker": "BrainCo",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 6,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The right hand; upstream also ships the left one. Eleven revolute joints, five of them driven by `mimic` off another joint, so six motors move the hand: one per finger plus the thumb's rotation.",
+   "notes_zh": "此处为右手；上游还提供左手。11 个 revolute 关节中有 5 个通过 `mimic` 跟随其他关节，因此真正驱动的是 6 个电机：每指一个，加上拇指的旋转。",
+   "pose": null,
+   "preview_frame": {
+    "palm": "-x",
+    "fingers": "+z"
+   },
+   "measured": null,
+   "urdf": {
+    "xml_name": "brainco_revo2_righthand_urdf",
+    "links": 22,
+    "joints": {
+     "fixed": 10,
+     "revolute": 11
+    },
+    "moving_joints": 11,
+    "mass_kg": 0.39,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 22334
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/BrainCoTech/revo2_description@92cc697c7fa691db59404ce52344f3969a5ef7a6/",
+    "urdf": "urdf/revo2_right_hand.urdf",
+    "packages": {
+     "revo2_description": ""
+    },
+    "mesh_files": 19,
+    "mesh_bytes": 7871246,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "BrainCoTech/revo2_description",
+    "commit": "92cc697c7fa691db59404ce52344f3969a5ef7a6",
+    "repo_url": "https://github.com/BrainCoTech/revo2_description",
+    "tree_url": "https://github.com/BrainCoTech/revo2_description/tree/92cc697c7fa691db59404ce52344f3969a5ef7a6",
+    "license_url": "https://github.com/BrainCoTech/revo2_description/blob/92cc697c7fa691db59404ce52344f3969a5ef7a6/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.brainco.tech/"
+   }
+  },
+  {
+   "id": "revo3",
+   "name": "Revo3",
+   "maker": "BrainCo",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 21,
+   "license": null,
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "The right hand; upstream also ships the left one. Twenty-one independent revolute joints — four per finger plus five for the thumb — which is what makes it the wider hand next to the Revo2. The visual meshes are STL, the collision geometry a convex decomposition in OBJ. Upstream publishes these files without a licence file.",
+   "notes_zh": "此处为右手；上游还提供左手。21 个独立 revolute 关节——每指 4 个，拇指 5 个——这也是它比 Revo2 自由度高得多的原因。视觉网格为 STL，碰撞体是 OBJ 格式的凸分解。上游发布这些文件时没有附带许可证文件。",
+   "pose": null,
+   "preview_frame": {
+    "palm": "+x",
+    "fingers": "+z"
+   },
+   "measured": null,
+   "urdf": {
+    "xml_name": "revo3_single",
+    "links": 29,
+    "joints": {
+     "fixed": 7,
+     "revolute": 21
+    },
+    "moving_joints": 21,
+    "mass_kg": 1.105,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 31430
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/BrainCoTech/brainco-description@f332a6f0dc944e26b82976b637074b03f7ee8a2c/",
+    "urdf": "revo3_system/urdf/revo3_right.urdf",
+    "packages": {},
+    "mesh_files": 71,
+    "mesh_bytes": 19788329,
+    "mesh_formats": [
+     ".obj",
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "BrainCoTech/brainco-description",
+    "commit": "f332a6f0dc944e26b82976b637074b03f7ee8a2c",
+    "repo_url": "https://github.com/BrainCoTech/brainco-description",
+    "tree_url": "https://github.com/BrainCoTech/brainco-description/tree/f332a6f0dc944e26b82976b637074b03f7ee8a2c/revo3_system",
+    "license_url": null,
+    "mjcf": "revo3_system/mjcf/revo3_right.xml"
+   },
+   "links": {
+    "official": "https://www.brainco.tech/"
+   }
+  },
+  {
+   "id": "linkerhand_l20",
+   "name": "LinkerHand L20",
+   "maker": "LinkerBot",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 16,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The right hand; upstream ships left and right for a dozen LinkerHand models in one repository. Twenty-one revolute joints, five of them `mimic` followers, leaving sixteen motors.",
+   "notes_zh": "此处为右手；上游在同一个仓库里提供十余款 LinkerHand 的左右手。21 个 revolute 关节中 5 个是 `mimic` 从动关节，实际驱动 16 个电机。",
+   "pose": null,
+   "preview_frame": {
+    "palm": "+x",
+    "fingers": "+z"
+   },
+   "measured": null,
+   "urdf": {
+    "xml_name": "linkerhand_l20_right",
+    "links": 22,
+    "joints": {
+     "revolute": 21
+    },
+    "moving_joints": 21,
+    "mass_kg": 0.204,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 27687
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/linker-bot/linkerhand-urdf@075cc7d42cc1e756bdcbece0fc069a0779fc5237/",
+    "urdf": "L20/right/linkerhand_l20_right.urdf",
+    "packages": {},
+    "mesh_files": 22,
+    "mesh_bytes": 16773198,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "linker-bot/linkerhand-urdf",
+    "commit": "075cc7d42cc1e756bdcbece0fc069a0779fc5237",
+    "repo_url": "https://github.com/linker-bot/linkerhand-urdf",
+    "tree_url": "https://github.com/linker-bot/linkerhand-urdf/tree/075cc7d42cc1e756bdcbece0fc069a0779fc5237/L20/right",
+    "license_url": "https://github.com/linker-bot/linkerhand-urdf/blob/075cc7d42cc1e756bdcbece0fc069a0779fc5237/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.linkerbot.cn/"
+   }
+  },
+  {
+   "id": "orcahand_v1",
+   "name": "ORCA Hand V1",
+   "maker": "ETH Zurich (Soft Robotics Lab)",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 17,
+   "license": "MIT",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "An open-hardware tendon-driven hand: the seventeen joints are pulled by cables from motors in the forearm rather than actuators at the joints, which is why the fingers are as slim as they are. Upstream also ships a v2 export, `extended` versions carrying the camera mount and electronics, and both hands.",
+   "notes_zh": "开源硬件的绳驱灵巧手：17 个关节由前臂电机通过绳索牵引，而不是在关节处放驱动器，手指才能做得这么细。上游还提供 v2 导出版本、带相机支架与电路板的 `extended` 版本，以及左右两只手。",
+   "pose": null,
+   "preview_frame": {
+    "palm": "+y",
+    "fingers": "+z"
+   },
+   "measured": null,
+   "urdf": {
+    "xml_name": "orcahand_right",
+    "links": 42,
+    "joints": {
+     "fixed": 24,
+     "revolute": 17
+    },
+    "moving_joints": 17,
+    "mass_kg": 1.135,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 48471
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/orcahand/orcahand_description@b9b349a21ee0238c62b6cf92ae7597027867adf8/",
+    "urdf": "v1/models/urdf/orcahand_right.urdf",
+    "packages": {
+     "orcahand_description": ""
+    },
+    "mesh_files": 62,
+    "mesh_bytes": 5026608,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "orcahand/orcahand_description",
+    "commit": "b9b349a21ee0238c62b6cf92ae7597027867adf8",
+    "repo_url": "https://github.com/orcahand/orcahand_description",
+    "tree_url": "https://github.com/orcahand/orcahand_description/tree/b9b349a21ee0238c62b6cf92ae7597027867adf8",
+    "license_url": "https://github.com/orcahand/orcahand_description/blob/b9b349a21ee0238c62b6cf92ae7597027867adf8/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.orcahand.com/"
+   }
+  },
+  {
+   "id": "rohand",
+   "name": "ROHand",
+   "maker": "OYMotion",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 6,
+   "license": "MIT",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The right hand; upstream also ships the left one. Six motors drive it, but the linkages that carry them are spelled out joint by joint — one revolute, nineteen continuous and five prismatic — so the viewer's sliders are the mechanism rather than the six commands you would send it.",
+   "notes_zh": "此处为右手；上游还提供左手。实际由 6 个电机驱动，但 URDF 把传动连杆逐个关节写了出来——1 个 revolute、19 个 continuous、5 个 prismatic——所以查看器里的滑块对应的是机构本身，而不是你实际下发的 6 条指令。",
+   "pose": null,
+   "preview_frame": {
+    "palm": "+z",
+    "fingers": "-x"
+   },
+   "measured": null,
+   "urdf": {
+    "xml_name": "rohand_right",
+    "links": 26,
+    "joints": {
+     "continuous": 19,
+     "prismatic": 5,
+     "revolute": 1
+    },
+    "moving_joints": 25,
+    "mass_kg": 0.138,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 35569
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/oymotion/rohand_urdf_ros2@363581e2f05a16085cb08ae64a0350484b5cee77/",
+    "urdf": "urdf/rohand_right.urdf",
+    "packages": {
+     "rohand_urdf_ros2": ""
+    },
+    "mesh_files": 26,
+    "mesh_bytes": 11088634,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "oymotion/rohand_urdf_ros2",
+    "commit": "363581e2f05a16085cb08ae64a0350484b5cee77",
+    "repo_url": "https://github.com/oymotion/rohand_urdf_ros2",
+    "tree_url": "https://github.com/oymotion/rohand_urdf_ros2/tree/363581e2f05a16085cb08ae64a0350484b5cee77",
+    "license_url": "https://github.com/oymotion/rohand_urdf_ros2/blob/363581e2f05a16085cb08ae64a0350484b5cee77/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.oymotion.com/"
+   }
+  },
+  {
+   "id": "sharpa_wave",
+   "name": "Sharpa Wave",
+   "maker": "Sharpa Robotics",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 22,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "The right hand on its own; upstream also ships the left one, a dual-hand model, and versions with a flange or a wrist. Twenty-two revolute joints, five of them in the thumb.",
+   "notes_zh": "此处为单独的右手；上游还提供左手、双手模型，以及带法兰或带腕部的版本。22 个 revolute 关节，其中 5 个在拇指上。",
+   "pose": null,
+   "preview_frame": {
+    "palm": "+x",
+    "fingers": "+z"
+   },
+   "measured": null,
+   "urdf": {
+    "xml_name": "right_sharpa_wave",
+    "links": 33,
+    "joints": {
+     "fixed": 10,
+     "revolute": 22
+    },
+    "moving_joints": 22,
+    "mass_kg": 1.243,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 34545
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/sharpa-robotics/sharpa-urdf-usd-xml@6eea427eb24189519f32b9f21674cd534d3f973c/",
+    "urdf": "wave_01/right_sharpa_wave/right_sharpa_wave.urdf",
+    "packages": {
+     "right_sharpa_wave": "wave_01/right_sharpa_wave"
+    },
+    "mesh_files": 22,
+    "mesh_bytes": 6250298,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "sharpa-robotics/sharpa-urdf-usd-xml",
+    "commit": "6eea427eb24189519f32b9f21674cd534d3f973c",
+    "repo_url": "https://github.com/sharpa-robotics/sharpa-urdf-usd-xml",
+    "tree_url": "https://github.com/sharpa-robotics/sharpa-urdf-usd-xml/tree/6eea427eb24189519f32b9f21674cd534d3f973c/wave_01/right_sharpa_wave",
+    "license_url": "https://github.com/sharpa-robotics/sharpa-urdf-usd-xml/blob/6eea427eb24189519f32b9f21674cd534d3f973c/LICENSE.txt",
+    "mjcf": "wave_01/right_sharpa_wave/right_sharpa_wave.xml"
+   },
+   "links": {
+    "official": "https://www.sharpa.com/"
+   }
+  },
+  {
+   "id": "wuji_hand",
+   "name": "Wuji Hand",
+   "maker": "Wuji Technology",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 20,
+   "license": "MIT",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "The right hand; upstream also ships the left one and a docking module. Twenty independent revolute joints, four to every finger including the thumb.",
+   "notes_zh": "此处为右手；上游还提供左手和一个对接模块。20 个独立 revolute 关节，每指 4 个，拇指也是 4 个。",
+   "pose": null,
+   "preview_frame": {
+    "palm": "+x",
+    "fingers": "+z"
+   },
+   "measured": null,
+   "urdf": {
+    "xml_name": "wujihand-right",
+    "links": 26,
+    "joints": {
+     "fixed": 5,
+     "revolute": 20
+    },
+    "moving_joints": 20,
+    "mass_kg": 0.518,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 28927
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/wuji-technology/wuji-hand-description@bbc2f64eec834aae616eacc2db1f69016f860c2d/",
+    "urdf": "urdf/right.urdf",
+    "packages": {},
+    "mesh_files": 26,
+    "mesh_bytes": 2625084,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "wuji-technology/wuji-hand-description",
+    "commit": "bbc2f64eec834aae616eacc2db1f69016f860c2d",
+    "repo_url": "https://github.com/wuji-technology/wuji-hand-description",
+    "tree_url": "https://github.com/wuji-technology/wuji-hand-description/tree/bbc2f64eec834aae616eacc2db1f69016f860c2d",
+    "license_url": "https://github.com/wuji-technology/wuji-hand-description/blob/bbc2f64eec834aae616eacc2db1f69016f860c2d/LICENSE",
+    "mjcf": "mjcf/right.xml"
+   },
+   "links": {
+    "official": "https://wuji.tech/"
+   }
+  },
+  {
+   "id": "dg5f",
+   "name": "DG-5F",
+   "maker": "Tesollo",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 20,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The right hand; upstream also ships the left one and `short` versions of both. Twenty revolute joints, four per finger, and the only hand here whose visual meshes are Collada while its collision geometry is STL.",
+   "notes_zh": "此处为右手；上游还提供左手以及两者的 `short` 版本。20 个 revolute 关节，每指 4 个；也是这里唯一一只视觉网格用 Collada、碰撞体用 STL 的手。",
+   "pose": null,
+   "preview_frame": {
+    "palm": "+x",
+    "fingers": "+z"
+   },
+   "measured": null,
+   "urdf": {
+    "xml_name": "dg5f_right",
+    "links": 28,
+    "joints": {
+     "fixed": 7,
+     "revolute": 20
+    },
+    "moving_joints": 20,
+    "mass_kg": 1.773,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 26235
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/tesollodelto/tesollo_model@6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2/",
+    "urdf": "dg5f/dg5f_right.urdf",
+    "packages": {
+     "meshes": "dg5f/meshes"
+    },
+    "mesh_files": 56,
+    "mesh_bytes": 4508052,
+    "mesh_formats": [
+     ".dae",
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "tesollodelto/tesollo_model",
+    "commit": "6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2",
+    "repo_url": "https://github.com/tesollodelto/tesollo_model",
+    "tree_url": "https://github.com/tesollodelto/tesollo_model/tree/6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2/dg5f",
+    "license_url": "https://github.com/tesollodelto/tesollo_model/blob/6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2/LICENSE",
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.tesollo.com/"
+   }
+  },
+  {
+   "id": "dg5fs",
+   "name": "DG-5F-S",
+   "maker": "Tesollo",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 20,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "The smaller, lighter DG-5F: the same twenty joints in a hand roughly half the mass. Upstream also ships the left one, a fifteen-DOF cut, and versions with a mount.",
+   "notes_zh": "DG-5F 的小型轻量版本：关节数同样是 20 个，整手质量约为前者的一半。上游还提供左手、15 自由度精简版，以及带安装座的版本。",
+   "pose": null,
+   "preview_frame": {
+    "palm": "+x",
+    "fingers": "+z"
+   },
+   "measured": null,
+   "urdf": {
+    "xml_name": "dg5fs_right",
+    "links": 26,
+    "joints": {
+     "fixed": 5,
+     "revolute": 20
+    },
+    "moving_joints": 20,
+    "mass_kg": 1.047,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 28274
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/tesollodelto/tesollo_model@6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2/",
+    "urdf": "dg5fs/dg5fs_right.urdf",
+    "packages": {
+     "meshes": "dg5fs/meshes"
+    },
+    "mesh_files": 52,
+    "mesh_bytes": 3707184,
+    "mesh_formats": [
+     ".dae",
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "tesollodelto/tesollo_model",
+    "commit": "6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2",
+    "repo_url": "https://github.com/tesollodelto/tesollo_model",
+    "tree_url": "https://github.com/tesollodelto/tesollo_model/tree/6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2/dg5fs",
+    "license_url": "https://github.com/tesollodelto/tesollo_model/blob/6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2/LICENSE",
+    "mjcf": "dg5fs/dg5fs_right.xml"
+   },
+   "links": {
+    "official": "https://www.tesollo.com/"
+   }
+  },
+  {
    "id": "cassie",
    "name": "Cassie",
    "maker": "Agility Robotics",
@@ -6278,7 +6810,7 @@
     "urdf": "urdf/rhea.urdf",
     "packages": {},
     "mesh_files": 7,
-    "mesh_bytes": 1397253,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -6523,7 +7055,7 @@
      "baxter_description": "baxter_description"
     },
     "mesh_files": 13,
-    "mesh_bytes": 7911367,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -6585,7 +7117,7 @@
     "urdf": "urdfs/robots/pr2/pr2.urdf",
     "packages": {},
     "mesh_files": 31,
-    "mesh_bytes": 781918,
+    "mesh_bytes": 362548,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -6646,7 +7178,7 @@
      "nextage_description": "nextage_description"
     },
     "mesh_files": 16,
-    "mesh_bytes": 1598154,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -6782,6 +7314,63 @@
    },
    "links": {
     "official": "https://www.unitree.com/g1"
+   }
+  },
+  {
+   "id": "allex",
+   "name": "ALLEX",
+   "maker": "WIRobotics",
+   "category": "dual_arm",
+   "tags": [
+    "dual_arm"
+   ],
+   "dof": 48,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "An upper body: two seven-DOF arms ending in two fifteen-DOF five-finger hands, on a two-DOF waist, with a two-DOF neck. Sixty revolute joints, of which twelve are `mimic` followers — ten finger couplings and two waist linkages — leaving 48 actuated. Filed with the dual arms rather than the humanoids because it has no legs. Upstream calls it a research simulation model of hardware still in development, and ships MJCF and USD beside the URDF.",
+   "notes_zh": "一具上半身：两条七自由度手臂，末端是两只十五自由度的五指手，装在二自由度腰部上，另有二自由度颈部。60 个 revolute 关节中 12 个是 `mimic` 从动关节——10 个手指耦合、2 个腰部连杆——实际驱动 48 个。归入双臂而不是人形，因为它没有腿。上游说明这是仍在研发中的硬件的研究用仿真模型，除 URDF 外还提供 MJCF 与 USD。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": null,
+   "urdf": {
+    "xml_name": "ALLEX",
+    "links": 82,
+    "joints": {
+     "fixed": 21,
+     "revolute": 60
+    },
+    "moving_joints": 60,
+    "mass_kg": 43.716,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 94728
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/wirobotics-rih/allex_model@5e120529b106902898382fbd3eb9cec3188deaa2/",
+    "urdf": "urdf/ALLEX.urdf",
+    "packages": {
+     "allex_description": ""
+    },
+    "mesh_files": 131,
+    "mesh_bytes": 182635904,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "wirobotics-rih/allex_model",
+    "commit": "5e120529b106902898382fbd3eb9cec3188deaa2",
+    "repo_url": "https://github.com/wirobotics-rih/allex_model",
+    "tree_url": "https://github.com/wirobotics-rih/allex_model/tree/5e120529b106902898382fbd3eb9cec3188deaa2",
+    "license_url": "https://github.com/wirobotics-rih/allex_model/blob/5e120529b106902898382fbd3eb9cec3188deaa2/LICENSE",
+    "mjcf": "mjcf/ALLEX.xml"
+   },
+   "links": {
+    "official": "https://www.wirobotics.com/"
    }
   },
   {
@@ -6961,7 +7550,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 34,
-    "mesh_bytes": 4807749,
+    "mesh_bytes": 4753482,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -7026,7 +7615,7 @@
      "pepper_description": ""
     },
     "mesh_files": 99,
-    "mesh_bytes": 1777160,
+    "mesh_bytes": 137784,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -7088,7 +7677,7 @@
     "urdf": "models/rby1a/urdf/model.urdf",
     "packages": {},
     "mesh_files": 29,
-    "mesh_bytes": 21814511,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -7279,7 +7868,7 @@
     "urdf": "urdf/galbot_one_golf.urdf",
     "packages": {},
     "mesh_files": 118,
-    "mesh_bytes": 4050344,
+    "mesh_bytes": 240924,
     "mesh_formats": [
      ".glb",
      ".stl"
@@ -7345,7 +7934,7 @@
     "urdf": "urdf/galbot_s1.urdf",
     "packages": {},
     "mesh_files": 82,
-    "mesh_bytes": 8169252,
+    "mesh_bytes": 602444,
     "mesh_formats": [
      ".glb",
      ".stl"
