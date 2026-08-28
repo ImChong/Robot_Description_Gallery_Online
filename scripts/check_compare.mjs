@@ -26,7 +26,7 @@
  */
 import { mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
 import { launchBrowser } from './browser.mjs';
 
 const args = process.argv.slice(2);
@@ -272,6 +272,31 @@ for (const test of CASES) {
 
 /* ── the visitor's own file as one of the columns ────────────────────────── */
 
+/** Hand files to the picker and put what they describe on the stage, as a visitor would. */
+async function pick(paths) {
+  await page.goto(`${base}/web/`, { waitUntil: 'networkidle' });
+  await page.click('#custom-open');
+  await page.waitForSelector('#custom-dialog[open]', { timeout: 30000 });
+  await page.setInputFiles('#custom-files', paths);
+  await page.waitForFunction(() => !document.getElementById('custom-go').disabled, null, {
+    timeout: 60000,
+  });
+  await page.click('#custom-go');
+  await page.waitForFunction(() => document.getElementById('d-name').textContent !== '—', null, {
+    timeout: 60000,
+  });
+}
+
+/** What the stage measured the picked model to be, once it has finished loading. */
+async function pickedMeasurement() {
+  await page.waitForFunction(
+    () => document.querySelector('#canvas-host')?.parentElement?.dataset.loaded,
+    null,
+    { timeout: 180000, polling: 400 },
+  );
+  return page.evaluate(async () => (await import('./js/custom.js')).customEntry()?.measured ?? null);
+}
+
 /**
  * A model picked off a disk has no category of its own worth honouring, so it
  * is read as whatever the comparison is of — which is the whole reason it can
@@ -304,21 +329,6 @@ for (const test of CASES) {
       page.evaluate(() =>
         [...document.querySelectorAll('#compare-overview thead .col-name')].map((n) => n.textContent),
       );
-    /** Hand one file to the picker and put it on the stage, as a visitor would. */
-    const pick = async (path) => {
-      await page.goto(`${base}/web/`, { waitUntil: 'networkidle' });
-      await page.click('#custom-open');
-      await page.waitForSelector('#custom-dialog[open]', { timeout: 30000 });
-      await page.setInputFiles('#custom-files', path);
-      await page.waitForFunction(() => !document.getElementById('custom-go').disabled, null, {
-        timeout: 60000,
-      });
-      await page.click('#custom-go');
-      await page.waitForFunction(() => document.getElementById('d-name').textContent !== '—', null, {
-        timeout: 60000,
-      });
-    };
-
     await pick(file);
     // The way in is the button on its own detail page, which the gallery's
     // robots use too — prev/next are what a picked model has no use for.
@@ -329,6 +339,15 @@ for (const test of CASES) {
     await page.selectOption('#compare-category', 'humanoid');
     await page.click('#compare-list button[data-id="g1"]');
     await drawn();
+
+    // A description with none of its meshes beside it measures nothing. The
+    // height and the bounding box are read off geometry, and half a robot would
+    // measure half a robot — a blank is the honest answer, and a wrong height
+    // in a table of comparisons is worse than a missing one.
+    const bare = await page.evaluate(async () =>
+      (await import('./js/custom.js')).customEntry()?.measured ?? null,
+    );
+    if (bare) fail(`${label} — a description with no meshes measured ${JSON.stringify(bare)}`);
 
     const local = await page.evaluate(() => {
       const coverage = document.getElementById('compare-coverage').textContent;
@@ -378,6 +397,75 @@ for (const test of CASES) {
     const cold = await heads();
     if (cold.length !== 2) fail(`${label} — a cold link drew ${cold.length} columns, expected 2`);
     if (!failures) console.log(`  ✓ ${label.padEnd(46)} ${local.coverage}`);
+  }
+}
+
+/**
+ * A model's height and bounding box exist only once something has rendered it:
+ * no URDF declares them, and for the gallery they are recorded at build time by
+ * scripts/render_thumbnails.mjs. A file off a disk has never been rendered by
+ * anyone, so the stage measures it where the meshes are — and this is the check
+ * that the two readings agree, by handing the page a description the registry
+ * already carries a measurement for. M-710iC is the one to use: fourteen meshes
+ * and 150 kB of them.
+ */
+{
+  const label = 'local: measured from the meshes it came with';
+  const model = await page.evaluate(async () => {
+    const { byId, loadRegistry } = await import('./js/registry.js');
+    const robot = byId(await loadRegistry(), 'fanuc_m710ic');
+    return robot
+      ? { base: robot.assets.base, urdf: robot.assets.urdf, measured: robot.measured }
+      : null;
+  });
+  if (!model?.measured) {
+    console.log(`  · ${label.padEnd(46)} skipped — fanuc_m710ic is not shown`);
+  } else {
+    // Flat, which is the case worth exercising anyway: files chosen one by one
+    // carry no folder, and the description's `package://` paths have to find
+    // them by name alone.
+    const dir = mkdtempSync(join(tmpdir(), 'rug-meshes-'));
+    const text = await (await fetch(model.base + model.urdf)).text();
+    const paths = [join(dir, basename(model.urdf))];
+    writeFileSync(paths[0], text);
+    const refs = [...new Set([...text.matchAll(/filename="([^"]+)"/g)].map((m) => m[1]))];
+    let missed = 0;
+    for (const ref of refs) {
+      const rel = ref.replace(/^package:\/\/[^/]+\//, '');
+      const response = await fetch(model.base + rel);
+      if (!response.ok) {
+        missed += 1;
+        continue;
+      }
+      const at = join(dir, basename(rel));
+      writeFileSync(at, Buffer.from(await response.arrayBuffer()));
+      paths.push(at);
+    }
+    if (missed) {
+      console.log(`  · ${label.padEnd(46)} skipped — ${missed}/${refs.length} meshes unreachable`);
+    } else {
+      await pick(paths);
+      const got = await pickedMeasurement();
+      if (!got) {
+        fail(`${label} — nothing was measured from ${paths.length - 1} meshes`);
+      } else {
+        // The same pose and the same reading, so the same number: a tolerance
+        // this wide only forgives a rounding difference, and every way of
+        // getting this wrong — measuring a posed robot, or one mid-spin — is
+        // out by whole percent.
+        const off = Math.abs(got.height_m - model.measured.height_m) / model.measured.height_m;
+        if (off > 0.01) {
+          fail(
+            `${label} — measured ${got.height_m} m, the registry records ` +
+              `${model.measured.height_m} m`,
+          );
+        } else {
+          console.log(
+            `  ✓ ${label.padEnd(46)} ${got.height_m} m vs ${model.measured.height_m} m recorded`,
+          );
+        }
+      }
+    }
   }
 }
 

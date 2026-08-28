@@ -896,11 +896,39 @@ export class RobotViewer {
     });
     this.keyLight.shadow.camera.updateProjectionMatrix();
     this.keyLight.position.set(shadowSpan, shadowSpan * 1.6, shadowSpan * 0.9);
+    this.measure();
+    this.invalidate();
+    return this.measured;
+  }
+
+  /**
+   * How big the robot is, in metres, taken from the geometry that is actually
+   * on screen — which is the only place the answer exists: no URDF declares a
+   * height, and a description is not its meshes until they arrive.
+   *
+   * The turntable is unwound for the reading and put back afterwards, since an
+   * axis-aligned box around a model stopped mid-spin measures its diagonal. y
+   * is up here, so `height_m` is the height.
+   *
+   * Null when there is nothing visible to measure: a description whose meshes
+   * did not load measures nothing, and zero is not an answer to how tall it is.
+   *
+   * @returns {?{size: {x: number, y: number, z: number}, height_m: number}}
+   */
+  measure() {
+    if (!this.robot) return null;
+    const spin = this.world.rotation.z;
+    this.world.rotation.z = 0;
+    this.world.updateWorldMatrix(true, true);
+    const box = boundingBox(this.world);
+    this.world.rotation.z = spin;
+    this.world.updateWorldMatrix(true, true);
+    if (box.isEmpty()) return null;
+    const size = box.getSize(new THREE.Vector3());
     this.measured = {
       size: { x: +size.x.toFixed(4), y: +size.y.toFixed(4), z: +size.z.toFixed(4) },
       height_m: +size.y.toFixed(4),
     };
-    this.invalidate();
     return this.measured;
   }
 

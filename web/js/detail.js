@@ -730,6 +730,19 @@ export class Detail {
       // range excludes zero (panda_joint4 is -176°..-4°), which the loader
       // otherwise leaves parked outside their own limits.
       this.viewer.poseForPortrait(robot.pose);
+      // The registry's height and bounding box come from rendering each model
+      // once at build time; a file off the visitor's own disk has never been
+      // rendered by anyone, so the numbers are taken here, where the meshes
+      // are — at the same pose and by the same reading as the registry's, so
+      // the two are comparable in the table that puts them side by side. It is
+      // the picked entry itself that is written to (a model with no versions
+      // passes through `variantView` unchanged), which is how the compare view
+      // gets the measurement without knowing a stage exists.
+      //
+      // Only when everything the description references actually arrived:
+      // half a robot measures half a robot, and a wrong height is worse than
+      // an honest blank.
+      if (local && !robot.assets.missing.length) robot.measured = this.viewer.measure();
       const xml = await xmlText;
       if (isStale()) return;
       if (xml) {

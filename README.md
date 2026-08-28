@@ -73,6 +73,14 @@ Allegro 的 `joint_0`…`joint_15`、Dex5-1 的 `Roll_21R`、Dex2-5 的 `right_3
 做好的 blob 解析，不发一个请求出去，因此**分享出去的链接里不会有这一列**，页面会
 在选择器下方直说这一点；刷新之后同样如此，那一列会被安静丢掉而不是报错。
 
+**网格一起给的话，「实测高度」和「包围盒」也会有。** 这两个数没有任何 URDF 写得出来
+—— 合集里的是 `npm run thumbs` 在构建时把每台机器渲染一遍量出来的，而你的文件没人
+渲染过，所以由预览页在网格加载完之后当场量：同一个零位姿态、同一种读法，因此和旁边
+几列直接可比（`check:compare` 里有一条用例，就是把合集里某台机器的网格当成上传文件
+交给页面，断言量出来的高度和构建时记下的一致）。只在它引用的网格全都找齐时才量 ——
+缺一半网格只能量到半个机器人，那还不如空着。只给一个 `.urdf`、不给网格，这两行就仍然
+是「—」。
+
 ## 本地运行
 
 ```bash
@@ -146,4 +154,6 @@ ready-to-build ROS 2 package. Run it locally with `npm install && npm run dev`. 
 MIT; each model keeps its own upstream licence, some non-commercial. A "Preview your own
 URDF" button at the top of the gallery opens the same viewer on a description from your own
 disk — parsed in the browser, never uploaded anywhere — and that model can be one of the
-compared columns too, read as whichever kind of machine the comparison is of.
+compared columns too, read as whichever kind of machine the comparison is of. Hand it the
+meshes as well and the stage measures the height and bounding box no URDF declares, the
+same way and at the same pose the build measures the gallery's.
