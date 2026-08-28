@@ -7,8 +7,9 @@
 网格 zip 或可直接 `colcon build` 的 ROS 2 功能包。
 
 首页开头还有「预览我自己的 URDF」：把自己的模型目录（或几个文件）交给同一个查看器，
-关节滑块、碰撞体、惯量一样能用。**文件只在浏览器里解析，不会上传到任何服务器** ——
-本站是纯静态页面，也没有可以接收文件的后端。
+关节滑块、碰撞体、惯量一样能用，**还能拉进横向对比里跟同类机器逐关节比**。
+**文件只在浏览器里解析，不会上传到任何服务器** —— 本站是纯静态页面，也没有可以
+接收文件的后端。
 
 还有「横向对比」：同一类别下选 2~6 台机器，把它们当成数据并排读。见下文。
 
@@ -63,6 +64,14 @@ Allegro 的 `joint_0`…`joint_15`、Dex5-1 的 `Roll_21R`、Dex2-5 的 `right_3
 无论哪种方式，格子里都会同时显示原始关节名，归不了位的关节列在表格下方，不会被
 悄悄丢掉。表格可以复制成 Markdown 或下载 CSV；`#compare=1&cat=humanoid&ids=g1,h1`
 这样的地址可以直接分享，`ids` 里用 `g1.g1_23dof` 还能指定具体版本。
+
+**你自己的文件也能当一列。** 用「预览我自己的 URDF」打开的模型，会出现在选择器
+最前面（`ids` 里叫 `__local__`），它的详情页右上角也有「加入对比」。它不归任何
+类别 —— 想知道它更像什么，往往正是打开它的原因 —— 所以它出现在每个类别下，并按
+当前对比的类别去读：放进人形对比里就按人形归位，换成灵巧手就按手指从根关节读到
+末端关节，换类别时它会留在选中状态。文件仍然只在这个标签页里：URDF 从选择器已经
+做好的 blob 解析，不发一个请求出去，因此**分享出去的链接里不会有这一列**，页面会
+在选择器下方直说这一点；刷新之后同样如此，那一列会被安静丢掉而不是报错。
 
 ## 本地运行
 
@@ -136,4 +145,5 @@ CDN. Every robot downloads in one click as a `.urdf`, a zip of URDF + meshes, or
 ready-to-build ROS 2 package. Run it locally with `npm install && npm run dev`. Code is
 MIT; each model keeps its own upstream licence, some non-commercial. A "Preview your own
 URDF" button at the top of the gallery opens the same viewer on a description from your own
-disk — parsed in the browser, never uploaded anywhere.
+disk — parsed in the browser, never uploaded anywhere — and that model can be one of the
+compared columns too, read as whichever kind of machine the comparison is of.

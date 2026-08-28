@@ -16,10 +16,17 @@
  *     right, so this is the check that matters.
  *   - That the page itself draws: the three tables, the columns that were
  *     asked for, no failed downloads and no console errors.
+ *   - And that a URDF handed to the page off a disk can be one of the columns:
+ *     it is read as the kind of machine the comparison is of, it is dropped
+ *     rather than fetched when an address names it in a tab that has no file
+ *     behind it, and swapping the file swaps the column.
  *
  * The URDFs come from the CDN, so this is a network test — and, like the
  * gallery's own smoke test, it catches an upstream that moved a file.
  */
+import { mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { launchBrowser } from './browser.mjs';
 
 const args = process.argv.slice(2);
@@ -263,6 +270,117 @@ for (const test of CASES) {
   );
 }
 
+/* ── the visitor's own file as one of the columns ────────────────────────── */
+
+/**
+ * A model picked off a disk has no category of its own worth honouring, so it
+ * is read as whatever the comparison is of — which is the whole reason it can
+ * be lined up at all: `custom` matches no anatomy and would place no joints.
+ * H1's own description stands in for a visitor's file here, so what the local
+ * column reads has an answer in the table beside it.
+ */
+{
+  const label = 'local: a picked file beside the gallery';
+  const url = await page.evaluate(async () => {
+    const { urdfUrl, byId, loadRegistry } = await import('./js/registry.js');
+    const robot = byId(await loadRegistry(), 'h1');
+    return robot ? urdfUrl(robot) : null;
+  });
+  if (!url) {
+    console.log(`  · ${label.padEnd(46)} skipped — h1 is not shown`);
+  } else {
+    const file = join(mkdtempSync(join(tmpdir(), 'rug-local-')), 'my_robot.urdf');
+    writeFileSync(file, await (await fetch(url)).text());
+    const drawn = () =>
+      page.waitForFunction(
+        () => {
+          const body = document.getElementById('compare-body');
+          return !!body && !body.hidden && !!document.querySelector('#compare-joints tbody tr');
+        },
+        null,
+        { timeout: 120000, polling: 300 },
+      );
+    const heads = () =>
+      page.evaluate(() =>
+        [...document.querySelectorAll('#compare-overview thead .col-name')].map((n) => n.textContent),
+      );
+    /** Hand one file to the picker and put it on the stage, as a visitor would. */
+    const pick = async (path) => {
+      await page.goto(`${base}/web/`, { waitUntil: 'networkidle' });
+      await page.click('#custom-open');
+      await page.waitForSelector('#custom-dialog[open]', { timeout: 30000 });
+      await page.setInputFiles('#custom-files', path);
+      await page.waitForFunction(() => !document.getElementById('custom-go').disabled, null, {
+        timeout: 60000,
+      });
+      await page.click('#custom-go');
+      await page.waitForFunction(() => document.getElementById('d-name').textContent !== '—', null, {
+        timeout: 60000,
+      });
+    };
+
+    await pick(file);
+    // The way in is the button on its own detail page, which the gallery's
+    // robots use too — prev/next are what a picked model has no use for.
+    await page.click('#add-compare');
+    await page.waitForFunction(() => location.hash.includes('compare=1'), null, { timeout: 30000 });
+    // Changing the kind of machine keeps it: it is not of a kind.
+    await page.selectOption('#compare-category', 'quadruped');
+    await page.selectOption('#compare-category', 'humanoid');
+    await page.click('#compare-list button[data-id="g1"]');
+    await drawn();
+
+    const local = await page.evaluate(() => {
+      const coverage = document.getElementById('compare-coverage').textContent;
+      return {
+        hash: location.hash,
+        coverage,
+        note: !document.getElementById('compare-local-note').hidden,
+        failed: document.getElementById('compare-failed').textContent.trim(),
+      };
+    });
+    const shown = await heads();
+    if (!local.hash.includes('__local__')) fail(`${label} — the address dropped it: ${local.hash}`);
+    if (shown.length !== 2) fail(`${label} — ${shown.length} columns, expected 2`);
+    if (local.failed) fail(`${label} — ${local.failed}`);
+    if (!local.note) fail(`${label} — nothing said the column cannot be shared`);
+    // Read as a humanoid, H1's description places every joint it has; read as
+    // `custom`, it would place none, which is what this number is here to catch.
+    const placed = /19\/19/.test(local.coverage);
+    if (!placed) fail(`${label} — the local column placed ${local.coverage}`);
+
+    // Picking another file replaces the column rather than leaving the last
+    // one parsed under the same id.
+    const second = await page.evaluate(async () => {
+      const { urdfUrl, byId, loadRegistry } = await import('./js/registry.js');
+      const robot = byId(await loadRegistry(), 'go2');
+      return robot ? urdfUrl(robot) : null;
+    });
+    if (second) {
+      const swap = join(mkdtempSync(join(tmpdir(), 'rug-local-')), 'second.urdf');
+      writeFileSync(swap, await (await fetch(second)).text());
+      await pick(swap);
+      await page.evaluate(() => {
+        location.hash = 'compare=1&cat=humanoid&ids=__local__,g1';
+      });
+      await drawn();
+      const after = await heads();
+      if (after[0] === shown[0]) fail(`${label} — swapping the file left ${after[0]} in the column`);
+    }
+
+    // And an address that names it, opened where no file has been picked, is
+    // one column short rather than an error.
+    await page.goto(`${base}/web/#compare=1&cat=humanoid&ids=__local__,g1,h1`, {
+      waitUntil: 'commit',
+    });
+    await page.reload({ waitUntil: 'commit' });
+    await drawn();
+    const cold = await heads();
+    if (cold.length !== 2) fail(`${label} — a cold link drew ${cold.length} columns, expected 2`);
+    if (!failures) console.log(`  ✓ ${label.padEnd(46)} ${local.coverage}`);
+  }
+}
+
 // The picker refuses to mix categories, which is the one rule the page has.
 const mixed = await page.evaluate(async () => {
   const { loadRegistry } = await import('./js/registry.js');
@@ -276,7 +394,14 @@ const mixed = await page.evaluate(async () => {
 if (mixed.includes('go2')) fail(`a quadruped was accepted into a humanoid comparison: ${mixed}`);
 else console.log(`  ✓ ${'a robot of another category is refused'.padEnd(46)} ${mixed.join(', ')}`);
 
-const relevant = consoleErrors.filter((e) => !/favicon|thumbs\/.*404|Failed to load resource/.test(e));
+const relevant = consoleErrors.filter(
+  (e) =>
+    !/favicon|thumbs\/.*404|Failed to load resource/.test(e) &&
+    // The file handed to the page above is a lone .urdf with none of its meshes
+    // beside it, so the stage says so once per <mesh> in it. That is the viewer
+    // reporting what it was given, not this page failing.
+    !/Error loading mesh|not among the picked files/.test(e),
+);
 if (relevant.length) {
   console.error(`\nconsole errors (${relevant.length}):`);
   for (const error of relevant.slice(0, 12)) console.error(`  ${error}`);

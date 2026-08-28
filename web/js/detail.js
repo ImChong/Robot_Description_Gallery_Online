@@ -686,8 +686,11 @@ export class Detail {
     // Two cards fill the row the gallery's three leave, rather than one card
     // and a third of a band of empty surface.
     document.querySelector('.stage-extra').dataset.mode = local ? 'local' : 'registry';
-    // Prev/next walk the gallery; the local model is not in it.
-    document.querySelector('.detail-nav').hidden = local;
+    // Prev/next walk the gallery; the local model is not in it. The compare
+    // button stays: a file off a disk is exactly the thing worth reading beside
+    // the machines it is meant to be like.
+    el('prev-robot').hidden = local;
+    el('next-robot').hidden = local;
 
     this.renderVersions();
     this.renderSpecs();
