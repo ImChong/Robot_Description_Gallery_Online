@@ -1459,7 +1459,7 @@
       "maker": "ETH Zurich (Soft Robotics Lab)",
       "category": "hand",
       "preview_frame": {
-        "palm": "+y",
+        "palm": "+x",
         "fingers": "+z"
       },
       "upstream": {
