@@ -49,9 +49,13 @@ human readers.
 function row(robot) {
   const shown = previous.get(robot.id) !== false;
   const maker = robot.maker || '—';
-  const { github, description, tree_url: treeUrl, repo_url: repoUrl } = robot.source;
-  const label = [github, description].filter(Boolean).join(' · ') || robot.id;
-  const url = treeUrl || repoUrl;
+  const { github, description, tree_url: treeUrl, repo_url: repoUrl, mirror } = robot.source;
+  // A mirrored entry has no repository to name, so the row points at the
+  // archive it is read from instead — and says that is what it is.
+  const label = mirror
+    ? `${mirror.host} (mirror)`
+    : [github, description].filter(Boolean).join(' · ') || robot.id;
+  const url = treeUrl || repoUrl || mirror?.site;
   const link = url ? `[${label}](${url})` : label;
   return `- [${shown ? 'x' : ' '}] \`${robot.id}\` **${robot.name}** — ${maker} — ${link}`;
 }

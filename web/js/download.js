@@ -23,6 +23,8 @@
  * awkward to compress further.
  */
 
+import { applyMeshRewrite } from './registry.js';
+
 const textEncoder = new TextEncoder();
 
 /* ── zip writing ─────────────────────────────────────────── */
@@ -139,10 +141,30 @@ function saveBlob(blob, filename) {
  * @param {string} urdfText
  */
 export function meshTargets(robot, urdfText) {
+  return resolveMeshes(robot, urdfText).targets;
+}
+
+/**
+ * Split a URDF's mesh references into the ones that can be fetched and the ones
+ * the host does not have.
+ *
+ * The second list is only ever non-empty for a mirrored entry, whose archive
+ * keeps the meshes it renders and drops the rest. They have to be recognised
+ * rather than requested: the archive answers a path it does not have with 200
+ * and an HTML page, so a zip built without this check fills up with copies of
+ * its fallback page.
+ *
+ * @param {object} robot registry entry
+ * @param {string} urdfText
+ * @returns {{targets: object[], skipped: string[]}}
+ */
+function resolveMeshes(robot, urdfText) {
   const { base, packages, urdf } = robot.assets;
   const urdfDir = urdf.replace(/[^/]*$/, '');
   const doc = new DOMParser().parseFromString(urdfText, 'text/xml');
   const seen = new Map();
+  const skip = new Set(robot.assets.skip_meshes || []);
+  const skipped = new Set();
 
   for (const mesh of doc.querySelectorAll('mesh')) {
     const filename = mesh.getAttribute('filename');
@@ -156,9 +178,41 @@ export function meshTargets(robot, urdfText) {
     } else if (!/^(https?|file):/.test(filename)) {
       path = normalise(urdfDir + filename);
     }
-    if (path) seen.set(filename, { ref: filename, url: base + path, path });
+    if (!path) continue;
+    path = applyMeshRewrite(path, robot.assets.mesh_rewrite);
+    if (skip.has(path)) {
+      skipped.add(filename);
+      continue;
+    }
+    seen.set(filename, { ref: filename, url: base + path, path });
   }
-  return [...seen.values()];
+  return { targets: [...seen.values()], skipped: [...skipped] };
+}
+
+/**
+ * Remove the `<visual>` and `<collision>` elements whose mesh the host does not
+ * have.
+ *
+ * For the ROS 2 package only, and for a reason the raw bundle does not share:
+ * the package is meant to build and start RViz, and a URDF naming a file the
+ * package does not contain fails to load at all. The bundle ships upstream's
+ * file untouched instead, with the shortfall recorded in its NOTICE.
+ *
+ * Done on the text so the rest of the file is byte-for-byte upstream's. Neither
+ * element nests inside itself, so matching one non-greedily is unambiguous.
+ */
+function dropGeometry(urdfText, refs) {
+  if (!refs.length) return urdfText;
+  const wanted = new Set(refs);
+  return urdfText.replace(
+    /[ \t]*<(visual|collision)\b[^>]*>[\s\S]*?<\/\1>\n?/g,
+    (element) => {
+      for (const [, quoted] of element.matchAll(/filename\s*=\s*"([^"]*)"/g)) {
+        if (wanted.has(xmlDecode(quoted)) || wanted.has(quoted)) return '';
+      }
+      return element;
+    },
+  );
 }
 
 function normalise(path) {
@@ -266,7 +320,7 @@ export function ros2PackageName(robot) {
  */
 export function ros2Layout(robot, urdfText) {
   const pkg = ros2PackageName(robot);
-  const targets = meshTargets(robot, urdfText);
+  const { targets, skipped } = resolveMeshes(robot, urdfText);
   const prefix = commonDir([robot.assets.urdf, ...targets.map((t) => t.path)]);
   const inPackage = (path) => (path.startsWith(prefix) ? path.slice(prefix.length) : path);
   const refs = new Map(targets.map((t) => [t.ref, `package://${pkg}/${inPackage(t.path)}`]));
@@ -274,13 +328,16 @@ export function ros2Layout(robot, urdfText) {
     pkg,
     targets,
     inPackage,
+    // Geometry the host does not have, dropped from this URDF so the package
+    // loads. Named here so the README can say what came out.
+    skipped,
     urdfPath: inPackage(robot.assets.urdf),
-    urdf: rewriteMeshRefs(urdfText, refs),
+    urdf: rewriteMeshRefs(dropGeometry(urdfText, skipped), refs),
     // References the registry could not map to a file in the upstream repository
     // — usually a package:// pointing at some package this description does not
     // ship. They are left alone and called out in the README rather than
     // silently producing a package with dangling references.
-    unresolved: unresolvedMeshRefs(urdfText, refs),
+    unresolved: unresolvedMeshRefs(dropGeometry(urdfText, skipped), refs),
     rootLink: rootLink(urdfText),
   };
 }
@@ -408,7 +465,11 @@ function packageXml(robot, layout) {
   <version>0.0.0</version>
   <description>
     ${xmlEscape(robot.name)}${robot.maker ? ` (${xmlEscape(robot.maker)})` : ''} URDF and meshes, packaged for ROS 2 by the
-    Robot URDF Gallery Online from ${xmlEscape(source.repo_url)} at commit ${source.commit}.
+    Robot URDF Gallery Online from ${
+      source.mirror
+        ? `the copy re-hosted at ${xmlEscape(source.mirror.site)}`
+        : `${xmlEscape(source.repo_url)} at commit ${source.commit}`
+    }.
   </description>
   <maintainer email="you@example.com">you</maintainer>
   <license>${xmlEscape(robot.license || 'TODO: see NOTICE.txt')}</license>
@@ -678,7 +739,11 @@ function packageReadme(robot, layout) {
   return `# ${robot.name} — ROS 2 description package
 
 \`${layout.pkg}\` holds the ${robot.name}${robot.maker ? ` (${robot.maker})` : ''} URDF and its meshes, taken from
-[${source.github}](${source.tree_url}) at commit \`${source.commit.slice(0, 10)}\`, plus a launch file
+${
+  source.mirror
+    ? `the copy [${source.mirror.host}](${source.mirror.site}) re-hosts, which publishes no revision to pin`
+    : `[${source.github}](${source.tree_url}) at commit \`${source.commit.slice(0, 10)}\``
+}, plus a launch file
 that starts \`robot_state_publisher\`, the \`joint_state_publisher_gui\` slider
 window and RViz 2. Generated by the
 [Robot URDF Gallery Online](https://imchong.github.io/Robot_URDF_Gallery_Online/).
@@ -757,7 +822,7 @@ ros2 launch ${layout.pkg} display.launch.py
 ## Licence
 
 The model keeps its upstream licence (${robot.license || 'see NOTICE.txt'}) —
-see \`NOTICE.txt\` for the source repository, commit and licence file.
+see \`NOTICE.txt\` for where the files came from and the licence that covers them.
 `;
 }
 
@@ -776,16 +841,41 @@ function notice(robot, meshCount, ros2 = null) {
       .map(([pkg, root]) => `  ${pkg} -> ${root || '.'}`)
       .join('\n') || '  (this URDF uses paths relative to the URDF file)';
 
+  // Most models are a subset of a repository at a pinned commit. The few whose
+  // maker published no loadable description are read from an archive that
+  // re-hosts them, which has no commit to quote and may have dropped meshes the
+  // URDF still references — both worth saying in the file that records where
+  // these bytes came from.
+  const mirror = source.mirror || null;
   const opening = ros2
     ? `Downloaded from the Robot URDF Gallery Online and wrapped as the ROS 2 package
-\`${ros2.pkg}\`. The model itself is a subset of an upstream repository at a
+\`${ros2.pkg}\`. The model itself is ${
+        mirror
+          ? `a subset of a copy re-hosted by
+${mirror.host}, which publishes no revision to pin:`
+          : `a subset of an upstream repository at a
 pinned commit:`
-    : `Downloaded from the Robot URDF Gallery Online. This archive is a subset of an upstream
+      }`
+    : mirror
+      ? `Downloaded from the Robot URDF Gallery Online. This archive is a subset of
+a copy re-hosted by ${mirror.host}, which publishes no revision to pin:`
+      : `Downloaded from the Robot URDF Gallery Online. This archive is a subset of an upstream
 repository, unmodified, at a pinned commit:`;
 
   const layout = ros2
-    ? `The URDF is upstream's file with a single edit: its mesh \`filename\` attributes
-now read \`package://${ros2.pkg}/...\`, so they resolve from this package alone.
+    ? `The URDF is upstream's file with its mesh \`filename\` attributes rewritten to
+read \`package://${ros2.pkg}/...\`, so they resolve from this package alone.${
+        ros2.skipped?.length
+          ? `
+The ${ros2.skipped.length} <visual>/<collision> element${
+              ros2.skipped.length === 1 ? '' : 's'
+            } naming a mesh the host does not
+have ${
+              ros2.skipped.length === 1 ? 'was' : 'were'
+            } dropped: a URDF that points at a file the package does not
+contain does not load at all.`
+          : ''
+      }
 Everything else — including where each mesh sits relative to the URDF — is as
 upstream ships it, so plain relative references still resolve too.`
     : `Files keep their repository-relative paths, so package:// references resolve
@@ -793,17 +883,34 @@ once the package directory below is on your ROS package path:
 
 ${packages}`;
 
+  const skipped = assets.skip_meshes?.length || 0;
   return `${robot.name}${robot.maker ? ` — ${robot.maker}` : ''}
 ${'='.repeat(60)}
 
 ${opening}
 
-  repository : ${source.repo_url}
-  commit     : ${source.commit}
+${
+  mirror
+    ? `  re-hosted by: ${mirror.host}
+  page       : ${mirror.site}
+  files      : ${assets.base}`
+    : `  repository : ${source.repo_url}
+  commit     : ${source.commit}`
+}
   URDF       : ${assets.urdf}
   meshes     : ${meshCount}
   licence    : ${robot.license || 'see the upstream repository'}
-${source.license_url ? `  licence file: ${source.license_url}\n` : ''}
+${source.license_url ? `  licence file: ${source.license_url}\n` : ''}${
+    skipped && !ros2
+      ? `
+This URDF references ${skipped} mesh${skipped === 1 ? '' : 'es'} the host does not have. The file is upstream's,
+unmodified, so ${skipped === 1 ? 'that reference is' : 'those references are'} still in it — the ${
+          skipped === 1 ? 'file is' : 'files are'
+        } simply not in this
+archive, and whatever loads the URDF will report ${skipped === 1 ? 'it' : 'them'} as missing.
+`
+      : ''
+  }
 ${layout}
 ${
   source.description

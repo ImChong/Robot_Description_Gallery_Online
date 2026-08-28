@@ -15,10 +15,11 @@
 
 在线访问：<https://imchong.github.io/Robot_URDF_Gallery_Online/>
 
-人形 33 · 四足 18 · 机械臂 17 · 灵巧手 10 · 移动操作 9 · 双臂 8 · 双足 4
+人形 33 · 四足 18 · 机械臂 17 · 灵巧手 23 · 移动操作 9 · 双臂 9 · 双足 4
 
-**本仓库不托管任何模型文件。** 每个条目只记录上游仓库 + 固定 commit，URDF 与网格
-访问时从 jsDelivr 的 GitHub CDN 流式加载。
+**本仓库不托管任何模型文件。** 绝大多数条目只记录上游仓库 + 固定 commit，URDF 与网格
+访问时从 jsDelivr 的 GitHub CDN 流式加载。少数厂商完全没有公开可加载模型的（或只发布
+xacro），条目改为记录转载它的存档站 —— 见下文「镜像条目」。
 
 ## 横向对比
 
@@ -116,11 +117,30 @@ npm run check:compare           # 对比页：关节对齐的不变式 + 页面�
 包括渲染、关节树和三种下载。版本的 id 与标签取自文件名本身，列在最前面的就是卡片和
 详情页默认打开的那个。
 
+### 镜像条目
+
+少数机型的厂商从没公开过本站能加载的模型 —— 没有仓库，或者只发布 xacro —— 而它唯一
+公开的 URDF 在一个转载它的存档站上。这种条目写 `mirror` 而不是 `upstream`，填存档站
+的名字、页面、基址，以及存档站重新摆放网格后的 `packages` 映射（仓库条目的包路径是
+探测出来的，存档站的必须写明）。相比仓库条目有三点不同，都是存档站带来的，不是选择：
+
+- **没有可固定的 commit**，`source.commit` 为 null，详情页改为标注「转载自」哪个站，
+  CI 的漂移比对对这些条目无从比较。
+- **存在性按 content-type 判定**：单页应用形式的存档站对不存在的路径也返回 200 + 一个
+  HTML 页面，光看状态码会把每个网格都当成存在。`Http.probe` 因此发 GET 只读响应头。
+- **存档站只保留自己要渲染的网格**，所以条目可能引用一些它没有的文件。这些网格会被
+  跳过而不是让构建失败：记进 `assets.skip_meshes` 让查看器和下载器一并跳过，并从条目
+  声明里扣除 —— 碰撞网格全缺失的模型会如实报告「没有碰撞体」，而不是给一个空的碰撞
+  视图。`assets.mesh_rewrite` 则用来还原被压平的网格目录。
+
 ## 已知限制
 
 - 暂不支持只提供 xacro 的模型（UR 系列、Shadow Hand、Fetch 等）；自己上传时也一样，
-  请先 `xacro robot.urdf.xacro > robot.urdf` 再选择展开后的文件。
+  请先 `xacro robot.urdf.xacro > robot.urdf` 再选择展开后的文件。少数这类模型通过上面的
+  镜像条目收录了展开后的 URDF。
 - jsDelivr 单文件上限 20 MB，个别含超大网格的模型（Go1、B1、B2-W）无法收录。
+- 镜像条目的 ROS 2 下载包会删掉引用缺失网格的 `<visual>`/`<collision>` 元素，否则
+  RViz 根本加载不了；zip 包里的 URDF 保持上游原样，缺口写在 `NOTICE.txt` 里。
 
 ## 许可
 
@@ -148,8 +168,11 @@ that number their knuckles differently still line up knuckle for knuckle. Only t
 `.urdf` files are fetched for it, never the meshes. A machine upstream publishes as
 several URDFs — the Unitree G1 ships 21 — is one card, with a version picker on its
 detail page that swaps the whole page between them. No model files are hosted here:
-each entry pins an upstream repository and commit, and streams from jsDelivr's GitHub
-CDN. Every robot downloads in one click as a `.urdf`, a zip of URDF + meshes, or a
+almost every entry pins an upstream repository and commit, and streams from jsDelivr's
+GitHub CDN; a handful whose maker published no loadable description stream from an
+archive that re-hosts them, which has no revision to pin and may have dropped meshes
+the URDF still names — those are skipped, and the entry reports what is left rather
+than an empty collision view. Every robot downloads in one click as a `.urdf`, a zip of URDF + meshes, or a
 ready-to-build ROS 2 package. Run it locally with `npm install && npm run dev`. Code is
 MIT; each model keeps its own upstream licence, some non-commercial. A "Preview your own
 URDF" button at the top of the gallery opens the same viewer on a description from your own

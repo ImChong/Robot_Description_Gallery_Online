@@ -11,6 +11,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import URDFLoader from 'urdf-loader';
+import { applyMeshRewrite } from './registry.js';
 
 const UP_Z = -Math.PI / 2; // URDF is Z-up, three.js is Y-up.
 
@@ -127,6 +128,26 @@ function stripNonGeometry(object) {
  */
 function dropAxesWithoutXyz(xml) {
   return xml.replace(/<axis\b[^>]*>(\s*<\/axis>)?/g, (tag) => (/\bxyz\s*=/.test(tag) ? tag : ''));
+}
+
+/**
+ * Drop `<joint>` elements whose child link the file never defines.
+ *
+ * A joint's child is the link it moves, so a name that matches no `<link>`
+ * describes nothing. urdf-loader looks the name up and adds the result without
+ * checking, so `THREE.Object3D.add: object not an instance of THREE.Object3D.
+ * undefined` lands in the console for every visitor — Inspire's RH56F1 has one
+ * such joint, for an index force sensor whose link went missing on the way out
+ * of xacro. Removing the joint costs nothing: there was no link on the far side
+ * of it to reach.
+ */
+function dropJointsWithoutChildLink(xml) {
+  const links = new Set();
+  for (const [, name] of xml.matchAll(/<link\b[^>]*\bname\s*=\s*["']([^"']*)["']/g)) links.add(name);
+  return xml.replace(/<joint\b[^>]*>[\s\S]*?<\/joint>/g, (joint) => {
+    const child = joint.match(/<child\b[^>]*\blink\s*=\s*["']([^"']*)["']/);
+    return child && !links.has(child[1]) ? '' : joint;
+  });
 }
 
 /**
@@ -575,6 +596,13 @@ export class RobotViewer {
     // of a base URL: it resolves the paths the URDF writes against the files
     // they handed over, and answers in `blob:` URLs. See js/custom.js.
     const local = entry.assets.local || null;
+    // Two corrections a mirrored entry carries, both the archive's doing: the
+    // substitutions that undo the mesh tree it flattened, and the meshes it
+    // never kept. Skipping the latter is not an optimisation — the archive
+    // answers a path it does not have with 200 and an HTML page, so the request
+    // would come back as a mesh loader choking on markup.
+    const rewrite = entry.assets.mesh_rewrite || [];
+    const skip = new Set((entry.assets.skip_meshes || []).map((path) => base + path));
     // Every request either loader makes goes through this manager, which is
     // what lets `outstanding` below see the loads the mesh counter cannot —
     // and, for a local model, what puts the blob in front of the scheme.
@@ -647,7 +675,18 @@ export class RobotViewer {
     };
     const tick = () => onProgress && onProgress(done, total);
 
-    loader.loadMeshCb = (path, manager, onComplete) => {
+    loader.loadMeshCb = (rawPath, manager, onComplete) => {
+      const path = applyMeshRewrite(rawPath, rewrite);
+      // Not counted, because it is not a load: `total` stays the number of
+      // requests this robot makes, which is what the progress bar is about and
+      // what `assets.mesh_files` records. Answered without an error, too — the
+      // build step already knows this mesh is not there and said so in the
+      // registry, so urdf-loader logging it again is noise in every console
+      // that opens the page.
+      if (skip.has(path)) {
+        onComplete(null);
+        return;
+      }
       total += 1;
       tick();
       const finish = (obj, err) => {
@@ -688,7 +727,9 @@ export class RobotViewer {
       return r.text();
     });
 
-    const robot = loader.parse(dropAxesWithoutXyz(urdfColorsToLinear(text)));
+    const robot = loader.parse(
+      dropJointsWithoutChildLink(dropAxesWithoutXyz(urdfColorsToLinear(text))),
+    );
     parsed = true;
     this.robot = robot;
     this.world.add(robot);

@@ -34,12 +34,38 @@ for (const robot of registry.robots) {
 
   const { assets, source, urdf } = robot;
   if (!assets?.base?.startsWith('https://')) fail(id, 'assets.base is not https');
-  if (!assets.base.includes(source.commit)) fail(id, 'assets.base is not pinned to source.commit');
-  // robot_descriptions pins most repositories to a sha and a few to a release
-  // tag; both are reproducible. A branch name is not.
-  const ref = source.commit || '';
-  if (!/^[0-9a-f]{40}$/.test(ref) && !/^v?\d+(\.\d+)*/.test(ref)) {
-    fail(id, `upstream ref is not pinned to a sha or version tag: ${ref}`);
+  // A mirrored entry is read from an archive that publishes no revision, so
+  // there is no commit to pin it to and nothing for the drift check in CI to
+  // compare. What it must do instead is say where it came from, loudly enough
+  // that the detail page can tell a visitor.
+  if (source.mirror) {
+    if (source.commit || source.github) fail(id, 'a mirrored entry must not claim a commit');
+    if (!source.mirror.host) fail(id, 'mirror has no host');
+    if (!source.mirror.site?.startsWith('https://')) fail(id, 'mirror.site is not https');
+    if (!assets.base.startsWith(source.mirror.site.split('/').slice(0, 3).join('/'))) {
+      warn(id, `mirror serves its files from another host than its page: ${assets.base}`);
+    }
+  } else {
+    if (!assets.base.includes(source.commit)) fail(id, 'assets.base is not pinned to source.commit');
+    // robot_descriptions pins most repositories to a sha and a few to a release
+    // tag; both are reproducible. A branch name is not.
+    const ref = source.commit || '';
+    if (!/^[0-9a-f]{40}$/.test(ref) && !/^v?\d+(\.\d+)*/.test(ref)) {
+      fail(id, `upstream ref is not pinned to a sha or version tag: ${ref}`);
+    }
+  }
+  // Only a mirror may leave meshes out; a repository entry with a mesh missing
+  // is a broken entry, and the build refuses it rather than recording it here.
+  if (assets.skip_meshes?.length && !source.mirror) {
+    fail(id, 'skips meshes but is not a mirrored entry');
+  }
+  for (const path of assets.skip_meshes || []) {
+    if (path.startsWith('/') || path.startsWith('http')) {
+      fail(id, `skipped mesh is not a host-relative path: ${path}`);
+    }
+  }
+  for (const rule of assets.mesh_rewrite || []) {
+    if (!rule.from || rule.to === undefined) fail(id, 'mesh_rewrite rule needs a from and a to');
   }
   if (!assets.urdf) fail(id, 'missing assets.urdf');
   if (assets.urdf.startsWith('/')) fail(id, 'assets.urdf must be repo-relative');

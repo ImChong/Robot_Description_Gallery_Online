@@ -25,7 +25,7 @@ import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync } 
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { launchBrowser } from './browser.mjs';
-import { parseVisibility } from '../web/js/registry.js';
+import { applyMeshRewrite, parseVisibility } from '../web/js/registry.js';
 
 const args = process.argv.slice(2);
 const flag = (name, fallback = null) => {
@@ -129,16 +129,76 @@ function withoutComments(xml) {
 }
 
 /**
+ * The URDF's own mesh references that resolve to a path the host does not have.
+ *
+ * Resolved the same way the registry builder and the browser resolve them —
+ * package root, then the entry's rewrite rules — so this agrees with the
+ * `assets.skip_meshes` paths recorded at build time. Empty for every entry read
+ * from a repository, which may not skip anything.
+ */
+function skippedRefsOf(robot, urdfText) {
+  const skip = new Set(robot.assets.skip_meshes || []);
+  if (!skip.size) return [];
+  const urdfDir = robot.assets.urdf.replace(/[^/]*$/, '');
+  const out = new Set();
+  for (const [, ref] of withoutComments(urdfText).matchAll(/<mesh[^>]*filename="([^"]*)"/g)) {
+    let path;
+    if (ref.startsWith('package://')) {
+      const [pkg, ...rest] = ref.slice('package://'.length).split('/');
+      const root = robot.assets.packages[pkg];
+      if (root === undefined) continue;
+      path = normalise(`${root}/${rest.join('/')}`);
+    } else if (/^(https?|file):/.test(ref)) {
+      continue;
+    } else {
+      path = normalise(urdfDir + ref);
+    }
+    if (skip.has(applyMeshRewrite(path, robot.assets.mesh_rewrite))) out.add(ref);
+  }
+  return [...out];
+}
+
+function normalise(path) {
+  const out = [];
+  for (const part of path.split('/')) {
+    if (!part || part === '.') continue;
+    if (part === '..') out.pop();
+    else out.push(part);
+  }
+  return out.join('/');
+}
+
+/**
+ * Drop the `<visual>` and `<collision>` elements naming one of `refs`.
+ *
+ * The same edit web/js/download.js makes to a mirrored model's URDF, so that
+ * the comparison below can be told what the package is allowed to be missing.
+ */
+function dropGeometry(xml, refs) {
+  if (!refs.length) return xml;
+  const wanted = new Set(refs);
+  return xml.replace(/[ \t]*<(visual|collision)\b[^>]*>[\s\S]*?<\/\1>\n?/g, (element) => {
+    for (const [, quoted] of element.matchAll(/filename\s*=\s*"([^"]*)"/g)) {
+      if (wanted.has(quoted)) return '';
+    }
+    return element;
+  });
+}
+
+/**
  * Everything that has to hold for the generated package to build and launch:
  * the files ament and the launch file expect, a launch file Python can parse,
  * and mesh references that resolve inside the package. The URDF must also be
- * upstream's, changed in nothing but those references.
+ * upstream's, changed in nothing but those references — and, for a mirrored
+ * model, minus the geometry whose mesh the host does not have, which the
+ * package drops so that it loads at all.
  *
  * @param {string} root  the unpacked package directory
  * @param {string} pkg   its package name
  * @param {string} upstream  the upstream URDF text
+ * @param {string[]} skippedRefs  mesh references the host does not have
  */
-function checkRos2Package(root, pkg, upstream) {
+function checkRos2Package(root, pkg, upstream, skippedRefs = []) {
   for (const required of [
     'package.xml',
     'CMakeLists.txt',
@@ -189,7 +249,7 @@ function checkRos2Package(root, pkg, upstream) {
 
   // Only the mesh references may differ from upstream.
   const bare = (text) => text.replace(/filename="[^"]*"/g, 'filename=""');
-  if (bare(urdf) !== bare(upstream)) {
+  if (bare(urdf) !== bare(dropGeometry(upstream, skippedRefs))) {
     throw new Error('URDF in the ROS 2 package differs from upstream beyond its mesh references');
   }
 }
@@ -267,7 +327,7 @@ for (const robot of targets) {
     const pkg = ros2Download.suggestedFilename().replace(/_ros2\.zip$/, '');
     const ros2Dir = join(workDir, `${robot.id}-ros2`);
     execFileSync('unzip', ['-qq', ros2Path, '-d', ros2Dir], { stdio: 'pipe' });
-    checkRos2Package(join(ros2Dir, pkg), pkg, upstream);
+    checkRos2Package(join(ros2Dir, pkg), pkg, upstream, skippedRefsOf(robot, upstream));
 
     const zipSize = statSync(zipPath).size;
     console.log(
