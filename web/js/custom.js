@@ -12,8 +12,12 @@ import { LOCAL_URL_PREFIX } from './viewer.js';
 import { t } from './i18n.js';
 import { formatBytes } from './registry.js';
 
-/** The id the local model answers to — never a registry id, so it cannot clash. */
-const CUSTOM_ID = '__local__';
+/**
+ * The id the local model answers to — never a registry id, so it cannot clash.
+ * The compare view needs it too: a picked model can be put beside the machines
+ * it is meant to be like, and then this is what the address bar calls it.
+ */
+export const CUSTOM_ID = '__local__';
 
 /** A description is a folder, not a workspace: past this, something is wrong. */
 const MAX_FILES = 6000;

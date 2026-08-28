@@ -18,12 +18,19 @@
  *
  * Only descriptions of one category can be selected together, because a row
  * reading "left knee" across a humanoid and a gripper is a row about nothing.
+ * The one exception is the visitor's own file: a model picked off a disk has no
+ * category of its own worth honouring — being told what it is, is usually why
+ * it was opened — so it joins whichever comparison it is put in and is read as
+ * that kind of machine. It never leaves the tab, here as everywhere else: the
+ * URDF is parsed from the blob the picker already made, and an address that
+ * names it opens for whoever wrote it and for nobody else.
  *
  * Nothing is precomputed into data/robots.json: a URDF is a few tens of
  * kilobytes and the meshes — the twenty megabytes — are never asked for, so six
  * machines cost less than opening one of them on its detail page.
  */
 import { categoryLabel, t } from './i18n.js';
+import { CUSTOM_ID, customEntry } from './custom.js';
 import { formatBytes, urdfUrl, variantView } from './registry.js';
 import { loadUrdfSpec } from './urdf-spec.js';
 import { align, defaultMode, fingerOrder, limbs, REGION_ORDER, SIDE_ORDER } from './joint-align.js';
@@ -512,6 +519,8 @@ export class Compare {
     this.showNames = true;
     /** @type {Map<string, {spec?: object, error?: string}>} */
     this.loaded = new Map();
+    /** The picked file the local column was last parsed from; see dropStaleLocal. */
+    this.localEntry = null;
     /** How many fetches are in flight, so the last one to land clears the line. */
     this.loading = 0;
     this.bound = false;
@@ -528,23 +537,54 @@ export class Compare {
     return { category: this.category, ids: this.ids };
   }
 
-  /** Robots of the selected category, honouring the picker's own search box. */
+  /**
+   * One id, whether it names a robot of the gallery or the file the visitor
+   * picked off their own disk. The picked one is not in `data.robots` and never
+   * will be — it belongs to this tab — so it is looked up where it lives.
+   */
+  find(id) {
+    if (id === CUSTOM_ID) return customEntry();
+    return this.data.robots.find((robot) => robot.id === id) || null;
+  }
+
+  /**
+   * Robots of the selected category, honouring the picker's own search box —
+   * and, first in the list, whatever the visitor has open from their own disk.
+   * That one is offered under every category rather than under its own: a file
+   * off a disk is compared against the machines it is meant to be like, and
+   * which of them that is, is the visitor's to say.
+   */
   candidates() {
     const query = this.filter.trim().toLowerCase();
-    return this.data.robots.filter(
+    const list = this.data.robots.filter(
       (robot) =>
         robot.category === this.category && (!query || robot._haystack.includes(query)),
     );
+    const local = customEntry();
+    if (local && (!query || local.name.toLowerCase().includes(query))) list.unshift(local);
+    return list;
   }
 
-  /** The chosen robots, with the version each was chosen at. */
+  /**
+   * The chosen robots, with the version each was chosen at.
+   *
+   * The picked file is read as whatever kind of machine this comparison is of.
+   * Everything downstream — which joint is which, what counts as a limb, which
+   * of the two readings the page opens on — asks the entry what category it is,
+   * and `custom` would answer "none of them" and place none of its joints.
+   */
   entries() {
     return this.picks
       .map((pick) => {
-        const robot = this.data.robots.find((r) => r.id === pick.robot);
+        const robot = this.find(pick.robot);
         if (!robot) return null;
         const view = variantView(robot, pick.variant);
-        return { key: view.id, pick, model: robot, robot: view };
+        return {
+          key: view.id,
+          pick,
+          model: robot,
+          robot: robot.local ? { ...view, category: this.category } : view,
+        };
       })
       .filter(Boolean);
   }
@@ -554,8 +594,7 @@ export class Compare {
   }
 
   toggle(id) {
-    const robot = this.data.robots.find((r) => r.id === id);
-    if (!robot) return;
+    if (!this.find(id)) return;
     if (this.has(id)) this.picks = this.picks.filter((pick) => pick.robot !== id);
     else if (this.picks.length < MAX_PICKS) this.picks.push({ robot: id, variant: null });
     this.commit();
@@ -566,15 +605,18 @@ export class Compare {
    * on its detail page. Its category becomes the comparison's, because a
    * comparison is of one kind of machine; picking a quadruped while three
    * humanoids are selected starts a new comparison rather than a mixed one.
+   * The picked file is the exception, having no category to impose: it joins
+   * the comparison already open.
    */
   add(robot, variantId = null) {
-    if (robot.category !== this.category) {
+    if (!robot.local && robot.category !== this.category) {
       this.category = robot.category;
       this.picks = [];
     }
-    const already = this.picks.find((pick) => pick.robot === robot.id);
+    const id = robot.local ? CUSTOM_ID : robot.id;
+    const already = this.picks.find((pick) => pick.robot === id);
     if (already) already.variant = variantId;
-    else if (this.picks.length < MAX_PICKS) this.picks.push({ robot: robot.id, variant: variantId });
+    else if (this.picks.length < MAX_PICKS) this.picks.push({ robot: id, variant: variantId });
   }
 
   commit() {
@@ -595,14 +637,22 @@ export class Compare {
     else if (state.ids?.length) {
       // An address that names robots but no category — one typed by hand rather
       // than one this page wrote — takes its category from the first of them,
-      // instead of quietly dropping every id for belonging to another.
-      const first = this.data.robots.find((robot) => robot.id === state.ids[0].split('.')[0]);
+      // instead of quietly dropping every id for belonging to another. The
+      // picked file has no category to lend, so the first that has one speaks.
+      const first = state.ids
+        .map((raw) => this.data.robots.find((robot) => robot.id === raw.split('.')[0]))
+        .find(Boolean);
       if (first) this.category = first.category;
     }
     if (state.ids) {
       this.picks = state.ids
         .map((raw) => {
           const [robotId, variantId] = raw.split('.');
+          // An address naming the picked file is one this tab wrote, and it is
+          // only good in this tab: opened after a reload, or on another
+          // machine, there are no files behind it, and the column goes rather
+          // than the whole comparison.
+          if (robotId === CUSTOM_ID) return customEntry() ? { robot: CUSTOM_ID, variant: null } : null;
           const robot = this.data.robots.find((r) => r.id === robotId);
           if (!robot || robot.category !== this.category) return null;
           const variant = (robot.variants || []).some((v) => v.id === variantId)
@@ -631,7 +681,11 @@ export class Compare {
       .join('');
     category.addEventListener('change', () => {
       this.category = category.value;
-      this.picks = [];
+      // Changing the kind of machine starts a new comparison — except for the
+      // visitor's own file, which is not of a kind. Being told what a model is
+      // most like is a reason to try it against one category and then another,
+      // and re-picking it every time would be the page arguing with that.
+      this.picks = this.picks.filter((pick) => pick.robot === CUSTOM_ID);
       this.commit();
     });
 
@@ -683,6 +737,7 @@ export class Compare {
   }
 
   async render() {
+    this.dropStaleLocal();
     this.renderPicker();
     const entries = this.entries();
     el('compare-empty').hidden = entries.length >= 2;
@@ -693,6 +748,19 @@ export class Compare {
     }
     await this.loadAll(entries);
     this.renderTables();
+  }
+
+  /**
+   * The file behind the local column can be swapped for another without ever
+   * leaving the tab — the picker is two clicks from here — and it keeps the one
+   * id. So what was parsed from the last one has to go when it does, or the
+   * column would go on showing a model the visitor has replaced.
+   */
+  dropStaleLocal() {
+    const local = customEntry();
+    if (local === this.localEntry) return;
+    this.localEntry = local;
+    this.loaded.delete(CUSTOM_ID);
   }
 
   /** Fetch every description that is not already parsed, all at once. */
@@ -733,12 +801,20 @@ export class Compare {
         .map((robot) => {
           const on = picked.has(robot.id);
           const dof = robot.dof || robot.urdf.moving_joints;
+          // The picked file has no thumbnail to ask for — nothing has rendered
+          // it — and its second line says where it came from rather than who
+          // makes it, there being no maker to name.
+          const local = robot.local === true;
+          const face = local
+            ? `<span class="pick-local" aria-hidden="true">${esc(t('compare.yoursMark'))}</span>`
+            : `<img src="./thumbs/${robot.id}.webp" alt="" loading="lazy" decoding="async"
+                 onerror="this.style.visibility='hidden'">`;
           return `<button type="button" data-id="${robot.id}" aria-pressed="${on}"
-            ${!on && full ? 'disabled' : ''} title="${esc(robot.name)} · ${esc(robot.maker || '')}">
-            <img src="./thumbs/${robot.id}.webp" alt="" loading="lazy" decoding="async"
-                 onerror="this.style.visibility='hidden'">
+            ${!on && full ? 'disabled' : ''}
+            title="${esc(robot.name)} · ${esc(local ? t('compare.yours') : robot.maker || '')}">
+            ${face}
             <span class="pick-name">${esc(robot.name)}</span>
-            <span class="pick-sub">${esc(robot.maker || '—')}</span>
+            <span class="pick-sub">${esc(local ? t('compare.yours') : robot.maker || '—')}</span>
             <span class="pick-dof">${dof} ${t('unit.dof')}</span>
           </button>`;
         })
@@ -764,6 +840,13 @@ export class Compare {
         </span>`;
       })
       .join('');
+
+    // A comparison is a link someone can send, and this one column of it is not
+    // sendable: say so where the selection is made rather than let a recipient
+    // find a column missing.
+    const note = el('compare-local-note');
+    note.hidden = !this.has(CUSTOM_ID);
+    note.textContent = t('compare.localOnly');
 
     el('compare-count').textContent = t('compare.count')
       .replace('{n}', String(this.picks.length))
@@ -810,14 +893,28 @@ export class Compare {
       .map((column) => {
         const model = column.model;
         const variant = column.robot.variant;
-        const href = `#robot=${model.id}${variant ? `&v=${encodeURIComponent(variant.id)}` : ''}`;
+        const local = model.local === true;
+        // The picked file has its own address, no thumbnail, and a file name
+        // where a maker would go.
+        const href = local
+          ? '#custom=1'
+          : `#robot=${model.id}${variant ? `&v=${encodeURIComponent(variant.id)}` : ''}`;
+        const face = local
+          ? `<span class="col-local" aria-hidden="true">${esc(t('compare.yoursMark'))}</span>`
+          : `<img src="./thumbs/${model.id}.webp" alt="" loading="lazy" decoding="async"
+                 onerror="this.style.visibility='hidden'">`;
         return `<th scope="col">
           <a class="col-head" href="${href}">
-            <img src="./thumbs/${model.id}.webp" alt="" loading="lazy" decoding="async"
-                 onerror="this.style.visibility='hidden'">
+            ${face}
             <span class="col-name">${esc(model.name)}</span>
-            <span class="col-sub">${esc(model.maker || '')}</span>
-            ${variant ? `<span class="col-variant">${esc(variant.name)}</span>` : ''}
+            <span class="col-sub">${esc(local ? t('compare.yours') : model.maker || '')}</span>
+            ${
+              local
+                ? `<span class="col-variant">${esc(model.source.fileName)}</span>`
+                : variant
+                  ? `<span class="col-variant">${esc(variant.name)}</span>`
+                  : ''
+            }
           </a>
         </th>`;
       })
@@ -1229,7 +1326,9 @@ export class Compare {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `compare-${this.category}-${this.picks.map((p) => p.robot).join('-')}.csv`;
+    // `__local__` is an id, not a name anyone would want on a file.
+    const names = this.picks.map((pick) => (pick.robot === CUSTOM_ID ? 'local' : pick.robot));
+    link.download = `compare-${this.category}-${names.join('-')}.csv`;
     document.body.appendChild(link);
     link.click();
     link.remove();

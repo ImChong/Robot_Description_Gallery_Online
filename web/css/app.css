@@ -1363,9 +1363,24 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
 .pick-list button:hover:not(:disabled) { border-color: var(--text-faint); }
 .pick-list button[aria-pressed='true'] { border-color: var(--accent); background: var(--accent-soft); }
 .pick-list button:disabled { opacity: 0.4; cursor: not-allowed; }
+/* Where a thumbnail goes on every other card. The visitor's own model has
+   none — nothing has rendered it — so the slot keeps its width and holds a
+   mark instead, and the row of cards stays a row. */
+.pick-list .pick-local, .col-head .col-local {
+  display: grid; place-items: center;
+  border: 1px dashed var(--border); border-radius: var(--radius-sm);
+  color: var(--text-faint);
+}
+.pick-list .pick-local { grid-row: 1 / 4; width: 40px; height: 40px; font-size: 15px; }
+.col-head .col-local { grid-row: 1 / 4; width: 34px; height: 34px; font-size: 13px; }
 .pick-list .pick-name { font-weight: 600; line-height: 1.3; }
 .pick-list .pick-sub { color: var(--text-muted); font-size: 11px; line-height: 1.3; }
 .pick-list .pick-dof { color: var(--text-faint); font-family: var(--font-mono); font-size: 10.5px; }
+
+.cmp-local-note {
+  margin: 10px 0 0;
+  color: var(--text-faint); font-size: 11.5px; line-height: 1.6; max-width: 92ch;
+}
 
 .cmp-status { margin: 0 0 12px; color: var(--text-muted); font-size: 13px; }
 .warn-line { margin: 0 0 8px; color: var(--warn); font-size: 12.5px; }

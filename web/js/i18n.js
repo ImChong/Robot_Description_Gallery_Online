@@ -173,6 +173,11 @@ const STRINGS = {
     'compare.clear': 'clear',
     'compare.count': '{n} of {max} selected',
     'compare.remove': 'Remove from the comparison',
+    'compare.yours': 'Your own file',
+    // One glyph where a thumbnail would be: nothing has rendered this model.
+    'compare.yoursMark': '\u2726',
+    'compare.localOnly':
+      'Your own file is read in this tab and stays there — a link to this comparison will open without that column for anyone else, and for you after a reload.',
     'compare.needTwo':
       'Pick at least two robots. Only one category at a time: a row reading "left knee" across a humanoid and a gripper is a row about nothing.',
     'compare.loading': 'Reading {n} description(s)…',
@@ -526,6 +531,10 @@ const STRINGS = {
     'compare.clear': '清空',
     'compare.count': '已选 {n} / {max}',
     'compare.remove': '从对比中移除',
+    'compare.yours': '你自己的文件',
+    'compare.yoursMark': '\u2726',
+    'compare.localOnly':
+      '你自己的文件只在这个标签页里读取、也只留在这里 —— 把这个对比的链接发给别人，或者自己刷新一下，那一列都不会在。',
     'compare.needTwo':
       '请至少选择两台机器人。一次只对比一个类别：把人形和夹爪放进同一张「左膝」表格，这一行就没有意义了。',
     'compare.loading': '正在读取 {n} 个模型…',

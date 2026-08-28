@@ -251,7 +251,9 @@ async function main() {
   // the one being looked at is the one meant.
   document.getElementById('add-compare').addEventListener('click', () => {
     const state = parseHash();
-    const robot = state.robot ? byId(data, state.robot) : null;
+    // Or from the model the visitor picked off their own disk, which joins
+    // whichever comparison is open rather than bringing a category of its own.
+    const robot = state.custom ? customEntry() : state.robot ? byId(data, state.robot) : null;
     if (!robot) return;
     comparison().add(robot, state.variant || null);
     location.hash = hashFor({
