@@ -23,6 +23,13 @@
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
   --shadow-lg: 0 12px 32px -12px rgba(0, 0, 0, 0.6);
+  /* A scrollbar inside a card. It reads against --surface rather than against
+     the page, and sits a shade above a border: a bar the width of a hairline
+     still has to be something to aim at. */
+  --scroll-thumb: #4f4f4c;
+  --scroll-thumb-hover: #6b6a67;
+  /* The shade at the edge a scrolling box continues past. */
+  --scroll-edge: rgba(0, 0, 0, 0.22);
 
   /* The studio: the one colour the WebGL scene clears to, so everything the
      stage paints around the render is the same colour as the render's own
@@ -93,6 +100,11 @@
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 12px 28px -14px rgba(0, 0, 0, 0.22);
+  --scroll-thumb: #d4d3ce;
+  --scroll-thumb-hover: #b3b2ad;
+  /* The same shade at a quarter of the weight: on white, the dark theme's
+     would read as a smudge rather than as an edge. */
+  --scroll-edge: rgba(0, 0, 0, 0.09);
   --code-bg: #f7f6f3;
   --header-bg: #fafafa;
   --header-border: #e8e8e4;
@@ -1374,7 +1386,14 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
   max-height: calc(100vh - var(--header-h) - 40px);
   overflow: auto;
   overscroll-behavior-x: contain;
+  /* A lane of its own for the bar, rather than the bar over the numbers.
+     Where the platform draws scrollbars as an overlay — macOS everywhere, and
+     Chrome's own thin bar — a table tall enough to scroll had its last column
+     sitting under the thumb. The gutter is reserved whether this table scrolls
+     or not, so the three tables of the page still end on one edge. */
+  scrollbar-gutter: stable;
   scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb) transparent;
   /* A shadow at whichever edge the table continues past, and none at the edge
      it has reached: the first two layers travel with the content and cover the
      other two when the ends come into view. Without it a capped table reads as
@@ -1382,15 +1401,31 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
   background-image:
     linear-gradient(to bottom, var(--surface), rgba(0, 0, 0, 0)),
     linear-gradient(to top, var(--surface), rgba(0, 0, 0, 0)),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0)),
-    linear-gradient(to top, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0));
+    linear-gradient(to bottom, var(--scroll-edge), rgba(0, 0, 0, 0)),
+    linear-gradient(to top, var(--scroll-edge), rgba(0, 0, 0, 0));
   background-position: 0 0, 0 100%, 0 0, 0 100%;
   background-size: 100% 16px, 100% 16px, 100% 7px, 100% 7px;
   background-repeat: no-repeat;
   background-attachment: local, local, scroll, scroll;
 }
-.table-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
-.table-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+/* The same bar, drawn by hand, for the browsers that came before
+   scrollbar-width. Where both are understood the standard property wins and
+   every rule below it is ignored, so the two have to agree: a thumb of the
+   same colour, inset from its lane by a transparent border rather than filling
+   it, and no track or corner of its own to draw a box around the table. */
+.table-scroll::-webkit-scrollbar { width: 10px; height: 10px; }
+.table-scroll::-webkit-scrollbar-track,
+.table-scroll::-webkit-scrollbar-corner { background: transparent; }
+.table-scroll::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: var(--scroll-thumb);
+  background-clip: padding-box;
+}
+.table-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--scroll-thumb-hover);
+  background-clip: padding-box;
+}
 
 .cmp-table { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 12.5px; }
 .cmp-table th, .cmp-table td { text-align: left; vertical-align: top; padding: 8px 12px; }
@@ -1400,14 +1435,20 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
   z-index: 3; background: var(--surface);
   box-shadow: inset 0 -1px 0 var(--border);
 }
+/* The pinned column carries an edge of its own. Without one, a cell scrolling
+ * sideways under it reads as a cell being cut off rather than as a column
+ * staying where it is — and the corner keeps the head's underline as well as
+ * the column's edge, being both. */
 .cmp-table tbody th[scope='row'] {
   position: sticky; left: 0; z-index: 2;
   background: var(--surface);
+  box-shadow: 1px 0 0 var(--border-soft);
   min-width: 132px; max-width: 220px;
   color: var(--text-muted); font-weight: 500; cursor: help;
 }
 .cmp-table thead th.corner {
   left: 0; z-index: 4;
+  box-shadow: inset 0 -1px 0 var(--border), 1px 0 0 var(--border-soft);
   color: var(--text-faint); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
 }
 .cmp-table td { min-width: 148px; font-variant-numeric: tabular-nums; }
@@ -1426,12 +1467,18 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
 }
 .col-head:hover .col-name { color: var(--accent); }
 
+/* A heading that spans every column cannot be pinned by pinning the cell: a
+ * sticky box only shifts inside its containing block, and this one already is
+ * the whole row, so a table scrolled sideways used to carry "Thumb" off the
+ * left edge and leave a band with nothing written on it. It is the label that
+ * stays, inside the band — pinned to where the row labels below it begin, so
+ * scrolled or not it sits in the same column of text. */
 .cmp-table .group-row th {
-  position: sticky; left: 0;
   background: var(--bg-alt); color: var(--text-faint);
   font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em;
   padding: 6px 12px;
 }
+.cmp-table .group-row th > span { position: sticky; left: 12px; display: inline-block; }
 
 .cell-value { display: block; line-height: 1.45; }
 .cell-value .sub, .cell-sub { display: block; color: var(--text-faint); font-size: 10.5px; line-height: 1.4; overflow-wrap: anywhere; }
