@@ -855,7 +855,7 @@ export class Compare {
           })
           .join('');
         if (!rows) return '';
-        return `<tr class="group-row"><th scope="rowgroup" colspan="${columns.length + 1}">${esc(t(`cmp.group.${block.group}`))}</th></tr>${rows}`;
+        return `<tr class="group-row"><th scope="rowgroup" colspan="${columns.length + 1}"><span>${esc(t(`cmp.group.${block.group}`))}</span></th></tr>${rows}`;
       })
       .join('');
 
@@ -965,7 +965,10 @@ export class Compare {
         );
         if (!visible.length) return '';
         return (
-          `<tr class="group-row"><th scope="rowgroup" colspan="${columns.length + 2}">${esc(groupLabel(group))}</th></tr>` +
+          // The label is wrapped because it has to stay put when the table is
+          // scrolled sideways, and a cell that spans every column has no room
+          // to be pinned in — see the rule in app.css.
+          `<tr class="group-row"><th scope="rowgroup" colspan="${columns.length + 2}"><span>${esc(groupLabel(group))}</span></th></tr>` +
           visible.map((row) => this.jointRow(row, columns, group)).join('')
         );
       })
