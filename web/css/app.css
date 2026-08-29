@@ -64,6 +64,14 @@
   --code-bg: #202020;
 
   --warn: #ffc857;
+  /* The joint tour wears the warn hue rather than the accent: while it runs,
+     the row it is on and the row the reader has pinned can both be on screen,
+     and two shades of one colour would read as one state told twice. `--warn`
+     is amber, which carries on the dark chrome the panel floats over but not on
+     the light one — so the ink is a token of its own, and the tint under it is
+     the same hue at a sixth of its weight. */
+  --warn-ink: #ffc857;
+  --warn-soft: rgba(255, 200, 87, 0.16);
   --radius: 8px;
   --radius-sm: 6px;
   /* What the fixed bar occupies: .header-inner is min-height 56px — padding
@@ -131,6 +139,10 @@
   --card-stage-bottom: #eceef2;
   --card-cat-bg: rgba(255, 255, 255, 0.78);
   --card-cat-text: #4b4a47;
+  /* Amber on a white panel is a highlighter, not a word; the same hue burnt
+     down to something that can be read as text. */
+  --warn-ink: #9a5b00;
+  --warn-soft: rgba(154, 91, 0, 0.11);
 }
 
 /* Same reset as the reference site: zeroing margins matters here because
@@ -774,6 +786,37 @@ html[lang^='zh'] .footer-text-zh { display: block; }
   cursor: pointer; padding: 0;
 }
 .link-btn:hover { color: var(--accent-hover); text-decoration: underline; }
+/* One of these is a flex box, which outranks the user agent's own rule for
+ * `hidden`; the group is hidden a row at a time, so it is said here once. */
+.link-btn[hidden] { display: none; }
+
+/* The joint tour, beside the other three links: it reads as one of them, and
+ * carries a mark rather than a label saying which of its two states it is in.
+ * A mode, so it stays lit for as long as it runs — the row is otherwise all
+ * actions, and an action that is still happening has to look different from
+ * one waiting to be asked for. */
+.play-btn { display: inline-flex; align-items: center; gap: 5px; }
+/* A triangle pointing the way the tour will go; a square while it is going,
+ * which is the shape every player in the world stops with. Borders rather than
+ * glyphs, so both marks sit on the same baseline at the same weight whatever
+ * the font underneath has to say about ▶ and ■. */
+.play-mark {
+  flex: 0 0 auto; width: 0; height: 0;
+  border-style: solid;
+  border-width: 4.5px 0 4.5px 7px;
+  border-color: transparent transparent transparent currentColor;
+}
+.play-btn[aria-pressed='true'] .play-mark {
+  width: 8px; height: 8px;
+  border-width: 0;
+  background: currentColor;
+}
+/* Running: the tour's own colour, and a pulse on top of it — the panel is
+ * scrolling itself past sixty joints at the time, and a colour alone is easy to
+ * miss in a column that is already moving. */
+.play-btn[aria-pressed='true'] { color: var(--warn-ink); animation: play-pulse 1.6s ease-in-out infinite; }
+.play-btn[aria-pressed='true']:hover { color: var(--warn-ink); }
+@keyframes play-pulse { 50% { opacity: 0.55; } }
 
 /* Degrees or radians for the joint readouts. A two-button segmented control
  * rather than one toggle: both units stay on screen, so the switch says what
@@ -990,6 +1033,12 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 }
 .tree-row:hover { background: var(--bg-alt); }
 .tree-node[aria-selected='true'] > .tree-row { background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent-line); }
+/* The joint the tour is on. A different colour from the pinned row on purpose:
+ * a pin is the reader's, this is the panel's, and while the tour runs both can
+ * be on screen at once. */
+.tree-node.is-sweeping > .tree-row { background: var(--warn-soft); box-shadow: inset 0 0 0 1px var(--warn-ink); }
+.tree-node.is-sweeping > .tree-slider input[type='range']::-webkit-slider-thumb { background: var(--warn-ink); }
+.tree-node.is-sweeping > .tree-slider input[type='range']::-moz-range-thumb { background: var(--warn-ink); }
 
 /* A disclosure arrow that keeps its column when there is nothing to fold, so
  * the names down a branch stay aligned. */
@@ -1100,7 +1149,7 @@ html[lang^='zh'] .footer-text-zh { display: block; }
   top: calc(52px + env(safe-area-inset-top, 0px));
   bottom: calc(70px + env(safe-area-inset-bottom, 0px));
   left: calc(14px + env(safe-area-inset-left, 0px));
-  width: var(--fs-tree-w, clamp(240px, 22vw, 340px));
+  width: var(--fs-tree-w, clamp(240px, 33.3333vw, 50vw));
   display: flex; flex-direction: column; min-height: 0;
   background: var(--stage-chrome-bg);
   border-color: var(--stage-chrome-border);
@@ -1121,7 +1170,7 @@ html[lang^='zh'] .footer-text-zh { display: block; }
  * wherever the legend outgrows the width beside the icons, so js/detail.js
  * measures it. The fallback is one row, and 8px of air above the bar. */
 #view-detail.stage-fullscreen .canvas-host {
-  left: calc(var(--fs-tree-w, clamp(240px, 22vw, 340px)) + 28px + env(safe-area-inset-left, 0px));
+  left: calc(var(--fs-tree-w, clamp(240px, 33.3333vw, 50vw)) + 28px + env(safe-area-inset-left, 0px));
   bottom: calc(var(--fs-bar-h, 40px) + 20px + env(safe-area-inset-bottom, 0px));
 }
 /* The handle itself, on the edge that faces the render: a strip straddling the
@@ -1176,7 +1225,7 @@ body.panel-resizing { cursor: ew-resize; user-select: none; }
  * this band, so nothing here overlaps the robot. */
 #view-detail.stage-fullscreen .stage-toolbar {
   justify-content: center;
-  left: calc(var(--fs-tree-w, clamp(240px, 22vw, 340px)) + 28px + env(safe-area-inset-left, 0px));
+  left: calc(var(--fs-tree-w, clamp(240px, 33.3333vw, 50vw)) + 28px + env(safe-area-inset-left, 0px));
   right: env(safe-area-inset-right, 0px);
 }
 /* A render narrow enough for the legend to outgrow it: the legend scrolls

@@ -47,17 +47,18 @@ function fsExit() {
 
 /**
  * Fullscreen lifts the joint tree — sliders and all — onto the render as a
- * floating column, sized for a glance at it. A deep chain, or the joint names a
- * generated URDF tends to carry, wants more than a glance, so on a desktop the
- * inner edge of the column is a handle: drag it and the column grows, as far as
- * half the page.
+ * floating column. It opens on a third of the window: a humanoid's joint names
+ * are long, and a column narrow enough to clip every one of them is a list
+ * nobody can read while posing. The other two thirds are still more render than
+ * the page itself ever gives. A deep chain, or the names a generated URDF tends
+ * to carry, can want more still, so on a desktop the inner edge of the column
+ * is a handle: drag it and the column grows, as far as half the page.
  *
  * The width is written onto the detail view as a pixel variable the fullscreen
  * rules read: they inset the render by it, so widening the column narrows the
  * render rather than covering it, and the robot stays centred in what is left.
  * The numbers below are the ones css/app.css falls back to when nobody has
- * dragged anything — the floor of its `clamp()`, and its `22vw` ceiling of
- * `340px`.
+ * dragged anything — the floor of its `clamp()`, and its `33.3333vw` middle.
  */
 const PANEL_MIN_W = 240;
 const PANEL_VAR = { tree: '--fs-tree-w' };
@@ -93,9 +94,11 @@ function panelCeilingW() {
   );
 }
 
-/** What the column is worth before anyone drags it. */
-const panelDefaultW = () =>
-  Math.round(Math.min(340, Math.max(PANEL_MIN_W, window.innerWidth * 0.22)));
+/** What the column is worth before anyone drags it: a third of the window, on
+ *  any screen. `clampPanelW` is what holds it to the floor on a window too
+ *  narrow for a third to be worth reading, and to the ceiling — never reached
+ *  by a third, which is the point of picking one. */
+const panelDefaultW = () => Math.round(window.innerWidth / 3);
 
 /** Never past the ceiling, never under the floor — and on a window too narrow
  *  for both bounds to hold at once, the ceiling is the one that wins. */
@@ -141,6 +144,42 @@ function savePanelWidths(widths) {
   } catch {
     /* private mode — the widths just will not persist */
   }
+}
+
+/**
+ * The joint tour: how long one joint's turn lasts, start to finish — out to its
+ * upper limit, across to its lower one, and back to where it stood. A second is
+ * long enough to read what the joint does and short enough that a humanoid's
+ * sixty of them are a minute rather than an afternoon.
+ */
+const SWEEP_MS = 1000;
+
+/** Under this the whole turn is a joint standing still — a range the URDF
+ *  pins shut — and the tour spends its second on the next joint instead. */
+const SWEEP_EPS = 1e-6;
+
+/** Ease in and out across the whole of one joint's turn, so it sets off and
+ *  arrives the way a joint driven by a controller would rather than snapping
+ *  into motion at full speed. The three legs of the turn share the second in
+ *  proportion to how far each one travels, so the speed is one speed. */
+const sweepEase = (u) => (u < 0.5 ? 2 * u * u : 1 - (-2 * u + 2) ** 2 / 2);
+
+/**
+ * Where one joint stands part-way through its turn. `legs` is the path — out,
+ * across, home — and `spans` how long each of them is; the eased progress is
+ * distance along the whole path, so it is walked leg by leg until it runs out.
+ */
+function sweepValue(step, u) {
+  let left = sweepEase(u) * step.total;
+  for (let i = 0; i < step.legs.length; i += 1) {
+    const [from, to] = step.legs[i];
+    const span = step.spans[i];
+    if (left <= span || i === step.legs.length - 1) {
+      return span ? from + (to - from) * clamp01(left / span) : to;
+    }
+    left -= span;
+  }
+  return step.from;
 }
 
 /**
@@ -304,6 +343,7 @@ export class Detail {
       if (!button) return;
       const { action } = button.dataset;
       if (action === 'reset') {
+        this.stopJointSweep();
         this.viewer.resetJoints();
         this.syncTreeValues();
       } else if (action === 'rotate') {
@@ -327,9 +367,14 @@ export class Detail {
     }
 
     el('joints-reset').addEventListener('click', () => {
+      // A pose the tour is half-way through borrowing is not the pose the
+      // reader is asking to be rid of: it hands its joint back first.
+      this.stopJointSweep();
       this.viewer.resetJoints();
       this.syncTreeValues();
     });
+
+    el('joints-play').addEventListener('click', () => this.toggleJointSweep());
 
     this.renderUnitToggle();
     el('joint-unit').addEventListener('click', (event) => {
@@ -423,6 +468,10 @@ export class Detail {
     tree.addEventListener('input', (event) => {
       const input = event.target;
       if (input.type !== 'range') return;
+      // A hand on a slider is the end of the tour: it stops first, so the joint
+      // it had borrowed goes home before this one is moved — and so a drag on
+      // the very joint being toured is not fought by the frame after it.
+      this.stopJointSweep();
       this.viewer.setJoint(decodeURIComponent(input.dataset.joint), parseFloat(input.value));
       this.syncTreeValues(input);
     });
@@ -1084,6 +1133,10 @@ export class Detail {
   // ------------------------------------------------------------- joint tree
 
   clearTree() {
+    // Before the rows go: the tour hands its joint back through them, and a
+    // tour left running against a tree that no longer exists would drive a
+    // robot nobody can see.
+    this.stopJointSweep();
     el('d-tree').innerHTML = '';
     el('tree-summary').textContent = '';
     this.treeValues = new Map();
@@ -1111,6 +1164,10 @@ export class Detail {
     // Nothing to switch on a robot whose only joints slide rather than turn.
     el('joint-unit').hidden = !joints.some((joint) => joint.type !== 'prismatic');
     el('joints-reset').hidden = !joints.length;
+    // The tour drives sliders, not joints: a description whose movable joints
+    // all mimic another one has a panel of readouts and nothing to tour. Taken
+    // back below, once the sliders that were actually built are counted.
+    el('joints-play').hidden = true;
 
     const counts = { links: 0, joints: 0 };
     countTree(root, counts);
@@ -1140,6 +1197,7 @@ export class Detail {
     for (const input of host.querySelectorAll('input[data-joint]')) {
       this.treeSliders.set(decodeURIComponent(input.dataset.joint), input);
     }
+    el('joints-play').hidden = !this.treeSliders.size;
     this.syncTreeValues();
   }
 
@@ -1158,6 +1216,176 @@ export class Detail {
       const input = this.treeSliders.get(joint.name);
       if (input && input !== dragging) input.value = String(joint.value);
     }
+  }
+
+  // ------------------------------------------------------------- joint tour
+
+  /**
+   * The tour: every joint the panel has a slider for, in the order the panel
+   * lists them, each one driven out to its upper limit, across to its lower one
+   * and back to where it stood — about a second apiece.
+   *
+   * It is what a still render cannot say: which joint on a chain of sixty is
+   * the shoulder roll and which the wrist, and how far each of them is allowed
+   * to go. Watching a description move through its own limits is the fastest
+   * reading of it there is, and it asks nothing of the reader but one press.
+   *
+   * The pose is borrowed, not spent: every joint is handed back the value it
+   * held when its turn began, so the robot the tour finishes on is the robot it
+   * started from — and so is the one it is stopped on part-way.
+   */
+  toggleJointSweep() {
+    if (this._sweep) this.stopJointSweep();
+    else this.startJointSweep();
+  }
+
+  startJointSweep() {
+    if (this._sweep) return;
+    // The panel's own order, which is the tree's: reading down a branch is
+    // reading down the chain, so the tour walks the robot rather than whatever
+    // order the URDF happened to declare its joints in.
+    const names = [...(this.treeSliders?.keys() ?? [])];
+    if (!names.length) return;
+    // A folded branch is not skipped — every slider in the panel gets its turn,
+    // and `markSweepRow` unfolds the one whose turn it is. Unfolding the whole
+    // tree up front would throw away a reader's own folding to show them rows
+    // the tour may not reach for another minute.
+    this._sweep = { names, index: -1, frame: 0, step: null };
+    this.renderSweepButton();
+    this.runSweep();
+  }
+
+  /**
+   * Stop, wherever the tour has got to. The joint in flight is put back first:
+   * it was borrowed for the length of its turn, and a tour stopped half-way
+   * through one would otherwise leave the robot in a pose nobody chose.
+   */
+  stopJointSweep() {
+    const sweep = this._sweep;
+    if (!sweep) return;
+    this._sweep = null;
+    if (sweep.frame) cancelAnimationFrame(sweep.frame);
+    if (sweep.step) this.viewer.setJoint(sweep.step.name, sweep.step.from);
+    this.markSweepRow(null);
+    this.syncTreeValues();
+    this.renderSweepButton();
+  }
+
+  /**
+   * One joint's turn, then the next. Each turn schedules its own frames and
+   * hands over at the end of them, so the tour is a chain of animations rather
+   * than one timer that has to know where every joint is.
+   */
+  runSweep() {
+    const sweep = this._sweep;
+    const step = this.nextSweepStep();
+    if (!step) {
+      this.stopJointSweep();
+      return;
+    }
+    sweep.step = step;
+    this.markSweepRow(step.name);
+    const start = performance.now();
+    const tick = (now) => {
+      // A tour that was stopped, or replaced by a newer one, no longer owns
+      // this frame: the pose has already been handed back by whoever stopped it.
+      if (this._sweep !== sweep) return;
+      const u = Math.min(1, (now - start) / SWEEP_MS);
+      this.viewer.setJoint(step.name, sweepValue(step, u));
+      // The whole panel, not just this row: a joint that mimics this one moves
+      // with it in the model, and its readout is only honest if it says so.
+      this.syncTreeValues();
+      if (u < 1) {
+        sweep.frame = requestAnimationFrame(tick);
+      } else {
+        sweep.frame = 0;
+        this.runSweep();
+      }
+    };
+    sweep.frame = requestAnimationFrame(tick);
+  }
+
+  /**
+   * The next joint worth a turn, and the path its turn takes: out to the upper
+   * limit, across to the lower one, home again. The bounds are the slider's own
+   * rather than the URDF's, so the tour goes exactly as far as a hand dragging
+   * that slider could — a continuous joint gets its full turn, and one whose
+   * description declares no limit at all gets the working range the panel
+   * invents for it instead of freezing at zero.
+   *
+   * A joint with nowhere to go is passed over rather than given a second of
+   * stillness: a range pinned shut says all it has to say in the panel.
+   */
+  nextSweepStep() {
+    const sweep = this._sweep;
+    const joints = new Map(this.viewer.jointList().map((joint) => [joint.name, joint]));
+    while ((sweep.index += 1) < sweep.names.length) {
+      const name = sweep.names[sweep.index];
+      const input = this.treeSliders.get(name);
+      const joint = joints.get(name);
+      if (!input || !joint) continue;
+      const lower = Number(input.min);
+      const upper = Number(input.max);
+      if (!Number.isFinite(lower) || !Number.isFinite(upper)) continue;
+      // Where it stands now, held inside its own travel: the loader can park a
+      // joint outside the limits its description declares, and the tour has no
+      // business ending it up somewhere its slider cannot reach.
+      const from = Math.min(Math.max(joint.value, lower), upper);
+      if (!Number.isFinite(from)) continue;
+      const legs = [
+        [from, upper],
+        [upper, lower],
+        [lower, from],
+      ];
+      const spans = legs.map(([a, b]) => Math.abs(b - a));
+      const total = spans.reduce((sum, span) => sum + span, 0);
+      if (total < SWEEP_EPS) continue;
+      return { name, input, from, legs, spans, total };
+    }
+    return null;
+  }
+
+  /**
+   * Which joint the tour is on, said in both places at once: the row is marked
+   * and scrolled into view in the panel, and the link that joint carries is lit
+   * on the render. Sixty sliders scroll past in a minute, and without this the
+   * one that is moving is whichever one the reader happens to be looking at.
+   *
+   * A pinned row keeps its pin — the tour lights links, it does not select
+   * them — so letting go puts the stage back on whatever the reader had pinned.
+   */
+  markSweepRow(name) {
+    const host = el('d-tree');
+    for (const row of host.querySelectorAll('.tree-node.is-sweeping')) {
+      row.classList.remove('is-sweeping');
+    }
+    const node = name ? this.treeSliders.get(name)?.closest('.tree-node') : null;
+    if (!node) {
+      this.viewer.highlightLink(this.pinnedLink || null);
+      return;
+    }
+    node.classList.add('is-sweeping');
+    this.revealTreeNode(node);
+    this.viewer.highlightLink(node.dataset.link);
+  }
+
+  /** The button says what the next press will do, and stays lit while the tour
+   *  runs — the same way the fullscreen button carries its own mode. */
+  renderSweepButton() {
+    const button = el('joints-play');
+    const running = !!this._sweep;
+    const key = running ? 'joints.stop' : 'joints.play';
+    const hint = running ? 'joints.stopHint' : 'joints.playHint';
+    button.setAttribute('aria-pressed', String(running));
+    const label = button.querySelector('span:not(.play-mark)');
+    label.dataset.i18n = key;
+    label.textContent = t(key);
+    // The label is one word; what the press will actually do is on the button's
+    // title and, for a reader who never sees a tooltip, its name.
+    button.dataset.i18nTitle = hint;
+    button.dataset.i18nAriaLabel = hint;
+    button.title = t(hint);
+    button.setAttribute('aria-label', t(hint));
   }
 
   toggleTreeNode(node) {
@@ -1293,8 +1521,15 @@ export class Detail {
     // and a link left lit on the page would be a selection with nothing on
     // screen to say what it is or how to let it go — so the stage goes back to
     // nothing lit, and the page starts clean.
-    if (on) this.revealTreeSelection();
-    else this.clearTreeSelection();
+    if (on) {
+      this.revealTreeSelection();
+    } else {
+      // The panel is not rendered on the page, so a tour would go on posing the
+      // robot with nothing on screen to say which joint was moving or how to
+      // stop it.
+      this.stopJointSweep();
+      this.clearTreeSelection();
+    }
   }
 
   // -------------------------------------------------- fullscreen panel width
