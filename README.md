@@ -4,12 +4,12 @@
 [![Verify](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml/badge.svg)](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-在浏览器里加载 **149 个**开源机器人 URDF：拖关节、看碰撞体与惯量，一键下载 URDF、
+在浏览器里加载 **150 个**开源机器人 URDF：拖关节、看碰撞体与惯量，一键下载 URDF、
 网格 zip 或可直接 `colcon build` 的 ROS 2 功能包。
 
 在线访问：<https://imchong.github.io/Robot_URDF_Gallery_Online/>
 
-人形 45 · 四足 22 · 机械臂 22 · 灵巧手 24 · 移动操作 14 · 双臂 11 · 双足 11
+人形 46 · 四足 22 · 机械臂 22 · 灵巧手 24 · 移动操作 14 · 双臂 11 · 双足 11
 
 ## 功能
 
@@ -78,7 +78,7 @@ npm run check:compare                # 校验对比页
 
 ---
 
-**English** — A browsable 3D gallery of 149 open robot descriptions (humanoids,
+**English** — A browsable 3D gallery of 150 open robot descriptions (humanoids,
 quadrupeds, arms, hands) that loads URDFs in the browser, lets you drag joints — or
 play every joint in turn out to both its limits and back, a second each — and
 overlays collision geometry, joint axes and inertia. A compare page (`#compare=1`) puts

@@ -907,6 +907,48 @@
       "notes_zh": "加了上半身的 Mini Pi：同样的 12 个腿部关节，再加单臂 5 个、头部 2 个，合计 24 个，整机 11.0 kg。它没有配套的 MuJoCo 模型——URDF 旁边那个 XML 是同一台机器的 20 关节版本，上游的更新日志自己写明了这一点。许可证情况与另外两个高擎条目相同。"
     },
     {
+      "id": "piplus_s",
+      "name": "PiPlus S",
+      "maker": "HighTorque Robotics",
+      "category": "humanoid",
+      "upstream": {
+        "github": "HighTorque-Robotics/HT_Robot_URDF",
+        "commit": "c05257c64c79b624e773eae704752c09c6bdb007",
+        "package": "ht_urdf/PiPlus_S_12L10A0G0H1W",
+        "license": "BSD-3-Clause",
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "variants": [
+        {
+          "urdf": "ht_urdf/PiPlus_S_12L10A0G0H1W/PiPlus_S_12L10A0G0H1W.urdf",
+          "package": "ht_urdf/PiPlus_S_12L10A0G0H1W",
+          "notes": "Twenty-three moving joints: six per leg, five per arm and one at the waist; the two head joints are fixed.",
+          "notes_zh": "23 个可动关节：单腿 6 个、单臂 5 个、腰部 1 个；头部两个关节固定。"
+        },
+        {
+          "urdf": "ht_urdf/PiPlus_S_12L8A0G2H0W/urdf/PiPlus_S_12L8A0G2H0W.urdf",
+          "mjcf": "ht_urdf/PiPlus_S_12L8A0G2H0W/xml/PiPlus_S_12L8A0G2H0W.xml",
+          "package": "ht_urdf/PiPlus_S_12L8A0G2H0W",
+          "notes": "Twenty-two moving joints: six per leg, four per arm and two in the head; the waist is fixed.",
+          "notes_zh": "22 个可动关节：单腿 6 个、单臂 4 个、头部 2 个；腰部固定。"
+        },
+        {
+          "urdf": "ht_urdf/PiPlus_S_12L8A0G2H1W/urdf/PiPlus_S_12L8A0G2H1W.urdf",
+          "mjcf": "ht_urdf/PiPlus_S_12L8A0G2H1W/xml/PiPlus_S_12L8A0G2H1W.xml",
+          "package": "ht_urdf/PiPlus_S_12L8A0G2H1W",
+          "notes": "The twenty-two-joint head-and-arm configuration with an additional moving waist yaw joint, for twenty-three in all.",
+          "notes_zh": "在 22 关节的头部与手臂配置上增加可动腰部 yaw 关节，合计 23 个。"
+        }
+      ],
+      "links": {
+        "official": "https://www.hightorquerobotics.com/"
+      },
+      "notes": "HighTorque's PiPlus S family, published on the repository's dedicated PiPlus_URDF branch. Its three descriptions share the same body but trade head, wrist and waist motion: one has ten arm joints plus waist yaw, while the other two have eight arm joints and a two-axis head, with or without waist yaw. The branch README licenses the package under BSD-3-Clause.",
+      "notes_zh": "高擎 PiPlus S 系列，发布在仓库独立的 PiPlus_URDF 分支。三个描述共用同一机身，但头部、腕部和腰部自由度不同：一个版本为手臂 10 关节加腰部 yaw，另外两个为手臂 8 关节加两轴头部，并分为有、无腰部 yaw。该分支 README 声明使用 BSD-3-Clause 许可证。"
+    },
+    {
       "id": "digit",
       "name": "Digit",
       "maker": "Agility Robotics",
