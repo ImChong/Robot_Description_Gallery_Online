@@ -583,7 +583,58 @@ html[lang^='zh'] .footer-text-zh { display: block; }
 .back-btn:hover { color: var(--text); border-color: var(--text-faint); }
 .detail-title h2 { font-size: clamp(19px, 2.6vw, 25px); line-height: 1.3; }
 .detail-title p { margin: 0; font-size: 13px; }
-.detail-nav { margin-left: auto; display: flex; gap: 8px; }
+/* The buttons are the fixed part of this row and the title is the elastic one.
+ * Without that, a flex line too full shrank whatever it could reach, and what
+ * it reached first was the button: "加入对比" is four characters with nowhere
+ * to break, so it came out a column one character wide, spilling out the
+ * bottom of a 34px button. A label is a floor, not a suggestion. */
+.detail-nav { margin-left: auto; display: flex; gap: 8px; flex-shrink: 0; }
+.detail-nav .ghost-btn { white-space: nowrap; }
+
+/* Under about 520px the title has no room left to give either — the maker
+ * starts stacking a word to a line beside a name squeezed to nothing — so the
+ * row stops being a row. Not at the 720px the rest of the phone layout turns
+ * at: at 720 all four still sit on one line with room to spare, and breaking
+ * them apart there would only leave a gap in the middle of the header.
+ *
+ * They are not four things anyway, they are two pairs. Where am I and where
+ * else can I go — the way out, and the two arrows that walk the category —
+ * take the top line, one at each end, being small, fixed and the same at every
+ * robot. What is this and what can I do with it — the name and the button that
+ * carries this robot into a comparison — take the line under it, where the
+ * button sits beside the thing it acts on rather than beside two arrows it has
+ * nothing to do with. */
+@media (max-width: 560px) {
+  #view-detail .detail-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      'back  prev next'
+      'title cmp  cmp';
+    gap: 12px 8px;
+    padding: 14px 0 12px;
+  }
+  /* The three buttons place themselves in the grid, so the box that grouped
+   * them has nothing left to group. With the arrows hidden — a model read off
+   * the visitor's own disk is in no category to walk — their columns collapse
+   * and the compare button still lands on the right edge. */
+  #view-detail .detail-nav { display: contents; }
+  #back-btn { grid-area: back; justify-self: start; }
+  #prev-robot { grid-area: prev; }
+  #next-robot { grid-area: next; }
+  #view-detail .detail-title { grid-area: title; min-width: 0; }
+  /* Top of the block, not its middle: a long maker takes a second line under
+   * the name, and a centred button would drift down to sit beside it. The name
+   * is what the button acts on, so it stays level with the name. */
+  #add-compare { grid-area: cmp; align-self: start; }
+}
+
+/* A fingertip's target rather than a pointer's — the 44px the hero's doors
+ * take, and by the pointer rather than the width of the screen for the same
+ * reason they are. */
+@media (pointer: coarse) {
+  .detail-head .back-btn, .detail-nav .ghost-btn { height: 44px; }
+}
 
 /* ── Stage ──────────────────────────────────────────────── */
 
