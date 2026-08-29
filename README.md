@@ -3,7 +3,7 @@
 [![Verify](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml/badge.svg)](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-在浏览器里加载 **99 个**开源机器人 URDF：拖关节、看碰撞体与惯量，一键下载 URDF、
+在浏览器里加载 **130 个**开源机器人 URDF：拖关节、看碰撞体与惯量，一键下载 URDF、
 网格 zip 或可直接 `colcon build` 的 ROS 2 功能包。
 
 首页开头还有「预览我自己的 URDF」：把自己的模型目录（或几个文件）交给同一个查看器，
@@ -15,7 +15,7 @@
 
 在线访问：<https://imchong.github.io/Robot_URDF_Gallery_Online/>
 
-人形 33 · 四足 18 · 机械臂 17 · 灵巧手 23 · 移动操作 9 · 双臂 9 · 双足 4
+人形 40 · 四足 18 · 机械臂 17 · 灵巧手 23 · 移动操作 12 · 双臂 11 · 双足 9
 
 **本仓库不托管任何模型文件。** 绝大多数条目只记录上游仓库 + 固定 commit，URDF 与网格
 访问时从 jsDelivr 的 GitHub CDN 流式加载。少数厂商完全没有公开可加载模型的（或只发布
@@ -147,7 +147,8 @@ npm run check:compare           # 对比页：关节对齐的不变式 + 页面�
 - 暂不支持只提供 xacro 的模型（UR 系列、Shadow Hand、Fetch 等）；自己上传时也一样，
   请先 `xacro robot.urdf.xacro > robot.urdf` 再选择展开后的文件。少数这类模型通过上面的
   镜像条目收录了展开后的 URDF。
-- jsDelivr 单文件上限 20 MB，个别含超大网格的模型（Go1、B1、B2-W）无法收录。
+- jsDelivr 单文件上限 20 MB，个别含超大网格的模型无法收录：Go1、B1、B2-W，以及众擎
+  PM01 —— 它的 `LINK_TORSO_YAW.dae` 有 29 MB，CDN 直接返回 403。
 - 镜像条目的 ROS 2 下载包会删掉引用缺失网格的 `<visual>`/`<collision>` 元素，否则
   RViz 根本加载不了；zip 包里的 URDF 保持上游原样，缺口写在 `NOTICE.txt` 里。
 
@@ -162,7 +163,7 @@ npm run check:compare           # 对比页：关节对齐的不变式 + 页面�
 
 ---
 
-**English** — A browsable 3D gallery of 99 open robot descriptions (humanoids,
+**English** — A browsable 3D gallery of 130 open robot descriptions (humanoids,
 quadrupeds, arms, hands) that loads URDFs in the browser, lets you drag joints, and
 overlays collision geometry, joint axes and inertia. A compare page (`#compare=1`)
 puts two to six machines of one category side by side as numbers — joint limits,

@@ -20,7 +20,7 @@ The gallery fetches this file at startup: rows checked `[x]` are shown, rows lef
 the site matches on; the name, organisation and upstream link after it are for
 human readers.
 
-## 人形 Humanoid · 33
+## 人形 Humanoid · 40
 
 - [x] `g1` **G1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description)
 - [x] `h1` **H1** — UNITREE Robotics — [unitreerobotics/unitree_ros · h1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description)
@@ -55,6 +55,13 @@ human readers.
 - [ ] `draco3` **Draco3** — Apptronik — [shbang91/draco3_description · draco3_description](https://github.com/shbang91/draco3_description/tree/5afd19733d7b3e9f1135ba93e0aad90ed1a24cc7)
 - [ ] `jaxon` **JAXON** — JSK — [robot-descriptions/jaxon_description · jaxon_description](https://github.com/robot-descriptions/jaxon_description/tree/4a0cb7a4a737864312f8d6e3f89823a741539bfc)
 - [ ] `romeo` **Romeo** — Aldebaran Robotics — [ros-aldebaran/romeo_robot · romeo_description](https://github.com/ros-aldebaran/romeo_robot/tree/0.1.5/romeo_description)
+- [x] `oli` **Oli** — LimX Dynamics — [limxdynamics/humanoid-description](https://github.com/limxdynamics/humanoid-description/tree/02adfbdd206a56e684a60fd855f49aa214b4000c/HU_D04_description)
+- [x] `hu_d03` **HU_D03** — LimX Dynamics — [limxdynamics/humanoid-description](https://github.com/limxdynamics/humanoid-description/tree/02adfbdd206a56e684a60fd855f49aa214b4000c/HU_D03_description)
+- [x] `tron2_dasf` **TRON 2 DASF** — LimX Dynamics — [limxdynamics/tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description/tree/9939c22e69d27653ec0ba8a505859a2903dd1a71/tron2a/DASF_TRON2A)
+- [x] `t800` **T800** — EngineAI — [engineai-robotics/engineai_robotics_native_sdk](https://github.com/engineai-robotics/engineai_robotics_native_sdk/tree/335c60e88772c26c7852d0abd6b3c7439037dd8f/assets/resource/robot/t800)
+- [x] `t800pro` **T800 Pro** — EngineAI — [engineai-robotics/engineai_robotics_native_sdk](https://github.com/engineai-robotics/engineai_robotics_native_sdk/tree/335c60e88772c26c7852d0abd6b3c7439037dd8f/assets/resource/robot/t800pro)
+- [x] `mini_hi` **Mini Hi** — HighTorque Robotics — [HighTorque-Robotics/HT_Robot_URDF](https://github.com/HighTorque-Robotics/HT_Robot_URDF/tree/5675b9aa238d5c0431bd376f9fc708308c617d7b/hi_25dof)
+- [x] `mini_pi_plus` **Mini Pi plus** — HighTorque Robotics — [HighTorque-Robotics/HT_Robot_URDF](https://github.com/HighTorque-Robotics/HT_Robot_URDF/tree/5675b9aa238d5c0431bd376f9fc708308c617d7b/pi_plus_24dof)
 
 ## 四足 Quadruped · 18
 
@@ -123,14 +130,19 @@ human readers.
 - [x] `rh56f1` **RH56F1** — Inspire Robots — [All Hands Up (mirror)](https://allhandsup.org/zh/#gallery)
 - [x] `omnihand_pro` **Omnihand Pro** — Agibot — [All Hands Up (mirror)](https://allhandsup.org/zh/#gallery)
 
-## 双足 Biped · 4
+## 双足 Biped · 9
 
 - [x] `cassie` **Cassie** — Agility Robotics — [robot-descriptions/cassie_description · cassie_description](https://github.com/robot-descriptions/cassie_description/tree/81a2d8bbd77201cc974afb127adda4e2857a6dbf)
 - [ ] `upkie` **Upkie** — Upkie Project — [upkie/upkie_description · upkie_description](https://github.com/upkie/upkie_description/tree/19a91ce69cab6742c613cab104986e3f8a18d6a5)
 - [x] `bolt` **Bolt** — ODRI — [Gepetto/example-robot-data · bolt_description](https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/bolt_description)
 - [x] `rhea` **Rhea** — Gabrael Levine — [G-Levine/rhea_description · rhea_description](https://github.com/G-Levine/rhea_description/tree/1dc0f1abcf51b5d8a8f7ff8a548399ff0df1414f)
+- [x] `tron1` **TRON 1** — LimX Dynamics — [limxdynamics/tron1-robot-description](https://github.com/limxdynamics/tron1-robot-description/tree/5b97add1f3b461c9ed26ff2ff2f5025cc6ee4316)
+- [x] `tron2_wf` **TRON 2 WF** — LimX Dynamics — [limxdynamics/tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description/tree/9939c22e69d27653ec0ba8a505859a2903dd1a71/tron2a/WF_TRON2A)
+- [x] `tron2_sf` **TRON 2 SF** — LimX Dynamics — [limxdynamics/tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description/tree/9939c22e69d27653ec0ba8a505859a2903dd1a71/tron2a/SF_TRON2A)
+- [x] `sa01` **SA01** — EngineAI — [engineai-robotics/engineai_legged_gym](https://github.com/engineai-robotics/engineai_legged_gym/tree/1a659aa0aa77445766ecea6d95708a5812e9f290/resources/robots/zq_humanoid)
+- [x] `mini_pi` **Mini Pi** — HighTorque Robotics — [HighTorque-Robotics/HT_Robot_URDF](https://github.com/HighTorque-Robotics/HT_Robot_URDF/tree/5675b9aa238d5c0431bd376f9fc708308c617d7b/pi_12dof)
 
-## 双臂 Dual arm · 9
+## 双臂 Dual arm · 11
 
 - [x] `r1_a5` **R1-A5** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_a5_description)
 - [x] `r1_a7` **R1-A7** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/r1_a7_description)
@@ -141,8 +153,10 @@ human readers.
 - [x] `poppy_torso` **Poppy Torso** — Poppy Project — [poppy-project/poppy_torso_description · poppy_torso_description](https://github.com/poppy-project/poppy_torso_description/tree/6beeec3d76fb72b7548cce7c73aad722f8884522)
 - [x] `g1_dual_arm` **G1 Dual Arm** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description)
 - [x] `allex` **ALLEX** — WIRobotics — [wirobotics-rih/allex_model](https://github.com/wirobotics-rih/allex_model/tree/5e120529b106902898382fbd3eb9cec3188deaa2)
+- [x] `tron2_da` **TRON 2 DA** — LimX Dynamics — [limxdynamics/tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description/tree/9939c22e69d27653ec0ba8a505859a2903dd1a71/tron2a/DA_TRON2A)
+- [x] `tron2_dach` **TRON 2 DACH** — LimX Dynamics — [limxdynamics/tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description/tree/9939c22e69d27653ec0ba8a505859a2903dd1a71/tron2a/DACH_TRON2A)
 
-## 移动操作 Mobile manipulator · 9
+## 移动操作 Mobile manipulator · 12
 
 - [x] `g1_d` **G1-D** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_d_description)
 - [x] `stretch` **Stretch RE1** — Hello Robot — [robot-descriptions/stretch_description · stretch_description](https://github.com/robot-descriptions/stretch_description/tree/4b838429fe4c5d9f2937efe698444bd68968f376)
@@ -153,3 +167,6 @@ human readers.
 - [ ] `bambot` **BamBot** — Tim Qian — [timqian/bambot · bambot_description](https://github.com/timqian/bambot/tree/04d902653794f9f72eeabb09ec90a9af8e397c5b/website/public/URDF)
 - [x] `galbot_one_golf` **Galbot One Golf** — Galbot — [GalaxyGeneralRobotics/galbot_one_golf_description](https://github.com/GalaxyGeneralRobotics/galbot_one_golf_description/tree/7c06d4ddc9c92658780c1ce24bc4531ab91300a5)
 - [x] `galbot_s1` **Galbot S1** — Galbot — [GalaxyGeneralRobotics/galbot_s1_description](https://github.com/GalaxyGeneralRobotics/galbot_s1_description/tree/cb758e557a880c70260c7883207334aed2aa3c65)
+- [x] `tron2_wfyg` **TRON 2 WFYG** — LimX Dynamics — [limxdynamics/tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description/tree/9939c22e69d27653ec0ba8a505859a2903dd1a71/tron2a/WFYG_TRON2A)
+- [x] `tron2_sfyg` **TRON 2 SFYG** — LimX Dynamics — [limxdynamics/tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description/tree/9939c22e69d27653ec0ba8a505859a2903dd1a71/tron2a/SFYG_TRON2A)
+- [x] `tron2_dasf2` **TRON 2 DASF2** — LimX Dynamics — [limxdynamics/tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description/tree/9939c22e69d27653ec0ba8a505859a2903dd1a71/tron2a/DASF2_TRON2A)
