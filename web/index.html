@@ -222,6 +222,15 @@
               </div>
               <button class="link-btn" id="tree-expand" data-i18n="tree.expandAll">expand all</button>
               <button class="link-btn" id="tree-collapse" data-i18n="tree.collapseAll">collapse all</button>
+              <!-- The tour: every joint in turn, out to both its limits and
+                   back. A mode rather than an action — it stays lit while it
+                   runs, and the same button is the way to stop it. -->
+              <button class="link-btn play-btn" id="joints-play" aria-pressed="false"
+                      data-i18n-title="joints.playHint" title="Run every joint out to its limits and back, about a second each"
+                      data-i18n-aria-label="joints.playHint" aria-label="Run every joint out to its limits and back, about a second each">
+                <span class="play-mark" aria-hidden="true"></span>
+                <span data-i18n="joints.play">play</span>
+              </button>
               <button class="link-btn" id="joints-reset" data-i18n="panel.resetAll">reset all</button>
             </div>
           </div>
