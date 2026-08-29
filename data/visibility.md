@@ -20,7 +20,7 @@ The gallery fetches this file at startup: rows checked `[x]` are shown, rows lef
 the site matches on; the name, organisation and upstream link after it are for
 human readers.
 
-## 人形 Humanoid · 40
+## 人形 Humanoid · 45
 
 - [x] `g1` **G1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description)
 - [x] `h1` **H1** — UNITREE Robotics — [unitreerobotics/unitree_ros · h1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description)
@@ -62,8 +62,13 @@ human readers.
 - [x] `t800pro` **T800 Pro** — EngineAI — [engineai-robotics/engineai_robotics_native_sdk](https://github.com/engineai-robotics/engineai_robotics_native_sdk/tree/335c60e88772c26c7852d0abd6b3c7439037dd8f/assets/resource/robot/t800pro)
 - [x] `mini_hi` **Mini Hi** — HighTorque Robotics — [HighTorque-Robotics/HT_Robot_URDF](https://github.com/HighTorque-Robotics/HT_Robot_URDF/tree/5675b9aa238d5c0431bd376f9fc708308c617d7b/hi_25dof)
 - [x] `mini_pi_plus` **Mini Pi plus** — HighTorque Robotics — [HighTorque-Robotics/HT_Robot_URDF](https://github.com/HighTorque-Robotics/HT_Robot_URDF/tree/5675b9aa238d5c0431bd376f9fc708308c617d7b/pi_plus_24dof)
+- [x] `digit` **Digit** — Agility Robotics — [adubredu/DigitRobot.jl](https://github.com/adubredu/DigitRobot.jl/tree/bd3b99e2297c48c5f818f521791a9f8daf3ee303)
+- [x] `gundam_rx78` **Gundam RX-78** — Bandai Namco Filmworks — [gundam-global-challenge/gundam_robot](https://github.com/gundam-global-challenge/gundam_robot/tree/411d5db72a122b41bb4d691a0fbc19fd2ac88222/gundam_rx78_description)
+- [x] `x1` **X1** — AgiBot — [AgibotTech/agibot_x1_train](https://github.com/AgibotTech/agibot_x1_train/tree/e6651b9ab843fd1b1be70c087bfb7e8b28e44ccd/resources/robots/x1)
+- [x] `sigmaban` **SigmaBan** — Rhoban — [Rhoban/sigmaban_urdf · sigmaban_description](https://github.com/Rhoban/sigmaban_urdf/tree/d5d023fd35800d00d7647000bce8602617a4960d)
+- [x] `simple_humanoid` **Simple Humanoid** — — — [laas/simple_humanoid_description · simple_humanoid_description](https://github.com/laas/simple_humanoid_description/tree/4e859aed7df3c29954c9cca2a1ecb94069f7cfce)
 
-## 四足 Quadruped · 18
+## 四足 Quadruped · 22
 
 - [x] `go2` **Go2** — UNITREE Robotics — [unitreerobotics/unitree_ros · go2_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/go2_description)
 - [x] `go2w` **Go2-W** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/go2w_description)
@@ -83,8 +88,12 @@ human readers.
 - [x] `d1_maxpro` **D1 MaxPro** — AgiBot — [AgibotTech/Agibot_D1_MaxPro](https://github.com/AgibotTech/Agibot_D1_MaxPro/tree/7828aef8238388c11267e56d5e44bac9f6dd2eb4/urdf/maxpro_description)
 - [x] `magicdog` **MagicDog** — MagicLab — [MagiclabRobotics/magicdog_description](https://github.com/MagiclabRobotics/magicdog_description/tree/e37cd1dca176b9aa19721bb5029dd377a1f3ed92)
 - [x] `magicdog_w` **MagicDog-W** — MagicLab — [MagiclabRobotics/magicdog-w_description](https://github.com/MagiclabRobotics/magicdog-w_description/tree/0de1ee339ca41c40c36b50eb51490df74291d2b2)
+- [x] `barkour_v0` **Barkour v0** — Google DeepMind — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/google_barkour_v0)
+- [x] `barkour_vb` **Barkour vb** — Google DeepMind — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/google_barkour_vb)
+- [x] `minitaur` **Minitaur** — Ghost Robotics — [bulletphysics/bullet3 · minitaur_description](https://github.com/bulletphysics/bullet3/tree/7dee3436e747958e7088dfdcea0e4ae031ce619e/data/quadruped)
+- [x] `mini_cheetah` **Mini Cheetah** — MIT Biomimetics Robotics Lab — [Derek-TH-Wang/mini_cheetah_urdf](https://github.com/Derek-TH-Wang/mini_cheetah_urdf/tree/1988bceb26e81f28594a16e7d5e6abe5cbb27ace)
 
-## 机械臂 Arm · 17
+## 机械臂 Arm · 22
 
 - [x] `z1` **Z1** — UNITREE Robotics — [unitreerobotics/unitree_ros · z1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/z1_description)
 - [x] `panda` **Panda** — Franka Robotics — [Gepetto/example-robot-data · panda_description](https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/panda_description)
@@ -103,8 +112,13 @@ human readers.
 - [x] `omy_f3m` **OMY-F3M** — ROBOTIS — [ROBOTIS-GIT/open_manipulator · omy_f3m_description](https://github.com/ROBOTIS-GIT/open_manipulator/tree/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description)
 - [x] `omy_l100` **OMY-L100** — ROBOTIS — [ROBOTIS-GIT/open_manipulator · omy_l100_description](https://github.com/ROBOTIS-GIT/open_manipulator/tree/bc555a9c41ebd7493dc945ddabc43fc649681b62/open_manipulator_description)
 - [ ] `poppy_ergo_jr` **Poppy Ergo Jr** — Poppy Project — [poppy-project/poppy_ergo_jr_description · poppy_ergo_jr_description](https://github.com/poppy-project/poppy_ergo_jr_description/tree/7eb32bd385afa11dea5e6a6b6a4a86a0243aaa2b)
+- [x] `ur3` **UR3** — Universal Robots — [Gepetto/example-robot-data](https://github.com/Gepetto/example-robot-data/tree/8ac8e67a04b0d6080507841c95a9ff50a533713c/robots/ur_description)
+- [x] `ur5` **UR5** — Universal Robots — [Gepetto/example-robot-data](https://github.com/Gepetto/example-robot-data/tree/8ac8e67a04b0d6080507841c95a9ff50a533713c/robots/ur_description)
+- [x] `ur10` **UR10** — Universal Robots — [Gepetto/example-robot-data](https://github.com/Gepetto/example-robot-data/tree/8ac8e67a04b0d6080507841c95a9ff50a533713c/robots/ur_description)
+- [x] `gen3_lite` **Gen3 Lite** — Kinova — [Kinovarobotics/ros2_kortex](https://github.com/Kinovarobotics/ros2_kortex/tree/c50057a02fb64e854b2759261994f43173bec703/kortex_description)
+- [x] `iiwa7` **LBR iiwa 7 R800** — KUKA — [facebookresearch/differentiable-robot-model](https://github.com/facebookresearch/differentiable-robot-model/tree/d7bd1b3b8ef1d6dabe9b68474a622185c510e112/diff_robot_data/kuka_iiwa)
 
-## 灵巧手 / 夹爪 Hand / Gripper · 23
+## 灵巧手 / 夹爪 Hand / Gripper · 24
 
 - [x] `dex1_1` **Dex1-1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex1_1)
 - [x] `dex2_5` **Dex2-5** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex2_5)
@@ -129,8 +143,9 @@ human readers.
 - [x] `hx5_d20` **HX5-D20** — ROBOTIS — [All Hands Up (mirror)](https://allhandsup.org/zh/#gallery)
 - [x] `rh56f1` **RH56F1** — Inspire Robots — [All Hands Up (mirror)](https://allhandsup.org/zh/#gallery)
 - [x] `omnihand_pro` **Omnihand Pro** — Agibot — [All Hands Up (mirror)](https://allhandsup.org/zh/#gallery)
+- [x] `dexhand` **DexHand** — The Robot Studio — [iotdesignshop/dexhand_description](https://github.com/iotdesignshop/dexhand_description/tree/211b0ea23e21215532613711c383ea6823423c0c)
 
-## 双足 Biped · 9
+## 双足 Biped · 11
 
 - [x] `cassie` **Cassie** — Agility Robotics — [robot-descriptions/cassie_description · cassie_description](https://github.com/robot-descriptions/cassie_description/tree/81a2d8bbd77201cc974afb127adda4e2857a6dbf)
 - [ ] `upkie` **Upkie** — Upkie Project — [upkie/upkie_description · upkie_description](https://github.com/upkie/upkie_description/tree/19a91ce69cab6742c613cab104986e3f8a18d6a5)
@@ -141,6 +156,8 @@ human readers.
 - [x] `tron2_sf` **TRON 2 SF** — LimX Dynamics — [limxdynamics/tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description/tree/9939c22e69d27653ec0ba8a505859a2903dd1a71/tron2a/SF_TRON2A)
 - [x] `sa01` **SA01** — EngineAI — [engineai-robotics/engineai_legged_gym](https://github.com/engineai-robotics/engineai_legged_gym/tree/1a659aa0aa77445766ecea6d95708a5812e9f290/resources/robots/zq_humanoid)
 - [x] `mini_pi` **Mini Pi** — HighTorque Robotics — [HighTorque-Robotics/HT_Robot_URDF](https://github.com/HighTorque-Robotics/HT_Robot_URDF/tree/5675b9aa238d5c0431bd376f9fc708308c617d7b/pi_12dof)
+- [x] `spryped` **Spryped** — Benjamin Bokser — [bbokser/spryped · spryped_description](https://github.com/bbokser/spryped/tree/f360a6b78667a4d97c86cad465ef8f4c9512462b/spryped_urdf_rev06)
+- [x] `bdx` **BD-X** — Disney Research — [rimim/AWD](https://github.com/rimim/AWD/tree/9022468fb50cbf69b716b0d71f101cb8f7435b4f/awd/data/assets/go_bdx)
 
 ## 双臂 Dual arm · 11
 
@@ -156,7 +173,7 @@ human readers.
 - [x] `tron2_da` **TRON 2 DA** — LimX Dynamics — [limxdynamics/tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description/tree/9939c22e69d27653ec0ba8a505859a2903dd1a71/tron2a/DA_TRON2A)
 - [x] `tron2_dach` **TRON 2 DACH** — LimX Dynamics — [limxdynamics/tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description/tree/9939c22e69d27653ec0ba8a505859a2903dd1a71/tron2a/DACH_TRON2A)
 
-## 移动操作 Mobile manipulator · 12
+## 移动操作 Mobile manipulator · 14
 
 - [x] `g1_d` **G1-D** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_d_description)
 - [x] `stretch` **Stretch RE1** — Hello Robot — [robot-descriptions/stretch_description · stretch_description](https://github.com/robot-descriptions/stretch_description/tree/4b838429fe4c5d9f2937efe698444bd68968f376)
@@ -170,3 +187,5 @@ human readers.
 - [x] `tron2_wfyg` **TRON 2 WFYG** — LimX Dynamics — [limxdynamics/tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description/tree/9939c22e69d27653ec0ba8a505859a2903dd1a71/tron2a/WFYG_TRON2A)
 - [x] `tron2_sfyg` **TRON 2 SFYG** — LimX Dynamics — [limxdynamics/tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description/tree/9939c22e69d27653ec0ba8a505859a2903dd1a71/tron2a/SFYG_TRON2A)
 - [x] `tron2_dasf2` **TRON 2 DASF2** — LimX Dynamics — [limxdynamics/tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description/tree/9939c22e69d27653ec0ba8a505859a2903dd1a71/tron2a/DASF2_TRON2A)
+- [x] `galaxea_r1` **R1** — Galaxea AI — [userguide-galaxea/URDF](https://github.com/userguide-galaxea/URDF/tree/2e5d31e1784481a34d178006c0d0e18e0a84a82a/R1)
+- [x] `galaxea_r1_pro` **R1 Pro** — Galaxea AI — [userguide-galaxea/URDF](https://github.com/userguide-galaxea/URDF/tree/2e5d31e1784481a34d178006c0d0e18e0a84a82a/R1Pro/urdf_r1pro_g1z_2026)

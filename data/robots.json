@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-08-29T02:43:26Z",
+ "generated": "2026-08-29T12:10:35Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -1042,7 +1042,7 @@
      "h1_description": "robots/h1_description"
     },
     "mesh_files": 21,
-    "mesh_bytes": 5591497,
+    "mesh_bytes": 13135470,
     "mesh_formats": [
      ".dae"
     ]
@@ -1228,7 +1228,7 @@
     "urdf": "robots/h2_plus/H2_Plus.urdf",
     "packages": {},
     "mesh_files": 93,
-    "mesh_bytes": 41344506,
+    "mesh_bytes": 32061602,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -2423,7 +2423,7 @@
      "val_description": "val_description"
     },
     "mesh_files": 56,
-    "mesh_bytes": 988629,
+    "mesh_bytes": 1247056,
     "mesh_formats": [
      ".dae"
     ]
@@ -2487,7 +2487,7 @@
      "r2_description": "r2_description"
     },
     "mesh_files": 30,
-    "mesh_bytes": 13624959,
+    "mesh_bytes": 14443240,
     "mesh_formats": [
      ".dae"
     ]
@@ -2549,7 +2549,7 @@
      "jvrc_description": ""
     },
     "mesh_files": 35,
-    "mesh_bytes": 878578,
+    "mesh_bytes": 1293040,
     "mesh_formats": [
      ".dae"
     ]
@@ -2675,7 +2675,7 @@
      "multisense_sl_description": "roboschool/models_robot/multisense_sl_description"
     },
     "mesh_files": 23,
-    "mesh_bytes": 1804123,
+    "mesh_bytes": 3405482,
     "mesh_formats": [
      ".dae"
     ]
@@ -2930,7 +2930,7 @@
      "jaxon_description": ""
     },
     "mesh_files": 39,
-    "mesh_bytes": 20270759,
+    "mesh_bytes": 25956225,
     "mesh_formats": [
      ".dae"
     ]
@@ -2993,7 +2993,7 @@
      "romeo_description": "romeo_description"
     },
     "mesh_files": 93,
-    "mesh_bytes": 5815813,
+    "mesh_bytes": 8434894,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -3290,8 +3290,8 @@
     "mjcf",
     "urdf"
    ],
-   "notes": "The whole humanoid: SF legs joined to the DACH arms and head through a transition link, 26 joints and 67 kg, with an IMU on each half of the body and the depth camera on the upper one. TRON2A's zero is the robot's factory-calibrated zero rather than the knees-forward walking stance, which is why it stands the way it does here; rotating each hip yaw joint by π gives the stance. TRON2B is drawn the other way round — its zero is the knees-forward pose, and it is the hardware that needs the offset. Both builds mount the upper body's arms head-down, so at the URDF zero they point straight up; the card and the measured height put the two shoulder pitch joints at their lower limit instead, which is the arms-down pose.",
-   "notes_zh": "完整的人形机器人：SF 的腿经一个转接连杆接到 DACH 的手臂与头部，26 个关节、67 kg，上下半身各有一个 IMU，深度相机在上半身。TRON2A 的零位是机器出厂标定的零位，而不是膝盖朝前的行走姿态，所以在这里它是这个站姿；把两个髋yaw 关节各转 π 就能得到行走姿态。TRON2B 反过来——它的零位就是膝盖朝前的姿态，需要补偏置的是实机。两个版本的上半身手臂都是倒装的，所以 URDF 零位下手臂笔直朝上；卡片渲染与实测高度改把两个肩 pitch 关节放在各自的下限上，也就是手臂自然下垂的姿态。",
+   "notes": "The whole humanoid: SF legs joined to the DACH arms and head through a transition link, 26 joints, 66.8 kg on TRON2A and 68.2 on TRON2B, with an IMU on each half of the body and the depth camera on the upper one. TRON2A's zero is the robot's factory-calibrated zero rather than the knees-forward walking stance; rotating each hip yaw joint by π is what gives that stance. TRON2B is defined the other way round — its zero is the knees-forward pose, and it is the hardware that needs the offset. Both builds mount the upper body's arms head-down, so at the URDF zero they point straight up; the card and the measured height put the two shoulder pitch joints at their lower limit instead, which is the arms-down pose.",
+   "notes_zh": "完整的人形机器人：SF 的腿经一个转接连杆接到 DACH 的手臂与头部，26 个关节，TRON2A 66.8 kg、TRON2B 68.2 kg，上下半身各有一个 IMU，深度相机在上半身。TRON2A 的零位是机器出厂标定的零位，而不是膝盖朝前的行走姿态；把两个髋 yaw 关节各转 π 才是行走姿态。TRON2B 反过来——它的零位就是膝盖朝前的姿态，需要补偏置的是实机。两个版本的上半身手臂都是倒装的，所以 URDF 零位下手臂笔直朝上；卡片渲染与实测高度改把两个肩 pitch 关节放在各自的下限上，也就是手臂自然下垂的姿态。",
    "pose": {
     "proximal_pitch_L_U_Joint": -3.141592653589793,
     "proximal_pitch_R_U_Joint": -3.141592653589793
@@ -3562,7 +3562,7 @@
      "resource": "assets/resource"
     },
     "mesh_files": 26,
-    "mesh_bytes": 27660392,
+    "mesh_bytes": 15420961,
     "mesh_formats": [
      ".dae"
     ]
@@ -3625,7 +3625,7 @@
     "urdf": "assets/resource/robot/t800pro/urdf/serial_t800pro.urdf",
     "packages": {},
     "mesh_files": 44,
-    "mesh_bytes": 65605742,
+    "mesh_bytes": 42433933,
     "mesh_formats": [
      ".dae"
     ],
@@ -3779,6 +3779,330 @@
    }
   },
   {
+   "id": "digit",
+   "name": "Digit",
+   "maker": "Agility Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 22,
+   "license": null,
+   "formats": [
+    "urdf"
+   ],
+   "notes": "Agility's warehouse biped, as the DigitRobot.jl inverse-kinematics package ships it. Twenty-two joints, every one of them declared continuous: seven per leg — three at the hip, the knee, the shin-to-tarsus joint and two at the toe — and four per arm. On the real machine the tarsus and the toes are driven through four-bar rods; URDF cannot close a loop, so the rods are not in the file and those joints simply move on their own. The repository carries no licence file.",
+   "notes_zh": "Agility 的仓储双足机器人，取自 DigitRobot.jl 逆运动学包。22 个关节全部声明为 continuous：每条腿 7 个——髋部 3 个、膝 1 个、shin-to-tarsus 1 个、脚趾 2 个——每条手臂 4 个。真机的小腿与脚趾由四连杆驱动，而 URDF 无法闭环，所以文件里没有这些连杆，对应关节在这里是各自独立活动的。仓库没有许可证文件。",
+   "pose": {
+    "hip_abduction_left": 0.38,
+    "hip_abduction_right": -0.38,
+    "hip_flexion_left": -0.374,
+    "hip_flexion_right": 0.374,
+    "knee_joint_left": -0.458,
+    "knee_joint_right": 0.458,
+    "shin_to_tarsus_left": -0.114,
+    "shin_to_tarsus_right": 0.114,
+    "toe_pitch_joint_left": -0.079,
+    "toe_pitch_joint_right": 0.079,
+    "shoulder_roll_joint_left": 0.157,
+    "shoulder_roll_joint_right": -0.157,
+    "shoulder_pitch_joint_left": 0.571,
+    "shoulder_pitch_joint_right": -0.571,
+    "shoulder_yaw_joint_left": 0.0,
+    "shoulder_yaw_joint_right": -0.0,
+    "elbow_joint_left": -0.836,
+    "elbow_joint_right": 0.836
+   },
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.6964,
+     "y": 1.526,
+     "z": 0.525
+    },
+    "height_m": 1.526
+   },
+   "urdf": {
+    "xml_name": "digit",
+    "links": 29,
+    "joints": {
+     "continuous": 22,
+     "fixed": 6
+    },
+    "moving_joints": 22,
+    "mass_kg": 48.351,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 26703
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/adubredu/DigitRobot.jl@bd3b99e2297c48c5f818f521791a9f8daf3ee303/",
+    "urdf": "urdf/digit_model.urdf",
+    "packages": {
+     "urdf": "urdf"
+    },
+    "mesh_files": 14,
+    "mesh_bytes": 4211061,
+    "mesh_formats": [
+     ".obj"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "adubredu/DigitRobot.jl",
+    "commit": "bd3b99e2297c48c5f818f521791a9f8daf3ee303",
+    "repo_url": "https://github.com/adubredu/DigitRobot.jl",
+    "tree_url": "https://github.com/adubredu/DigitRobot.jl/tree/bd3b99e2297c48c5f818f521791a9f8daf3ee303",
+    "license_url": null,
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.agilityrobotics.com/robots"
+   }
+  },
+  {
+   "id": "gundam_rx78",
+   "name": "Gundam RX-78",
+   "maker": "Bandai Namco Filmworks",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 77,
+   "license": null,
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The test model the Gundam Global Challenge published for the 18-metre moving statue in Yokohama: 98 links and 77 revolute joints — 38 of them `mimic`s following another — down to a knuckle each per finger, at a URDF mass of 41 tonnes. Three orders of magnitude bigger than anything else in the gallery, and the one entry whose implausible-mass warning is simply the truth. Its licence is the association's own Terms of Use for the Gundam Research Open Simulator rather than an SPDX one — read it before using the model.",
+   "notes_zh": "GUNDAM GLOBAL CHALLENGE 为横滨 18 米可动实机公开的测试模型：98 个连杆、77 个 revolute 关节（其中 38 个是跟随其他关节的 `mimic`），连每根手指都各有一个指节，URDF 质量 41 吨。它比库里任何一台都大三个数量级，也是唯一一个「质量不合常理」的告警其实说的是实话的条目。许可证是该协会自己的《GUNDAM RESEARCH OPEN SIMULATOR 使用条款》，不是 SPDX 许可，使用前请先读它。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 5.7758,
+     "y": 18.6089,
+     "z": 7.6964
+    },
+    "height_m": 18.6089
+   },
+   "urdf": {
+    "xml_name": "GGC_TestModel_rx78_20170112",
+    "links": 98,
+    "joints": {
+     "fixed": 20,
+     "revolute": 77
+    },
+    "moving_joints": 77,
+    "mass_kg": 41238.692,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 154993
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/gundam-global-challenge/gundam_robot@411d5db72a122b41bb4d691a0fbc19fd2ac88222/",
+    "urdf": "gundam_rx78_description/urdf/GGC_TestModel_rx78_20170112.urdf",
+    "packages": {
+     "gundam_rx78_description": "gundam_rx78_description"
+    },
+    "mesh_files": 79,
+    "mesh_bytes": 4626384,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "gundam-global-challenge/gundam_robot",
+    "commit": "411d5db72a122b41bb4d691a0fbc19fd2ac88222",
+    "repo_url": "https://github.com/gundam-global-challenge/gundam_robot",
+    "tree_url": "https://github.com/gundam-global-challenge/gundam_robot/tree/411d5db72a122b41bb4d691a0fbc19fd2ac88222/gundam_rx78_description",
+    "license_url": "https://github.com/gundam-global-challenge/gundam_robot/blob/411d5db72a122b41bb4d691a0fbc19fd2ac88222/gundam_rx78_description/urdf/LICENSE",
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "x1",
+   "name": "X1",
+   "maker": "AgiBot",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 12,
+   "license": null,
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The description AgiBot trains its open-source X1 locomotion policy against: twelve revolute joints, six per leg, and everything above the waist — torso, arms, head — welded into fixed links. 58 links and 35 kg in all. The repository has no licence file.",
+   "notes_zh": "智元用来训练开源 X1 运动策略的描述文件：12 个 revolute 关节，每条腿 6 个；腰部以上的躯干、手臂与头部全部固定。总共 58 个连杆、35 kg。仓库没有许可证文件。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.2403,
+     "y": 1.2673,
+     "z": 0.5215
+    },
+    "height_m": 1.2673
+   },
+   "urdf": {
+    "xml_name": "x1",
+    "links": 58,
+    "joints": {
+     "fixed": 45,
+     "revolute": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": 35.323,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 72391
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/AgibotTech/agibot_x1_train@e6651b9ab843fd1b1be70c087bfb7e8b28e44ccd/",
+    "urdf": "resources/robots/x1/urdf/x1.urdf",
+    "packages": {},
+    "mesh_files": 52,
+    "mesh_bytes": 58434068,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "AgibotTech/agibot_x1_train",
+    "commit": "e6651b9ab843fd1b1be70c087bfb7e8b28e44ccd",
+    "repo_url": "https://github.com/AgibotTech/agibot_x1_train",
+    "tree_url": "https://github.com/AgibotTech/agibot_x1_train/tree/e6651b9ab843fd1b1be70c087bfb7e8b28e44ccd/resources/robots/x1",
+    "license_url": null,
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.agibot.com/products/X1"
+   }
+  },
+  {
+   "id": "sigmaban",
+   "name": "SigmaBan",
+   "maker": "Rhoban",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 20,
+   "license": "MIT",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "Rhoban's kid-size football humanoid, four kilos over twenty joints. Written out of the CAD by onshape-to-robot as pure geometry: every link is a box or a cylinder, so the model has inertias and collision shapes but not one mesh file — the first such entry in the gallery.",
+   "notes_zh": "Rhoban 的儿童尺寸足球人形机器人，4 kg、20 个关节。它由 onshape-to-robot 从 CAD 直接导出为纯几何体：每个连杆都是长方体或圆柱体，因此有惯量、有碰撞体，却没有任何网格文件——这是库里第一个这样的条目。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.1695,
+     "y": 0.7193,
+     "z": 0.27
+    },
+    "height_m": 0.7193
+   },
+   "urdf": {
+    "xml_name": "onshape",
+    "links": 27,
+    "joints": {
+     "fixed": 6,
+     "revolute": 20
+    },
+    "moving_joints": 20,
+    "mass_kg": 4.269,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 40117
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/Rhoban/sigmaban_urdf@d5d023fd35800d00d7647000bce8602617a4960d/",
+    "urdf": "robot.urdf",
+    "packages": {},
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": "sigmaban_description",
+    "github": "Rhoban/sigmaban_urdf",
+    "commit": "d5d023fd35800d00d7647000bce8602617a4960d",
+    "repo_url": "https://github.com/Rhoban/sigmaban_urdf",
+    "tree_url": "https://github.com/Rhoban/sigmaban_urdf/tree/d5d023fd35800d00d7647000bce8602617a4960d",
+    "license_url": "https://github.com/Rhoban/sigmaban_urdf/blob/d5d023fd35800d00d7647000bce8602617a4960d/LICENSE",
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "simple_humanoid",
+   "name": "Simple Humanoid",
+   "maker": null,
+   "category": "humanoid",
+   "tags": [
+    "educational",
+    "humanoid"
+   ],
+   "dof": 29,
+   "license": "BSD-2-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "LAAS's teaching humanoid: 29 joints on a 131 kg body, drawn entirely in boxes and cylinders. It exists to be a humanoid with nothing to download but the URDF — the model people reach for when what is being tested is the algorithm rather than the robot.",
+   "notes_zh": "LAAS 的教学用人形机器人：131 kg 的机身、29 个关节，全部由长方体和圆柱体画成。它存在的意义就是「除了 URDF 本身没有别的东西要下载的人形机器人」——测试算法而不是测试机器人时大家会拿它。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.35,
+     "y": 1.4895,
+     "z": 1.1578
+    },
+    "height_m": 1.4895
+   },
+   "urdf": {
+    "xml_name": "simple_humanoid",
+    "links": 31,
+    "joints": {
+     "fixed": 1,
+     "revolute": 29
+    },
+    "moving_joints": 29,
+    "mass_kg": 130.8,
+    "has_collision": false,
+    "has_inertia": true,
+    "bytes": 21935
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/laas/simple_humanoid_description@4e859aed7df3c29954c9cca2a1ecb94069f7cfce/",
+    "urdf": "urdf/simple_humanoid.urdf",
+    "packages": {},
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": "simple_humanoid_description",
+    "github": "laas/simple_humanoid_description",
+    "commit": "4e859aed7df3c29954c9cca2a1ecb94069f7cfce",
+    "repo_url": "https://github.com/laas/simple_humanoid_description",
+    "tree_url": "https://github.com/laas/simple_humanoid_description/tree/4e859aed7df3c29954c9cca2a1ecb94069f7cfce",
+    "license_url": "https://github.com/laas/simple_humanoid_description/blob/4e859aed7df3c29954c9cca2a1ecb94069f7cfce/LICENSE",
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
    "id": "go2",
    "name": "Go2",
    "maker": "UNITREE Robotics",
@@ -3836,7 +4160,7 @@
      "go2_description": "robots/go2_description"
     },
     "mesh_files": 7,
-    "mesh_bytes": 10801531,
+    "mesh_bytes": 9413156,
     "mesh_formats": [
      ".dae"
     ]
@@ -3915,7 +4239,7 @@
      "go2w_description": "robots/go2w_description"
     },
     "mesh_files": 8,
-    "mesh_bytes": 29879825,
+    "mesh_bytes": 17741923,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -3993,7 +4317,7 @@
      "b2_description": "robots/b2_description"
     },
     "mesh_files": 13,
-    "mesh_bytes": 10077483,
+    "mesh_bytes": 9833560,
     "mesh_formats": [
      ".dae"
     ]
@@ -4070,7 +4394,7 @@
      "a1_description": "robots/a1_description"
     },
     "mesh_files": 5,
-    "mesh_bytes": 3580056,
+    "mesh_bytes": 1820658,
     "mesh_formats": [
      ".dae"
     ]
@@ -4295,7 +4619,7 @@
      "aliengo_description": "robots/aliengo_description"
     },
     "mesh_files": 5,
-    "mesh_bytes": 5000202,
+    "mesh_bytes": 4174974,
     "mesh_formats": [
      ".dae"
     ]
@@ -4439,7 +4763,7 @@
      "anymal_b_simple_description": ""
     },
     "mesh_files": 8,
-    "mesh_bytes": 17965815,
+    "mesh_bytes": 3534378,
     "mesh_formats": [
      ".dae"
     ]
@@ -4512,7 +4836,7 @@
      "anymal_c_simple_description": ""
     },
     "mesh_files": 19,
-    "mesh_bytes": 3437970,
+    "mesh_bytes": 2312807,
     "mesh_formats": [
      ".dae"
     ]
@@ -4585,7 +4909,7 @@
      "anymal_d_simple_description": ""
     },
     "mesh_files": 17,
-    "mesh_bytes": 1187406,
+    "mesh_bytes": 1259620,
     "mesh_formats": [
      ".dae"
     ]
@@ -4658,7 +4982,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 4,
-    "mesh_bytes": 538194,
+    "mesh_bytes": 502586,
     "mesh_formats": [
      ".dae"
     ]
@@ -5109,6 +5433,312 @@
    }
   },
   {
+   "id": "barkour_v0",
+   "name": "Barkour v0",
+   "maker": "Google DeepMind",
+   "category": "quadruped",
+   "tags": [
+    "quadruped"
+   ],
+   "dof": 12,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "The dog DeepMind measured its Barkour agility benchmark on — three joints per leg on an 11.5 kg body. One of only two URDFs in MuJoCo Menagerie, which is otherwise MJCF throughout; its mesh paths still say `meshes/` while the files live in `assets/`, so the entry rewrites them.",
+   "notes_zh": "DeepMind 用来测量 Barkour 敏捷性基准的那条狗——11.5 kg 机身，每条腿 3 个关节。MuJoCo Menagerie 里只有两个 URDF，这是其中之一（其余全是 MJCF）；它的网格路径写的还是 `meshes/`，而文件实际在 `assets/`，所以条目里做了路径改写。",
+   "pose": {
+    "hip_front_left": 0.9,
+    "knee_front_left": 1.7,
+    "hip_front_right": 0.9,
+    "knee_front_right": 1.7,
+    "hip_hind_left": 0.9,
+    "knee_hind_left": 1.7,
+    "hip_hind_right": 0.9,
+    "knee_hind_right": 1.7
+   },
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.6644,
+     "y": 0.4652,
+     "z": 0.34
+    },
+    "height_m": 0.4652
+   },
+   "urdf": {
+    "xml_name": "barkour",
+    "links": 17,
+    "joints": {
+     "fixed": 4,
+     "revolute": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": 11.487,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 25630
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "urdf": "google_barkour_v0/barkour_v0.urdf",
+    "packages": {},
+    "mesh_files": 14,
+    "mesh_bytes": 10473226,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "mesh_rewrite": [
+     {
+      "from": "meshes/",
+      "to": "assets/"
+     }
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/google_barkour_v0",
+    "license_url": "https://github.com/google-deepmind/mujoco_menagerie/blob/da76818e269b82289eba39808e2fb91d679d6994/google_barkour_v0/LICENSE",
+    "mirror": null,
+    "mjcf": "google_barkour_v0/barkour_v0.xml"
+   },
+   "links": {
+    "paper": "https://arxiv.org/abs/2305.14654"
+   }
+  },
+  {
+   "id": "barkour_vb",
+   "name": "Barkour vb",
+   "maker": "Google DeepMind",
+   "category": "quadruped",
+   "tags": [
+    "quadruped"
+   ],
+   "dof": 12,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "The second-generation Barkour: same twelve joints as v0 on a heavier 14.5 kg frame, plus a neck carrying a RealSense D435. Twenty-two of its thirty-four joints are fixed — the camera, its cover and the handle are all along for the ride.",
+   "notes_zh": "第二代 Barkour：关节数与 v0 相同（12 个），机身重到 14.5 kg，并多了一段装着 RealSense D435 的颈部。34 个关节里有 22 个是固定的——相机、相机罩和提手都只是搭车。",
+   "pose": {
+    "hip_front_left": 0.9,
+    "knee_front_left": 1.7,
+    "hip_front_right": 0.9,
+    "knee_front_right": 1.7,
+    "hip_hind_left": 0.9,
+    "knee_hind_left": 1.7,
+    "hip_hind_right": 0.9,
+    "knee_hind_right": 1.7
+   },
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.7479,
+     "y": 0.5254,
+     "z": 0.4192
+    },
+    "height_m": 0.5254
+   },
+   "urdf": {
+    "xml_name": "barkour_vb",
+    "links": 35,
+    "joints": {
+     "fixed": 22,
+     "revolute": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": 14.496,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 40638
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "urdf": "google_barkour_vb/barkour_vb_rev_1_0_head_straight.urdf",
+    "packages": {
+     "assets": "google_barkour_vb/assets"
+    },
+    "mesh_files": 11,
+    "mesh_bytes": 3873974,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/google_barkour_vb",
+    "license_url": "https://github.com/google-deepmind/mujoco_menagerie/blob/da76818e269b82289eba39808e2fb91d679d6994/google_barkour_vb/LICENSE",
+    "mirror": null,
+    "mjcf": "google_barkour_vb/barkour_vb.xml"
+   },
+   "links": {
+    "paper": "https://arxiv.org/abs/2305.14654"
+   }
+  },
+  {
+   "id": "minitaur",
+   "name": "Minitaur",
+   "maker": "Ghost Robotics",
+   "category": "quadruped",
+   "tags": [
+    "quadruped"
+   ],
+   "dof": 16,
+   "license": "BSD-2-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The quadruped that ships with Bullet and has been the first legged robot in more RL papers than any other. Each leg is a five-bar linkage: two continuous motor joints at the hip and two revolute knees with no limits declared, which URDF cannot tie back together, so the two halves of a leg swing free of each other. One mesh in the whole description — the hip motor, reused eight times; the chassis and the legs are boxes.",
+   "notes_zh": "随 Bullet 一起分发的四足机器人，在强化学习论文里当「第一台腿式机器人」的次数大概比谁都多。每条腿是五连杆：髋部两个 continuous 电机关节，加两个没有写限位的 revolute 膝关节；URDF 无法把它们接回去，所以一条腿的两半在这里是各自摆动的。整份描述只有一个网格——髋部电机，被复用了 8 次；底盘和腿都是长方体。",
+   "pose": {
+    "motor_front_leftL_joint": 2.04,
+    "knee_front_leftL_link": -1.64,
+    "motor_front_leftR_joint": 2.04,
+    "knee_front_leftR_link": -1.64,
+    "motor_front_rightL_joint": 2.04,
+    "knee_front_rightL_link": -1.64,
+    "motor_front_rightR_joint": 2.04,
+    "knee_front_rightR_link": -1.64,
+    "motor_back_leftL_joint": 2.04,
+    "knee_back_leftL_link": -1.64,
+    "motor_back_leftR_joint": 2.04,
+    "knee_back_leftR_link": -1.64,
+    "motor_back_rightL_joint": 2.04,
+    "knee_back_rightL_link": -1.64,
+    "motor_back_rightR_joint": 2.04,
+    "knee_back_rightR_link": -1.64
+   },
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.987,
+     "y": 0.2091,
+     "z": 0.3
+    },
+    "height_m": 0.2091
+   },
+   "urdf": {
+    "xml_name": "quadruped",
+    "links": 27,
+    "joints": {
+     "continuous": 8,
+     "fixed": 10,
+     "revolute": 8
+    },
+    "moving_joints": 16,
+    "mass_kg": 6.0,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 26835
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/bulletphysics/bullet3@7dee3436e747958e7088dfdcea0e4ae031ce619e/",
+    "urdf": "data/quadruped/minitaur.urdf",
+    "packages": {},
+    "mesh_files": 1,
+    "mesh_bytes": 7929,
+    "mesh_formats": [
+     ".obj"
+    ]
+   },
+   "source": {
+    "description": "minitaur_description",
+    "github": "bulletphysics/bullet3",
+    "commit": "7dee3436e747958e7088dfdcea0e4ae031ce619e",
+    "repo_url": "https://github.com/bulletphysics/bullet3",
+    "tree_url": "https://github.com/bulletphysics/bullet3/tree/7dee3436e747958e7088dfdcea0e4ae031ce619e/data/quadruped",
+    "license_url": "https://github.com/bulletphysics/bullet3/blob/7dee3436e747958e7088dfdcea0e4ae031ce619e/data/quadruped/data/quadruped/license.txt",
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.ghostrobotics.io/"
+   }
+  },
+  {
+   "id": "mini_cheetah",
+   "name": "Mini Cheetah",
+   "maker": "MIT Biomimetics Robotics Lab",
+   "category": "quadruped",
+   "tags": [
+    "quadruped"
+   ],
+   "dof": 12,
+   "license": null,
+   "formats": [
+    "urdf"
+   ],
+   "notes": "MIT's 8 kg backflipping quadruped, three continuous joints per leg. The URDF was written by Erwin Coumans for PyBullet and its four meshes are derived from Unitree's Laikago CAD by permission; the licence file asks for a citation rather than granting an SPDX licence. Mesh paths are written relative to the repository root but the file sits in `urdf/`, so the entry rewrites them.",
+   "notes_zh": "MIT 那台会后空翻的 8 kg 四足机器人，每条腿 3 个 continuous 关节。URDF 由 Erwin Coumans 为 PyBullet 编写，四个网格经宇树授权自 Laikago 的 CAD 改出；许可证文件要求的是引用，而不是给出一个 SPDX 许可。网格路径是相对仓库根目录写的，而文件在 `urdf/` 里，所以条目里做了路径改写。",
+   "pose": {
+    "abduct_fr_to_thigh_fr_j": -0.8,
+    "thigh_fr_to_knee_fr_j": 1.6,
+    "abduct_fl_to_thigh_fl_j": -0.8,
+    "thigh_fl_to_knee_fl_j": 1.6,
+    "abduct_hr_to_thigh_hr_j": -0.8,
+    "thigh_hr_to_knee_hr_j": 1.6,
+    "abduct_hl_to_thigh_hl_j": -0.8,
+    "thigh_hl_to_knee_hl_j": 1.6
+   },
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.6409,
+     "y": 0.3633,
+     "z": 0.318
+    },
+    "height_m": 0.3633
+   },
+   "urdf": {
+    "xml_name": "mini_cheetah",
+    "links": 13,
+    "joints": {
+     "continuous": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": 8.252,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 15437
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/Derek-TH-Wang/mini_cheetah_urdf@1988bceb26e81f28594a16e7d5e6abe5cbb27ace/",
+    "urdf": "urdf/mini_cheetah.urdf",
+    "packages": {},
+    "mesh_files": 4,
+    "mesh_bytes": 3911862,
+    "mesh_formats": [
+     ".obj"
+    ],
+    "mesh_rewrite": [
+     {
+      "from": "urdf/meshes/",
+      "to": "meshes/"
+     }
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "Derek-TH-Wang/mini_cheetah_urdf",
+    "commit": "1988bceb26e81f28594a16e7d5e6abe5cbb27ace",
+    "repo_url": "https://github.com/Derek-TH-Wang/mini_cheetah_urdf",
+    "tree_url": "https://github.com/Derek-TH-Wang/mini_cheetah_urdf/tree/1988bceb26e81f28594a16e7d5e6abe5cbb27ace",
+    "license_url": "https://github.com/Derek-TH-Wang/mini_cheetah_urdf/blob/1988bceb26e81f28594a16e7d5e6abe5cbb27ace/urdf/license.txt",
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
    "id": "z1",
    "name": "Z1",
    "maker": "UNITREE Robotics",
@@ -5157,7 +5787,7 @@
      "z1_description": "robots/z1_description"
     },
     "mesh_files": 7,
-    "mesh_bytes": 3904318,
+    "mesh_bytes": 4214398,
     "mesh_formats": [
      ".dae"
     ]
@@ -5223,7 +5853,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 19,
-    "mesh_bytes": 8605712,
+    "mesh_bytes": 6450878,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -5362,7 +5992,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 11,
-    "mesh_bytes": 5789320,
+    "mesh_bytes": 6108063,
     "mesh_formats": [
      ".dae"
     ]
@@ -6184,7 +6814,7 @@
      "poppy_ergo_jr_description": ""
     },
     "mesh_files": 6,
-    "mesh_bytes": 7321913,
+    "mesh_bytes": 4166027,
     "mesh_formats": [
      ".dae"
     ]
@@ -6201,6 +6831,629 @@
    },
    "links": {
     "official": "https://www.poppy-project.org/en/robots/poppy-ergo-jr/"
+   }
+  },
+  {
+   "id": "ur3",
+   "name": "UR3",
+   "maker": "Universal Robots",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 6,
+   "license": "BSD",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The 3 kg-payload table-top arm, six revolute joints on 10.6 kg. Universal Robots publishes only xacro, which the gallery cannot expand; these are the plain URDFs example-robot-data generated from it, out of ros-industrial/universal_robot. The package carries no licence file of its own; its README declares BSD. The two versions differ in their limits alone — the default winds every joint but the elbow through ±2π, the joint-limited one stops all six at ±π.",
+   "notes_zh": "负载 3 kg 的桌面机械臂，6 个 revolute 关节、10.6 kg。优傲官方只发布 xacro，本站无法展开；这里用的是 example-robot-data 从 ros-industrial/universal_robot 生成的纯 URDF。该目录没有自己的许可证文件，README 里声明为 BSD。两个版本只差在限位：默认版除肘部外每个关节都可以在 ±2π 内旋转，joint_limited 版把六个关节统统限制在 ±π。",
+   "pose": {
+    "shoulder_lift_joint": -1.0,
+    "elbow_joint": 1.7,
+    "wrist_1_joint": -0.7
+   },
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.404,
+     "y": 0.4112,
+     "z": 0.2923
+    },
+    "height_m": 0.4112
+   },
+   "urdf": {
+    "xml_name": "ur3",
+    "links": 11,
+    "joints": {
+     "fixed": 4,
+     "revolute": 6
+    },
+    "moving_joints": 6,
+    "mass_kg": 10.63,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 12075
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/Gepetto/example-robot-data@8ac8e67a04b0d6080507841c95a9ff50a533713c/",
+    "urdf": "robots/ur_description/urdf/ur3_robot.urdf",
+    "packages": {
+     "example-robot-data": ""
+    },
+    "mesh_files": 14,
+    "mesh_bytes": 5695350,
+    "mesh_formats": [
+     ".dae",
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "Gepetto/example-robot-data",
+    "commit": "8ac8e67a04b0d6080507841c95a9ff50a533713c",
+    "repo_url": "https://github.com/Gepetto/example-robot-data",
+    "tree_url": "https://github.com/Gepetto/example-robot-data/tree/8ac8e67a04b0d6080507841c95a9ff50a533713c/robots/ur_description",
+    "license_url": null,
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.universal-robots.com/products/ur3-robot/"
+   },
+   "variants": [
+    {
+     "id": "ur3_robot",
+     "name": "ur3_robot",
+     "deprecated": false,
+     "dof": 6,
+     "formats": [
+      "urdf"
+     ],
+     "notes": null,
+     "notes_zh": null,
+     "measured": {
+      "size": {
+       "x": 0.404,
+       "y": 0.4112,
+       "z": 0.2923
+      },
+      "height_m": 0.4112
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "ur3",
+      "links": 11,
+      "joints": {
+       "fixed": 4,
+       "revolute": 6
+      },
+      "moving_joints": 6,
+      "mass_kg": 10.63,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 12075
+     },
+     "assets": {
+      "urdf": "robots/ur_description/urdf/ur3_robot.urdf",
+      "packages": {
+       "example-robot-data": ""
+      },
+      "mesh_files": 14,
+      "mesh_bytes": 5695350,
+      "mesh_formats": [
+       ".dae",
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "ur3_joint_limited_robot",
+     "name": "ur3_joint_limited_robot",
+     "deprecated": false,
+     "dof": 6,
+     "formats": [
+      "urdf"
+     ],
+     "notes": null,
+     "notes_zh": null,
+     "measured": {
+      "size": {
+       "x": 0.404,
+       "y": 0.4112,
+       "z": 0.2923
+      },
+      "height_m": 0.4112
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "ur3",
+      "links": 11,
+      "joints": {
+       "fixed": 4,
+       "revolute": 6
+      },
+      "moving_joints": 6,
+      "mass_kg": 10.63,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 12078
+     },
+     "assets": {
+      "urdf": "robots/ur_description/urdf/ur3_joint_limited_robot.urdf",
+      "packages": {
+       "example-robot-data": ""
+      },
+      "mesh_files": 14,
+      "mesh_bytes": 5695350,
+      "mesh_formats": [
+       ".dae",
+       ".stl"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "ur5",
+   "name": "UR5",
+   "maker": "Universal Robots",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 6,
+   "license": "BSD",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The middle of the three classic UR arms: 5 kg payload, 850 mm reach, six revolute joints on 21 kg, and the arm half the manipulation literature is written about. Same two versions as the UR3 — ±2π everywhere but the elbow, or all six stopped at ±π — and the same BSD its README declares in place of a licence file.",
+   "notes_zh": "经典 UR 三兄弟里的中间一台：负载 5 kg、臂展 850 mm、6 个 revolute 关节、21 kg，也是操作类论文里出现最多的机械臂之一。版本与 UR3 相同：除肘部外都是 ±2π，或六个关节统统限制在 ±π；许可同样是 README 里声明的 BSD，没有单独的许可证文件。",
+   "pose": {
+    "shoulder_lift_joint": -1.0,
+    "elbow_joint": 1.7,
+    "wrist_1_joint": -0.7
+   },
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.6666,
+     "y": 0.532,
+     "z": 0.3144
+    },
+    "height_m": 0.532
+   },
+   "urdf": {
+    "xml_name": "ur5",
+    "links": 11,
+    "joints": {
+     "fixed": 4,
+     "revolute": 6
+    },
+    "moving_joints": 6,
+    "mass_kg": 20.994,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 12649
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/Gepetto/example-robot-data@8ac8e67a04b0d6080507841c95a9ff50a533713c/",
+    "urdf": "robots/ur_description/urdf/ur5_robot.urdf",
+    "packages": {
+     "example-robot-data": ""
+    },
+    "mesh_files": 14,
+    "mesh_bytes": 1890972,
+    "mesh_formats": [
+     ".dae",
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "Gepetto/example-robot-data",
+    "commit": "8ac8e67a04b0d6080507841c95a9ff50a533713c",
+    "repo_url": "https://github.com/Gepetto/example-robot-data",
+    "tree_url": "https://github.com/Gepetto/example-robot-data/tree/8ac8e67a04b0d6080507841c95a9ff50a533713c/robots/ur_description",
+    "license_url": null,
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.universal-robots.com/products/ur5-robot/"
+   },
+   "variants": [
+    {
+     "id": "ur5_robot",
+     "name": "ur5_robot",
+     "deprecated": false,
+     "dof": 6,
+     "formats": [
+      "urdf"
+     ],
+     "notes": null,
+     "notes_zh": null,
+     "measured": {
+      "size": {
+       "x": 0.6666,
+       "y": 0.532,
+       "z": 0.3144
+      },
+      "height_m": 0.532
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "ur5",
+      "links": 11,
+      "joints": {
+       "fixed": 4,
+       "revolute": 6
+      },
+      "moving_joints": 6,
+      "mass_kg": 20.994,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 12649
+     },
+     "assets": {
+      "urdf": "robots/ur_description/urdf/ur5_robot.urdf",
+      "packages": {
+       "example-robot-data": ""
+      },
+      "mesh_files": 14,
+      "mesh_bytes": 1890972,
+      "mesh_formats": [
+       ".dae",
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "ur5_joint_limited_robot",
+     "name": "ur5_joint_limited_robot",
+     "deprecated": false,
+     "dof": 6,
+     "formats": [
+      "urdf"
+     ],
+     "notes": null,
+     "notes_zh": null,
+     "measured": {
+      "size": {
+       "x": 0.6666,
+       "y": 0.532,
+       "z": 0.3144
+      },
+      "height_m": 0.532
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "ur5",
+      "links": 11,
+      "joints": {
+       "fixed": 4,
+       "revolute": 6
+      },
+      "moving_joints": 6,
+      "mass_kg": 20.994,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 12695
+     },
+     "assets": {
+      "urdf": "robots/ur_description/urdf/ur5_joint_limited_robot.urdf",
+      "packages": {
+       "example-robot-data": ""
+      },
+      "mesh_files": 14,
+      "mesh_bytes": 1890972,
+      "mesh_formats": [
+       ".dae",
+       ".stl"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "ur10",
+   "name": "UR10",
+   "maker": "Universal Robots",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 6,
+   "license": "BSD",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The largest of the three: 10 kg payload, 1300 mm reach, 32.7 kg of arm. Identical kinematics to the UR3 and UR5 scaled up, which makes the three of them worth reading side by side in the compare page. Same example-robot-data copy, same BSD its README declares in place of a licence file.",
+   "notes_zh": "三台里最大的一台：负载 10 kg、臂展 1300 mm、自重 32.7 kg。运动学结构与 UR3、UR5 完全同构，只是尺寸放大——放进对比页并排看正合适。同样出自 example-robot-data，许可同样是 README 里声明的 BSD。",
+   "pose": {
+    "shoulder_lift_joint": -1.0,
+    "elbow_joint": 1.7,
+    "wrist_1_joint": -0.7
+   },
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.9685,
+     "y": 0.7491,
+     "z": 0.3552
+    },
+    "height_m": 0.7491
+   },
+   "urdf": {
+    "xml_name": "ur10",
+    "links": 11,
+    "joints": {
+     "fixed": 4,
+     "revolute": 6
+    },
+    "moving_joints": 6,
+    "mass_kg": 32.7,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 12167
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/Gepetto/example-robot-data@8ac8e67a04b0d6080507841c95a9ff50a533713c/",
+    "urdf": "robots/ur_description/urdf/ur10_robot.urdf",
+    "packages": {
+     "example-robot-data": ""
+    },
+    "mesh_files": 14,
+    "mesh_bytes": 3734842,
+    "mesh_formats": [
+     ".dae",
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "Gepetto/example-robot-data",
+    "commit": "8ac8e67a04b0d6080507841c95a9ff50a533713c",
+    "repo_url": "https://github.com/Gepetto/example-robot-data",
+    "tree_url": "https://github.com/Gepetto/example-robot-data/tree/8ac8e67a04b0d6080507841c95a9ff50a533713c/robots/ur_description",
+    "license_url": null,
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.universal-robots.com/products/ur10-robot/"
+   },
+   "variants": [
+    {
+     "id": "ur10_robot",
+     "name": "ur10_robot",
+     "deprecated": false,
+     "dof": 6,
+     "formats": [
+      "urdf"
+     ],
+     "notes": null,
+     "notes_zh": null,
+     "measured": {
+      "size": {
+       "x": 0.9685,
+       "y": 0.7491,
+       "z": 0.3552
+      },
+      "height_m": 0.7491
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "ur10",
+      "links": 11,
+      "joints": {
+       "fixed": 4,
+       "revolute": 6
+      },
+      "moving_joints": 6,
+      "mass_kg": 32.7,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 12167
+     },
+     "assets": {
+      "urdf": "robots/ur_description/urdf/ur10_robot.urdf",
+      "packages": {
+       "example-robot-data": ""
+      },
+      "mesh_files": 14,
+      "mesh_bytes": 3734842,
+      "mesh_formats": [
+       ".dae",
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "ur10_joint_limited_robot",
+     "name": "ur10_joint_limited_robot",
+     "deprecated": false,
+     "dof": 6,
+     "formats": [
+      "urdf"
+     ],
+     "notes": null,
+     "notes_zh": null,
+     "measured": {
+      "size": {
+       "x": 0.9685,
+       "y": 0.7491,
+       "z": 0.3552
+      },
+      "height_m": 0.7491
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "ur10",
+      "links": 11,
+      "joints": {
+       "fixed": 4,
+       "revolute": 6
+      },
+      "moving_joints": 6,
+      "mass_kg": 32.7,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 12133
+     },
+     "assets": {
+      "urdf": "robots/ur_description/urdf/ur10_joint_limited_robot.urdf",
+      "packages": {
+       "example-robot-data": ""
+      },
+      "mesh_files": 14,
+      "mesh_bytes": 3734842,
+      "mesh_formats": [
+       ".dae",
+       ".stl"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "gen3_lite",
+   "name": "Gen3 Lite",
+   "maker": "Kinova",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 10,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "Kinova's 5.2 kg six-axis arm with its own two-finger gripper already on the flange — ten revolute joints in all, six in the arm and two per finger. The one plain URDF in ros2_kortex, whose other robots are xacro.",
+   "notes_zh": "Kinova 的 5.2 kg 六轴机械臂，法兰上已经装好自家的二指夹爪——共 10 个 revolute 关节：手臂 6 个，每根手指 2 个。它是 ros2_kortex 里唯一的纯 URDF，其余机型都是 xacro。",
+   "pose": {
+    "joint_2": 0.6,
+    "joint_3": -1.2,
+    "joint_5": 0.9
+   },
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.6855,
+     "y": 0.5292,
+     "z": 0.2988
+    },
+    "height_m": 0.5292
+   },
+   "urdf": {
+    "xml_name": "gen3_lite",
+    "links": 15,
+    "joints": {
+     "fixed": 4,
+     "revolute": 10
+    },
+    "moving_joints": 10,
+    "mass_kg": 5.187,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 17540
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/Kinovarobotics/ros2_kortex@c50057a02fb64e854b2759261994f43173bec703/",
+    "urdf": "kortex_description/robots/gen3_lite.urdf",
+    "packages": {
+     "kortex_description": "kortex_description"
+    },
+    "mesh_files": 11,
+    "mesh_bytes": 9359724,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "Kinovarobotics/ros2_kortex",
+    "commit": "c50057a02fb64e854b2759261994f43173bec703",
+    "repo_url": "https://github.com/Kinovarobotics/ros2_kortex",
+    "tree_url": "https://github.com/Kinovarobotics/ros2_kortex/tree/c50057a02fb64e854b2759261994f43173bec703/kortex_description",
+    "license_url": "https://github.com/Kinovarobotics/ros2_kortex/blob/c50057a02fb64e854b2759261994f43173bec703/LICENSE",
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.kinovarobotics.com/product/gen3-lite-robots"
+   }
+  },
+  {
+   "id": "iiwa7",
+   "name": "LBR iiwa 7 R800",
+   "maker": "KUKA",
+   "category": "arm",
+   "tags": [
+    "arm"
+   ],
+   "dof": 7,
+   "license": "MIT",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The 7 kg-payload sibling of the iiwa 14 already in the gallery: the same seven-axis redundant arm, a shorter reach and 27.1 kg against the iiwa 14's 30.6. Its mesh paths are written for a working directory one level up from the URDF, so the entry rewrites them.",
+   "notes_zh": "库里已有的 iiwa 14 的 7 kg 负载版本：同样是七轴冗余结构，臂展更短，自重 27.1 kg，而 iiwa 14 是 30.6 kg。它的网格路径是按 URDF 上一级目录写的，所以条目里做了路径改写。",
+   "pose": {
+    "iiwa_joint_2": 0.5,
+    "iiwa_joint_4": -1.3,
+    "iiwa_joint_6": 0.6
+   },
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.8174,
+     "y": 0.7828,
+     "z": 0.2292
+    },
+    "height_m": 0.7828
+   },
+   "urdf": {
+    "xml_name": "iiwa7",
+    "links": 9,
+    "joints": {
+     "fixed": 1,
+     "revolute": 7
+    },
+    "moving_joints": 7,
+    "mass_kg": 27.112,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 14606
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/facebookresearch/differentiable-robot-model@d7bd1b3b8ef1d6dabe9b68474a622185c510e112/",
+    "urdf": "diff_robot_data/kuka_iiwa/urdf/iiwa7.urdf",
+    "packages": {},
+    "mesh_files": 16,
+    "mesh_bytes": 12552294,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "mesh_rewrite": [
+     {
+      "from": "urdf/meshes/",
+      "to": "meshes/"
+     }
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "facebookresearch/differentiable-robot-model",
+    "commit": "d7bd1b3b8ef1d6dabe9b68474a622185c510e112",
+    "repo_url": "https://github.com/facebookresearch/differentiable-robot-model",
+    "tree_url": "https://github.com/facebookresearch/differentiable-robot-model/tree/d7bd1b3b8ef1d6dabe9b68474a622185c510e112/diff_robot_data/kuka_iiwa",
+    "license_url": "https://github.com/facebookresearch/differentiable-robot-model/blob/d7bd1b3b8ef1d6dabe9b68474a622185c510e112/LICENSE",
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.kuka.com/en-de/products/robot-systems/industrial-robots/lbr-iiwa"
    }
   },
   {
@@ -7398,7 +8651,7 @@
      "meshes": "dg5f/meshes"
     },
     "mesh_files": 56,
-    "mesh_bytes": 7453476,
+    "mesh_bytes": 7964964,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -7467,7 +8720,7 @@
      "meshes": "dg5fs/meshes"
     },
     "mesh_files": 52,
-    "mesh_bytes": 7289139,
+    "mesh_bytes": 5839953,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -7790,6 +9043,73 @@
    }
   },
   {
+   "id": "dexhand",
+   "name": "DexHand",
+   "maker": "The Robot Studio",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 24,
+   "license": "CC-BY-NC-SA-4.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The right hand of the open-source DexHand, and one of the few in the gallery that brings its wrist with it — 24 revolute joints — four per finger, five in the thumb and three at the wrist, over 43 cm from the forearm stump to the middle fingertip. Upstream ships the left hand too.",
+   "notes_zh": "开源 DexHand 的右手，也是库里少数把手腕一并带上的灵巧手——24 个 revolute 关节：四指每指 4 个、拇指 5 个、手腕 3 个，从前臂断面到中指指尖 43 cm。上游同时提供左手。",
+   "pose": null,
+   "preview_frame": {
+    "palm": "+x",
+    "fingers": "+z"
+   },
+   "measured": {
+    "size": {
+     "x": 0.117,
+     "y": 0.45,
+     "z": 0.1763
+    },
+    "height_m": 0.45
+   },
+   "urdf": {
+    "xml_name": "dexhand-right",
+    "links": 30,
+    "joints": {
+     "fixed": 5,
+     "revolute": 24
+    },
+    "moving_joints": 24,
+    "mass_kg": 4.356,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 48069
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/iotdesignshop/dexhand_description@211b0ea23e21215532613711c383ea6823423c0c/",
+    "urdf": "urdf/dexhand-right.urdf",
+    "packages": {
+     "dexhand_description": ""
+    },
+    "mesh_files": 30,
+    "mesh_bytes": 18438120,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "iotdesignshop/dexhand_description",
+    "commit": "211b0ea23e21215532613711c383ea6823423c0c",
+    "repo_url": "https://github.com/iotdesignshop/dexhand_description",
+    "tree_url": "https://github.com/iotdesignshop/dexhand_description/tree/211b0ea23e21215532613711c383ea6823423c0c",
+    "license_url": "https://github.com/iotdesignshop/dexhand_description/blob/211b0ea23e21215532613711c383ea6823423c0c/LICENSE",
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.dexhand.org/"
+   }
+  },
+  {
    "id": "cassie",
    "name": "Cassie",
    "maker": "Agility Robotics",
@@ -8032,7 +9352,7 @@
     "urdf": "urdf/rhea.urdf",
     "packages": {},
     "mesh_files": 7,
-    "mesh_bytes": 9938434,
+    "mesh_bytes": 12000804,
     "mesh_formats": [
      ".dae"
     ]
@@ -8581,8 +9901,8 @@
     "mjcf",
     "urdf"
    ],
-   "notes": "TRON 2's wheeled-leg form: five joints per leg — hip yaw, roll and pitch, knee, and a driven wheel where a foot would be. 34.9 kg on TRON2A and 35.6 on TRON2B. TRON2A's zero is the robot's factory-calibrated zero rather than the knees-forward walking stance, which is why it stands the way it does here; rotating each hip yaw joint by π gives the stance. TRON2B is drawn the other way round — its zero is the knees-forward pose, and it is the hardware that needs the offset.",
-   "notes_zh": "TRON 2 的轮腿形态：每条腿 5 个关节——髋 yaw、roll、pitch、膝，以及本该是脚的位置上的一个驱动轮。TRON2A 34.9 kg，TRON2B 35.6 kg。TRON2A 的零位是机器出厂标定的零位，而不是膝盖朝前的行走姿态，所以在这里它是这个站姿；把两个髋yaw 关节各转 π 就能得到行走姿态。TRON2B 反过来——它的零位就是膝盖朝前的姿态，需要补偏置的是实机。",
+   "notes": "TRON 2's wheeled-leg form: five joints per leg — hip yaw, roll and pitch, knee, and a driven wheel where a foot would be. 34.9 kg on TRON2A and 35.6 on TRON2B. TRON2A's zero is the robot's factory-calibrated zero rather than the knees-forward walking stance; rotating each hip yaw joint by π is what gives that stance. TRON2B is defined the other way round — its zero is the knees-forward pose, and it is the hardware that needs the offset.",
+   "notes_zh": "TRON 2 的轮腿形态：每条腿 5 个关节——髋 yaw、roll、pitch、膝，以及本该是脚的位置上的一个驱动轮。TRON2A 34.9 kg，TRON2B 35.6 kg。TRON2A 的零位是机器出厂标定的零位，而不是膝盖朝前的行走姿态；把两个髋 yaw 关节各转 π 才是行走姿态。TRON2B 反过来——它的零位就是膝盖朝前的姿态，需要补偏置的是实机。",
    "pose": null,
    "preview_frame": null,
    "measured": {
@@ -8822,8 +10142,8 @@
     "mjcf",
     "urdf"
    ],
-   "notes": "TRON 2's sole form: the same hip and knee as WF with an ankle pitch joint and a flat foot in place of the wheel, so it stands still where the wheeled build has to balance. 34.8 kg on TRON2A, 35.7 on TRON2B. TRON2A's zero is the robot's factory-calibrated zero rather than the knees-forward walking stance, which is why it stands the way it does here; rotating each hip yaw joint by π gives the stance. TRON2B is drawn the other way round — its zero is the knees-forward pose, and it is the hardware that needs the offset.",
-   "notes_zh": "TRON 2 的足底形态：髋与膝和 WF 相同，轮子换成一个踝 pitch 关节加平足板，因此它能站住，而轮式版本必须一直平衡。TRON2A 34.8 kg，TRON2B 35.7 kg。TRON2A 的零位是机器出厂标定的零位，而不是膝盖朝前的行走姿态，所以在这里它是这个站姿；把两个髋yaw 关节各转 π 就能得到行走姿态。TRON2B 反过来——它的零位就是膝盖朝前的姿态，需要补偏置的是实机。",
+   "notes": "TRON 2's sole form: the same hip and knee as WF with an ankle pitch joint and a flat foot in place of the wheel, so it stands still where the wheeled build has to balance. 34.8 kg on TRON2A, 35.7 on TRON2B. TRON2A's zero is the robot's factory-calibrated zero rather than the knees-forward walking stance; rotating each hip yaw joint by π is what gives that stance. TRON2B is defined the other way round — its zero is the knees-forward pose, and it is the hardware that needs the offset.",
+   "notes_zh": "TRON 2 的足底形态：髋与膝和 WF 相同，轮子换成一个踝 pitch 关节加平足板，因此它能站住，而轮式版本必须一直平衡。TRON2A 34.8 kg，TRON2B 35.7 kg。TRON2A 的零位是机器出厂标定的零位，而不是膝盖朝前的行走姿态；把两个髋 yaw 关节各转 π 才是行走姿态。TRON2B 反过来——它的零位就是膝盖朝前的姿态，需要补偏置的是实机。",
    "pose": null,
    "preview_frame": null,
    "measured": {
@@ -9175,6 +10495,129 @@
    }
   },
   {
+   "id": "spryped",
+   "name": "Spryped",
+   "maker": "Benjamin Bokser",
+   "category": "biped",
+   "tags": [
+    "biped"
+   ],
+   "dof": 8,
+   "license": "BSD",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "Benjamin Bokser's open-source biped: a body and two four-joint legs, 11 kg, with the segments named after a bird's — femur, tibiotarsus, tarsometatarsus, toe. Upstream named the joints themselves `1` to `8` and left it at that.",
+   "notes_zh": "Benjamin Bokser 的开源双足机器人：一个机身加两条 4 关节的腿，11 kg，各段按鸟腿命名——股骨、胫跗骨、跗跖骨、趾。上游给关节起的名字就是 `1` 到 `8`，再没有别的。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.5808,
+     "y": 0.9434,
+     "z": 0.4227
+    },
+    "height_m": 0.9434
+   },
+   "urdf": {
+    "xml_name": "spryped_urdf_rev06",
+    "links": 9,
+    "joints": {
+     "revolute": 8
+    },
+    "moving_joints": 8,
+    "mass_kg": 11.079,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 11744
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/bbokser/spryped@f360a6b78667a4d97c86cad465ef8f4c9512462b/",
+    "urdf": "spryped_urdf_rev06/urdf/spryped_urdf_rev06.urdf",
+    "packages": {
+     "spryped_urdf_rev06": "spryped_urdf_rev06"
+    },
+    "mesh_files": 9,
+    "mesh_bytes": 271656,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": "spryped_description",
+    "github": "bbokser/spryped",
+    "commit": "f360a6b78667a4d97c86cad465ef8f4c9512462b",
+    "repo_url": "https://github.com/bbokser/spryped",
+    "tree_url": "https://github.com/bbokser/spryped/tree/f360a6b78667a4d97c86cad465ef8f4c9512462b/spryped_urdf_rev06",
+    "license_url": "https://github.com/bbokser/spryped/blob/f360a6b78667a4d97c86cad465ef8f4c9512462b/spryped_urdf_rev06/spryped_urdf_rev06/package.xml",
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "bdx",
+   "name": "BD-X",
+   "maker": "Disney Research",
+   "category": "biped",
+   "tags": [
+    "biped"
+   ],
+   "dof": 16,
+   "license": null,
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The free-walking droid Disney Research built for its parks, as a reinforcement-learning repository redrew it: sixteen joints on a 13.8 kg body — five per leg, four more through the neck and head, and one per antenna. The licence is the NVIDIA one the repository inherited from IsaacGymEnvs, not Disney's.",
+   "notes_zh": "迪士尼研究院为乐园做的那台会自己走路的机器人，这里是一个强化学习仓库重新画出的版本：13.8 kg 机身上共 16 个关节——每条腿 5 个，颈部与头部 4 个，两根天线各 1 个。许可证是该仓库从 IsaacGymEnvs 继承来的 NVIDIA License，不是迪士尼的。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.3453,
+     "y": 0.7289,
+     "z": 0.3835
+    },
+    "height_m": 0.7289
+   },
+   "urdf": {
+    "xml_name": "bdx",
+    "links": 21,
+    "joints": {
+     "fixed": 4,
+     "revolute": 16
+    },
+    "moving_joints": 16,
+    "mass_kg": 13.759,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 18895
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/rimim/AWD@9022468fb50cbf69b716b0d71f101cb8f7435b4f/",
+    "urdf": "awd/data/assets/go_bdx/go_bdx.urdf",
+    "packages": {},
+    "mesh_files": 17,
+    "mesh_bytes": 9163728,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "rimim/AWD",
+    "commit": "9022468fb50cbf69b716b0d71f101cb8f7435b4f",
+    "repo_url": "https://github.com/rimim/AWD",
+    "tree_url": "https://github.com/rimim/AWD/tree/9022468fb50cbf69b716b0d71f101cb8f7435b4f/awd/data/assets/go_bdx",
+    "license_url": "https://github.com/rimim/AWD/blob/9022468fb50cbf69b716b0d71f101cb8f7435b4f/LICENSE.txt",
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://la.disneyresearch.com/"
+   }
+  },
+  {
    "id": "r1_a5",
    "name": "R1-A5",
    "maker": "UNITREE Robotics",
@@ -9406,7 +10849,7 @@
      "baxter_description": "baxter_description"
     },
     "mesh_files": 13,
-    "mesh_bytes": 10214330,
+    "mesh_bytes": 11560871,
     "mesh_formats": [
      ".dae"
     ]
@@ -9469,7 +10912,7 @@
     "urdf": "urdfs/robots/pr2/pr2.urdf",
     "packages": {},
     "mesh_files": 31,
-    "mesh_bytes": 1147465,
+    "mesh_bytes": 918563,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -9531,7 +10974,7 @@
      "nextage_description": "nextage_description"
     },
     "mesh_files": 16,
-    "mesh_bytes": 2072567,
+    "mesh_bytes": 1610563,
     "mesh_formats": [
      ".dae"
     ]
@@ -10022,8 +11465,8 @@
     "mjcf",
     "urdf"
    ],
-   "notes": "DA with a two-axis head on top: the same seven-joint arms plus head yaw and pitch, sixteen joints in all. Each side also ships as a spelled-out gripper: nine joints per hand, of which eight mimic the one that drives them through a crank, a bar and a nut. That takes the grasper versions to 36 moving joints on 20 motors — the sixteen of the body, plus a roll and a jaw drive per gripper.",
-   "notes_zh": "DA 加上一个两轴头部：同样的 7 关节手臂，再加头 yaw 与 pitch，合计 16 个关节。每侧还有一个把夹爪展开建模的版本：每只手 9 个关节，其中 8 个 mimic 那个经曲柄、连杆与丝母驱动它们的关节。因此 grasper 版本有 36 个可动关节、20 个电机——本体的 16 个，加上每只夹爪的一个 roll 和一个开合驱动。",
+   "notes": "DA with a two-axis head on top: the same seven-joint arms plus head yaw and pitch, sixteen joints in all. Upstream also ships a build with both grippers spelled out: nine joints per gripper, eight of them mimicking the one that drives the jaws through a crank, a bar and a nut. That takes the grasper versions to 36 moving joints on 20 motors — the sixteen of the body, plus a roll and a jaw drive per gripper.",
+   "notes_zh": "DA 加上一个两轴头部：同样的 7 关节手臂，再加头 yaw 与 pitch，合计 16 个关节。上游还提供了一个把两只夹爪展开建模的版本：每只夹爪 9 个关节，其中 8 个 mimic 那个经曲柄、连杆与丝母驱动钳口的关节。因此 grasper 版本有 36 个可动关节、20 个电机——本体的 16 个，加上每只夹爪的一个 roll 和一个开合驱动。",
    "pose": null,
    "preview_frame": null,
    "measured": {
@@ -10595,7 +12038,7 @@
      "stretch_description": ""
     },
     "mesh_files": 31,
-    "mesh_bytes": 25773920,
+    "mesh_bytes": 41556359,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -10662,7 +12105,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 34,
-    "mesh_bytes": 4919373,
+    "mesh_bytes": 4943814,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -10728,7 +12171,7 @@
      "pepper_description": ""
     },
     "mesh_files": 99,
-    "mesh_bytes": 9954071,
+    "mesh_bytes": 9391102,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -10791,7 +12234,7 @@
     "urdf": "models/rby1a/urdf/model.urdf",
     "packages": {},
     "mesh_files": 29,
-    "mesh_bytes": 40883809,
+    "mesh_bytes": 41921229,
     "mesh_formats": [
      ".dae"
     ]
@@ -10985,7 +12428,7 @@
     "urdf": "urdf/galbot_one_golf.urdf",
     "packages": {},
     "mesh_files": 118,
-    "mesh_bytes": 8044580,
+    "mesh_bytes": 8303028,
     "mesh_formats": [
      ".glb",
      ".stl"
@@ -11052,7 +12495,7 @@
     "urdf": "urdf/galbot_s1.urdf",
     "packages": {},
     "mesh_files": 82,
-    "mesh_bytes": 14752572,
+    "mesh_bytes": 8549656,
     "mesh_formats": [
      ".glb",
      ".stl"
@@ -11087,8 +12530,8 @@
     "mjcf",
     "urdf"
    ],
-   "notes": "The wheeled-leg base carrying the mast: a six-joint arm with a two-jaw gripper, a camera mount, a LiDAR and a pair of antennas, all on the transition bracket. Eighteen moving joints and 41.7 kg. The mast links are geometry only — upstream models the hardware it hangs there (a RoboSense Fairy96, an AgileX Piper X, a Huace M722 RTK and a Jetson Orin NX) as shapes, with no sensor plugins. TRON2A's zero is the robot's factory-calibrated zero rather than the knees-forward walking stance, which is why it stands the way it does here; rotating each hip yaw joint by π gives the stance. TRON2B is drawn the other way round — its zero is the knees-forward pose, and it is the hardware that needs the offset.",
-   "notes_zh": "轮腿底盘加上桅杆：一条 6 关节手臂配两指夹爪、一个相机支架、一个激光雷达和一对天线，全都装在转接件上。18 个可动关节，41.7 kg。桅杆上的连杆只有几何——上游把挂在那里的硬件（速腾 Fairy96、松灵 Piper X、华测 M722 RTK、Jetson Orin NX）建成形状，没有任何传感器插件。TRON2A 的零位是机器出厂标定的零位，而不是膝盖朝前的行走姿态，所以在这里它是这个站姿；把两个髋yaw 关节各转 π 就能得到行走姿态。TRON2B 反过来——它的零位就是膝盖朝前的姿态，需要补偏置的是实机。",
+   "notes": "The wheeled-leg base carrying the mast: a six-joint arm with a two-jaw gripper, a camera mount, a LiDAR and a pair of antennas, all on the transition bracket. Eighteen moving joints and 41.7 kg. The mast links are geometry only — upstream models the hardware it hangs there (a RoboSense Fairy96, an AgileX Piper X, a Huace M722 RTK and a Jetson Orin NX) as shapes, with no sensor plugins. TRON2A's zero is the robot's factory-calibrated zero rather than the knees-forward walking stance; rotating each hip yaw joint by π is what gives that stance. TRON2B is defined the other way round — its zero is the knees-forward pose, and it is the hardware that needs the offset.",
+   "notes_zh": "轮腿底盘加上桅杆：一条 6 关节手臂配两指夹爪、一个相机支架、一个激光雷达和一对天线，全都装在转接件上。18 个可动关节，41.7 kg。桅杆上的连杆只有几何——上游把挂在那里的硬件（速腾 Fairy96、松灵 Piper X、华测 M722 RTK、Jetson Orin NX）建成形状，没有任何传感器插件。TRON2A 的零位是机器出厂标定的零位，而不是膝盖朝前的行走姿态；把两个髋 yaw 关节各转 π 才是行走姿态。TRON2B 反过来——它的零位就是膝盖朝前的姿态，需要补偏置的是实机。",
    "pose": null,
    "preview_frame": null,
    "measured": {
@@ -11333,8 +12776,8 @@
     "mjcf",
     "urdf"
    ],
-   "notes": "The sole-foot base under the same mast as WFYG — the same six-joint arm, gripper, LiDAR and antennas — so it can stand still while the arm works. Eighteen moving joints and 41.6 kg. TRON2A's zero is the robot's factory-calibrated zero rather than the knees-forward walking stance, which is why it stands the way it does here; rotating each hip yaw joint by π gives the stance. TRON2B is drawn the other way round — its zero is the knees-forward pose, and it is the hardware that needs the offset.",
-   "notes_zh": "足底底盘配与 WFYG 相同的桅杆——同样的 6 关节手臂、夹爪、激光雷达和天线——因此手臂作业时它能站住不动。18 个可动关节，41.6 kg。TRON2A 的零位是机器出厂标定的零位，而不是膝盖朝前的行走姿态，所以在这里它是这个站姿；把两个髋yaw 关节各转 π 就能得到行走姿态。TRON2B 反过来——它的零位就是膝盖朝前的姿态，需要补偏置的是实机。",
+   "notes": "The sole-foot base under the same mast as WFYG — the same six-joint arm, gripper, LiDAR and antennas — so it can stand still while the arm works. Eighteen moving joints and 41.6 kg. TRON2A's zero is the robot's factory-calibrated zero rather than the knees-forward walking stance; rotating each hip yaw joint by π is what gives that stance. TRON2B is defined the other way round — its zero is the knees-forward pose, and it is the hardware that needs the offset.",
+   "notes_zh": "足底底盘配与 WFYG 相同的桅杆——同样的 6 关节手臂、夹爪、激光雷达和天线——因此手臂作业时它能站住不动。18 个可动关节，41.6 kg。TRON2A 的零位是机器出厂标定的零位，而不是膝盖朝前的行走姿态；把两个髋 yaw 关节各转 π 才是行走姿态。TRON2B 反过来——它的零位就是膝盖朝前的姿态，需要补偏置的是实机。",
    "pose": null,
    "preview_frame": null,
    "measured": {
@@ -11885,6 +13328,147 @@
      }
     }
    ]
+  },
+  {
+   "id": "galaxea_r1",
+   "name": "R1",
+   "maker": "Galaxea AI",
+   "category": "mobile",
+   "tags": [
+    "mobile_manipulator"
+   ],
+   "dof": 26,
+   "license": null,
+   "formats": [
+    "urdf"
+   ],
+   "notes": "Galaxea's dual-arm mobile manipulator — not to be confused with Unitree's humanoid of the same name. Twenty-six moving joints on 102 kg: three steering and three drive wheels underneath, a four-joint torso that bends and turns the whole upper body, and two 6-DOF arms ending in parallel grippers. The repository has no licence file.",
+   "notes_zh": "星海图的双臂移动操作机器人——与宇树同名的人形机器人不是一台。102 kg 上共 26 个可动关节：底盘 3 组转向轮加 3 个驱动轮，4 关节的腰身可以整体弯折与回转，两条 6 自由度手臂各带一个平行夹爪。仓库没有许可证文件。",
+   "pose": {
+    "left_arm_joint1": 0.436,
+    "left_arm_joint2": 2.619,
+    "left_arm_joint3": -1.16,
+    "left_arm_joint4": 0.496,
+    "left_arm_joint5": 1.527,
+    "left_arm_joint6": 2.721,
+    "right_arm_joint1": -0.357,
+    "right_arm_joint2": 2.712,
+    "right_arm_joint3": -1.559,
+    "right_arm_joint4": -0.11,
+    "right_arm_joint5": -1.501,
+    "right_arm_joint6": 1.578
+   },
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.8357,
+     "y": 1.7276,
+     "z": 0.9372
+    },
+    "height_m": 1.7276
+   },
+   "urdf": {
+    "xml_name": "r1_v2_1_0",
+    "links": 34,
+    "joints": {
+     "continuous": 3,
+     "fixed": 7,
+     "prismatic": 4,
+     "revolute": 19
+    },
+    "moving_joints": 26,
+    "mass_kg": 102.146,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 43279
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/userguide-galaxea/URDF@2e5d31e1784481a34d178006c0d0e18e0a84a82a/",
+    "urdf": "R1/urdf/r1_v2_1_0.urdf",
+    "packages": {
+     "r1_v2_1_0": "R1"
+    },
+    "mesh_files": 34,
+    "mesh_bytes": 33034006,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "userguide-galaxea/URDF",
+    "commit": "2e5d31e1784481a34d178006c0d0e18e0a84a82a",
+    "repo_url": "https://github.com/userguide-galaxea/URDF",
+    "tree_url": "https://github.com/userguide-galaxea/URDF/tree/2e5d31e1784481a34d178006c0d0e18e0a84a82a/R1",
+    "license_url": null,
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {}
+  },
+  {
+   "id": "galaxea_r1_pro",
+   "name": "R1 Pro",
+   "maker": "Galaxea AI",
+   "category": "mobile",
+   "tags": [
+    "mobile_manipulator"
+   ],
+   "dof": 28,
+   "license": null,
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The 2026 R1 Pro: the same three-wheel base and four-joint torso as the R1, with 7-DOF arms in place of the 6-DOF ones — 28 moving joints on a lighter 93 kg. Its gripper fingers are in the file but pinned, both prismatic joints declared with a zero-width range. The repository has no licence file.",
+   "notes_zh": "2026 年款 R1 Pro：底盘与 4 关节腰身沿用 R1，手臂从 6 自由度增加到 7 自由度——93 kg 上共 28 个可动关节，比 R1 更轻。夹爪手指在文件里，但两个 prismatic 关节的上下限都是 0，动不了。仓库没有许可证文件。",
+   "pose": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.636,
+     "y": 1.7014,
+     "z": 0.6749
+    },
+    "height_m": 1.7014
+   },
+   "urdf": {
+    "xml_name": "r1pro_urdf",
+    "links": 43,
+    "joints": {
+     "continuous": 3,
+     "fixed": 14,
+     "prismatic": 4,
+     "revolute": 21
+    },
+    "moving_joints": 28,
+    "mass_kg": 92.831,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 54049
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/userguide-galaxea/URDF@2e5d31e1784481a34d178006c0d0e18e0a84a82a/",
+    "urdf": "R1Pro/urdf_r1pro_g1z_2026/urdf/r1pro_2026.urdf",
+    "packages": {
+     "r1pro_urdf": "R1Pro/urdf_r1pro_g1z_2026"
+    },
+    "mesh_files": 38,
+    "mesh_bytes": 39975092,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "userguide-galaxea/URDF",
+    "commit": "2e5d31e1784481a34d178006c0d0e18e0a84a82a",
+    "repo_url": "https://github.com/userguide-galaxea/URDF",
+    "tree_url": "https://github.com/userguide-galaxea/URDF/tree/2e5d31e1784481a34d178006c0d0e18e0a84a82a/R1Pro/urdf_r1pro_g1z_2026",
+    "license_url": null,
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {}
   }
  ]
 }
