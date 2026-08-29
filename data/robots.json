@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-08-29T14:18:30Z",
+ "generated": "2026-08-29T17:37:25Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -3817,6 +3817,204 @@
    "links": {
     "official": "https://www.hightorquerobotics.com/"
    }
+  },
+  {
+   "id": "piplus_s",
+   "name": "PiPlus S",
+   "maker": "HighTorque Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 23,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "HighTorque's PiPlus S family, published on the repository's dedicated PiPlus_URDF branch. Its three descriptions share the same body but trade head, wrist and waist motion: one has ten arm joints plus waist yaw, while the other two have eight arm joints and a two-axis head, with or without waist yaw. The branch README licenses the package under BSD-3-Clause.",
+   "notes_zh": "高擎 PiPlus S 系列，发布在仓库独立的 PiPlus_URDF 分支。三个描述共用同一机身，但头部、腕部和腰部自由度不同：一个版本为手臂 10 关节加腰部 yaw，另外两个为手臂 8 关节加两轴头部，并分为有、无腰部 yaw。该分支 README 声明使用 BSD-3-Clause 许可证。",
+   "pose": null,
+   "loops": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.2078,
+     "y": 0.7375,
+     "z": 0.3632
+    },
+    "height_m": 0.7375
+   },
+   "urdf": {
+    "xml_name": "pi_plus_23dof_251103",
+    "links": 27,
+    "joints": {
+     "fixed": 3,
+     "revolute": 23
+    },
+    "moving_joints": 23,
+    "mass_kg": 12.211,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 32803
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/HighTorque-Robotics/HT_Robot_URDF@c05257c64c79b624e773eae704752c09c6bdb007/",
+    "urdf": "ht_urdf/PiPlus_S_12L10A0G0H1W/PiPlus_S_12L10A0G0H1W.urdf",
+    "packages": {},
+    "mesh_files": 27,
+    "mesh_bytes": 39212768,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "HighTorque-Robotics/HT_Robot_URDF",
+    "commit": "c05257c64c79b624e773eae704752c09c6bdb007",
+    "repo_url": "https://github.com/HighTorque-Robotics/HT_Robot_URDF",
+    "tree_url": "https://github.com/HighTorque-Robotics/HT_Robot_URDF/tree/c05257c64c79b624e773eae704752c09c6bdb007/ht_urdf/PiPlus_S_12L10A0G0H1W",
+    "license_url": null,
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.hightorquerobotics.com/"
+   },
+   "variants": [
+    {
+     "id": "piplus_s_12l10a0g0h1w",
+     "name": "PiPlus_S_12L10A0G0H1W",
+     "deprecated": false,
+     "dof": 23,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "Twenty-three moving joints: six per leg, five per arm and one at the waist; the two head joints are fixed.",
+     "notes_zh": "23 个可动关节：单腿 6 个、单臂 5 个、腰部 1 个；头部两个关节固定。",
+     "measured": {
+      "size": {
+       "x": 0.2078,
+       "y": 0.7375,
+       "z": 0.3632
+      },
+      "height_m": 0.7375
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "pi_plus_23dof_251103",
+      "links": 27,
+      "joints": {
+       "fixed": 3,
+       "revolute": 23
+      },
+      "moving_joints": 23,
+      "mass_kg": 12.211,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 32803
+     },
+     "assets": {
+      "urdf": "ht_urdf/PiPlus_S_12L10A0G0H1W/PiPlus_S_12L10A0G0H1W.urdf",
+      "packages": {},
+      "mesh_files": 27,
+      "mesh_bytes": 39212768,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "piplus_s_12l8a0g2h0w",
+     "name": "PiPlus_S_12L8A0G2H0W",
+     "deprecated": false,
+     "dof": 22,
+     "formats": [
+      "mjcf",
+      "urdf"
+     ],
+     "notes": "Twenty-two moving joints: six per leg, four per arm and two in the head; the waist is fixed.",
+     "notes_zh": "22 个可动关节：单腿 6 个、单臂 4 个、头部 2 个；腰部固定。",
+     "measured": {
+      "size": {
+       "x": 0.2077,
+       "y": 0.693,
+       "z": 0.3685
+      },
+      "height_m": 0.693
+     },
+     "mjcf": "ht_urdf/PiPlus_S_12L8A0G2H0W/xml/PiPlus_S_12L8A0G2H0W.xml",
+     "urdf": {
+      "xml_name": "PiPlus_S_12L8A0G2H0W",
+      "links": 27,
+      "joints": {
+       "fixed": 4,
+       "revolute": 22
+      },
+      "moving_joints": 22,
+      "mass_kg": 13.017,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 32824
+     },
+     "assets": {
+      "urdf": "ht_urdf/PiPlus_S_12L8A0G2H0W/urdf/PiPlus_S_12L8A0G2H0W.urdf",
+      "packages": {
+       "PiPlus_S_12L8A0G2H0W": "ht_urdf/PiPlus_S_12L8A0G2H0W"
+      },
+      "mesh_files": 27,
+      "mesh_bytes": 70972718,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "piplus_s_12l8a0g2h1w",
+     "name": "PiPlus_S_12L8A0G2H1W",
+     "deprecated": false,
+     "dof": 23,
+     "formats": [
+      "mjcf",
+      "urdf"
+     ],
+     "notes": "The twenty-two-joint head-and-arm configuration with an additional moving waist yaw joint, for twenty-three in all.",
+     "notes_zh": "在 22 关节的头部与手臂配置上增加可动腰部 yaw 关节，合计 23 个。",
+     "measured": {
+      "size": {
+       "x": 0.2077,
+       "y": 0.7503,
+       "z": 0.3685
+      },
+      "height_m": 0.7503
+     },
+     "mjcf": "ht_urdf/PiPlus_S_12L8A0G2H1W/xml/PiPlus_S_12L8A0G2H1W.xml",
+     "urdf": {
+      "xml_name": "PiPlus_S_12L8A0G2H1W",
+      "links": 28,
+      "joints": {
+       "fixed": 4,
+       "revolute": 23
+      },
+      "moving_joints": 23,
+      "mass_kg": 12.792,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 34131
+     },
+     "assets": {
+      "urdf": "ht_urdf/PiPlus_S_12L8A0G2H1W/urdf/PiPlus_S_12L8A0G2H1W.urdf",
+      "packages": {
+       "PiPlus_S_12L8A0G2H1W": "ht_urdf/PiPlus_S_12L8A0G2H1W"
+      },
+      "mesh_files": 28,
+      "mesh_bytes": 71388852,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    }
+   ]
   },
   {
    "id": "digit",

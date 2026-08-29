@@ -20,7 +20,7 @@ The gallery fetches this file at startup: rows checked `[x]` are shown, rows lef
 the site matches on; the name, organisation and upstream link after it are for
 human readers.
 
-## 人形 Humanoid · 45
+## 人形 Humanoid · 46
 
 - [x] `g1` **G1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description)
 - [x] `h1` **H1** — UNITREE Robotics — [unitreerobotics/unitree_ros · h1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description)
@@ -62,6 +62,7 @@ human readers.
 - [x] `t800pro` **T800 Pro** — EngineAI — [engineai-robotics/engineai_robotics_native_sdk](https://github.com/engineai-robotics/engineai_robotics_native_sdk/tree/335c60e88772c26c7852d0abd6b3c7439037dd8f/assets/resource/robot/t800pro)
 - [x] `mini_hi` **Mini Hi** — HighTorque Robotics — [HighTorque-Robotics/HT_Robot_URDF](https://github.com/HighTorque-Robotics/HT_Robot_URDF/tree/5675b9aa238d5c0431bd376f9fc708308c617d7b/hi_25dof)
 - [x] `mini_pi_plus` **Mini Pi plus** — HighTorque Robotics — [HighTorque-Robotics/HT_Robot_URDF](https://github.com/HighTorque-Robotics/HT_Robot_URDF/tree/5675b9aa238d5c0431bd376f9fc708308c617d7b/pi_plus_24dof)
+- [x] `piplus_s` **PiPlus S** — HighTorque Robotics — [HighTorque-Robotics/HT_Robot_URDF](https://github.com/HighTorque-Robotics/HT_Robot_URDF/tree/c05257c64c79b624e773eae704752c09c6bdb007/ht_urdf/PiPlus_S_12L10A0G0H1W)
 - [x] `digit` **Digit** — Agility Robotics — [adubredu/DigitRobot.jl](https://github.com/adubredu/DigitRobot.jl/tree/bd3b99e2297c48c5f818f521791a9f8daf3ee303)
 - [x] `gundam_rx78` **Gundam RX-78** — Bandai Namco Filmworks — [gundam-global-challenge/gundam_robot](https://github.com/gundam-global-challenge/gundam_robot/tree/411d5db72a122b41bb4d691a0fbc19fd2ac88222/gundam_rx78_description)
 - [x] `x1` **X1** — AgiBot — [AgibotTech/agibot_x1_train](https://github.com/AgibotTech/agibot_x1_train/tree/e6651b9ab843fd1b1be70c087bfb7e8b28e44ccd/resources/robots/x1)
