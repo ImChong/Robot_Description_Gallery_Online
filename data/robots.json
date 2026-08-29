@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-08-29T12:10:35Z",
+ "generated": "2026-08-29T14:18:30Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -57,6 +57,7 @@
    "notes": "Upstream ships twenty-two G1 descriptions in one folder and twenty-one of them are this robot: 23- and 29-DOF bodies, locked waists, three-finger and Inspire hands, Dex1-1 grippers. The version picker swaps between them — each one's mode_machine ID and hardware are in its own note. The twenty-second, g1_dual_arm, has no legs and is filed under dual arm. Pinned past the commit robot_descriptions.py carries, which predates the mode 18 and Dex1-1 files.",
    "notes_zh": "上游在同一个目录里提供 22 个 G1 描述文件，其中 21 个是这台机器：23/29 自由度本体、锁腰版本、三指手与 Inspire 手、Dex1-1 夹爪。用版本选择器切换——每个版本的 mode_machine 号与硬件差异写在它自己的说明里。第 22 个 g1_dual_arm 没有腿，收录在双臂分类下。这里固定的 commit 比 robot_descriptions.py 记录的更新，后者还没有 mode 18 与 Dex1-1 两个文件。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -1013,6 +1014,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -1077,6 +1079,7 @@
    "notes": "H1-2 includes the three-finger hands, hence the high joint count.",
    "notes_zh": "H1-2 含三指手，因此关节数较多。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -1139,6 +1142,7 @@
    "notes": "Upstream also ships the same robot with Collada meshes and a closed-loop variant.",
    "notes_zh": "上游同一台机器人还提供 Collada 网格版本与闭链版本。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -1201,6 +1205,7 @@
    "notes": "H2 with two dexterous hands, hence 75 moving joints against H2's 31.",
    "notes_zh": "H2 加装两只灵巧手，因此有 75 个可动关节，而 H2 只有 31 个。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -1264,6 +1269,7 @@
    "notes": "The ankles are parallel linkages. URDF cannot close a loop, so upstream ships the rods hanging free with constraint frames marking where they meet.",
    "notes_zh": "踝关节是并联机构。URDF 无法描述闭链，上游把连杆画成断开的，并用 constraint 坐标系标出本应连接的位置。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -1326,6 +1332,7 @@
    "notes": "A lighter R1: 20 moving joints instead of 26, with the same parallel ankles.",
    "notes_zh": "R1 的轻量版本：20 个可动关节而非 26 个，踝部同样是并联机构。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -1389,6 +1396,7 @@
    "notes": "The v1.4.0 hardware — the revision whose nameplate ends in X2 Ultra -N. Upstream also ships v1.3.0 with the same 31 joints, and a 27-DOF fist variant whose arms stop at the wrist yaw.",
    "notes_zh": "v1.4.0 硬件版本，即铭牌结尾是 X2 Ultra -N 的那一台。上游还提供关节数相同的 v1.3.0，以及手臂停在腕部 yaw 的 27 自由度假拳版本。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -1452,6 +1460,7 @@
    "notes": "The base A3 on T3.0 hardware. The repository carries an A3 T2.5 as well, but its URDF resolves every mesh through a robot_descriptions package the repository does not contain, so it cannot be loaded as published.",
    "notes_zh": "T3.0 硬件的基础版 A3。同一仓库还有 A3 T2.5，但它的 URDF 把所有网格指向仓库里并不存在的 robot_descriptions 包，按原样无法加载。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -1515,6 +1524,7 @@
    "notes": "A3 Ultra on T2.5 hardware: the same 31 joints as the base A3, plus the head and torso RealSense cameras carried as extra fixed frames.",
    "notes_zh": "T2.5 硬件的 A3 Ultra：关节与基础版 A3 一样是 31 个，另外把头部和躯干的 RealSense 相机建成了额外的固定坐标系。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -1578,6 +1588,7 @@
    "notes": "A3 Ultra with two dexterous hands: 63 moving joints against the 31 of the hand-less variants, sixteen per hand.",
    "notes_zh": "带两只灵巧手的 A3 Ultra：63 个可动关节，而不带手的版本只有 31 个，每只手十六个。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -1641,6 +1652,7 @@
    "notes": "30 joints: six per leg, seven per arm, a two-axis waist and a two-axis neck. The hands are one rigid part here; upstream's MAGICBOT_with_hand.urdf splits each into a five-finger hand with 11 more joints.",
    "notes_zh": "30 个关节：单腿 6 个、单臂 7 个，外加两轴腰部与两轴颈部。这里的手掌是一整块，上游的 MAGICBOT_with_hand.urdf 把它拆成五指手，每只手多出 11 个关节。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -1709,6 +1721,7 @@
     "left_elbow_joint": 1.4,
     "right_elbow_joint": 1.4
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -1773,6 +1786,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -1835,6 +1849,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -1895,6 +1910,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -1955,6 +1971,7 @@
    "notes": "22 joints: two in the neck, four per arm and six per leg, with the ankles driven through a parallel four-bar. Upstream also ships a ZED-camera head and a locomotion variant that fixes everything above the waist.",
    "notes_zh": "22 个关节：颈部 2 个、单臂 4 个、单腿 6 个，踝部由四连杆并联驱动。上游还提供换装 ZED 相机头部的版本，以及把腰部以上全部固定的运动控制版本。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -2017,6 +2034,7 @@
    "notes": "The seven-DOF-arm T1: same head, waist and legs as the 23-DOF Booster T1 above, with three more joints in each arm. Only the 23-DOF layout has an MJCF upstream.",
    "notes_zh": "七自由度手臂版 T1：头部、腰部和双腿与上面 23 自由度的 Booster T1 相同，每条手臂多出 3 个关节。上游只为 23 自由度版本提供了 MJCF。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -2079,6 +2097,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -2138,6 +2157,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -2201,6 +2221,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -2265,6 +2286,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -2328,6 +2350,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -2392,6 +2415,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -2458,6 +2482,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -2520,6 +2545,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -2582,6 +2608,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -2646,6 +2673,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -2710,6 +2738,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -2774,6 +2803,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -2838,6 +2868,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -2901,6 +2932,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -2963,6 +2995,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -3028,6 +3061,7 @@
    "notes": "LimX's 165 cm full-size humanoid, published as HU_D04 — 31 joints laid out exactly as the product page counts them: six per leg, three at the waist, seven per arm and two in the head. The two other versions are the same body with an end effector on each wrist: a four-jointed gripper, or a five-fingered hand of sixteen joints.",
    "notes_zh": "逐际动力 165 cm 全尺寸人形机器人，上游以 HU_D04 之名发布——31 个关节的分布与产品页给出的完全一致：单腿 6 个、腰部 3 个、单臂 7 个、头部 2 个。另外两个版本是同一本体在两只手腕上换装末端：4 关节夹爪，或 16 关节的五指灵巧手。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -3228,6 +3262,7 @@
    "notes": "The discontinued humanoid HU_D04 replaced, kept in the same repository for the machines still running it. Same 31 joints in the same places and 1.3 kg lighter in the URDF; the arm is where they differ — this one ends at a hand yaw joint rather than the wrist roll of HU_D04.",
    "notes_zh": "已停产的人形机器人，被 HU_D04 取代，上游仍把它留在同一个仓库里供还在使用的机器参考。31 个关节的位置与 HU_D04 完全相同，URDF 质量轻 1.3 kg；差别在手臂末端——它以一个 hand yaw 关节收尾，而 HU_D04 是 wrist roll。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -3296,6 +3331,7 @@
     "proximal_pitch_L_U_Joint": -3.141592653589793,
     "proximal_pitch_R_U_Joint": -3.141592653589793
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -3533,6 +3569,7 @@
    "notes": "EngineAI's 173 cm full-size humanoid. The description publishes 25 joints — six per leg, one at the torso, five per arm and two in the head — against the 29 excluding hands that the product page counts. The four it leaves out are the wrists: this build ends each arm at an elbow yaw joint, where T800 Pro carries a wrist pitch and a wrist roll. Its meshes are textured Collada rather than the usual bare STL, so loading it also pulls a directory of PNG textures the mesh count does not include. Read from EngineAI's native SDK, which is where the description lives: the Isaac assets in engineai_rl_lab are USD converted from this URDF, and its own README says so.",
    "notes_zh": "众擎 173 cm 全尺寸人形机器人。描述文件里是 25 个关节——单腿 6 个、躯干 1 个、单臂 5 个、头部 2 个——而产品页给出的是 29 个（不含灵巧手）。少掉的 4 个是手腕：这个版本每条手臂到肘 yaw 为止，而 T800 Pro 还有腕 pitch 与腕 roll。它的网格是带贴图的 Collada 而不是常见的裸 STL，因此加载时还会一并取一整个目录的 PNG 贴图，这些不计入网格数。取自众擎的 native SDK——描述文件本来就在那里：engineai_rl_lab 里的 Isaac 资产是从这个 URDF 转出的 USD，它自己的 README 就是这么写的。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -3598,6 +3635,7 @@
    "notes": "T800 with the arms finished: a two-axis wrist and a three-fingered hand on each side — thumb, index and middle, seven joints per hand — which takes it from 25 joints to 43 at the same 85 kg. One of the heaviest models in the gallery, and textured Collada like T800, with the same texture directory beside it. Read from EngineAI's native SDK, which is where the description lives: the Isaac assets in engineai_rl_lab are USD converted from this URDF, and its own README says so.",
    "notes_zh": "把手臂做完整的 T800：每侧多出两轴手腕和一只三指手——拇指、食指、中指，每只手 7 个关节——关节数从 25 增加到 43，整机质量仍是 85 kg。它是合集里最大的几个模型之一，网格与 T800 一样是带贴图的 Collada，旁边同样有一整个贴图目录。取自众擎的 native SDK——描述文件本来就在那里：engineai_rl_lab 里的 Isaac 资产是从这个 URDF 转出的 USD，它自己的 README 就是这么写的。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -3667,6 +3705,7 @@
    "notes": "HighTorque's 25-joint humanoid: six per leg, one at the waist, five per arm and two in the head, on 18.3 kg. The URDF also declares a floating joint from a world link to the base, which is a simulator's free base rather than an actuator, so it is not counted here. The repository ships no licence file; its ROS manifests carry only the SolidWorks exporter's default BSD line.",
    "notes_zh": "高擎 25 关节人形机器人：单腿 6 个、腰部 1 个、单臂 5 个、头部 2 个，整机 18.3 kg。URDF 里另有一个从 world 连杆到基座的 floating 关节，那是仿真器的自由基座而不是执行器，因此不计入自由度。仓库没有许可证文件，ROS package.xml 里只有 SolidWorks 导出器默认写的那行 BSD。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -3731,6 +3770,7 @@
    "notes": "Mini Pi with an upper body: the same twelve leg joints plus five per arm and two in the head, 24 in all on 11.0 kg. No MuJoCo model is offered for it — the XML beside the URDF is a 20-joint build of the same machine, which upstream's own changelog points out. Same licence position as the other two HighTorque entries.",
    "notes_zh": "加了上半身的 Mini Pi：同样的 12 个腿部关节，再加单臂 5 个、头部 2 个，合计 24 个，整机 11.0 kg。它没有配套的 MuJoCo 模型——URDF 旁边那个 XML 是同一台机器的 20 关节版本，上游的更新日志自己写明了这一点。许可证情况与另外两个高擎条目相同。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -3813,6 +3853,7 @@
     "elbow_joint_left": -0.836,
     "elbow_joint_right": 0.836
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -3877,6 +3918,7 @@
    "notes": "The test model the Gundam Global Challenge published for the 18-metre moving statue in Yokohama: 98 links and 77 revolute joints — 38 of them `mimic`s following another — down to a knuckle each per finger, at a URDF mass of 41 tonnes. Three orders of magnitude bigger than anything else in the gallery, and the one entry whose implausible-mass warning is simply the truth. Its licence is the association's own Terms of Use for the Gundam Research Open Simulator rather than an SPDX one — read it before using the model.",
    "notes_zh": "GUNDAM GLOBAL CHALLENGE 为横滨 18 米可动实机公开的测试模型：98 个连杆、77 个 revolute 关节（其中 38 个是跟随其他关节的 `mimic`），连每根手指都各有一个指节，URDF 质量 41 吨。它比库里任何一台都大三个数量级，也是唯一一个「质量不合常理」的告警其实说的是实话的条目。许可证是该协会自己的《GUNDAM RESEARCH OPEN SIMULATOR 使用条款》，不是 SPDX 许可，使用前请先读它。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -3939,6 +3981,7 @@
    "notes": "The description AgiBot trains its open-source X1 locomotion policy against: twelve revolute joints, six per leg, and everything above the waist — torso, arms, head — welded into fixed links. 58 links and 35 kg in all. The repository has no licence file.",
    "notes_zh": "智元用来训练开源 X1 运动策略的描述文件：12 个 revolute 关节，每条腿 6 个；腰部以上的躯干、手臂与头部全部固定。总共 58 个连杆、35 kg。仓库没有许可证文件。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -4001,6 +4044,7 @@
    "notes": "Rhoban's kid-size football humanoid, four kilos over twenty joints. Written out of the CAD by onshape-to-robot as pure geometry: every link is a box or a cylinder, so the model has inertias and collision shapes but not one mesh file — the first such entry in the gallery.",
    "notes_zh": "Rhoban 的儿童尺寸足球人形机器人，4 kg、20 个关节。它由 onshape-to-robot 从 CAD 直接导出为纯几何体：每个连杆都是长方体或圆柱体，因此有惯量、有碰撞体，却没有任何网格文件——这是库里第一个这样的条目。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -4060,6 +4104,7 @@
    "notes": "LAAS's teaching humanoid: 29 joints on a 131 kg body, drawn entirely in boxes and cylinders. It exists to be a humanoid with nothing to download but the URDF — the model people reach for when what is being tested is the algorithm rather than the robot.",
    "notes_zh": "LAAS 的教学用人形机器人：131 kg 的机身、29 个关节，全部由长方体和圆柱体画成。它存在的意义就是「除了 URDF 本身没有别的东西要下载的人形机器人」——测试算法而不是测试机器人时大家会拿它。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -4131,6 +4176,7 @@
     "RR_thigh_joint": 0.78,
     "RR_calf_joint": -1.55
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -4209,6 +4255,7 @@
     "RR_thigh_joint": 0.78,
     "RR_calf_joint": -1.55
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -4288,6 +4335,7 @@
     "RR_thigh_joint": 0.72,
     "RR_calf_joint": -1.45
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -4365,6 +4413,7 @@
     "RR_thigh_joint": 0.78,
     "RR_calf_joint": -1.55
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -4440,6 +4489,7 @@
     "RR_thigh_joint": 0.78,
     "RR_calf_joint": -1.55
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -4515,6 +4565,7 @@
     "RR_thigh_joint": 0.78,
     "RR_calf_joint": -1.55
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -4589,6 +4640,7 @@
     "RR_thigh_joint": 0.78,
     "RR_calf_joint": -1.55
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -4665,6 +4717,7 @@
     "RR_thigh_joint": 0.7,
     "RR_calf_joint": -1.4
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -4734,6 +4787,7 @@
     "RH_HFE": -0.4,
     "RH_KFE": 0.8
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -4807,6 +4861,7 @@
     "RH_HFE": -0.4,
     "RH_KFE": 0.8
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -4880,6 +4935,7 @@
     "RH_HFE": -0.4,
     "RH_KFE": 0.8
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -4953,6 +5009,7 @@
     "rh_hfe_joint": -0.5,
     "rh_kfe_joint": 1.1
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -5024,6 +5081,7 @@
     "HR_HFE": -0.6,
     "HR_KFE": 1.2
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -5089,6 +5147,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -5152,6 +5211,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -5227,6 +5287,7 @@
     "leg3_hl_joint1": -0.7,
     "leg3_hl_joint2": 1.4
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -5304,6 +5365,7 @@
     "RR_thigh_joint": 0.78,
     "RR_calf_joint": -1.55
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -5383,6 +5445,7 @@
     "RR_thigh_joint": 0.78,
     "RR_calf_joint": -1.55
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -5458,6 +5521,7 @@
     "hip_hind_right": 0.9,
     "knee_hind_right": 1.7
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -5536,6 +5600,7 @@
     "hip_hind_right": 0.9,
     "knee_hind_right": 1.7
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -5597,8 +5662,8 @@
    "formats": [
     "urdf"
    ],
-   "notes": "The quadruped that ships with Bullet and has been the first legged robot in more RL papers than any other. Each leg is a five-bar linkage: two continuous motor joints at the hip and two revolute knees with no limits declared, which URDF cannot tie back together, so the two halves of a leg swing free of each other. One mesh in the whole description — the hip motor, reused eight times; the chassis and the legs are boxes.",
-   "notes_zh": "随 Bullet 一起分发的四足机器人，在强化学习论文里当「第一台腿式机器人」的次数大概比谁都多。每条腿是五连杆：髋部两个 continuous 电机关节，加两个没有写限位的 revolute 膝关节；URDF 无法把它们接回去，所以一条腿的两半在这里是各自摆动的。整份描述只有一个网格——髋部电机，被复用了 8 次；底盘和腿都是长方体。",
+   "notes": "The quadruped that ships with Bullet and has been the first legged robot in more RL papers than any other. Each leg is a five-bar linkage whose two halves meet at the toe — a loop URDF cannot declare, so the gallery closes it the way MJCF does, with a point weld the viewer solves the two knees against every time a motor moves. The knees are the other thing this description leaves out: both are revolute with an effort and a velocity but no travel, which most tools read as a joint pinned at zero. One mesh in the whole file — the hip motor, reused eight times; the chassis and the legs are boxes.",
+   "notes_zh": "随 Bullet 一起分发的四足机器人，在强化学习论文里当「第一台腿式机器人」的次数大概比谁都多。每条腿是一组五连杆，两半在足端合到一起——URDF 声明不了这种闭环，本站于是照 MJCF 的做法补上一个点焊接约束，每次电机转动都用它反解两个膝关节。膝关节还有另一处缺省：两个 revolute 只写了力矩和速度，没写行程，多数工具会把它当成钉死在零位的关节。整份描述只有一个网格——髋部电机，被复用了 8 次；底盘和腿都是长方体。",
    "pose": {
     "motor_front_leftL_joint": 2.04,
     "knee_front_leftL_link": -1.64,
@@ -5617,14 +5682,112 @@
     "motor_back_rightR_joint": 2.04,
     "knee_back_rightR_link": -1.64
    },
+   "loops": [
+    {
+     "connect": [
+      {
+       "link": "lower_leg_front_leftR_link",
+       "point": [
+        0,
+        0.005,
+        0.2
+       ]
+      },
+      {
+       "link": "lower_leg_front_leftL_link",
+       "point": [
+        0,
+        0.01,
+        0.2
+       ]
+      }
+     ],
+     "solve": [
+      "knee_front_leftR_link",
+      "knee_front_leftL_link"
+     ]
+    },
+    {
+     "connect": [
+      {
+       "link": "lower_leg_front_rightR_link",
+       "point": [
+        0,
+        0.005,
+        0.2
+       ]
+      },
+      {
+       "link": "lower_leg_front_rightL_link",
+       "point": [
+        0,
+        0.01,
+        0.2
+       ]
+      }
+     ],
+     "solve": [
+      "knee_front_rightR_link",
+      "knee_front_rightL_link"
+     ]
+    },
+    {
+     "connect": [
+      {
+       "link": "lower_leg_back_leftR_link",
+       "point": [
+        0,
+        0.005,
+        0.2
+       ]
+      },
+      {
+       "link": "lower_leg_back_leftL_link",
+       "point": [
+        0,
+        0.01,
+        0.2
+       ]
+      }
+     ],
+     "solve": [
+      "knee_back_leftR_link",
+      "knee_back_leftL_link"
+     ]
+    },
+    {
+     "connect": [
+      {
+       "link": "lower_leg_back_rightR_link",
+       "point": [
+        0,
+        0.005,
+        0.2
+       ]
+      },
+      {
+       "link": "lower_leg_back_rightL_link",
+       "point": [
+        0,
+        0.01,
+        0.2
+       ]
+      }
+     ],
+     "solve": [
+      "knee_back_rightR_link",
+      "knee_back_rightL_link"
+     ]
+    }
+   ],
    "preview_frame": null,
    "measured": {
     "size": {
-     "x": 0.987,
-     "y": 0.2091,
+     "x": 0.634,
+     "y": 0.2888,
      "z": 0.3
     },
-    "height_m": 0.2091
+    "height_m": 0.2888
    },
    "urdf": {
     "xml_name": "quadruped",
@@ -5689,6 +5852,7 @@
     "abduct_hl_to_thigh_hl_j": -0.8,
     "thigh_hl_to_knee_hl_j": 1.6
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -5758,6 +5922,7 @@
     "joint3": -1.2,
     "joint4": 0.4
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -5823,6 +5988,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -5893,6 +6059,7 @@
     "iiwa_joint_4": -1.3,
     "iiwa_joint_6": 0.6
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -5962,6 +6129,7 @@
     "j2s6s200_joint_4": 1.0,
     "j2s6s200_joint_5": 3.1
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -6025,6 +6193,7 @@
    "notes": "Visual-only description: no inertial parameters upstream.",
    "notes_zh": "仅含可视化几何，上游未提供惯性参数。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -6091,6 +6260,7 @@
     "joint_3": 1.0,
     "joint_5": 0.6
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -6152,6 +6322,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -6217,6 +6388,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -6278,6 +6450,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -6339,6 +6512,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -6398,6 +6572,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -6463,6 +6638,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -6525,6 +6701,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -6591,6 +6768,7 @@
     "joint3": 1.0,
     "joint4": 0.6
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -6657,6 +6835,7 @@
     "joint3": 1.0,
     "joint4": 0.6
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -6723,6 +6902,7 @@
     "joint3": 1.0,
     "joint4": 0.6
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -6785,6 +6965,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -6853,6 +7034,7 @@
     "elbow_joint": 1.7,
     "wrist_1_joint": -0.7
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -7014,6 +7196,7 @@
     "elbow_joint": 1.7,
     "wrist_1_joint": -0.7
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -7175,6 +7358,7 @@
     "elbow_joint": 1.7,
     "wrist_1_joint": -0.7
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -7336,6 +7520,7 @@
     "joint_3": -1.2,
     "joint_5": 0.9
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -7404,6 +7589,7 @@
     "iiwa_joint_4": -1.3,
     "iiwa_joint_6": 0.6
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -7472,6 +7658,7 @@
    "notes": "A parallel gripper: two prismatic jaws.",
    "notes_zh": "平行夹爪：两个移动关节驱动的夹指。",
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "+z",
     "fingers": "+y"
@@ -7537,6 +7724,7 @@
    "notes": "The right hand; upstream also ships the left one and both with a G1 wrist attached.",
    "notes_zh": "此处为右手；上游还提供左手，以及带 G1 手腕的两个版本。",
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "+y",
     "fingers": "+x"
@@ -7601,6 +7789,7 @@
    "notes": "The right hand; upstream also ships the left one.",
    "notes_zh": "此处为右手；上游还提供左手。",
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "+y",
     "fingers": "+x"
@@ -7686,6 +7875,7 @@
     "Pitch_53R": 0.5,
     "Pitch_54R": 0.4
    },
+   "loops": null,
    "preview_frame": {
     "palm": "+z",
     "fingers": "+y"
@@ -7750,6 +7940,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "-z",
     "fingers": "+x"
@@ -7815,6 +8006,7 @@
    "notes": "Left hand; the same package also ships the right hand.",
    "notes_zh": "此处为左手，同一目录下还有右手模型。",
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "+x",
     "fingers": "+z"
@@ -7882,6 +8074,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "+y",
     "fingers": "+z"
@@ -7947,6 +8140,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "-y",
     "fingers": "+z"
@@ -8012,6 +8206,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "+y",
     "fingers": "+z"
@@ -8086,6 +8281,7 @@
     "finger_3_med_joint": -1.4,
     "finger_3_dist_joint": -0.31
    },
+   "loops": null,
    "preview_frame": {
     "palm": "-x",
     "fingers": "+z"
@@ -8152,6 +8348,7 @@
    "notes": "The right hand; upstream also ships the left one. Eleven revolute joints, five of them driven by `mimic` off another joint, so six motors move the hand: one per finger plus the thumb's rotation.",
    "notes_zh": "此处为右手；上游还提供左手。11 个 revolute 关节中有 5 个通过 `mimic` 跟随其他关节，因此真正驱动的是 6 个电机：每指一个，加上拇指的旋转。",
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "-x",
     "fingers": "+z"
@@ -8220,6 +8417,7 @@
    "notes": "The right hand; upstream also ships the left one. Twenty-one independent revolute joints — four per finger plus five for the thumb — which is what makes it the wider hand next to the Revo2. The visual meshes are STL, the collision geometry a convex decomposition in OBJ. Upstream publishes these files without a licence file.",
    "notes_zh": "此处为右手；上游还提供左手。21 个独立 revolute 关节——每指 4 个，拇指 5 个——这也是它比 Revo2 自由度高得多的原因。视觉网格为 STL，碰撞体是 OBJ 格式的凸分解。上游发布这些文件时没有附带许可证文件。",
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "+x",
     "fingers": "+z"
@@ -8286,6 +8484,7 @@
    "notes": "The right hand; upstream ships left and right for a dozen LinkerHand models in one repository. Twenty-one revolute joints, five of them `mimic` followers, leaving sixteen motors.",
    "notes_zh": "此处为右手；上游在同一个仓库里提供十余款 LinkerHand 的左右手。21 个 revolute 关节中 5 个是 `mimic` 从动关节，实际驱动 16 个电机。",
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "+x",
     "fingers": "+z"
@@ -8350,6 +8549,7 @@
    "notes": "An open-hardware tendon-driven hand: the seventeen joints are pulled by cables from motors in the forearm rather than actuators at the joints, which is why the fingers are as slim as they are. Upstream also ships a v2 export, `extended` versions carrying the camera mount and electronics, and both hands.",
    "notes_zh": "开源硬件的绳驱灵巧手：17 个关节由前臂电机通过绳索牵引，而不是在关节处放驱动器，手指才能做得这么细。上游还提供 v2 导出版本、带相机支架与电路板的 `extended` 版本，以及左右两只手。",
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "+x",
     "fingers": "+z"
@@ -8417,6 +8617,7 @@
    "notes": "The right hand; upstream also ships the left one. Six motors drive it, but the linkages that carry them are spelled out joint by joint — one revolute, nineteen continuous and five prismatic — so the viewer's sliders are the mechanism rather than the six commands you would send it.",
    "notes_zh": "此处为右手；上游还提供左手。实际由 6 个电机驱动，但 URDF 把传动连杆逐个关节写了出来——1 个 revolute、19 个 continuous、5 个 prismatic——所以查看器里的滑块对应的是机构本身，而不是你实际下发的 6 条指令。",
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "+z",
     "fingers": "-x"
@@ -8486,6 +8687,7 @@
    "notes": "The right hand on its own; upstream also ships the left one, a dual-hand model, and versions with a flange or a wrist. Twenty-two revolute joints, five of them in the thumb.",
    "notes_zh": "此处为单独的右手；上游还提供左手、双手模型，以及带法兰或带腕部的版本。22 个 revolute 关节，其中 5 个在拇指上。",
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "+x",
     "fingers": "+z"
@@ -8554,6 +8756,7 @@
    "notes": "The right hand; upstream also ships the left one and a docking module. Twenty independent revolute joints, four to every finger including the thumb.",
    "notes_zh": "此处为右手；上游还提供左手和一个对接模块。20 个独立 revolute 关节，每指 4 个，拇指也是 4 个。",
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "+x",
     "fingers": "+z"
@@ -8619,6 +8822,7 @@
    "notes": "The right hand; upstream also ships the left one and `short` versions of both. Twenty revolute joints, four per finger, and the only hand here whose visual meshes are Collada while its collision geometry is STL.",
    "notes_zh": "此处为右手；上游还提供左手以及两者的 `short` 版本。20 个 revolute 关节，每指 4 个；也是这里唯一一只视觉网格用 Collada、碰撞体用 STL 的手。",
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "+x",
     "fingers": "+z"
@@ -8688,6 +8892,7 @@
    "notes": "The smaller, lighter DG-5F: the same twenty joints in a hand roughly half the mass. Upstream also ships the left one, a fifteen-DOF cut, and versions with a mount.",
    "notes_zh": "DG-5F 的小型轻量版本：关节数同样是 20 个，整手质量约为前者的一半。上游还提供左手、15 自由度精简版，以及带安装座的版本。",
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "+x",
     "fingers": "+z"
@@ -8756,6 +8961,7 @@
    "notes": "Version 1.3 of the right hand. Robotera publishes no description repository, so this one is read from the All Hands Up archive rather than from a repository at a pinned commit.",
    "notes_zh": "右手 1.3 版本。Robotera 没有公开 description 仓库，所以这一条是从 All Hands Up 存档读取的，而不是某个仓库的固定 commit。",
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "+x",
     "fingers": "+z"
@@ -8826,6 +9032,7 @@
    "notes": "Revision 2 of the right hand. ROBOTIS publishes this hand as xacro, which this gallery cannot load, so the entry reads the expanded URDF from the All Hands Up archive instead of from a repository at a pinned commit.",
    "notes_zh": "右手 rev2。ROBOTIS 官方仓库只提供 xacro，本站无法直接加载，所以这一条读取的是 All Hands Up 存档里已展开的 URDF，而不是某个仓库的固定 commit。",
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "+x",
     "fingers": "+z"
@@ -8897,6 +9104,7 @@
    "notes": "The right hand, six motors behind twelve joints. Inspire publishes this hand as xacro, so the entry reads the expanded URDF from the All Hands Up archive; the archive also flattened the mesh tree the URDF still refers to, which `assets.mesh_rewrite` puts back.",
    "notes_zh": "右手，12 个关节由 6 个电机驱动。Inspire 官方只提供 xacro，所以这一条读取 All Hands Up 存档里已展开的 URDF；存档还把 URDF 引用的网格目录压平了，由 `assets.mesh_rewrite` 还原。",
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "+x",
     "fingers": "+z"
@@ -8973,6 +9181,7 @@
    "notes": "The right hand: nineteen joints, seven of them `mimic` followers, so twelve motors. Agibot publishes no description repository, so this one is read from the All Hands Up archive — which keeps only the meshes it renders, so the thirteen collision hulls are absent and skipped. The five primitive collision shapes the URDF also carries are all the collision view has to show here.",
    "notes_zh": "右手：19 个关节中 7 个是 `mimic` 从动关节，实际 12 个电机。智元没有公开 description 仓库，所以这一条从 All Hands Up 存档读取；该存档只保留自己要渲染的网格，13 个碰撞包络因此缺失并被跳过。URDF 里另有 5 个原始碰撞形状，是这里碰撞体视图能显示的全部内容。",
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "+x",
     "fingers": "+z"
@@ -9058,6 +9267,7 @@
    "notes": "The right hand of the open-source DexHand, and one of the few in the gallery that brings its wrist with it — 24 revolute joints — four per finger, five in the thumb and three at the wrist, over 43 cm from the forearm stump to the middle fingertip. Upstream ships the left hand too.",
    "notes_zh": "开源 DexHand 的右手，也是库里少数把手腕一并带上的灵巧手——24 个 revolute 关节：四指每指 4 个、拇指 5 个、手腕 3 个，从前臂断面到中指指尖 43 cm。上游同时提供左手。",
    "pose": null,
+   "loops": null,
    "preview_frame": {
     "palm": "+x",
     "fingers": "+z"
@@ -9134,6 +9344,7 @@
     "RightTarsusPitch": 1.3,
     "RightFootPitch": -1.6
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -9198,6 +9409,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -9262,6 +9474,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -9324,6 +9537,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -9386,6 +9600,7 @@
    "notes": "One biped sold with three interchangeable foot ends, which is why upstream ships it as ten descriptions rather than one: a point foot on six joints, and a sole foot or a wheel on eight, the extra pair per leg being the ankle or the wheel. Every file is called robot.urdf, so the version picker labels each by the directory it sits in. The legs are the same in all ten — 0.30 m from hip pitch to knee and 0.30 m from knee to the foot end — and what the four PF_P441 development units change is the body above them: their hip abduction axis hangs 0.087–0.099 m below the base origin where TRON 1's hangs 0.260 m.",
    "notes_zh": "同一台双足机器人配三种可换足端，所以上游把它发布成十个描述文件而不是一个：点足 6 个关节，足底或轮足 8 个，每条腿多出来的那一个是踝或轮。十个文件都叫 robot.urdf，因此版本选择器用它们所在的目录名来区分。十个版本的腿完全相同——髋 pitch 到膝 0.30 m、膝到足端 0.30 m——四个 PF_P441 开发机改的是腿以上的机身：它们的髋外展轴在基座原点下方 0.087–0.099 m，而 TRON 1 是 0.260 m。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -9904,6 +10119,7 @@
    "notes": "TRON 2's wheeled-leg form: five joints per leg — hip yaw, roll and pitch, knee, and a driven wheel where a foot would be. 34.9 kg on TRON2A and 35.6 on TRON2B. TRON2A's zero is the robot's factory-calibrated zero rather than the knees-forward walking stance; rotating each hip yaw joint by π is what gives that stance. TRON2B is defined the other way round — its zero is the knees-forward pose, and it is the hardware that needs the offset.",
    "notes_zh": "TRON 2 的轮腿形态：每条腿 5 个关节——髋 yaw、roll、pitch、膝，以及本该是脚的位置上的一个驱动轮。TRON2A 34.9 kg，TRON2B 35.6 kg。TRON2A 的零位是机器出厂标定的零位，而不是膝盖朝前的行走姿态；把两个髋 yaw 关节各转 π 才是行走姿态。TRON2B 反过来——它的零位就是膝盖朝前的姿态，需要补偏置的是实机。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -10145,6 +10361,7 @@
    "notes": "TRON 2's sole form: the same hip and knee as WF with an ankle pitch joint and a flat foot in place of the wheel, so it stands still where the wheeled build has to balance. 34.8 kg on TRON2A, 35.7 on TRON2B. TRON2A's zero is the robot's factory-calibrated zero rather than the knees-forward walking stance; rotating each hip yaw joint by π is what gives that stance. TRON2B is defined the other way round — its zero is the knees-forward pose, and it is the hardware that needs the offset.",
    "notes_zh": "TRON 2 的足底形态：髋与膝和 WF 相同，轮子换成一个踝 pitch 关节加平足板，因此它能站住，而轮式版本必须一直平衡。TRON2A 34.8 kg，TRON2B 35.7 kg。TRON2A 的零位是机器出厂标定的零位，而不是膝盖朝前的行走姿态；把两个髋 yaw 关节各转 π 才是行走姿态。TRON2B 反过来——它的零位就是膝盖朝前的姿态，需要补偏置的是实机。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -10385,6 +10602,7 @@
    "notes": "A pair of legs and nothing else: twelve joints, six per leg, on a 33 kg body — the walking platform EngineAI ships its Isaac Gym training environment with, under the internal name zqsa01. It carries no licence file of its own; the repository's setup.py declares BSD-3-Clause for the whole thing.",
    "notes_zh": "只有两条腿：12 个关节，每条腿 6 个，机身 33 kg——众擎在自家 Isaac Gym 训练环境里附带的行走平台，内部名字是 zqsa01。它没有自己的许可证文件；仓库的 setup.py 为整个仓库声明了 BSD-3-Clause。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -10447,6 +10665,7 @@
    "notes": "The legs on their own: twelve joints on 7.1 kg, and the pair Mini Pi plus puts an upper body on — the same six joint names per leg, prefixed here with the wiring order rather than left and right, so the right leg is 01–06 and the left 07–12. Same licence position as the other two HighTorque entries: no licence file in the repository.",
    "notes_zh": "只有腿：12 个关节、7.1 kg，也就是 Mini Pi plus 在上面加装上半身的那一对腿——每条腿的六个关节名字相同，只是这里按接线顺序加了编号前缀而不是左右，所以右腿是 01–06、左腿是 07–12。许可证情况与另外两个高擎条目相同：仓库里没有许可证文件。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -10510,6 +10729,7 @@
    "notes": "Benjamin Bokser's open-source biped: a body and two four-joint legs, 11 kg, with the segments named after a bird's — femur, tibiotarsus, tarsometatarsus, toe. Upstream named the joints themselves `1` to `8` and left it at that.",
    "notes_zh": "Benjamin Bokser 的开源双足机器人：一个机身加两条 4 关节的腿，11 kg，各段按鸟腿命名——股骨、胫跗骨、跗跖骨、趾。上游给关节起的名字就是 `1` 到 `8`，再没有别的。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -10571,6 +10791,7 @@
    "notes": "The free-walking droid Disney Research built for its parks, as a reinforcement-learning repository redrew it: sixteen joints on a 13.8 kg body — five per leg, four more through the neck and head, and one per antenna. The licence is the NVIDIA one the repository inherited from IsaacGymEnvs, not Disney's.",
    "notes_zh": "迪士尼研究院为乐园做的那台会自己走路的机器人，这里是一个强化学习仓库重新画出的版本：13.8 kg 机身上共 16 个关节——每条腿 5 个，颈部与头部 4 个，两根天线各 1 个。许可证是该仓库从 IsaacGymEnvs 继承来的 NVIDIA License，不是迪士尼的。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -10633,6 +10854,7 @@
    "notes": "R1's upper body on its own: waist yaw, a two-axis head and two 5-DOF arms.",
    "notes_zh": "R1 的上半身：腰部偏航、两自由度头部，以及两条 5 自由度手臂。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -10694,6 +10916,7 @@
    "notes": "The same upper body as R1-A5 with 7-DOF arms — the wrists gain pitch and yaw.",
    "notes_zh": "与 R1-A5 相同的上半身，换成 7 自由度手臂——手腕多了俯仰与偏航。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -10755,6 +10978,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -10820,6 +11044,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -10883,6 +11108,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -10946,6 +11172,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -11007,6 +11234,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -11069,6 +11297,7 @@
    "notes": "mode_machine 9 of the G1 description: the torso, head and two seven-DOF arms with 4010 wrists, ending in fixed rubber hands. The waist joints are modelled but locked, so all 14 moving joints are in the arms. Filed here rather than with the G1's other versions because without the legs it is a different machine, as G1-D is.",
    "notes_zh": "G1 描述目录里的 mode_machine 9：躯干、头部与两条七自由度手臂（腕部 4010 电机），末端是固定的橡胶手。腰部关节保留但已锁定，14 个可动关节全在手臂上。没有和 G1 的其他版本放在一起，是因为去掉双腿之后它已经是另一台机器了——G1-D 也是这样处理的。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -11132,6 +11361,7 @@
    "notes": "An upper body: two seven-DOF arms ending in two fifteen-DOF five-finger hands, on a two-DOF waist, with a two-DOF neck. Sixty revolute joints, of which twelve are `mimic` followers — ten finger couplings and two waist linkages — leaving 48 actuated. Filed with the dual arms rather than the humanoids because it has no legs. Upstream calls it a research simulation model of hardware still in development, and ships MJCF and USD beside the URDF.",
    "notes_zh": "一具上半身：两条七自由度手臂，末端是两只十五自由度的五指手，装在二自由度腰部上，另有二自由度颈部。60 个 revolute 关节中 12 个是 `mimic` 从动关节——10 个手指耦合、2 个腰部连杆——实际驱动 48 个。归入双臂而不是人形，因为它没有腿。上游说明这是仍在研发中的硬件的研究用仿真模型，除 URDF 外还提供 MJCF 与 USD。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -11197,6 +11427,7 @@
    "notes": "TRON 2's upper body on its own: seven joints per arm — shoulder pitch, roll and yaw, elbow, and a three-axis wrist — ending in a fixed parallel gripper, with a chest D435 modelled as geometry. No legs, so it is filed with the dual arms. The arms are 8.5 kg each; the other 43 kg of the 60 the URDF adds up to is the rolling test stand the torso is bolted to, which upstream models along with it.",
    "notes_zh": "TRON 2 的上半身单独成条：每条臂 7 个关节——肩 pitch、roll、yaw，肘，以及三轴腕——末端是固定的平行夹爪，胸前的 D435 只建了几何。没有腿，因此归在双臂分类下。两条手臂各 8.5 kg；URDF 合计 60 kg 里剩下的 43 kg 是躯干固定其上的那个带轮试验台架，上游把它一并建了模型。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -11468,6 +11699,7 @@
    "notes": "DA with a two-axis head on top: the same seven-joint arms plus head yaw and pitch, sixteen joints in all. Upstream also ships a build with both grippers spelled out: nine joints per gripper, eight of them mimicking the one that drives the jaws through a crank, a bar and a nut. That takes the grasper versions to 36 moving joints on 20 motors — the sixteen of the body, plus a roll and a jaw drive per gripper.",
    "notes_zh": "DA 加上一个两轴头部：同样的 7 关节手臂，再加头 yaw 与 pitch，合计 16 个关节。上游还提供了一个把两只夹爪展开建模的版本：每只夹爪 9 个关节，其中 8 个 mimic 那个经曲柄、连杆与丝母驱动钳口的关节。因此 grasper 版本有 36 个可动关节、20 个电机——本体的 16 个，加上每只夹爪的一个 roll 和一个开合驱动。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -11943,6 +12175,7 @@
    "notes": "G1's upper body and two-finger grippers on a two-wheel base with a prismatic lifting column.",
    "notes_zh": "G1 的上半身与两指夹爪装在两轮底盘上，中间是一根可升降的直线导轨。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -12007,6 +12240,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -12074,6 +12308,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -12141,6 +12376,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -12205,6 +12441,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -12269,6 +12506,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -12330,6 +12568,7 @@
    "notes": null,
    "notes_zh": null,
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -12400,6 +12639,7 @@
     "right_arm_joint3": 0.4,
     "right_arm_joint4": -1.2
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -12466,6 +12706,7 @@
    "notes": "A warehouse picker: four steered and driven wheels, a prismatic torso lift, a two-axis head and two 7-DOF arms with three-jaw grippers. Four of the 31 movable joints mimic the gripper drives, leaving 27 driven.",
    "notes_zh": "仓储拣选机器人：四个可转向的驱动轮、一根直线升降立柱、两轴头部，以及两条带三指夹爪的 7 自由度手臂。31 个可动关节里有 4 个是夹爪的 mimic 关节，实际驱动 27 个。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -12533,6 +12774,7 @@
    "notes": "The wheeled-leg base carrying the mast: a six-joint arm with a two-jaw gripper, a camera mount, a LiDAR and a pair of antennas, all on the transition bracket. Eighteen moving joints and 41.7 kg. The mast links are geometry only — upstream models the hardware it hangs there (a RoboSense Fairy96, an AgileX Piper X, a Huace M722 RTK and a Jetson Orin NX) as shapes, with no sensor plugins. TRON2A's zero is the robot's factory-calibrated zero rather than the knees-forward walking stance; rotating each hip yaw joint by π is what gives that stance. TRON2B is defined the other way round — its zero is the knees-forward pose, and it is the hardware that needs the offset.",
    "notes_zh": "轮腿底盘加上桅杆：一条 6 关节手臂配两指夹爪、一个相机支架、一个激光雷达和一对天线，全都装在转接件上。18 个可动关节，41.7 kg。桅杆上的连杆只有几何——上游把挂在那里的硬件（速腾 Fairy96、松灵 Piper X、华测 M722 RTK、Jetson Orin NX）建成形状，没有任何传感器插件。TRON2A 的零位是机器出厂标定的零位，而不是膝盖朝前的行走姿态；把两个髋 yaw 关节各转 π 才是行走姿态。TRON2B 反过来——它的零位就是膝盖朝前的姿态，需要补偏置的是实机。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -12779,6 +13021,7 @@
    "notes": "The sole-foot base under the same mast as WFYG — the same six-joint arm, gripper, LiDAR and antennas — so it can stand still while the arm works. Eighteen moving joints and 41.6 kg. TRON2A's zero is the robot's factory-calibrated zero rather than the knees-forward walking stance; rotating each hip yaw joint by π is what gives that stance. TRON2B is defined the other way round — its zero is the knees-forward pose, and it is the hardware that needs the offset.",
    "notes_zh": "足底底盘配与 WFYG 相同的桅杆——同样的 6 关节手臂、夹爪、激光雷达和天线——因此手臂作业时它能站住不动。18 个可动关节，41.6 kg。TRON2A 的零位是机器出厂标定的零位，而不是膝盖朝前的行走姿态；把两个髋 yaw 关节各转 π 才是行走姿态。TRON2B 反过来——它的零位就是膝盖朝前的姿态，需要补偏置的是实机。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -13025,6 +13268,7 @@
    "notes": "The centaur: two pairs of SF legs, front and back, under the DACH arms and head — 36 joints, 105 kg and three IMUs, one per body segment. Filed as a mobile manipulator rather than a humanoid because what carries the arms here is a four-legged base. It is the one entry the gallery shows lying flat: all four legs and both arms are stretched out at the URDF zero, and standing it up means rotating each hip yaw joint by π — the offset upstream's README describes — which the two builds take with opposite signs, TRON2A's hip yaw running to -3.67 rad where TRON2B's runs to +4.63, so no single curated pose stands both of them up. Every other TRON 2 configuration stands at its own zero.",
    "notes_zh": "半人马构型：前后两对 SF 腿，上面是 DACH 的手臂与头部——36 个关节、105 kg、三个 IMU，每个身体段一个。归在移动操作而不是人形分类下，因为托着手臂的是一个四足底盘。它是合集里唯一一台摊平展示的机器：URDF 零位下四条腿和两条手臂都是伸直摊开的，要让它站起来得把每个髋 yaw 关节转 π——也就是上游 README 里写的那个偏置——而两个版本的限位方向相反，TRON2A 的髋 yaw 往 -3.67 rad 走，TRON2B 往 +4.63 rad 走，所以没有哪一个固定姿态能同时把两者立起来。TRON 2 的其它构型在各自零位下都是站着的。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -13358,6 +13602,7 @@
     "right_arm_joint5": -1.501,
     "right_arm_joint6": 1.578
    },
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
@@ -13422,6 +13667,7 @@
    "notes": "The 2026 R1 Pro: the same three-wheel base and four-joint torso as the R1, with 7-DOF arms in place of the 6-DOF ones — 28 moving joints on a lighter 93 kg. Its gripper fingers are in the file but pinned, both prismatic joints declared with a zero-width range. The repository has no licence file.",
    "notes_zh": "2026 年款 R1 Pro：底盘与 4 关节腰身沿用 R1，手臂从 6 自由度增加到 7 自由度——93 kg 上共 28 个可动关节，比 R1 更轻。夹爪手指在文件里，但两个 prismatic 关节的上下限都是 0，动不了。仓库没有许可证文件。",
    "pose": null,
+   "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {

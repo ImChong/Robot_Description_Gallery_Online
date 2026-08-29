@@ -357,6 +357,7 @@ class UrdfFacts:
     packages: dict[str, str] = field(default_factory=dict)
     missing: list[str] = field(default_factory=list)
     joint_names: list[str] = field(default_factory=list)
+    link_names: list[str] = field(default_factory=list)
     urdf_bytes: int = 0
     has_collision: bool = False
     has_inertia: bool = False
@@ -464,6 +465,7 @@ def inspect_urdf(up: Upstream, http: Http, verify_meshes: bool = True) -> UrdfFa
         has_collision=bool(collision_meshes) or collision_primitives,
         has_inertia=any(True for _ in root.iter("inertia")),
         joint_names=joint_names,
+        link_names=[link.get("name") for link in root.iter("link") if link.get("name")],
     )
 
     meshes = sorted({m.get("filename", "") for m in root.iter("mesh") if m.get("filename")})
@@ -550,6 +552,42 @@ def curated_id(item: dict[str, Any]) -> str:
 
 
 AXIS_LETTERS = ("+x", "-x", "+y", "-y", "+z", "-z")
+
+
+def loops_problem(loops: Any, facts: UrdfFacts) -> str | None:
+    """Reject a closed-loop declaration the viewer could not act on.
+
+    A loop names links and joints that must exist and be spelled the way the
+    URDF spells them: a typo here is invisible in the browser, since the viewer
+    can only skip a loop it cannot resolve and the legs then come apart exactly
+    as they did before anyone wrote the loop down.
+    """
+    if loops is None:
+        return None
+    if not isinstance(loops, list) or not loops:
+        return f"loops must be a non-empty list, got {loops!r}"
+    for i, loop in enumerate(loops):
+        where = f"loops[{i}]"
+        if not isinstance(loop, dict):
+            return f"{where} must be an object, got {loop!r}"
+        connect = loop.get("connect")
+        if not isinstance(connect, list) or len(connect) != 2:
+            return f"{where}.connect must name exactly two points, got {connect!r}"
+        for end in connect:
+            if not isinstance(end, dict) or end.get("link") not in facts.link_names:
+                return f"{where}.connect names unknown link {end!r}"
+            point = end.get("point")
+            if not isinstance(point, list) or len(point) != 3:
+                return f"{where}.connect point must be [x, y, z], got {point!r}"
+            if any(not isinstance(v, (int, float)) or isinstance(v, bool) for v in point):
+                return f"{where}.connect point must be three numbers, got {point!r}"
+        solve = loop.get("solve")
+        if not isinstance(solve, list) or not solve:
+            return f"{where}.solve must name at least one joint, got {solve!r}"
+        unknown = sorted(set(solve) - set(facts.joint_names))
+        if unknown:
+            return f"{where}.solve names unknown joints {unknown}"
+    return None
 
 
 def preview_frame_problem(frame: Any) -> str | None:
@@ -752,6 +790,10 @@ def entry_for(
         "notes_zh": curated.get("notes_zh"),
         # Optional joint configuration for still frames and the initial view.
         "pose": curated.get("pose"),
+        # Optional closed kinematic loops, which URDF cannot state: pairs of
+        # points that are really one point, and the joints the viewer solves so
+        # they stay one. See the note at the top of data/curation.json.
+        "loops": curated.get("loops"),
         # Optional pair of model axes that lets the viewer stand every hand up
         # the same way — palm towards world +X, fingers along world +Z.
         "preview_frame": curated.get("preview_frame"),
@@ -903,6 +945,9 @@ def main() -> int:
         if unknown:
             return item, None, f"{key}: pose names unknown joints {unknown}"
         problem = preview_frame_problem(item.get("preview_frame"))
+        if problem:
+            return item, None, f"{key}: {problem}"
+        problem = loops_problem(item.get("loops"), facts)
         if problem:
             return item, None, f"{key}: {problem}"
         entry = entry_for(up, facts, item, measured.get(curated_id(item)))

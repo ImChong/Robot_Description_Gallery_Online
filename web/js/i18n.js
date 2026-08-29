@@ -161,6 +161,12 @@ const STRINGS = {
     'limit.mimicFull': 'Follows another joint: value = multiplier × source + offset',
     'limit.mimicDriven':
       'Driven by the joint it follows — value = multiplier × source + offset, so it has no slider of its own',
+    'limit.loop': 'loop',
+    'limit.loopSolved': 'closed loop',
+    'limit.loopFull':
+      'Part of a closed kinematic loop, which URDF has no way to declare — the viewer holds it shut',
+    'limit.loopDriven':
+      'Solved on every move so the loop it belongs to stays shut, which leaves it no slider of its own',
     'limit.continuous': 'continuous',
     'limit.none': 'no <limit> declared',
 
@@ -528,6 +534,10 @@ const STRINGS = {
     'limit.effortFull': '力矩限制，来自 <limit effort>',
     'limit.mimicFull': '跟随另一个关节：数值 = 倍率 × 源关节 + 偏置',
     'limit.mimicDriven': '由所跟随的关节驱动：数值 = 倍率 × 源关节 + 偏置，因此没有自己的滑块',
+    'limit.loop': '闭环',
+    'limit.loopSolved': '闭环求解',
+    'limit.loopFull': '属于一条闭环连杆——URDF 无法声明这种约束，由查看器负责把它合上',
+    'limit.loopDriven': '每次改变姿态都会重新求解，以保持所在闭环合拢，因此没有自己的滑块',
     'limit.continuous': '连续旋转',
     'limit.none': '未声明 <limit>',
 

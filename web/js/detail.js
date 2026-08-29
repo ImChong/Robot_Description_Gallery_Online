@@ -877,10 +877,12 @@ export class Detail {
     loading.hidden = false;
     bar.style.width = '4%';
 
-    // Inertial data and the effort/velocity limits are in the raw XML but not in
-    // what urdf-loader hands back, so the file is fetched a second time — from
-    // the browser cache, since the loader has just asked for the same URL. Kicked
-    // off alongside the meshes so it is ready by the time they are.
+    // Inertial data is in the raw XML but not in what urdf-loader hands back, so
+    // the file is fetched a second time — from the browser cache, since the
+    // loader has just asked for the same URL. Kicked off alongside the meshes so
+    // it is ready by the time they are. (The joint limits the loader also drops
+    // are read by the viewer itself, at load: the pose it applies below depends
+    // on them.)
     const xmlText = fetch(urdfUrl(robot))
       .then((response) => (response.ok ? response.text() : null))
       .catch(() => null);
@@ -911,10 +913,7 @@ export class Detail {
       if (local && !robot.assets.missing.length) robot.measured = this.viewer.measure();
       const xml = await xmlText;
       if (isStale()) return;
-      if (xml) {
-        this.viewer.setInertialData(xml);
-        this.viewer.setJointMeta(xml);
-      }
+      if (xml) this.viewer.setInertialData(xml);
       loading.hidden = true;
       this.renderTree();
       this.renderSpecs(); // fills in the measured height
@@ -1265,7 +1264,7 @@ export class Detail {
     if (!sweep) return;
     this._sweep = null;
     if (sweep.frame) cancelAnimationFrame(sweep.frame);
-    if (sweep.step) this.viewer.setJoint(sweep.step.name, sweep.step.from);
+    if (sweep.step) this.restoreSweepStep(sweep.step);
     this.markSweepRow(null);
     this.syncTreeValues();
     this.renderSweepButton();
@@ -1298,6 +1297,10 @@ export class Detail {
       if (u < 1) {
         sweep.frame = requestAnimationFrame(tick);
       } else {
+        // The joint is home by now — `sweepValue` ends where it began — but the
+        // loop it belongs to, if any, is not, and that is what this puts back.
+        this.restoreSweepStep(step);
+        this.syncTreeValues();
         sweep.frame = 0;
         this.runSweep();
       }
@@ -1340,9 +1343,35 @@ export class Detail {
       const spans = legs.map(([a, b]) => Math.abs(b - a));
       const total = spans.reduce((sum, span) => sum + span, 0);
       if (total < SWEEP_EPS) continue;
-      return { name, input, from, legs, spans, total };
+      // Where the joints a closed loop solves for stand as this turn begins.
+      // They are moved by this one without being driven by it, and a turn that
+      // carries a five-bar leg through the configuration where it is exactly
+      // straight comes back down the other branch of the mechanism — so the
+      // tour hands them back too, or a robot it has finished with is not the
+      // robot it started on.
+      return { name, input, from, legs, spans, total, loop: this.loopPose() };
     }
     return null;
+  }
+
+  /**
+   * Where every joint a closed loop solves for stands right now — the half of
+   * the pose no slider writes. Null when the robot has no closed loop, which
+   * is every robot in the gallery but one.
+   */
+  loopPose() {
+    const pose = {};
+    for (const joint of this.viewer.jointList()) {
+      if (joint.loop) pose[joint.name] = joint.value;
+    }
+    return Object.keys(pose).length ? pose : null;
+  }
+
+  /** Put one turn's joint — and the loop it moved on the way — back where the
+   *  turn found them. */
+  restoreSweepStep(step) {
+    this.viewer.setJoint(step.name, step.from);
+    if (step.loop) this.viewer.applyPose(step.loop);
   }
 
   /**
@@ -1679,6 +1708,9 @@ function treeNode(node, isRoot = false, joints = null) {
       (joint.mimic?.joint
         ? `<span class="jt mimic" title="${t('limit.mimicFull')}">${t('limit.mimic')}</span>`
         : '') +
+      (joint.loop
+        ? `<span class="jt loop" title="${t('limit.loopFull')}">${t('limit.loop')}</span>`
+        : '') +
       `<span class="tree-to" aria-hidden="true">→</span>`
     : `<span class="jt root">${t('tree.root')}</span>`;
   // A link with no geometry of its own is usually a frame the description
@@ -1714,11 +1746,14 @@ function treeNode(node, isRoot = false, joints = null) {
  * branch below it, never this — the block belongs to the joint on the row, not
  * to its children.
  *
- * A joint that mimics another gets no slider: its value is not its own to set.
- * The rest get the slider that moves them.
+ * A joint whose value is not its own to set gets no slider — one that mimics
+ * another, and one a closed loop solves for. The rest get the slider that moves
+ * them.
  */
 function jointBlock(joint) {
-  return joint.mimic?.joint ? followBlock(joint) : sliderBlock(joint);
+  if (joint.mimic?.joint) return followBlock(joint);
+  if (joint.loop) return loopBlock(joint);
+  return sliderBlock(joint);
 }
 
 /**
@@ -1762,6 +1797,27 @@ function followBlock(joint) {
     '</div>' +
     // The relation is on the line above, so it is not repeated in the chips.
     limitsRow(joint, false) +
+    '</div>'
+  );
+}
+
+/**
+ * What a joint inside a closed loop carries instead: where it stands, and the
+ * fact that the loop, not the reader, is what puts it there. Two branches of a
+ * five-bar leg meet at a point the URDF has no way to write down, and the
+ * viewer holds them together by solving these joints every time the ones above
+ * them move — so a slider here would be a control the next redraw undoes.
+ */
+function loopBlock(joint) {
+  return (
+    // `is-follow` for the look — a readout where a slider would be, which is
+    // the same thing this is — and `is-loop` for what it actually is.
+    '<div class="tree-slider is-follow is-loop">' +
+    `<div class="slider-line" title="${t('limit.loopDriven')}">` +
+    `<span class="tree-follow"><i aria-hidden="true">↺</i>${t('limit.loopSolved')}</span>` +
+    `<span class="tree-value" data-tree-value="${esc(joint.name)}">—</span>` +
+    '</div>' +
+    limitsRow(joint) +
     '</div>'
   );
 }

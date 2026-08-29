@@ -1139,7 +1139,7 @@ html[lang^='zh'] .footer-text-zh { display: block; }
   color: var(--accent); border-color: var(--accent-line); background: var(--accent-soft);
 }
 .jt[data-jt='fixed'] { color: var(--text-faint); border-color: var(--border-soft); background: none; }
-.jt.mimic { color: var(--warn); border-color: var(--border); }
+.jt.mimic, .jt.loop { color: var(--warn); border-color: var(--border); }
 .jt.root { color: var(--text-faint); }
 
 .tree-none { margin: 8px 0 0; font-size: 12.5px; color: var(--text-muted); }

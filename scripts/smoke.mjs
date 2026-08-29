@@ -108,11 +108,15 @@ for (const target of targets) {
         if (stage?.dataset.loaded !== id) return false;
         return {
           // Every joint that moves carries a block in the tree, under the row
-          // for the joint it turns: a slider, or — for one that mimics another
-          // and so has no value of its own to set — the joint it follows.
+          // for the joint it turns: a slider, or — for one with no value of
+          // its own to set, because it mimics another or a closed loop solves
+          // for it — a readout of where it stands.
           joints: document.querySelectorAll('#d-tree .tree-slider').length,
           sliders: document.querySelectorAll('#d-tree .tree-slider input[type="range"]').length,
           follows: document.querySelectorAll('#d-tree .tree-slider.is-follow').length,
+          // Of those, the ones a closed loop holds rather than a joint they
+          // mimic. Minitaur's knees are the only ones in the gallery.
+          loops: document.querySelectorAll('#d-tree .tree-slider.is-loop').length,
           // Every one of them carries the limits its URDF declares; a joint
           // without that row means the raw XML never made it into the panel.
           limits: document.querySelectorAll('#d-tree .tree-slider .joint-limits').length,
@@ -188,9 +192,15 @@ for (const target of targets) {
     continue;
   }
 
+  // The blocks that carry a readout instead of a slider, and what holds them
+  // there: the joint they mimic, a closed loop, or — for a description with
+  // both — neither word, just the count.
+  const held = result.follows
+    ? `+${String(result.follows).padStart(2)} ` +
+      (result.loops === 0 ? 'mimic' : result.loops === result.follows ? 'loop ' : 'held ')
+    : '         ';
   console.log(
-    `  ✓ ${name} ${String(result.sliders).padStart(3)} joints` +
-      `${result.follows ? `+${String(result.follows).padStart(2)} mimic` : '         '}  ` +
+    `  ✓ ${name} ${String(result.sliders).padStart(3)} joints${held}  ` +
       `${String(result.meshes).padStart(3)} meshes  ${seconds.padStart(5)}s  ` +
       `${result.height.toFixed(2)} m`,
   );
