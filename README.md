@@ -4,12 +4,12 @@
 [![Verify](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml/badge.svg)](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-在浏览器里加载 **130 个**开源机器人 URDF：拖关节、看碰撞体与惯量，一键下载 URDF、
+在浏览器里加载 **149 个**开源机器人 URDF：拖关节、看碰撞体与惯量，一键下载 URDF、
 网格 zip 或可直接 `colcon build` 的 ROS 2 功能包。
 
 在线访问：<https://imchong.github.io/Robot_URDF_Gallery_Online/>
 
-人形 40 · 四足 18 · 机械臂 17 · 灵巧手 23 · 移动操作 12 · 双臂 11 · 双足 9
+人形 45 · 四足 22 · 机械臂 22 · 灵巧手 24 · 移动操作 14 · 双臂 11 · 双足 11
 
 ## 功能
 
@@ -58,8 +58,11 @@ npm run check:compare                # 校验对比页
 
 ## 已知限制
 
-- 暂不支持只提供 xacro 的模型（UR 系列、Shadow Hand、Fetch 等）；自己上传时请先
-  `xacro robot.urdf.xacro > robot.urdf`。
+- 暂不支持只提供 xacro 的模型（Shadow Hand、Fetch 等）；自己上传时请先
+  `xacro robot.urdf.xacro > robot.urdf`。厂商只发布 xacro、但有第三方公开了展开后的
+  URDF 时收录后者——UR 三台走的就是 example-robot-data 这条路。
+- 网格是 Y-up 的 glTF（`obj2gltf` 的默认输出）时每个连杆都会摆错方向，这类模型同样
+  暂不收录，Drake 的双臂 iiwa 就是。
 - jsDelivr 单文件上限 20 MB，个别含超大网格的模型无法收录（Go1、B1、B2-W、PM01）。
 
 ## 许可
@@ -73,7 +76,7 @@ npm run check:compare                # 校验对比页
 
 ---
 
-**English** — A browsable 3D gallery of 130 open robot descriptions (humanoids,
+**English** — A browsable 3D gallery of 149 open robot descriptions (humanoids,
 quadrupeds, arms, hands) that loads URDFs in the browser, lets you drag joints — or
 play every joint in turn out to both its limits and back, a second each — and
 overlays collision geometry, joint axes and inertia. A compare page (`#compare=1`) puts
