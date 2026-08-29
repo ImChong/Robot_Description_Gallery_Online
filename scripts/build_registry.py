@@ -12,7 +12,9 @@ commit. This script turns that upstream metadata into a self-contained registry:
      (importing the module would clone the whole repository)
   3. download only the URDF file itself and parse joints, links and meshes
   4. resolve every ``package://`` reference to a real path in the repository by
-     probing the CDN, so a broken entry fails the build instead of the browser
+     probing the CDN — or, where the URDF names a path the repository does not
+     have, by the roots and rewrites the entry spells out — so a broken entry
+     fails the build instead of the browser
   5. merge the hand-curated bits from ``data/curation.json``
 
 A few models exist nowhere the four steps above can reach: their maker never
@@ -658,6 +660,15 @@ def upstream_from_curation(item: dict[str, Any]) -> Upstream:
         mjcf_path=spec["mjcf"] if "mjcf" in spec else first.get("mjcf"),
         uses_xacro=False,
         from_descriptions=False,
+        # Probing finds the package root for almost every repository, but a URDF
+        # can name a path its own tree does not have: a package the repository
+        # keeps somewhere the neighbourhood search does not reach, a directory
+        # renamed without the `package://` lines following it, or a relative
+        # mesh path written for a working directory other than the URDF's own.
+        # Then the entry says where the files really are, the same way a mirror
+        # does — see mirror_from_curation.
+        packages=spec.get("packages") or {},
+        mesh_rewrite=[(r["from"], r["to"]) for r in spec.get("mesh_rewrite") or []],
     )
 
 
@@ -908,9 +919,22 @@ def main() -> int:
             if vid in seen:
                 return item, None, f"{key}: two versions both called {vid}"
             seen.add(vid)
-            vup = replace(up, urdf_path=spec["urdf"], mjcf_path=spec.get("mjcf"))
+            # Upstream may keep each configuration of a machine in a package of
+            # its own — TRON2 ships sixteen, one per leg and arm combination,
+            # every one of them naming the same `bipedal_robot` package — so a
+            # version can say which directory its own `package://` lines mean.
+            vup = replace(
+                up,
+                urdf_path=spec["urdf"],
+                mjcf_path=spec.get("mjcf"),
+                package_path=spec["package"] if "package" in spec else up.package_path,
+            )
             # The default version has already been read; the rest are new files.
-            vfacts = facts if vup.urdf_path == up.urdf_path else inspect_urdf(vup, http)
+            # Same file read against another package root is another reading.
+            already_read = (
+                vup.urdf_path == up.urdf_path and vup.package_path == up.package_path
+            )
+            vfacts = facts if already_read else inspect_urdf(vup, http)
             if not vfacts.ok:
                 return item, None, f"{key} · {vid}: {vfacts.error}"
             if vfacts.missing:

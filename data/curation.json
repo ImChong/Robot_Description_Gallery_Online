@@ -29,6 +29,16 @@
     "supplies them. `upstream.package` names the ROS package directory; leave it",
     "as \"\" when the repository root is itself the package.",
     "",
+    "The build probes that neighbourhood for every `package://` root, which is",
+    "enough for almost every repository. When it is not — a package kept outside",
+    "it, a directory renamed without the `package://` lines following, a relative",
+    "mesh path written for a working directory other than the URDF's own —",
+    "`upstream.packages` maps a package name to its real repository-relative root",
+    "and `upstream.mesh_rewrite` is a list of {from, to} applied to the resolved",
+    "path. Both are the same keys a `mirror` block takes, and neither invents a",
+    "file: a rewritten path is probed like any other, and an entry whose meshes",
+    "do not resolve still fails the build.",
+    "",
     "A machine that upstream ships as several URDFs in one folder (the G1 has",
     "twenty-two, one per `mode_machine` and hand combination) is one entry with a",
     "`variants` list, not one entry per file: the gallery gives it a single card",
@@ -36,7 +46,11 @@
     "optional `mjcf`, `notes`, `notes_zh` and `deprecated` — and takes its id and",
     "its picker label from the file's own name. The first one listed is what the",
     "card and the detail page open on, so `upstream.urdf` may be left out; every",
-    "variant is parsed and mesh-probed exactly like an entry's own file."
+    "variant is parsed and mesh-probed exactly like an entry's own file. A variant",
+    "may also carry its own `name`, `id` and `package`, for a machine whose",
+    "versions upstream keeps in one package each rather than one folder — TRON2",
+    "ships sixteen of them, every file named robot.urdf and every one naming the",
+    "same `bipedal_robot` package."
   ],
   "categories": [
     {
@@ -639,6 +653,250 @@
     {
       "description": "romeo_description",
       "category": "humanoid"
+    },
+    {
+      "id": "oli",
+      "name": "Oli",
+      "maker": "LimX Dynamics",
+      "category": "humanoid",
+      "upstream": {
+        "github": "limxdynamics/humanoid-description",
+        "commit": "02adfbdd206a56e684a60fd855f49aa214b4000c",
+        "package": "HU_D04_description",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.limxdynamics.com/en/products/oli"
+      },
+      "notes": "LimX's 165 cm full-size humanoid, published as HU_D04 — 31 joints laid out exactly as the product page counts them: six per leg, three at the waist, seven per arm and two in the head. The two other versions are the same body with an end effector on each wrist: a four-jointed gripper, or a five-fingered hand of sixteen joints.",
+      "notes_zh": "逐际动力 165 cm 全尺寸人形机器人，上游以 HU_D04 之名发布——31 个关节的分布与产品页给出的完全一致：单腿 6 个、腰部 3 个、单臂 7 个、头部 2 个。另外两个版本是同一本体在两只手腕上换装末端：4 关节夹爪，或 16 关节的五指灵巧手。",
+      "variants": [
+        {
+          "id": "hu_d04_01",
+          "name": "HU_D04_01",
+          "urdf": "HU_D04_description/urdf/HU_D04_01.urdf",
+          "mjcf": "HU_D04_description/xml/HU_D04_01.xml",
+          "notes": "The bare 31-joint body, wrists ending in a roll joint and no end effector. The only one of the three with a MuJoCo model beside it.",
+          "notes_zh": "只有本体的 31 关节版本，手腕以一个 roll 关节收尾，没有末端执行器。三个版本里只有它旁边配了 MuJoCo 模型。"
+        },
+        {
+          "id": "hu_d04_01_with_gripper",
+          "name": "HU_D04_01_with_gripper",
+          "urdf": "HU_D04_description/urdf/HU_D04_01_with_gripper.urdf",
+          "dof": 35,
+          "notes": "The same body with a parallel gripper on each wrist: four joints per gripper on top of the 31, of which two mimic the other two, so 39 joints move on 35 motors.",
+          "notes_zh": "同一本体，两只手腕各装一个平行夹爪：在 31 个关节之外每只夹爪 4 个，其中 2 个是另外 2 个的 mimic，因此 39 个关节由 35 个电机驱动。"
+        },
+        {
+          "id": "hu_d04_01_with_hand",
+          "name": "HU_D04_01_with_hand",
+          "urdf": "HU_D04_description/urdf/HU_D04_01_with_hand.urdf",
+          "dof": 53,
+          "notes": "The same body with a five-fingered hand on each wrist — four joints in the thumb and three in each other finger, sixteen per hand — which takes it to 63 joints and 78 links. Each finger's distal joint mimics the proximal one above it, at 1.155 on the four fingers and 1 on the thumb, so the 63 run on 53 motors.",
+          "notes_zh": "同一本体，两只手腕各装一只五指灵巧手——拇指 4 个关节、其余每指 3 个，每只手 16 个——全身因此有 63 个关节、78 个连杆。每根手指的远端关节mimic 它上面的近端关节，四指的倍率是 1.155、拇指是 1，因此 63 个关节由 53 个电机驱动。"
+        }
+      ]
+    },
+    {
+      "id": "hu_d03",
+      "name": "HU_D03",
+      "maker": "LimX Dynamics",
+      "category": "humanoid",
+      "upstream": {
+        "github": "limxdynamics/humanoid-description",
+        "commit": "02adfbdd206a56e684a60fd855f49aa214b4000c",
+        "package": "HU_D03_description",
+        "urdf": "HU_D03_description/urdf/HU_D03_03.urdf",
+        "mjcf": "HU_D03_description/xml/HU_D03_03.xml",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.limxdynamics.com/en/products/oli"
+      },
+      "notes": "The discontinued humanoid HU_D04 replaced, kept in the same repository for the machines still running it. Same 31 joints in the same places and 1.3 kg lighter in the URDF; the arm is where they differ — this one ends at a hand yaw joint rather than the wrist roll of HU_D04.",
+      "notes_zh": "已停产的人形机器人，被 HU_D04 取代，上游仍把它留在同一个仓库里供还在使用的机器参考。31 个关节的位置与 HU_D04 完全相同，URDF 质量轻 1.3 kg；差别在手臂末端——它以一个 hand yaw 关节收尾，而 HU_D04 是 wrist roll。"
+    },
+    {
+      "id": "tron2_dasf",
+      "name": "TRON 2 DASF",
+      "maker": "LimX Dynamics",
+      "category": "humanoid",
+      "upstream": {
+        "github": "limxdynamics/tron2-robot-description",
+        "commit": "9939c22e69d27653ec0ba8a505859a2903dd1a71",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "package": "tron2a/DASF_TRON2A",
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.limxdynamics.com/en/products/tron2"
+      },
+      "notes": "The whole humanoid: SF legs joined to the DACH arms and head through a transition link, 26 joints, 66.8 kg on TRON2A and 68.2 on TRON2B, with an IMU on each half of the body and the depth camera on the upper one. TRON2A's zero is the robot's factory-calibrated zero rather than the knees-forward walking stance; rotating each hip yaw joint by π is what gives that stance. TRON2B is defined the other way round — its zero is the knees-forward pose, and it is the hardware that needs the offset. Both builds mount the upper body's arms head-down, so at the URDF zero they point straight up; the card and the measured height put the two shoulder pitch joints at their lower limit instead, which is the arms-down pose.",
+      "notes_zh": "完整的人形机器人：SF 的腿经一个转接连杆接到 DACH 的手臂与头部，26 个关节，TRON2A 66.8 kg、TRON2B 68.2 kg，上下半身各有一个 IMU，深度相机在上半身。TRON2A 的零位是机器出厂标定的零位，而不是膝盖朝前的行走姿态；把两个髋 yaw 关节各转 π 才是行走姿态。TRON2B 反过来——它的零位就是膝盖朝前的姿态，需要补偏置的是实机。两个版本的上半身手臂都是倒装的，所以 URDF 零位下手臂笔直朝上；卡片渲染与实测高度改把两个肩 pitch 关节放在各自的下限上，也就是手臂自然下垂的姿态。",
+      "pose": {
+        "proximal_pitch_L_U_Joint": -3.141592653589793,
+        "proximal_pitch_R_U_Joint": -3.141592653589793
+      },
+      "variants": [
+        {
+          "id": "dasf_tron2a_rl",
+          "name": "DASF_TRON2A_rl",
+          "urdf": "tron2a/DASF_TRON2A/urdf/robot_rl.urdf",
+          "mjcf": "tron2a/DASF_TRON2A/xml/robot.xml",
+          "package": "tron2a/DASF_TRON2A",
+          "notes": "The TRON2A humanoid. Upstream ships no robot.urdf for this one — its README names this file and the MuJoCo model beside it as the pair to load.",
+          "notes_zh": "TRON2A 的人形本体。上游没有为它提供 robot.urdf——README 指名要加载的就是这个文件和旁边的 MuJoCo 模型。"
+        },
+        {
+          "id": "dasf_tron2a_zeromass_graser",
+          "name": "DASF_TRON2A_zeromass_graser",
+          "urdf": "tron2a/DASF_TRON2A/urdf/robot_zeromass_graser.urdf",
+          "package": "tron2a/DASF_TRON2A",
+          "notes": "The same 26 joints with the grippers' mass zeroed and an end-effector frame added to each wrist.",
+          "notes_zh": "同样的 26 个关节，夹爪质量清零，两只手腕各加一个末端坐标系。"
+        },
+        {
+          "id": "dasf_tron2b",
+          "name": "DASF_TRON2B",
+          "urdf": "tron2b/DASF_TRON2B/urdf/robot.urdf",
+          "mjcf": "tron2b/DASF_TRON2B/xml/robot.xml",
+          "package": "tron2b/DASF_TRON2B",
+          "notes": "The TRON2B humanoid, 68.2 kg, standing knees-forward at its zero.",
+          "notes_zh": "TRON2B 的人形本体，68.2 kg，零位就是膝盖朝前站立。"
+        },
+        {
+          "id": "dasf_tron2b_rl",
+          "name": "DASF_TRON2B_rl",
+          "urdf": "tron2b/DASF_TRON2B/urdf/robot_rl.urdf",
+          "package": "tron2b/DASF_TRON2B",
+          "notes": "The same machine as DASF_TRON2B, with the mesh paths written relative to the URDF instead of through the package and the material colours dropped — the file the RL stacks load.",
+          "notes_zh": "与 DASF_TRON2B 同一台机器，网格路径改成相对 URDF 而不是走 package，并去掉了材质颜色——RL 那套代码加载的就是它。"
+        }
+      ]
+    },
+    {
+      "id": "t800",
+      "name": "T800",
+      "maker": "EngineAI",
+      "category": "humanoid",
+      "upstream": {
+        "github": "engineai-robotics/engineai_robotics_native_sdk",
+        "commit": "335c60e88772c26c7852d0abd6b3c7439037dd8f",
+        "package": "assets/resource/robot/t800",
+        "urdf": "assets/resource/robot/t800/urdf/serial_t800.urdf",
+        "mjcf": "assets/resource/robot/t800/xml/serial_t800.xml",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE.txt",
+        "tags": [
+          "humanoid"
+        ],
+        "packages": {
+          "resource": "assets/resource"
+        }
+      },
+      "links": {
+        "official": "https://www.engineai.com.cn/"
+      },
+      "notes": "EngineAI's 173 cm full-size humanoid. The description publishes 25 joints — six per leg, one at the torso, five per arm and two in the head — against the 29 excluding hands that the product page counts. The four it leaves out are the wrists: this build ends each arm at an elbow yaw joint, where T800 Pro carries a wrist pitch and a wrist roll. Its meshes are textured Collada rather than the usual bare STL, so loading it also pulls a directory of PNG textures the mesh count does not include. Read from EngineAI's native SDK, which is where the description lives: the Isaac assets in engineai_rl_lab are USD converted from this URDF, and its own README says so.",
+      "notes_zh": "众擎 173 cm 全尺寸人形机器人。描述文件里是 25 个关节——单腿 6 个、躯干 1 个、单臂 5 个、头部 2 个——而产品页给出的是 29 个（不含灵巧手）。少掉的 4 个是手腕：这个版本每条手臂到肘 yaw 为止，而 T800 Pro 还有腕 pitch 与腕 roll。它的网格是带贴图的 Collada 而不是常见的裸 STL，因此加载时还会一并取一整个目录的 PNG 贴图，这些不计入网格数。取自众擎的 native SDK——描述文件本来就在那里：engineai_rl_lab 里的 Isaac 资产是从这个 URDF 转出的 USD，它自己的 README 就是这么写的。"
+    },
+    {
+      "id": "t800pro",
+      "name": "T800 Pro",
+      "maker": "EngineAI",
+      "category": "humanoid",
+      "upstream": {
+        "github": "engineai-robotics/engineai_robotics_native_sdk",
+        "commit": "335c60e88772c26c7852d0abd6b3c7439037dd8f",
+        "package": "assets/resource/robot/t800pro",
+        "urdf": "assets/resource/robot/t800pro/urdf/serial_t800pro.urdf",
+        "mjcf": "assets/resource/robot/t800pro/xml/serial_t800pro.xml",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE.txt",
+        "tags": [
+          "humanoid"
+        ],
+        "mesh_rewrite": [
+          {
+            "from": "/urdf/meshes/",
+            "to": "/meshes/"
+          }
+        ]
+      },
+      "links": {
+        "official": "https://www.engineai.com.cn/"
+      },
+      "notes": "T800 with the arms finished: a two-axis wrist and a three-fingered hand on each side — thumb, index and middle, seven joints per hand — which takes it from 25 joints to 43 at the same 85 kg. One of the heaviest models in the gallery, and textured Collada like T800, with the same texture directory beside it. Read from EngineAI's native SDK, which is where the description lives: the Isaac assets in engineai_rl_lab are USD converted from this URDF, and its own README says so.",
+      "notes_zh": "把手臂做完整的 T800：每侧多出两轴手腕和一只三指手——拇指、食指、中指，每只手 7 个关节——关节数从 25 增加到 43，整机质量仍是 85 kg。它是合集里最大的几个模型之一，网格与 T800 一样是带贴图的 Collada，旁边同样有一整个贴图目录。取自众擎的 native SDK——描述文件本来就在那里：engineai_rl_lab 里的 Isaac 资产是从这个 URDF 转出的 USD，它自己的 README 就是这么写的。"
+    },
+    {
+      "id": "mini_hi",
+      "name": "Mini Hi",
+      "maker": "HighTorque Robotics",
+      "category": "humanoid",
+      "dof": 25,
+      "upstream": {
+        "github": "HighTorque-Robotics/HT_Robot_URDF",
+        "commit": "5675b9aa238d5c0431bd376f9fc708308c617d7b",
+        "package": "hi_25dof",
+        "urdf": "hi_25dof/urdf/hi_25dof.urdf",
+        "mjcf": "hi_25dof/mjcf/hi_25dof.xml",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.hightorquerobotics.com/"
+      },
+      "notes": "HighTorque's 25-joint humanoid: six per leg, one at the waist, five per arm and two in the head, on 18.3 kg. The URDF also declares a floating joint from a world link to the base, which is a simulator's free base rather than an actuator, so it is not counted here. The repository ships no licence file; its ROS manifests carry only the SolidWorks exporter's default BSD line.",
+      "notes_zh": "高擎 25 关节人形机器人：单腿 6 个、腰部 1 个、单臂 5 个、头部 2 个，整机 18.3 kg。URDF 里另有一个从 world 连杆到基座的 floating 关节，那是仿真器的自由基座而不是执行器，因此不计入自由度。仓库没有许可证文件，ROS package.xml 里只有 SolidWorks 导出器默认写的那行 BSD。"
+    },
+    {
+      "id": "mini_pi_plus",
+      "name": "Mini Pi plus",
+      "maker": "HighTorque Robotics",
+      "category": "humanoid",
+      "upstream": {
+        "github": "HighTorque-Robotics/HT_Robot_URDF",
+        "commit": "5675b9aa238d5c0431bd376f9fc708308c617d7b",
+        "package": "pi_plus_24dof",
+        "urdf": "pi_plus_24dof/urdf/pi_plus_24dof.urdf",
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.hightorquerobotics.com/"
+      },
+      "notes": "Mini Pi with an upper body: the same twelve leg joints plus five per arm and two in the head, 24 in all on 11.0 kg. No MuJoCo model is offered for it — the XML beside the URDF is a 20-joint build of the same machine, which upstream's own changelog points out. Same licence position as the other two HighTorque entries.",
+      "notes_zh": "加了上半身的 Mini Pi：同样的 12 个腿部关节，再加单臂 5 个、头部 2 个，合计 24 个，整机 11.0 kg。它没有配套的 MuJoCo 模型——URDF 旁边那个 XML 是同一台机器的 20 关节版本，上游的更新日志自己写明了这一点。许可证情况与另外两个高擎条目相同。"
     },
     {
       "description": "go2_description",
@@ -1783,6 +2041,270 @@
       "category": "biped"
     },
     {
+      "id": "tron1",
+      "name": "TRON 1",
+      "maker": "LimX Dynamics",
+      "category": "biped",
+      "upstream": {
+        "github": "limxdynamics/tron1-robot-description",
+        "commit": "5b97add1f3b461c9ed26ff2ff2f5025cc6ee4316",
+        "package": "",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "tags": [
+          "biped"
+        ]
+      },
+      "links": {
+        "official": "https://www.limxdynamics.com/en/products/tron1"
+      },
+      "notes": "One biped sold with three interchangeable foot ends, which is why upstream ships it as ten descriptions rather than one: a point foot on six joints, and a sole foot or a wheel on eight, the extra pair per leg being the ankle or the wheel. Every file is called robot.urdf, so the version picker labels each by the directory it sits in. The legs are the same in all ten — 0.30 m from hip pitch to knee and 0.30 m from knee to the foot end — and what the four PF_P441 development units change is the body above them: their hip abduction axis hangs 0.087–0.099 m below the base origin where TRON 1's hangs 0.260 m.",
+      "notes_zh": "同一台双足机器人配三种可换足端，所以上游把它发布成十个描述文件而不是一个：点足 6 个关节，足底或轮足 8 个，每条腿多出来的那一个是踝或轮。十个文件都叫 robot.urdf，因此版本选择器用它们所在的目录名来区分。十个版本的腿完全相同——髋 pitch 到膝 0.30 m、膝到足端 0.30 m——四个 PF_P441 开发机改的是腿以上的机身：它们的髋外展轴在基座原点下方 0.087–0.099 m，而 TRON 1 是 0.260 m。",
+      "variants": [
+        {
+          "id": "pf_tron1a",
+          "name": "PF_TRON1A",
+          "urdf": "pointfoot/PF_TRON1A/urdf/robot.urdf",
+          "mjcf": "pointfoot/PF_TRON1A/xml/robot.xml",
+          "notes": "Point foot: three joints per leg — hip abduction, hip pitch, knee — and nothing below the shank but a contact frame. 18.6 kg, and the simplest of the three ends to control.",
+          "notes_zh": "点足：每条腿 3 个关节——髋外展、髋 pitch、膝——小腿以下只有一个接触坐标系。18.6 kg，三种足端里最好控制的一种。"
+        },
+        {
+          "id": "pf_tron1b",
+          "name": "PF_TRON1B",
+          "urdf": "pointfoot/PF_TRON1B/urdf/robot.urdf",
+          "mjcf": "pointfoot/PF_TRON1B/xml/robot.xml",
+          "notes": "The same 18.6 kg point-foot machine as PF_TRON1A, byte for byte apart from the mesh directory each file names: upstream keeps a copy per hardware batch.",
+          "notes_zh": "与 PF_TRON1A 完全相同的 18.6 kg 点足机型，两个文件除了各自指向的网格目录之外逐字节一致：上游按硬件批次各留一份。"
+        },
+        {
+          "id": "sf_tron1a",
+          "name": "SF_TRON1A",
+          "urdf": "pointfoot/SF_TRON1A/urdf/robot.urdf",
+          "mjcf": "pointfoot/SF_TRON1A/xml/robot.xml",
+          "notes": "Sole foot: an ankle pitch joint carrying a flat foot, so four joints per leg and 20.8 kg. The ankle is the weakest joint on the machine — 20 N·m against the 80 N·m of the hip and knee.",
+          "notes_zh": "足底：多出一个踝 pitch 关节托着平足板，每条腿 4 个关节，整机 20.8 kg。踝是全身最弱的关节——20 N·m，而髋与膝是 80 N·m。"
+        },
+        {
+          "id": "sf_tron1b",
+          "name": "SF_TRON1B",
+          "urdf": "pointfoot/SF_TRON1B/urdf/robot.urdf",
+          "mjcf": "pointfoot/SF_TRON1B/xml/robot.xml",
+          "notes": "The sole-foot machine again, identical to SF_TRON1A except for the mesh directory it reads from.",
+          "notes_zh": "同样的足底机型，除了读取的网格目录之外与 SF_TRON1A 完全一致。"
+        },
+        {
+          "id": "wf_tron1a",
+          "name": "WF_TRON1A",
+          "urdf": "pointfoot/WF_TRON1A/urdf/robot.urdf",
+          "mjcf": "pointfoot/WF_TRON1A/xml/robot.xml",
+          "notes": "Wheel foot: a driven wheel where the ankle would be, declared with ±1e6 rad of travel and twice the speed limit of any other joint (40 rad/s against 15). 22.3 kg, the heaviest of the three ends.",
+          "notes_zh": "轮足：踝的位置换成一个驱动轮，行程标称 ±1e6 rad，转速上限是其它关节的两倍（40 rad/s 对 15）。22.3 kg，三种足端里最重的一种。"
+        },
+        {
+          "id": "wf_tron1b",
+          "name": "WF_TRON1B",
+          "urdf": "pointfoot/WF_TRON1B/urdf/robot.urdf",
+          "mjcf": "pointfoot/WF_TRON1B/xml/robot.xml",
+          "notes": "The wheel-foot machine again, identical to WF_TRON1A except for the mesh directory it reads from.",
+          "notes_zh": "同样的轮足机型，除了读取的网格目录之外与 WF_TRON1A 完全一致。"
+        },
+        {
+          "id": "pf_p441a",
+          "name": "PF_P441A",
+          "urdf": "pointfoot/PF_P441A/urdf/robot.urdf",
+          "mjcf": "pointfoot/PF_P441A/xml/robot.xml",
+          "notes": "The first of the four P441 development units: the point-foot leg under a shorter body, 18.5 kg, and the only version of the ten whose joints are declared at 20 rad/s rather than 15.",
+          "notes_zh": "四台 P441 开发机中的第一台：点足腿配更矮的机身，18.5 kg，也是十个版本里唯一把关节转速标成 20 rad/s（而不是 15）的一个。"
+        },
+        {
+          "id": "pf_p441b",
+          "name": "PF_P441B",
+          "urdf": "pointfoot/PF_P441B/urdf/robot.urdf",
+          "mjcf": "pointfoot/PF_P441B/xml/robot.xml",
+          "notes": "P441B, 17.5 kg — the lightest of the ten. Its hips sit 0.091 m below the base origin, 8 mm higher than P441A's.",
+          "notes_zh": "P441B，17.5 kg——十个版本里最轻的一个。它的髋在基座原点下方 0.091 m，比 P441A 高 8 mm。"
+        },
+        {
+          "id": "pf_p441c",
+          "name": "PF_P441C",
+          "urdf": "pointfoot/PF_P441C/urdf/robot.urdf",
+          "mjcf": "pointfoot/PF_P441C/xml/robot.xml",
+          "notes": "P441C, 18.8 kg, the heaviest P441 and the one that carries its hips highest, 0.087 m below the base origin. Its two hip abduction joints are also the only pair in the repository that are not mirror images: the left is 0.1095 m out from the centre line and the right 0.1005 m, where every other version has both at 0.105 m.",
+          "notes_zh": "P441C，18.8 kg，四台 P441 里最重的，髋的位置也最高，在基座原点下方 0.087 m。它的两个髋外展关节还是整个仓库里唯一不左右对称的一对：左侧离中线 0.1095 m，右侧 0.1005 m，而其它版本左右都是 0.105 m。"
+        },
+        {
+          "id": "pf_p441c2",
+          "name": "PF_P441C2",
+          "urdf": "pointfoot/PF_P441C2/urdf/robot.urdf",
+          "mjcf": "pointfoot/PF_P441C2/xml/robot.xml",
+          "notes": "P441C2, 18.4 kg: C's revision, with the two hip abduction joints put back on the same 0.105 m offset left and right.",
+          "notes_zh": "P441C2，18.4 kg：C 的修订版，把左右髋外展关节的偏置改回了一致的 0.105 m。"
+        }
+      ]
+    },
+    {
+      "id": "tron2_wf",
+      "name": "TRON 2 WF",
+      "maker": "LimX Dynamics",
+      "category": "biped",
+      "upstream": {
+        "github": "limxdynamics/tron2-robot-description",
+        "commit": "9939c22e69d27653ec0ba8a505859a2903dd1a71",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "package": "tron2a/WF_TRON2A",
+        "tags": [
+          "biped",
+          "wheeled"
+        ]
+      },
+      "links": {
+        "official": "https://www.limxdynamics.com/en/products/tron2"
+      },
+      "notes": "TRON 2's wheeled-leg form: five joints per leg — hip yaw, roll and pitch, knee, and a driven wheel where a foot would be. 34.9 kg on TRON2A and 35.6 on TRON2B. TRON2A's zero is the robot's factory-calibrated zero rather than the knees-forward walking stance; rotating each hip yaw joint by π is what gives that stance. TRON2B is defined the other way round — its zero is the knees-forward pose, and it is the hardware that needs the offset.",
+      "notes_zh": "TRON 2 的轮腿形态：每条腿 5 个关节——髋 yaw、roll、pitch、膝，以及本该是脚的位置上的一个驱动轮。TRON2A 34.9 kg，TRON2B 35.6 kg。TRON2A 的零位是机器出厂标定的零位，而不是膝盖朝前的行走姿态；把两个髋 yaw 关节各转 π 才是行走姿态。TRON2B 反过来——它的零位就是膝盖朝前的姿态，需要补偏置的是实机。",
+      "variants": [
+        {
+          "id": "wf_tron2a",
+          "name": "WF_TRON2A",
+          "urdf": "tron2a/WF_TRON2A/urdf/robot.urdf",
+          "mjcf": "tron2a/WF_TRON2A/xml/robot.xml",
+          "package": "tron2a/WF_TRON2A",
+          "notes": "The wheeled biped as upstream's Gazebo and RViz launches load it.",
+          "notes_zh": "上游的 Gazebo 与 RViz 启动文件加载的轮式双足本体。"
+        },
+        {
+          "id": "wf_tron2a_rl",
+          "name": "WF_TRON2A_rl",
+          "urdf": "tron2a/WF_TRON2A/urdf/robot_rl.urdf",
+          "package": "tron2a/WF_TRON2A",
+          "notes": "The same machine as WF_TRON2A, with the mesh paths written relative to the URDF instead of through the package and the material colours dropped — the file the RL stacks load.",
+          "notes_zh": "与 WF_TRON2A 同一台机器，网格路径改成相对 URDF 而不是走 package，并去掉了材质颜色——RL 那套代码加载的就是它。"
+        },
+        {
+          "id": "wf_tron2b",
+          "name": "WF_TRON2B",
+          "urdf": "tron2b/WF_TRON2B/urdf/robot.urdf",
+          "mjcf": "tron2b/WF_TRON2B/xml/robot.xml",
+          "package": "tron2b/WF_TRON2B",
+          "notes": "The TRON2B build of the same machine: 0.6 kg heavier, and drawn at the knees-forward pose rather than the factory zero.",
+          "notes_zh": "同一台机器的 TRON2B 版本：重 0.6 kg，并且画的是膝盖朝前的姿态而不是出厂零位。"
+        },
+        {
+          "id": "wf_tron2b_rl",
+          "name": "WF_TRON2B_rl",
+          "urdf": "tron2b/WF_TRON2B/urdf/robot_rl.urdf",
+          "package": "tron2b/WF_TRON2B",
+          "notes": "The same machine as WF_TRON2B, with the mesh paths written relative to the URDF instead of through the package and the material colours dropped — the file the RL stacks load.",
+          "notes_zh": "与 WF_TRON2B 同一台机器，网格路径改成相对 URDF 而不是走 package，并去掉了材质颜色——RL 那套代码加载的就是它。"
+        }
+      ]
+    },
+    {
+      "id": "tron2_sf",
+      "name": "TRON 2 SF",
+      "maker": "LimX Dynamics",
+      "category": "biped",
+      "upstream": {
+        "github": "limxdynamics/tron2-robot-description",
+        "commit": "9939c22e69d27653ec0ba8a505859a2903dd1a71",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "package": "tron2a/SF_TRON2A",
+        "tags": [
+          "biped"
+        ]
+      },
+      "links": {
+        "official": "https://www.limxdynamics.com/en/products/tron2"
+      },
+      "notes": "TRON 2's sole form: the same hip and knee as WF with an ankle pitch joint and a flat foot in place of the wheel, so it stands still where the wheeled build has to balance. 34.8 kg on TRON2A, 35.7 on TRON2B. TRON2A's zero is the robot's factory-calibrated zero rather than the knees-forward walking stance; rotating each hip yaw joint by π is what gives that stance. TRON2B is defined the other way round — its zero is the knees-forward pose, and it is the hardware that needs the offset.",
+      "notes_zh": "TRON 2 的足底形态：髋与膝和 WF 相同，轮子换成一个踝 pitch 关节加平足板，因此它能站住，而轮式版本必须一直平衡。TRON2A 34.8 kg，TRON2B 35.7 kg。TRON2A 的零位是机器出厂标定的零位，而不是膝盖朝前的行走姿态；把两个髋 yaw 关节各转 π 才是行走姿态。TRON2B 反过来——它的零位就是膝盖朝前的姿态，需要补偏置的是实机。",
+      "variants": [
+        {
+          "id": "sf_tron2a",
+          "name": "SF_TRON2A",
+          "urdf": "tron2a/SF_TRON2A/urdf/robot.urdf",
+          "mjcf": "tron2a/SF_TRON2A/xml/robot.xml",
+          "package": "tron2a/SF_TRON2A",
+          "notes": "The sole-foot biped at the factory zero — the pose in upstream's own SF_0.jpg.",
+          "notes_zh": "出厂零位下的足底双足本体——也就是上游 SF_0.jpg 里的那个姿态。"
+        },
+        {
+          "id": "sf_tron2a_rl",
+          "name": "SF_TRON2A_rl",
+          "urdf": "tron2a/SF_TRON2A/urdf/robot_rl.urdf",
+          "package": "tron2a/SF_TRON2A",
+          "notes": "The same machine as SF_TRON2A, with the mesh paths written relative to the URDF instead of through the package and the material colours dropped — the file the RL stacks load.",
+          "notes_zh": "与 SF_TRON2A 同一台机器，网格路径改成相对 URDF 而不是走 package，并去掉了材质颜色——RL 那套代码加载的就是它。"
+        },
+        {
+          "id": "sf_tron2b",
+          "name": "SF_TRON2B",
+          "urdf": "tron2b/SF_TRON2B/urdf/robot.urdf",
+          "mjcf": "tron2b/SF_TRON2B/xml/robot.xml",
+          "package": "tron2b/SF_TRON2B",
+          "notes": "The TRON2B build, 0.9 kg heavier and already standing knees-forward.",
+          "notes_zh": "TRON2B 版本，重 0.9 kg，并且本来就是膝盖朝前站着的。"
+        },
+        {
+          "id": "sf_tron2b_rl",
+          "name": "SF_TRON2B_rl",
+          "urdf": "tron2b/SF_TRON2B/urdf/robot_rl.urdf",
+          "package": "tron2b/SF_TRON2B",
+          "notes": "The same machine as SF_TRON2B, with the mesh paths written relative to the URDF instead of through the package and the material colours dropped — the file the RL stacks load.",
+          "notes_zh": "与 SF_TRON2B 同一台机器，网格路径改成相对 URDF 而不是走 package，并去掉了材质颜色——RL 那套代码加载的就是它。"
+        }
+      ]
+    },
+    {
+      "id": "sa01",
+      "name": "SA01",
+      "maker": "EngineAI",
+      "category": "biped",
+      "upstream": {
+        "github": "engineai-robotics/engineai_legged_gym",
+        "commit": "1a659aa0aa77445766ecea6d95708a5812e9f290",
+        "package": "resources/robots/zq_humanoid",
+        "urdf": "resources/robots/zq_humanoid/urdf/zq_sa01.urdf",
+        "license": "BSD-3-Clause",
+        "tags": [
+          "biped"
+        ]
+      },
+      "links": {
+        "official": "https://www.engineai.com.cn/"
+      },
+      "notes": "A pair of legs and nothing else: twelve joints, six per leg, on a 33 kg body — the walking platform EngineAI ships its Isaac Gym training environment with, under the internal name zqsa01. It carries no licence file of its own; the repository's setup.py declares BSD-3-Clause for the whole thing.",
+      "notes_zh": "只有两条腿：12 个关节，每条腿 6 个，机身 33 kg——众擎在自家 Isaac Gym 训练环境里附带的行走平台，内部名字是 zqsa01。它没有自己的许可证文件；仓库的 setup.py 为整个仓库声明了 BSD-3-Clause。"
+    },
+    {
+      "id": "mini_pi",
+      "name": "Mini Pi",
+      "maker": "HighTorque Robotics",
+      "category": "biped",
+      "upstream": {
+        "github": "HighTorque-Robotics/HT_Robot_URDF",
+        "commit": "5675b9aa238d5c0431bd376f9fc708308c617d7b",
+        "package": "pi_12dof",
+        "urdf": "pi_12dof/urdf/pi_12dof.urdf",
+        "mjcf": "pi_12dof/mjcf/pi_12dof.xml",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "biped"
+        ]
+      },
+      "links": {
+        "official": "https://www.hightorquerobotics.com/"
+      },
+      "notes": "The legs on their own: twelve joints on 7.1 kg, and the pair Mini Pi plus puts an upper body on — the same six joint names per leg, prefixed here with the wiring order rather than left and right, so the right leg is 01–06 and the left 07–12. Same licence position as the other two HighTorque entries: no licence file in the repository.",
+      "notes_zh": "只有腿：12 个关节、7.1 kg，也就是 Mini Pi plus 在上面加装上半身的那一对腿——每条腿的六个关节名字相同，只是这里按接线顺序加了编号前缀而不是左右，所以右腿是 01–06、左腿是 07–12。许可证情况与另外两个高擎条目相同：仓库里没有许可证文件。"
+    },
+    {
       "id": "r1_a5",
       "name": "R1-A5",
       "maker": "UNITREE Robotics",
@@ -1905,6 +2427,168 @@
       "notes_zh": "一具上半身：两条七自由度手臂，末端是两只十五自由度的五指手，装在二自由度腰部上，另有二自由度颈部。60 个 revolute 关节中 12 个是 `mimic` 从动关节——10 个手指耦合、2 个腰部连杆——实际驱动 48 个。归入双臂而不是人形，因为它没有腿。上游说明这是仍在研发中的硬件的研究用仿真模型，除 URDF 外还提供 MJCF 与 USD。"
     },
     {
+      "id": "tron2_da",
+      "name": "TRON 2 DA",
+      "maker": "LimX Dynamics",
+      "category": "dual_arm",
+      "upstream": {
+        "github": "limxdynamics/tron2-robot-description",
+        "commit": "9939c22e69d27653ec0ba8a505859a2903dd1a71",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "package": "tron2a/DA_TRON2A",
+        "tags": [
+          "dual arm"
+        ],
+        "mesh_rewrite": [
+          {
+            "from": "tron2/",
+            "to": "tron2a/"
+          }
+        ]
+      },
+      "links": {
+        "official": "https://www.limxdynamics.com/en/products/tron2"
+      },
+      "notes": "TRON 2's upper body on its own: seven joints per arm — shoulder pitch, roll and yaw, elbow, and a three-axis wrist — ending in a fixed parallel gripper, with a chest D435 modelled as geometry. No legs, so it is filed with the dual arms. The arms are 8.5 kg each; the other 43 kg of the 60 the URDF adds up to is the rolling test stand the torso is bolted to, which upstream models along with it.",
+      "notes_zh": "TRON 2 的上半身单独成条：每条臂 7 个关节——肩 pitch、roll、yaw，肘，以及三轴腕——末端是固定的平行夹爪，胸前的 D435 只建了几何。没有腿，因此归在双臂分类下。两条手臂各 8.5 kg；URDF 合计 60 kg 里剩下的 43 kg 是躯干固定其上的那个带轮试验台架，上游把它一并建了模型。",
+      "variants": [
+        {
+          "id": "da_tron2a",
+          "name": "DA_TRON2A",
+          "urdf": "tron2a/DA_TRON2A/urdf/robot.urdf",
+          "mjcf": "tron2a/DA_TRON2A/xml/robot.xml",
+          "package": "tron2a/DA_TRON2A",
+          "notes": "The dual-arm torso, 59.7 kg. Its package:// lines name a tron2/ directory the repository has since renamed tron2a/, so the entry maps the two.",
+          "notes_zh": "双臂躯干，59.7 kg。它的 package:// 路径写的是 tron2/ 目录，而仓库后来把它改名为 tron2a/，所以条目里做了映射。"
+        },
+        {
+          "id": "da_tron2a_rl",
+          "name": "DA_TRON2A_rl",
+          "urdf": "tron2a/DA_TRON2A/urdf/robot_rl.urdf",
+          "package": "tron2a/DA_TRON2A",
+          "notes": "The same machine as DA_TRON2A, with the mesh paths written relative to the URDF instead of through the package and the material colours dropped — the file the RL stacks load.",
+          "notes_zh": "与 DA_TRON2A 同一台机器，网格路径改成相对 URDF 而不是走 package，并去掉了材质颜色——RL 那套代码加载的就是它。"
+        },
+        {
+          "id": "da_tron2b",
+          "name": "DA_TRON2B",
+          "urdf": "tron2b/DA_TRON2B/urdf/robot.urdf",
+          "mjcf": "tron2b/DA_TRON2B/xml/robot.xml",
+          "package": "tron2b/DA_TRON2B",
+          "notes": "The TRON2B build of the same torso, 0.5 kg heavier.",
+          "notes_zh": "同一躯干的 TRON2B 版本，重 0.5 kg。"
+        },
+        {
+          "id": "da_tron2b_rl",
+          "name": "DA_TRON2B_rl",
+          "urdf": "tron2b/DA_TRON2B/urdf/robot_rl.urdf",
+          "package": "tron2b/DA_TRON2B",
+          "notes": "The same machine as DA_TRON2B, with the mesh paths written relative to the URDF instead of through the package and the material colours dropped — the file the RL stacks load.",
+          "notes_zh": "与 DA_TRON2B 同一台机器，网格路径改成相对 URDF 而不是走 package，并去掉了材质颜色——RL 那套代码加载的就是它。"
+        }
+      ]
+    },
+    {
+      "id": "tron2_dach",
+      "name": "TRON 2 DACH",
+      "maker": "LimX Dynamics",
+      "category": "dual_arm",
+      "upstream": {
+        "github": "limxdynamics/tron2-robot-description",
+        "commit": "9939c22e69d27653ec0ba8a505859a2903dd1a71",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "package": "tron2a/DACH_TRON2A",
+        "tags": [
+          "dual arm"
+        ],
+        "mesh_rewrite": [
+          {
+            "from": "tron2/",
+            "to": "tron2a/"
+          }
+        ]
+      },
+      "links": {
+        "official": "https://www.limxdynamics.com/en/products/tron2"
+      },
+      "notes": "DA with a two-axis head on top: the same seven-joint arms plus head yaw and pitch, sixteen joints in all. Upstream also ships a build with both grippers spelled out: nine joints per gripper, eight of them mimicking the one that drives the jaws through a crank, a bar and a nut. That takes the grasper versions to 36 moving joints on 20 motors — the sixteen of the body, plus a roll and a jaw drive per gripper.",
+      "notes_zh": "DA 加上一个两轴头部：同样的 7 关节手臂，再加头 yaw 与 pitch，合计 16 个关节。上游还提供了一个把两只夹爪展开建模的版本：每只夹爪 9 个关节，其中 8 个 mimic 那个经曲柄、连杆与丝母驱动钳口的关节。因此 grasper 版本有 36 个可动关节、20 个电机——本体的 16 个，加上每只夹爪的一个 roll 和一个开合驱动。",
+      "variants": [
+        {
+          "id": "dach_tron2a",
+          "name": "DACH_TRON2A",
+          "urdf": "tron2a/DACH_TRON2A/urdf/robot.urdf",
+          "mjcf": "tron2a/DACH_TRON2A/xml/robot.xml",
+          "package": "tron2a/DACH_TRON2A",
+          "notes": "The dual-arm torso with the head, 61.3 kg, grippers fixed shut.",
+          "notes_zh": "带头部的双臂躯干，61.3 kg，夹爪固定不动。"
+        },
+        {
+          "id": "dach_tron2a_grasper",
+          "name": "DACH_TRON2A_grasper",
+          "urdf": "tron2a/DACH_TRON2A/urdf/robot_grasper.urdf",
+          "dof": 20,
+          "mjcf": "tron2a/DACH_TRON2A/xml/robot_grasper.xml",
+          "package": "tron2a/DACH_TRON2A",
+          "notes": "The same torso with both grippers spelled out: 45 links and 36 moving joints, 16 of them mimicking the two that drive the jaws.",
+          "notes_zh": "同一躯干，两只夹爪都展开建模：45 个连杆、36 个可动关节，其中 16 个mimic 驱动钳口的那两个。"
+        },
+        {
+          "id": "dach_tron2a_zeromass_graser",
+          "name": "DACH_TRON2A_zeromass_graser",
+          "urdf": "tron2a/DACH_TRON2A/urdf/robot_zeromass_graser.urdf",
+          "package": "tron2a/DACH_TRON2A",
+          "notes": "The fixed-gripper build with the two gripper links' 0.53 kg zeroed and a fixed end-effector frame added to each wrist — for controllers that carry the payload in their own model rather than the URDF's.",
+          "notes_zh": "固定夹爪版本，把两个夹爪连杆各 0.53 kg 的质量清零，并在两只手腕上各加一个固定的末端坐标系——给那些在自己模型里、而不是在 URDF 里记负载的控制器用。"
+        },
+        {
+          "id": "dach_tron2a_rl",
+          "name": "DACH_TRON2A_rl",
+          "urdf": "tron2a/DACH_TRON2A/urdf/robot_rl.urdf",
+          "package": "tron2a/DACH_TRON2A",
+          "notes": "The same machine as DACH_TRON2A, with the mesh paths written relative to the URDF instead of through the package and the material colours dropped — the file the RL stacks load.",
+          "notes_zh": "与 DACH_TRON2A 同一台机器，网格路径改成相对 URDF 而不是走 package，并去掉了材质颜色——RL 那套代码加载的就是它。"
+        },
+        {
+          "id": "dach_tron2b",
+          "name": "DACH_TRON2B",
+          "urdf": "tron2b/DACH_TRON2B/urdf/robot.urdf",
+          "mjcf": "tron2b/DACH_TRON2B/xml/robot.xml",
+          "package": "tron2b/DACH_TRON2B",
+          "notes": "The TRON2B build of the head-and-arms torso, 61.8 kg.",
+          "notes_zh": "带头部双臂躯干的 TRON2B 版本，61.8 kg。"
+        },
+        {
+          "id": "dach_tron2b_grasper",
+          "name": "DACH_TRON2B_grasper",
+          "urdf": "tron2b/DACH_TRON2B/urdf/robot_grasper.urdf",
+          "dof": 20,
+          "mjcf": "tron2b/DACH_TRON2B/xml/robot_grasper.xml",
+          "package": "tron2b/DACH_TRON2B",
+          "notes": "TRON2B with both grippers spelled out, 36 moving joints on 20 motors.",
+          "notes_zh": "TRON2B，两只夹爪都展开建模，36 个可动关节、20 个电机。"
+        },
+        {
+          "id": "dach_tron2b_zeromass_graser",
+          "name": "DACH_TRON2B_zeromass_graser",
+          "urdf": "tron2b/DACH_TRON2B/urdf/robot_zeromass_graser.urdf",
+          "package": "tron2b/DACH_TRON2B",
+          "notes": "TRON2B's zero-mass gripper build, with the two end-effector frames.",
+          "notes_zh": "TRON2B 的夹爪零质量版本，带两个末端坐标系。"
+        },
+        {
+          "id": "dach_tron2b_rl",
+          "name": "DACH_TRON2B_rl",
+          "urdf": "tron2b/DACH_TRON2B/urdf/robot_rl.urdf",
+          "package": "tron2b/DACH_TRON2B",
+          "notes": "The same machine as DACH_TRON2B, with the mesh paths written relative to the URDF instead of through the package and the material colours dropped — the file the RL stacks load.",
+          "notes_zh": "与 DACH_TRON2B 同一台机器，网格路径改成相对 URDF 而不是走 package，并去掉了材质颜色——RL 那套代码加载的就是它。"
+        }
+      ]
+    },
+    {
       "id": "g1_d",
       "name": "G1-D",
       "maker": "UNITREE Robotics",
@@ -2025,6 +2709,192 @@
       },
       "notes": "A warehouse picker: four steered and driven wheels, a prismatic torso lift, a two-axis head and two 7-DOF arms with three-jaw grippers. Four of the 31 movable joints mimic the gripper drives, leaving 27 driven.",
       "notes_zh": "仓储拣选机器人：四个可转向的驱动轮、一根直线升降立柱、两轴头部，以及两条带三指夹爪的 7 自由度手臂。31 个可动关节里有 4 个是夹爪的 mimic 关节，实际驱动 27 个。"
+    },
+    {
+      "id": "tron2_wfyg",
+      "name": "TRON 2 WFYG",
+      "maker": "LimX Dynamics",
+      "category": "mobile",
+      "upstream": {
+        "github": "limxdynamics/tron2-robot-description",
+        "commit": "9939c22e69d27653ec0ba8a505859a2903dd1a71",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "package": "tron2a/WFYG_TRON2A",
+        "tags": [
+          "mobile manipulator",
+          "wheeled"
+        ]
+      },
+      "links": {
+        "official": "https://www.limxdynamics.com/en/products/tron2"
+      },
+      "notes": "The wheeled-leg base carrying the mast: a six-joint arm with a two-jaw gripper, a camera mount, a LiDAR and a pair of antennas, all on the transition bracket. Eighteen moving joints and 41.7 kg. The mast links are geometry only — upstream models the hardware it hangs there (a RoboSense Fairy96, an AgileX Piper X, a Huace M722 RTK and a Jetson Orin NX) as shapes, with no sensor plugins. TRON2A's zero is the robot's factory-calibrated zero rather than the knees-forward walking stance; rotating each hip yaw joint by π is what gives that stance. TRON2B is defined the other way round — its zero is the knees-forward pose, and it is the hardware that needs the offset.",
+      "notes_zh": "轮腿底盘加上桅杆：一条 6 关节手臂配两指夹爪、一个相机支架、一个激光雷达和一对天线，全都装在转接件上。18 个可动关节，41.7 kg。桅杆上的连杆只有几何——上游把挂在那里的硬件（速腾 Fairy96、松灵 Piper X、华测 M722 RTK、Jetson Orin NX）建成形状，没有任何传感器插件。TRON2A 的零位是机器出厂标定的零位，而不是膝盖朝前的行走姿态；把两个髋 yaw 关节各转 π 才是行走姿态。TRON2B 反过来——它的零位就是膝盖朝前的姿态，需要补偏置的是实机。",
+      "variants": [
+        {
+          "id": "wfyg_tron2a",
+          "name": "WFYG_TRON2A",
+          "urdf": "tron2a/WFYG_TRON2A/urdf/robot.urdf",
+          "mjcf": "tron2a/WFYG_TRON2A/xml/robot.xml",
+          "package": "tron2a/WFYG_TRON2A",
+          "notes": "The wheeled base with the full mast, 41.7 kg.",
+          "notes_zh": "轮式底盘配完整桅杆，41.7 kg。"
+        },
+        {
+          "id": "wfyg_tron2a_rl",
+          "name": "WFYG_TRON2A_rl",
+          "urdf": "tron2a/WFYG_TRON2A/urdf/robot_rl.urdf",
+          "package": "tron2a/WFYG_TRON2A",
+          "notes": "The same machine as WFYG_TRON2A, with the mesh paths written relative to the URDF instead of through the package and the material colours dropped — the file the RL stacks load. It also carries the gripper_pick frame the MuJoCo model marks the grasp point with.",
+          "notes_zh": "与 WFYG_TRON2A 同一台机器，网格路径改成相对 URDF 而不是走 package，并去掉了材质颜色——RL 那套代码加载的就是它。它还带上了 MuJoCo 模型里用来标抓取点的 gripper_pick 坐标系。"
+        },
+        {
+          "id": "wfyg_tron2b",
+          "name": "WFYG_TRON2B",
+          "urdf": "tron2b/WFYG_TRON2B/urdf/robot.urdf",
+          "mjcf": "tron2b/WFYG_TRON2B/xml/robot.xml",
+          "package": "tron2b/WFYG_TRON2B",
+          "notes": "The TRON2B build of the same rig, 42.3 kg.",
+          "notes_zh": "同一套装配的 TRON2B 版本，42.3 kg。"
+        },
+        {
+          "id": "wfyg_tron2b_rl",
+          "name": "WFYG_TRON2B_rl",
+          "urdf": "tron2b/WFYG_TRON2B/urdf/robot_rl.urdf",
+          "package": "tron2b/WFYG_TRON2B",
+          "notes": "The same machine as WFYG_TRON2B, with the mesh paths written relative to the URDF instead of through the package and the material colours dropped — the file the RL stacks load.",
+          "notes_zh": "与 WFYG_TRON2B 同一台机器，网格路径改成相对 URDF 而不是走 package，并去掉了材质颜色——RL 那套代码加载的就是它。"
+        }
+      ]
+    },
+    {
+      "id": "tron2_sfyg",
+      "name": "TRON 2 SFYG",
+      "maker": "LimX Dynamics",
+      "category": "mobile",
+      "upstream": {
+        "github": "limxdynamics/tron2-robot-description",
+        "commit": "9939c22e69d27653ec0ba8a505859a2903dd1a71",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "package": "tron2a/SFYG_TRON2A",
+        "tags": [
+          "mobile manipulator"
+        ]
+      },
+      "links": {
+        "official": "https://www.limxdynamics.com/en/products/tron2"
+      },
+      "notes": "The sole-foot base under the same mast as WFYG — the same six-joint arm, gripper, LiDAR and antennas — so it can stand still while the arm works. Eighteen moving joints and 41.6 kg. TRON2A's zero is the robot's factory-calibrated zero rather than the knees-forward walking stance; rotating each hip yaw joint by π is what gives that stance. TRON2B is defined the other way round — its zero is the knees-forward pose, and it is the hardware that needs the offset.",
+      "notes_zh": "足底底盘配与 WFYG 相同的桅杆——同样的 6 关节手臂、夹爪、激光雷达和天线——因此手臂作业时它能站住不动。18 个可动关节，41.6 kg。TRON2A 的零位是机器出厂标定的零位，而不是膝盖朝前的行走姿态；把两个髋 yaw 关节各转 π 才是行走姿态。TRON2B 反过来——它的零位就是膝盖朝前的姿态，需要补偏置的是实机。",
+      "variants": [
+        {
+          "id": "sfyg_tron2a",
+          "name": "SFYG_TRON2A",
+          "urdf": "tron2a/SFYG_TRON2A/urdf/robot.urdf",
+          "mjcf": "tron2a/SFYG_TRON2A/xml/robot.xml",
+          "package": "tron2a/SFYG_TRON2A",
+          "notes": "The sole-foot base with the full mast, 41.6 kg.",
+          "notes_zh": "足底底盘配完整桅杆，41.6 kg。"
+        },
+        {
+          "id": "sfyg_tron2a_rl",
+          "name": "SFYG_TRON2A_rl",
+          "urdf": "tron2a/SFYG_TRON2A/urdf/robot_rl.urdf",
+          "package": "tron2a/SFYG_TRON2A",
+          "notes": "The same machine as SFYG_TRON2A, with the mesh paths written relative to the URDF instead of through the package and the material colours dropped — the file the RL stacks load. It also carries the gripper_pick frame the MuJoCo model marks the grasp point with.",
+          "notes_zh": "与 SFYG_TRON2A 同一台机器，网格路径改成相对 URDF 而不是走 package，并去掉了材质颜色——RL 那套代码加载的就是它。它还带上了 MuJoCo 模型里用来标抓取点的 gripper_pick 坐标系。"
+        },
+        {
+          "id": "sfyg_tron2b",
+          "name": "SFYG_TRON2B",
+          "urdf": "tron2b/SFYG_TRON2B/urdf/robot.urdf",
+          "mjcf": "tron2b/SFYG_TRON2B/xml/robot.xml",
+          "package": "tron2b/SFYG_TRON2B",
+          "notes": "The TRON2B build of the same rig, 42.4 kg.",
+          "notes_zh": "同一套装配的 TRON2B 版本，42.4 kg。"
+        },
+        {
+          "id": "sfyg_tron2b_rl",
+          "name": "SFYG_TRON2B_rl",
+          "urdf": "tron2b/SFYG_TRON2B/urdf/robot_rl.urdf",
+          "package": "tron2b/SFYG_TRON2B",
+          "notes": "The same machine as SFYG_TRON2B, with the mesh paths written relative to the URDF instead of through the package and the material colours dropped — the file the RL stacks load.",
+          "notes_zh": "与 SFYG_TRON2B 同一台机器，网格路径改成相对 URDF 而不是走 package，并去掉了材质颜色——RL 那套代码加载的就是它。"
+        }
+      ]
+    },
+    {
+      "id": "tron2_dasf2",
+      "name": "TRON 2 DASF2",
+      "maker": "LimX Dynamics",
+      "category": "mobile",
+      "upstream": {
+        "github": "limxdynamics/tron2-robot-description",
+        "commit": "9939c22e69d27653ec0ba8a505859a2903dd1a71",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "package": "tron2a/DASF2_TRON2A",
+        "tags": [
+          "mobile manipulator"
+        ],
+        "mesh_rewrite": [
+          {
+            "from": "tron2/",
+            "to": "tron2a/"
+          }
+        ]
+      },
+      "links": {
+        "official": "https://www.limxdynamics.com/en/products/tron2"
+      },
+      "notes": "The centaur: two pairs of SF legs, front and back, under the DACH arms and head — 36 joints, 105 kg and three IMUs, one per body segment. Filed as a mobile manipulator rather than a humanoid because what carries the arms here is a four-legged base. It is the one entry the gallery shows lying flat: all four legs and both arms are stretched out at the URDF zero, and standing it up means rotating each hip yaw joint by π — the offset upstream's README describes — which the two builds take with opposite signs, TRON2A's hip yaw running to -3.67 rad where TRON2B's runs to +4.63, so no single curated pose stands both of them up. Every other TRON 2 configuration stands at its own zero.",
+      "notes_zh": "半人马构型：前后两对 SF 腿，上面是 DACH 的手臂与头部——36 个关节、105 kg、三个 IMU，每个身体段一个。归在移动操作而不是人形分类下，因为托着手臂的是一个四足底盘。它是合集里唯一一台摊平展示的机器：URDF 零位下四条腿和两条手臂都是伸直摊开的，要让它站起来得把每个髋 yaw 关节转 π——也就是上游 README 里写的那个偏置——而两个版本的限位方向相反，TRON2A 的髋 yaw 往 -3.67 rad 走，TRON2B 往 +4.63 rad 走，所以没有哪一个固定姿态能同时把两者立起来。TRON 2 的其它构型在各自零位下都是站着的。",
+      "variants": [
+        {
+          "id": "dasf2_tron2a",
+          "name": "DASF2_TRON2A",
+          "urdf": "tron2a/DASF2_TRON2A/urdf/robot.urdf",
+          "mjcf": "tron2a/DASF2_TRON2A/xml/robot.xml",
+          "package": "tron2a/DASF2_TRON2A",
+          "notes": "The TRON2A centaur, 104.7 kg, lying flat at its factory zero. The only description in the repository that still carries Gazebo blocks — 48 of them, for the IMU and camera plugins. Its package:// lines name the pre-rename tron2/ directory, which the entry maps.",
+          "notes_zh": "TRON2A 的半人马，104.7 kg，出厂零位下四条腿是摊平的。它是仓库里唯一还带 Gazebo 段的描述——48 段，用于 IMU 与相机插件。它的 package:// 路径写的是改名前的 tron2/ 目录，条目里做了映射。"
+        },
+        {
+          "id": "dasf2_tron2a_rl",
+          "name": "DASF2_TRON2A_rl",
+          "urdf": "tron2a/DASF2_TRON2A/urdf/robot_rl.urdf",
+          "package": "tron2a/DASF2_TRON2A",
+          "notes": "The same machine as DASF2_TRON2A, with the mesh paths written relative to the URDF instead of through the package and the material colours dropped — the file the RL stacks load.",
+          "notes_zh": "与 DASF2_TRON2A 同一台机器，网格路径改成相对 URDF 而不是走 package，并去掉了材质颜色——RL 那套代码加载的就是它。"
+        },
+        {
+          "id": "dasf2_tron2a_zeromass_graser",
+          "name": "DASF2_TRON2A_zeromass_graser",
+          "urdf": "tron2a/DASF2_TRON2A/urdf/robot_zeromass_graser.urdf",
+          "package": "tron2a/DASF2_TRON2A",
+          "notes": "The Gazebo build with the grippers' mass zeroed and an end-effector frame per wrist.",
+          "notes_zh": "带 Gazebo 段的版本，夹爪质量清零，每只手腕加一个末端坐标系。"
+        },
+        {
+          "id": "dasf2_tron2b",
+          "name": "DASF2_TRON2B",
+          "urdf": "tron2b/DASF2_TRON2B/urdf/robot.urdf",
+          "mjcf": "tron2b/DASF2_TRON2B/xml/robot.xml",
+          "package": "tron2b/DASF2_TRON2B",
+          "notes": "The TRON2B centaur, 106.9 kg, laid out flat at its own zero like the TRON2A build.",
+          "notes_zh": "TRON2B 的半人马，106.9 kg，和 TRON2A 版本一样，在自己的零位下是摊平的。"
+        },
+        {
+          "id": "dasf2_tron2b_rl",
+          "name": "DASF2_TRON2B_rl",
+          "urdf": "tron2b/DASF2_TRON2B/urdf/robot_rl.urdf",
+          "package": "tron2b/DASF2_TRON2B",
+          "notes": "The same machine as DASF2_TRON2B, with the mesh paths written relative to the URDF instead of through the package and the material colours dropped — the file the RL stacks load.",
+          "notes_zh": "与 DASF2_TRON2B 同一台机器，网格路径改成相对 URDF 而不是走 package，并去掉了材质颜色——RL 那套代码加载的就是它。"
+        }
+      ]
     }
   ]
 }

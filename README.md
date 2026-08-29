@@ -3,7 +3,7 @@
 [![Verify](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml/badge.svg)](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-在浏览器里加载 **99 个**开源机器人 URDF：拖关节、看碰撞体与惯量，一键下载 URDF、
+在浏览器里加载 **130 个**开源机器人 URDF：拖关节、看碰撞体与惯量，一键下载 URDF、
 网格 zip 或可直接 `colcon build` 的 ROS 2 功能包。
 
 首页开头还有「预览我自己的 URDF」：把自己的模型目录（或几个文件）交给同一个查看器，
@@ -15,7 +15,7 @@
 
 在线访问：<https://imchong.github.io/Robot_URDF_Gallery_Online/>
 
-人形 33 · 四足 18 · 机械臂 17 · 灵巧手 23 · 移动操作 9 · 双臂 9 · 双足 4
+人形 40 · 四足 18 · 机械臂 17 · 灵巧手 23 · 移动操作 12 · 双臂 11 · 双足 9
 
 **本仓库不托管任何模型文件。** 绝大多数条目只记录上游仓库 + 固定 commit，URDF 与网格
 访问时从 jsDelivr 的 GitHub CDN 流式加载。少数厂商完全没有公开可加载模型的（或只发布
@@ -115,7 +115,16 @@ npm run check:compare           # 对比页：关节对齐的不变式 + 页面�
 （G1 有 21 个，按 `mode_machine` 与手部配置区分）。这种条目在 `variants` 里逐个列出
 文件，合集里仍然只有一张卡，详情页顶部多一个版本选择器 —— 选中的版本决定整页内容，
 包括渲染、关节树和三种下载。版本的 id 与标签取自文件名本身，列在最前面的就是卡片和
-详情页默认打开的那个。
+详情页默认打开的那个；上游把每个版本各放进一个包时（TRON 2 有 16 个，每个文件都叫
+`robot.urdf`，每个都写着同一个 `bipedal_robot` 包），版本自己写 `name`、`id` 与
+`package`。
+
+**包根是探测出来的**：`package://` 引用的根目录由构建脚本在包目录附近逐个试出来，
+绝大多数仓库到此为止。试不出来的时候 —— 包不在这一带、目录改了名但 `package://`
+没跟着改、相对路径是按另一个工作目录写的 —— `upstream.packages` 直接写明某个包名对应
+仓库里的哪个目录，`upstream.mesh_rewrite` 给出一组 `{from, to}` 替换，作用在解析出来的
+路径上。两个键与镜像条目用的是同一套；它们都不凭空造文件：改写后的路径照样要探测，
+网格对不上的条目仍然会让构建失败。
 
 ### 镜像条目
 
@@ -138,7 +147,8 @@ npm run check:compare           # 对比页：关节对齐的不变式 + 页面�
 - 暂不支持只提供 xacro 的模型（UR 系列、Shadow Hand、Fetch 等）；自己上传时也一样，
   请先 `xacro robot.urdf.xacro > robot.urdf` 再选择展开后的文件。少数这类模型通过上面的
   镜像条目收录了展开后的 URDF。
-- jsDelivr 单文件上限 20 MB，个别含超大网格的模型（Go1、B1、B2-W）无法收录。
+- jsDelivr 单文件上限 20 MB，个别含超大网格的模型无法收录：Go1、B1、B2-W，以及众擎
+  PM01 —— 它的 `LINK_TORSO_YAW.dae` 有 29 MB，CDN 直接返回 403。
 - 镜像条目的 ROS 2 下载包会删掉引用缺失网格的 `<visual>`/`<collision>` 元素，否则
   RViz 根本加载不了；zip 包里的 URDF 保持上游原样，缺口写在 `NOTICE.txt` 里。
 
@@ -153,7 +163,7 @@ npm run check:compare           # 对比页：关节对齐的不变式 + 页面�
 
 ---
 
-**English** — A browsable 3D gallery of 99 open robot descriptions (humanoids,
+**English** — A browsable 3D gallery of 130 open robot descriptions (humanoids,
 quadrupeds, arms, hands) that loads URDFs in the browser, lets you drag joints, and
 overlays collision geometry, joint axes and inertia. A compare page (`#compare=1`)
 puts two to six machines of one category side by side as numbers — joint limits,
