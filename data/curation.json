@@ -29,6 +29,16 @@
     "supplies them. `upstream.package` names the ROS package directory; leave it",
     "as \"\" when the repository root is itself the package.",
     "",
+    "The build probes that neighbourhood for every `package://` root, which is",
+    "enough for almost every repository. When it is not — a package kept outside",
+    "it, a directory renamed without the `package://` lines following, a relative",
+    "mesh path written for a working directory other than the URDF's own —",
+    "`upstream.packages` maps a package name to its real repository-relative root",
+    "and `upstream.mesh_rewrite` is a list of {from, to} applied to the resolved",
+    "path. Both are the same keys a `mirror` block takes, and neither invents a",
+    "file: a rewritten path is probed like any other, and an entry whose meshes",
+    "do not resolve still fails the build.",
+    "",
     "A machine that upstream ships as several URDFs in one folder (the G1 has",
     "twenty-two, one per `mode_machine` and hand combination) is one entry with a",
     "`variants` list, not one entry per file: the gallery gives it a single card",
@@ -36,7 +46,11 @@
     "optional `mjcf`, `notes`, `notes_zh` and `deprecated` — and takes its id and",
     "its picker label from the file's own name. The first one listed is what the",
     "card and the detail page open on, so `upstream.urdf` may be left out; every",
-    "variant is parsed and mesh-probed exactly like an entry's own file."
+    "variant is parsed and mesh-probed exactly like an entry's own file. A variant",
+    "may also carry its own `name`, `id` and `package`, for a machine whose",
+    "versions upstream keeps in one package each rather than one folder — TRON2",
+    "ships sixteen of them, every file named robot.urdf and every one naming the",
+    "same `bipedal_robot` package."
   ],
   "categories": [
     {
