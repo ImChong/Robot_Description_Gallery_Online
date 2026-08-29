@@ -446,8 +446,100 @@ export class Detail {
       this.onTreeKey(event);
     });
 
+    this.bindSliderTouch(tree);
+
     el('tree-expand').addEventListener('click', () => this.setTreeExpanded(true));
     el('tree-collapse').addEventListener('click', () => this.setTreeExpanded(false));
+  }
+
+  /**
+   * A slider a thumb can work. A range input hands a touch one target and one
+   * only — the thumb itself — and a touch that lands on the groove beside it
+   * moves nothing at all: iOS has always behaved this way, and a tap on the
+   * track does not carry on Android either. On a phone that makes posing a
+   * joint a matter of hitting a 16px circle, four times over for one leg, in a
+   * panel that is scrolling under the finger. The strip is wider and the thumb
+   * is bigger on a touch screen (see the coarse-pointer block in app.css), but
+   * size alone still leaves the groove dead, so this makes the whole of it
+   * live: a tap puts the joint where it was tapped, and a drag carries it from
+   * wherever it began.
+   *
+   * A mouse is left alone — clicking a track already moves the thumb there, and
+   * a second opinion would only fight the first.
+   *
+   * Two things keep this from taking gestures that were not meant for it:
+   *
+   * - The finger has to go sideways before the drag is claimed. `touch-action:
+   *   pan-y` lets a vertical swipe scroll the tree past a slider, and the first
+   *   few pixels are read here the same way, so a scroll that begins on a
+   *   slider is still a scroll. Once claimed, the pointer is captured: the rest
+   *   of the drag belongs to this joint however far off the strip it wanders.
+   *
+   * - Where the press lands on the thumb, the offset it lands at is kept for
+   *   the whole drag, exactly as the browser would keep it. That way the two
+   *   never disagree about where the joint should be on a platform where the
+   *   browser is dragging the thumb too, and the value written below is the one
+   *   it was going to write anyway.
+   */
+  bindSliderTouch(tree) {
+    let held = null;
+    // A phone stops a scroll it has thrown by being touched, and that touch
+    // lands on whatever the list had arrived at — a slider, more often than
+    // not, in a panel that is mostly sliders. So a tap that follows a scroll
+    // this closely is read as the brake it was, and only a tap on a list that
+    // has come to rest poses a joint. A drag is not held to this: a finger that
+    // sets off sideways along a strip has said what it wants.
+    let scrolledAt = -Infinity;
+    tree.addEventListener('scroll', () => { scrolledAt = performance.now(); }, { passive: true });
+
+    tree.addEventListener('pointerdown', (event) => {
+      if (event.pointerType === 'mouse') return;
+      const input = event.target.closest(".tree-slider input[type='range']");
+      if (!input) return;
+      const thumb = sliderThumbWidth(input);
+      // Beyond the thumb the offset is dropped rather than carried: a press on
+      // the bare groove means the joint comes to the finger, not that it keeps
+      // half a strip of distance from it.
+      const offset = event.clientX - sliderThumbCentre(input, thumb);
+      held = {
+        input,
+        thumb,
+        id: event.pointerId,
+        grab: Math.abs(offset) <= thumb / 2 ? offset : 0,
+        x: event.clientX,
+        y: event.clientY,
+        dragging: false,
+      };
+    });
+
+    tree.addEventListener('pointermove', (event) => {
+      if (!held || event.pointerId !== held.id) return;
+      if (!held.dragging) {
+        const dx = Math.abs(event.clientX - held.x);
+        const dy = Math.abs(event.clientY - held.y);
+        if (dy > dx && dy > TOUCH_SLOP) { held = null; return; } // a scroll, not a pose
+        if (dx <= TOUCH_SLOP) return; // still too early to tell
+        held.dragging = true;
+        // Capture is what keeps a drag on its own joint once the finger leaves
+        // the strip; a pointer the browser has already let go of cannot be
+        // captured, and the moves still arrive here either way.
+        try { held.input.setPointerCapture(event.pointerId); } catch { /* nothing to capture */ }
+      }
+      setSliderFromX(held.input, event.clientX - held.grab, held.thumb);
+    });
+
+    tree.addEventListener('pointerup', (event) => {
+      if (!held || event.pointerId !== held.id) return;
+      // A tap that never became a drag is an instruction all the same: put the
+      // joint where the finger came down. On the thumb it lands where it
+      // already was, and nothing moves.
+      const braking = performance.now() - scrolledAt < SCROLL_SETTLE;
+      if (!held.dragging && !braking) setSliderFromX(held.input, event.clientX - held.grab, held.thumb);
+      held = null;
+    });
+
+    // The browser took the gesture for a scroll after all.
+    tree.addEventListener('pointercancel', () => { held = null; });
   }
 
   /**
@@ -1519,6 +1611,58 @@ function sliderRange(joint) {
 function sliderStep(isRotational) {
   if (!isRotational) return 0.001;
   return angleUnit === 'rad' ? 0.001 : Math.PI / 1800;
+}
+
+/** How far a finger may wander before it has said which gesture it is: a few
+ *  pixels of travel are a press held still, not a drag and not a scroll. */
+const TOUCH_SLOP = 4;
+
+/** How long after the tree last moved under a finger a tap still counts as the
+ *  brake on that movement rather than as an instruction to a slider. */
+const SCROLL_SETTLE = 200;
+
+const clamp01 = (value) => Math.min(1, Math.max(0, value));
+
+/** How much of the strip the thumb takes. The stylesheet is the one that knows
+ *  — it grows the thumb on a touch screen — so it is asked, and the 16px it
+ *  declares for a pointer stands in wherever the variable does not resolve. */
+function sliderThumbWidth(input) {
+  const declared = parseFloat(getComputedStyle(input).getPropertyValue('--tree-thumb'));
+  return Number.isFinite(declared) && declared > 0 ? declared : 16;
+}
+
+/** Where the thumb is sitting right now. A range input's thumb travels between
+ *  the two ends of the strip inset by half its own width — it never hangs off
+ *  either end — so that is the span its value maps onto, here and below. */
+function sliderThumbCentre(input, thumb) {
+  const rect = input.getBoundingClientRect();
+  const min = Number(input.min);
+  const max = Number(input.max);
+  const ratio = max > min ? (Number(input.value) - min) / (max - min) : 0;
+  return rect.left + thumb / 2 + clamp01(ratio) * (rect.width - thumb);
+}
+
+/**
+ * Move a joint to the point on its strip a finger is holding. The value is
+ * written raw: an `<input type="range">` snaps whatever it is given to its own
+ * step and clamps it to its own limits, so the arithmetic here only has to find
+ * the fraction of the travel — and reading the value back afterwards is what
+ * says whether anything actually moved.
+ *
+ * Nothing is dispatched when it did not. The event is what drives the model, so
+ * a platform whose browser is dragging the thumb natively as well would
+ * otherwise pose the robot twice for every move of the finger.
+ */
+function setSliderFromX(input, x, thumb) {
+  const rect = input.getBoundingClientRect();
+  const span = rect.width - thumb;
+  if (span <= 0) return;
+  const min = Number(input.min);
+  const max = Number(input.max);
+  const before = input.value;
+  input.value = String(min + clamp01((x - rect.left - thumb / 2) / span) * (max - min));
+  if (input.value === before) return;
+  input.dispatchEvent(new Event('input', { bubbles: true }));
 }
 
 /**
