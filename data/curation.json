@@ -12,6 +12,14 @@
     "name -> position, used for card renders when the zero pose looks broken).",
     "Pose joint names are validated against the URDF at build time.",
     "",
+    "`loops` states a closed kinematic loop, which URDF has no way to: `connect`",
+    "names the two links and the point on each of them that are really one point,",
+    "and `solve` names the joints the viewer is free to move so they stay one",
+    "point — the same thing MJCF writes as <equality><connect>. Minitaur's four",
+    "five-bar legs are the case that needs it. Link and joint names are validated",
+    "against the URDF at build time; `pose` supplies the starting guess, so it is",
+    "what picks which way round a loop with two solutions closes.",
+    "",
     "preview_frame{palm,fingers} names two axes of the model's own root frame,",
     "as \"+x\" .. \"-z\", and the viewer turns them onto the same world axes for",
     "every entry that has one: palm -> +X, fingers -> +Z. It exists because URDF",
@@ -1480,8 +1488,8 @@
       "links": {
         "official": "https://www.ghostrobotics.io/"
       },
-      "notes": "The quadruped that ships with Bullet and has been the first legged robot in more RL papers than any other. Each leg is a five-bar linkage: two continuous motor joints at the hip and two revolute knees with no limits declared, which URDF cannot tie back together, so the two halves of a leg swing free of each other. One mesh in the whole description — the hip motor, reused eight times; the chassis and the legs are boxes.",
-      "notes_zh": "随 Bullet 一起分发的四足机器人，在强化学习论文里当「第一台腿式机器人」的次数大概比谁都多。每条腿是五连杆：髋部两个 continuous 电机关节，加两个没有写限位的 revolute 膝关节；URDF 无法把它们接回去，所以一条腿的两半在这里是各自摆动的。整份描述只有一个网格——髋部电机，被复用了 8 次；底盘和腿都是长方体。",
+      "notes": "The quadruped that ships with Bullet and has been the first legged robot in more RL papers than any other. Each leg is a five-bar linkage whose two halves meet at the toe — a loop URDF cannot declare, so the gallery closes it the way MJCF does, with a point weld the viewer solves the two knees against every time a motor moves. The knees are the other thing this description leaves out: both are revolute with an effort and a velocity but no travel, which most tools read as a joint pinned at zero. One mesh in the whole file — the hip motor, reused eight times; the chassis and the legs are boxes.",
+      "notes_zh": "随 Bullet 一起分发的四足机器人，在强化学习论文里当「第一台腿式机器人」的次数大概比谁都多。每条腿是一组五连杆，两半在足端合到一起——URDF 声明不了这种闭环，本站于是照 MJCF 的做法补上一个点焊接约束，每次电机转动都用它反解两个膝关节。膝关节还有另一处缺省：两个 revolute 只写了力矩和速度，没写行程，多数工具会把它当成钉死在零位的关节。整份描述只有一个网格——髋部电机，被复用了 8 次；底盘和腿都是长方体。",
       "pose": {
         "motor_front_leftL_joint": 2.04,
         "knee_front_leftL_link": -1.64,
@@ -1499,7 +1507,73 @@
         "knee_back_rightL_link": -1.64,
         "motor_back_rightR_joint": 2.04,
         "knee_back_rightR_link": -1.64
-      }
+      },
+      "loops": [
+        {
+          "connect": [
+            {
+              "link": "lower_leg_front_leftR_link",
+              "point": [0, 0.005, 0.2]
+            },
+            {
+              "link": "lower_leg_front_leftL_link",
+              "point": [0, 0.01, 0.2]
+            }
+          ],
+          "solve": [
+            "knee_front_leftR_link",
+            "knee_front_leftL_link"
+          ]
+        },
+        {
+          "connect": [
+            {
+              "link": "lower_leg_front_rightR_link",
+              "point": [0, 0.005, 0.2]
+            },
+            {
+              "link": "lower_leg_front_rightL_link",
+              "point": [0, 0.01, 0.2]
+            }
+          ],
+          "solve": [
+            "knee_front_rightR_link",
+            "knee_front_rightL_link"
+          ]
+        },
+        {
+          "connect": [
+            {
+              "link": "lower_leg_back_leftR_link",
+              "point": [0, 0.005, 0.2]
+            },
+            {
+              "link": "lower_leg_back_leftL_link",
+              "point": [0, 0.01, 0.2]
+            }
+          ],
+          "solve": [
+            "knee_back_leftR_link",
+            "knee_back_leftL_link"
+          ]
+        },
+        {
+          "connect": [
+            {
+              "link": "lower_leg_back_rightR_link",
+              "point": [0, 0.005, 0.2]
+            },
+            {
+              "link": "lower_leg_back_rightL_link",
+              "point": [0, 0.01, 0.2]
+            }
+          ],
+          "solve": [
+            "knee_back_rightR_link",
+            "knee_back_rightL_link"
+          ]
+        }
+      ]
     },
     {
       "id": "mini_cheetah",

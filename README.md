@@ -16,7 +16,9 @@
 - **查看**：关节滑块、碰撞体、关节轴、惯量。全屏里的关节浮窗默认占画面宽度的三分之一，
   可以拖边框调整；点「演示」就按运动链顺序逐个把关节滑到上下限再放回原位，每个约
   1 秒。上游把一台机器发布成多个 URDF 时（G1 有 21 个）仍然只占一张卡，详情页顶部用
-  版本选择器切换。
+  版本选择器切换。URDF 写不出闭环，所以 Minitaur 的五连杆腿在别的工具里一动就散架；
+  这里照 MJCF `<equality><connect>` 的写法在 `data/curation.json` 里补一条点约束，
+  拖电机时用它反解两个膝关节，腿始终是合拢的。
 - **横向对比**（`#compare=1`）：同一类别下选 2~6 台机器并排读整机、分肢与逐关节数据，
   关节按部位或按运动链顺序对齐。只下载 `.urdf`，不下载网格；表格可复制为 Markdown 或
   CSV，地址可分享。
@@ -81,10 +83,12 @@ quadrupeds, arms, hands) that loads URDFs in the browser, lets you drag joints �
 play every joint in turn out to both its limits and back, a second each — and
 overlays collision geometry, joint axes and inertia. A compare page (`#compare=1`) puts
 two to six machines of one category side by side as numbers, lining their joints up by
-anatomy or by position along the kinematic chain. You can open a description from your
-own disk in the same viewer — parsed in the browser, never uploaded — and compare it
-against the gallery. Every robot downloads in one click as a `.urdf`, a zip of URDF +
-meshes, or a ready-to-build ROS 2 package. No model files are hosted here: entries pin
-an upstream repository and commit and stream from jsDelivr. Run it locally with
-`npm install && npm run dev`. Code is MIT; each model keeps its own upstream licence,
-some non-commercial.
+anatomy or by position along the kinematic chain. A mechanism that closes back on itself
+— Minitaur's five-bar legs — is held shut by a point weld the registry states the way
+MJCF does, so dragging a motor bends the whole linkage instead of pulling the leg apart.
+You can open a description from your own disk in the same viewer — parsed in the
+browser, never uploaded — and compare it against the gallery. Every robot downloads in
+one click as a `.urdf`, a zip of URDF + meshes, or a ready-to-build ROS 2 package. No
+model files are hosted here: entries pin an upstream repository and commit and stream
+from jsDelivr. Run it locally with `npm install && npm run dev`. Code is MIT; each model
+keeps its own upstream licence, some non-commercial.

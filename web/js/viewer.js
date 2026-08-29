@@ -38,6 +38,76 @@ export const LOCAL_URL_PREFIX = 'urdfgallery-local://';
 const MULTI_DOF = { floating: 6, planar: 3 };
 
 /**
+ * How hard the loop solver is allowed to work per pose. A loop that has to be
+ * re-closed after every slider move is on the interaction path, so the budget
+ * is small — two knees converge in three or four passes from the pose they were
+ * last closed at, and the cap only ever bites on the first solve of a jump.
+ *
+ * `LOOP_STEP` keeps one pass from throwing a joint across a singular
+ * configuration (a leg exactly straight, where a small move of the toe wants a
+ * large move of the knee) and out to the far branch of the mechanism; the pass
+ * after it picks up the rest. `LOOP_SETTLED` is in radians, not metres: what
+ * closure is worth is what it costs to hold, and the constraint the URDF cannot
+ * state is itself only approximate — Minitaur's two toes are drawn 25 µm apart
+ * across the leg plane, which no knee angle can take out.
+ */
+const LOOP_PASSES = 12;
+const LOOP_STEP = 0.4;
+const LOOP_SETTLED = 1e-7;
+/** Levenberg damping, relative to the largest column of the Jacobian, so a
+ *  loop that goes singular slows down instead of firing a joint off. */
+const LOOP_DAMPING = 1e-6;
+
+/** Scratch for the loop solver; see `_stepLoop`. */
+const _loopGap = new THREE.Vector3();
+const _loopPoint = new THREE.Vector3();
+const _loopArm = new THREE.Vector3();
+const _loopPivot = new THREE.Vector3();
+
+/** Whether `node` hangs below `ancestor` in the scene graph (or is it). */
+function isUnder(node, ancestor) {
+  for (let walk = node; walk; walk = walk.parent) {
+    if (walk === ancestor) return true;
+  }
+  return false;
+}
+
+/**
+ * Solve `A x = b` in place for a small dense `A`, by Gaussian elimination with
+ * partial pivoting; `b` comes back holding `x`. `n` is how many joints one loop
+ * is closed with — two, for a Minitaur leg — so nothing cleverer earns its
+ * bytes here.
+ *
+ * @returns {boolean} false when the system is singular even after damping, in
+ *   which case `b` is not to be read
+ */
+function solveSmall(A, b, n) {
+  for (let col = 0; col < n; col += 1) {
+    let pivot = col;
+    for (let row = col + 1; row < n; row += 1) {
+      if (Math.abs(A[row][col]) > Math.abs(A[pivot][col])) pivot = row;
+    }
+    if (!(Math.abs(A[pivot][col]) > 1e-14)) return false;
+    if (pivot !== col) {
+      [A[pivot], A[col]] = [A[col], A[pivot]];
+      [b[pivot], b[col]] = [b[col], b[pivot]];
+    }
+    for (let row = col + 1; row < n; row += 1) {
+      const factor = A[row][col] / A[col][col];
+      if (!factor) continue;
+      for (let k = col; k < n; k += 1) A[row][k] -= factor * A[col][k];
+      b[row] -= factor * b[col];
+    }
+  }
+  for (let row = n - 1; row >= 0; row -= 1) {
+    let sum = b[row];
+    for (let k = row + 1; k < n; k += 1) sum -= A[row][k] * b[k];
+    b[row] = sum / A[row][row];
+  }
+  return true;
+}
+
+/**
  * Two studios, one per site theme. The stage is not just a background swap:
  * the overlay colours are re-picked rather than dimmed, because the neon cyan
  * and green that carry a dark stage go pastel and unreadable on a bright one,
@@ -741,6 +811,13 @@ export class RobotViewer {
     const upright = previewRotation(entry.preview_frame);
     if (upright) robot.quaternion.copy(upright);
     this.entry = entry;
+    // Two things urdf-loader cannot tell on its own, both read off the XML it
+    // has just been handed: which joints were given no travel to work with, and
+    // which of them a closed loop drives rather than a slider.
+    this.setJointMeta(text);
+    this._freeUndeclaredJoints();
+    this._prepareLoops(entry.loops);
+    this.closeLoops();
     // Primitive geometry (<box>, <cylinder>, <sphere>) exists immediately;
     // mesh files arrive over the network, so styling runs again after they land.
     this._styleAll();
@@ -1205,6 +1282,30 @@ export class RobotViewer {
     return map;
   }
 
+  /**
+   * Unpin the joints whose URDF declares no travel for them.
+   *
+   * A `<limit>` that carries only `effort` and `velocity` is legal, and several
+   * descriptions write one — Minitaur's knees, SigmaBan's whole upper body,
+   * Upkie's wheels. urdf-loader reads the two missing attributes as its own
+   * 0..0 default and then clamps the joint to exactly zero for the life of the
+   * page, so the joint is not merely unlimited, it is welded. The panel already
+   * reads a missing limit for what it is and offers such a joint a full turn,
+   * and `pose` in the registry may be counting on it moving, so the clamp goes.
+   *
+   * Only a limit that declares neither end counts: `lower="0" upper="0"` is a
+   * description saying, in as many words, that this joint does not move.
+   */
+  _freeUndeclaredJoints() {
+    if (!this.robot) return;
+    for (const joint of Object.values(this.robot.joints)) {
+      if (joint.jointType !== 'revolute' && joint.jointType !== 'prismatic') continue;
+      const meta = this._jointMeta?.get(joint.urdfName || joint.name);
+      if (!meta || meta.lower !== null || meta.upper !== null) continue;
+      joint.ignoreLimits = true;
+    }
+  }
+
   // ------------------------------------------------------------------ joints
 
   /**
@@ -1216,7 +1317,7 @@ export class RobotViewer {
    *
    * @returns {Array<{name: string, type: string, lower: number, upper: number,
    *   value: number, effort: ?number, velocity: ?number, hasLimits: boolean,
-   *   mimic: ?object}>}
+   *   mimic: ?object, loop: boolean}>}
    */
   jointList() {
     if (!this.robot) return [];
@@ -1238,6 +1339,7 @@ export class RobotViewer {
           velocity: meta?.velocity ?? null,
           mimic: meta?.mimic ?? null,
           hasLimits: j.jointType !== 'continuous' && declared,
+          loop: this.isLoopDriven(j.urdfName || j.name),
         };
       });
   }
@@ -1256,7 +1358,7 @@ export class RobotViewer {
    * frame visible in the panel.
    *
    * @returns {?{link: string, joint: ?{name: string, type: string, movable: boolean,
-   *   axis: ?number[], mimic: ?object}, meshes: {visual: number, collision: number},
+   *   axis: ?number[], mimic: ?object, loop: boolean}, meshes: {visual: number, collision: number},
    *   mass: ?number, children: Array<object>}}
    */
   kinematicTree() {
@@ -1282,6 +1384,7 @@ export class RobotViewer {
               movable: joint.jointType !== 'fixed' && !(joint.jointType in MULTI_DOF),
               axis: joint.axis ? joint.axis.toArray().map((v) => +v.toFixed(4)) : null,
               mimic: this._jointMeta?.get(jointName)?.mimic ?? null,
+              loop: this.isLoopDriven(jointName),
             }
           : null,
         meshes,
@@ -1384,10 +1487,24 @@ export class RobotViewer {
   // ------------------------------------------------------------------ joints
 
   setJoint(name, value) {
-    const joint = this.robot?.joints[name];
-    if (!joint || joint.jointType in MULTI_DOF || !Number.isFinite(value)) return;
-    this.robot.setJointValue(name, value);
+    if (!this._writeJoint(name, value)) return;
+    this.closeLoops();
     this.invalidate();
+  }
+
+  /**
+   * Write one joint value and stop there. Whatever closed loops the robot has
+   * are left open, because a pose written a joint at a time is open in the
+   * middle of being written whatever this does — the caller closes them once,
+   * at the end.
+   *
+   * @returns {boolean} whether the robot has such a joint to write
+   */
+  _writeJoint(name, value) {
+    const joint = this.robot?.joints[name];
+    if (!joint || joint.jointType in MULTI_DOF || !Number.isFinite(value)) return false;
+    this.robot.setJointValue(name, value);
+    return true;
   }
 
   /**
@@ -1417,6 +1534,7 @@ export class RobotViewer {
       }
       this.robot.setJointValue(joint.name, rest);
     }
+    this.closeLoops();
     this.invalidate();
   }
 
@@ -1430,8 +1548,12 @@ export class RobotViewer {
   applyPose(pose) {
     if (!this.robot || !pose) return;
     for (const [name, value] of Object.entries(pose)) {
-      this.setJoint(name, value);
+      this._writeJoint(name, value);
     }
+    // Once, with the whole pose written: a loop whose joints the pose names is
+    // closed by the pose itself, and re-closing it after each one in turn would
+    // only be the solver chasing a half-written configuration.
+    this.closeLoops();
     this.invalidate();
   }
 
@@ -1439,6 +1561,136 @@ export class RobotViewer {
   poseForPortrait(pose) {
     this.resetJoints();
     this.applyPose(pose);
+  }
+
+  // ------------------------------------------------------------ closed loops
+
+  /**
+   * Loops the description cannot state, and the joints that hold them shut.
+   *
+   * URDF is a tree: every link has exactly one parent, so a mechanism that
+   * closes back on itself has to be cut somewhere and published as two branches
+   * that happen to meet. Nothing in the file says they meet, so a viewer that
+   * only reads the file lets them come apart the moment a joint moves —
+   * Minitaur's five-bar legs split into two halves that swing through each
+   * other, which is the same picture every URDF tool shows and none of them
+   * mean. MJCF says the missing half out loud, as an `<equality><connect>`
+   * between two bodies, and that is the shape the registry borrows: each loop
+   * names the two points that are one point, and the joints free to move so
+   * they stay one point.
+   *
+   * @param {Array<{connect: Array<{link: string, point: number[]}>, solve: string[]}>} [specs]
+   */
+  _prepareLoops(specs) {
+    this._loops = [];
+    this._loopJoints = new Set();
+    if (!this.robot || !Array.isArray(specs)) return;
+    for (const spec of specs) {
+      const ends = (spec.connect || []).map((end) => {
+        const link = this.robot.links[end?.link];
+        return link ? { link, point: new THREE.Vector3().fromArray(end.point || []) } : null;
+      });
+      if (ends.length !== 2 || !ends[0] || !ends[1]) continue;
+      const joints = [];
+      for (const name of spec.solve || []) {
+        const joint = this.robot.joints[name];
+        if (!joint || joint.jointType === 'fixed' || joint.jointType in MULTI_DOF) continue;
+        // Which half of the loop the joint moves — and, for a joint above the
+        // cut, neither: it carries both points at once and can no more open the
+        // loop than close it, so it is not one of the unknowns.
+        const first = isUnder(ends[0].link, joint);
+        const second = isUnder(ends[1].link, joint);
+        if (first === second) continue;
+        joints.push({ joint, end: first ? 0 : 1, sign: first ? 1 : -1 });
+      }
+      if (!joints.length) continue;
+      this._loops.push({
+        ends,
+        joints,
+        // Scratch, allocated with the loop: `closeLoops` runs on the
+        // interaction path and allocates nothing per pass.
+        columns: joints.map(() => new THREE.Vector3()),
+        matrix: joints.map(() => joints.map(() => 0)),
+        rhs: joints.map(() => 0),
+      });
+      for (const { joint } of joints) this._loopJoints.add(joint.urdfName || joint.name);
+    }
+  }
+
+  /** Whether a joint's value is the loop solver's to write rather than a
+   *  slider's. */
+  isLoopDriven(name) {
+    return this._loopJoints?.has(name) ?? false;
+  }
+
+  /**
+   * Put every declared loop back together, by Gauss-Newton on the joints it
+   * nominates: the residual is the gap between the two points that should be
+   * one, and the Jacobian is how each joint moves it.
+   *
+   * Started from where the joints already are, so a drag tracks the branch of
+   * the mechanism it is on — a knee that is bent forwards stays bent forwards —
+   * rather than flipping to the mirror solution halfway across a slider.
+   */
+  closeLoops() {
+    if (!this.robot || !this._loops?.length) return;
+    for (let pass = 0; pass < LOOP_PASSES; pass += 1) {
+      this.robot.updateMatrixWorld(true);
+      let step = 0;
+      for (const loop of this._loops) step = Math.max(step, this._stepLoop(loop));
+      if (step < LOOP_SETTLED) break;
+    }
+  }
+
+  /**
+   * One Gauss-Newton pass over one loop.
+   *
+   * Everything is read in world space, which is not the robot's frame — the
+   * stage turns the model, and the turntable turns it further. It does not
+   * matter: the gap and the Jacobian are carried by the same rigid transform,
+   * so the joint angles that come out of them are the same either way, and
+   * reading `matrixWorld` is what `updateMatrixWorld` has just paid for.
+   *
+   * @returns {number} the largest angle this pass moved a joint by
+   */
+  _stepLoop(loop) {
+    _loopGap.copy(loop.ends[0].point).applyMatrix4(loop.ends[0].link.matrixWorld);
+    _loopGap.sub(_loopPoint.copy(loop.ends[1].point).applyMatrix4(loop.ends[1].link.matrixWorld));
+    const n = loop.joints.length;
+    let scale = 0;
+    for (let i = 0; i < n; i += 1) {
+      const { joint, sign, end } = loop.joints[i];
+      const column = loop.columns[i];
+      if (joint.jointType === 'prismatic') {
+        column.copy(joint.axis).transformDirection(joint.matrixWorld);
+      } else {
+        // The axis a joint turns about is written in the frame its <origin>
+        // leaves behind, and turning about it does not move it, so the joint's
+        // own world matrix carries it whatever the joint is set to.
+        _loopArm.copy(loop.ends[end].point).applyMatrix4(loop.ends[end].link.matrixWorld);
+        _loopArm.sub(_loopPivot.setFromMatrixPosition(joint.matrixWorld));
+        column.copy(joint.axis).transformDirection(joint.matrixWorld).cross(_loopArm);
+      }
+      column.multiplyScalar(sign);
+      scale = Math.max(scale, column.lengthSq());
+    }
+    if (scale === 0) return 0;
+    const damping = LOOP_DAMPING * scale;
+    for (let i = 0; i < n; i += 1) {
+      for (let j = 0; j < n; j += 1) loop.matrix[i][j] = loop.columns[i].dot(loop.columns[j]);
+      loop.matrix[i][i] += damping;
+      loop.rhs[i] = -loop.columns[i].dot(_loopGap);
+    }
+    if (!solveSmall(loop.matrix, loop.rhs, n)) return 0;
+    let step = 0;
+    for (let i = 0; i < n; i += 1) step = Math.max(step, Math.abs(loop.rhs[i]));
+    if (!Number.isFinite(step)) return 0;
+    const brake = step > LOOP_STEP ? LOOP_STEP / step : 1;
+    for (let i = 0; i < n; i += 1) {
+      const { joint } = loop.joints[i];
+      joint.setJointValue(joint.angle + loop.rhs[i] * brake);
+    }
+    return step * brake;
   }
 
   snapshot(mime = 'image/png') {
@@ -1469,6 +1721,8 @@ export class RobotViewer {
     this._themed.collision.length = 0;
     this._inertials = undefined;
     this._jointMeta = undefined;
+    this._loops = [];
+    this._loopJoints = undefined;
     this.invalidate();
   }
 
