@@ -122,7 +122,9 @@ jobs:
       - name: Check the visibility list
         run: |
           node scripts/build_visibility.mjs --check
-          node scripts/check_registry.mjs
+          # Keep the pull-request check aligned with the Pages preflight so a
+          # missing card image is caught before the change reaches main.
+          node scripts/check_registry.mjs --thumbs
 
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
