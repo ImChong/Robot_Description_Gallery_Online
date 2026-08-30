@@ -261,8 +261,13 @@ function describes(path, text) {
   // USD is binary as often as not, so its name is all there is to go on.
   if (named === 'usd') return 'usd';
   if (/<xacro:/i.test(text) || /\$\{/.test(text)) return 'xacro';
-  if (/<mujoco[\s>]/i.test(text)) return 'mjcf';
-  if (/<robot[\s>]/i.test(text)) return 'urdf';
+  // Only the document element identifies the language. URDF permits a nested
+  // <mujoco> extension (Unitree H1 is one example); searching the whole file
+  // classified that perfectly valid URDF as MJCF and left the custom preview
+  // — and its compare-page Actions check — waiting forever.
+  const root = /<\s*([A-Za-z_][\w:.-]*)(?:\s|>)/.exec(text)?.[1].split(':').pop().toLowerCase();
+  if (root === 'mujoco') return 'mjcf';
+  if (root === 'robot') return 'urdf';
   return named;
 }
 
