@@ -121,12 +121,28 @@ export function filterRobots(data, { query = '' } = {}) {
 }
 
 /**
+ * The maker groups inside one category, in the order each maker first appears.
+ * A missing maker remains visible under the same em dash the card already uses
+ * rather than silently becoming a separate, unnamed layout case.
+ */
+export function groupByMaker(robots) {
+  const groups = new Map();
+  for (const robot of robots) {
+    const maker = robot.maker?.trim() || '—';
+    const key = maker.toLocaleLowerCase();
+    if (!groups.has(key)) groups.set(key, { maker, robots: [] });
+    groups.get(key).robots.push(robot);
+  }
+  return [...groups.values()];
+}
+
+/**
  * The gallery's reading order: humanoids, then quadrupeds, then arms — one
  * group per category, in registry order, with anything whose category the
  * registry does not list appended after them. The search still applies inside
  * the groups, and a group nothing matches is dropped rather than left empty.
  *
- * @returns {{ id: string, robots: object[] }[]}
+ * @returns {{ id: string, robots: object[], makers: {maker: string, robots: object[]}[] }[]}
  */
 export function groupRobots(data, state = {}) {
   const groups = new Map(data.categories.map((c) => [c.id, []]));
@@ -136,7 +152,7 @@ export function groupRobots(data, state = {}) {
   }
   return [...groups]
     .filter(([, robots]) => robots.length)
-    .map(([id, robots]) => ({ id, robots }));
+    .map(([id, robots]) => ({ id, robots, makers: groupByMaker(robots) }));
 }
 
 export function stats(data) {

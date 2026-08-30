@@ -93,6 +93,50 @@ if (cards !== shown.length) {
   process.exitCode = 1;
 }
 
+// Every category is divided into maker sections. The same maker appearing in
+// several non-adjacent registry entries must still produce one section here.
+const expectedMakerGroups = [
+  ...new Set(shown.map((r) => `${r.category}\0${(r.maker?.trim() || '—').toLocaleLowerCase()}`)),
+].length;
+const makerGroups = await page.locator('.maker-group').count();
+const nestedCards = await page.locator('.maker-group .card').count();
+if (makerGroups !== expectedMakerGroups || nestedCards !== shown.length) {
+  console.error(
+    `  ✗ expected ${expectedMakerGroups} maker groups containing ${shown.length} cards, ` +
+      `got ${makerGroups} groups containing ${nestedCards}`,
+  );
+  process.exitCode = 1;
+} else {
+  console.log(`gallery: ${makerGroups} maker groups`);
+}
+
+// The optional live link used to have no grid area on phones and was auto-
+// placed into a third row. Check the narrowest supported layout while a model
+// that offers the link is open: all four navigation actions share one row and
+// none overlap.
+const liveRobot = shown.find((r) => r.source?.mjcf_external?.live_url);
+if (liveRobot) {
+  await page.setViewportSize({ width: 320, height: 720 });
+  await page.goto(`${base}/web/#robot=${liveRobot.id}`, { waitUntil: 'commit' });
+  await page.locator('#mujoco-live').waitFor({ state: 'visible' });
+  const navBoxes = await page
+    .locator('#back-btn, #mujoco-live, #prev-robot, #next-robot')
+    .evaluateAll((nodes) => nodes.map((node) => {
+      const box = node.getBoundingClientRect();
+      return { id: node.id, left: box.left, right: box.right, top: box.top };
+    }));
+  const sameRow = Math.max(...navBoxes.map((b) => b.top)) - Math.min(...navBoxes.map((b) => b.top)) < 2;
+  const ordered = [...navBoxes].sort((a, b) => a.left - b.left);
+  const overlap = ordered.some((box, i) => i > 0 && ordered[i - 1].right > box.left + 0.5);
+  if (!sameRow || overlap) {
+    console.error(`  ✗ mobile detail navigation is not one non-overlapping row: ${JSON.stringify(navBoxes)}`);
+    process.exitCode = 1;
+  } else {
+    console.log('detail: mobile MuJoCo Live navigation fits at 320px');
+  }
+  await page.setViewportSize({ width: 1440, height: 900 });
+}
+
 let failures = 0;
 for (const target of targets) {
   const name = target.id.padEnd(pad);

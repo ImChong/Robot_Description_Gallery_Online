@@ -453,6 +453,19 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
   font-family: var(--font-mono); font-size: 11.5px; font-weight: 400; color: var(--text-faint);
 }
 
+/* Every robot kind is split once more by maker. First-seen order preserves the
+ * registry's editorial order, while robots from the same maker stay together
+ * even when their upstream entries were added at different times. */
+.maker-groups { display: flex; flex-direction: column; gap: 24px; }
+.maker-heading {
+  display: flex; align-items: baseline; gap: 8px;
+  margin: 0 0 10px;
+  color: var(--text-muted); font-size: 13px; line-height: 1.35; font-weight: 650;
+}
+.maker-heading .count {
+  font-family: var(--font-mono); font-size: 10.5px; font-weight: 400; color: var(--text-faint);
+}
+
 /* ── Card grid ──────────────────────────────────────────── */
 
 .grid {
@@ -595,35 +608,33 @@ html[lang^='zh'] .footer-text-zh { display: block; }
  * telling not to look like body text. */
 .detail-nav .live-btn { display: inline-flex; align-items: center; text-decoration: none; }
 
-/* Under about 520px the title has no room left to give either — the maker
+/* Under about 560px the title has no room left to give either — the maker
  * starts stacking a word to a line beside a name squeezed to nothing — so the
  * row stops being a row. Not at the 720px the rest of the phone layout turns
- * at: at 720 all four still sit on one line with room to spare, and breaking
+ * at: at 720 all five still sit on one line with room to spare, and breaking
  * them apart there would only leave a gap in the middle of the header.
  *
- * They are not four things anyway, they are two pairs. Where am I and where
- * else can I go — the way out, and the two arrows that walk the category —
- * take the top line, one at each end, being small, fixed and the same at every
- * robot. What is this and what can I do with it — the name and the button that
- * carries this robot into a comparison — take the line under it, where the
- * button sits beside the thing it acts on rather than beside two arrows it has
- * nothing to do with. */
+ * Navigation stays on the first line: the way back, the optional MuJoCo Live
+ * link, and the two arrows. The title and comparison action share the second
+ * line, so MuJoCo Live has an explicit place instead of falling into an
+ * implicit third grid row. */
 @media (max-width: 560px) {
   #view-detail .detail-head {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
     grid-template-areas:
-      'back  prev next'
-      'title cmp  cmp';
+      'back  live  prev next'
+      'title title cmp  cmp';
     gap: 12px 8px;
     padding: 14px 0 12px;
   }
-  /* The three buttons place themselves in the grid, so the box that grouped
+  /* The four navigation actions place themselves in the grid, so the box that grouped
    * them has nothing left to group. With the arrows hidden — a model read off
    * the visitor's own disk is in no category to walk — their columns collapse
    * and the compare button still lands on the right edge. */
   #view-detail .detail-nav { display: contents; }
   #back-btn { grid-area: back; justify-self: start; }
+  #mujoco-live { grid-area: live; justify-self: start; }
   #prev-robot { grid-area: prev; }
   #next-robot { grid-area: next; }
   #view-detail .detail-title { grid-area: title; min-width: 0; }
@@ -1791,6 +1802,8 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
   .grid { grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 12px; }
   .sections { gap: 24px; }
   .cat-heading { font-size: 15.5px; margin-bottom: 12px; }
+  .maker-groups { gap: 18px; }
+  .maker-heading { margin-bottom: 8px; }
   /* The chips are navigation now and the bar is sticky, so it stays one row:
    * wrapped, seven categories cost a third of a phone screen for the whole
    * scroll. js/gallery.js keeps the section being read scrolled into it. */
