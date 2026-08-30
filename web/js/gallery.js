@@ -55,7 +55,10 @@ export class Gallery {
       });
     };
     window.addEventListener('scroll', spy, { passive: true });
-    window.addEventListener('resize', spy);
+    window.addEventListener('resize', () => {
+      this.syncMakerSpans();
+      spy();
+    });
     // Taking the wheel mid-jump hands the chips back to the scroll.
     for (const event of ['wheel', 'touchstart']) {
       window.addEventListener(event, () => this.settle(), { passive: true });
@@ -114,6 +117,7 @@ export class Gallery {
     this.renderFilters();
     this.emptyEl.hidden = this.groups.length > 0;
     this.gridEl.innerHTML = this.groups.map((group) => this.section(group)).join('');
+    this.syncMakerSpans();
     this.syncActive();
   }
 
@@ -130,10 +134,33 @@ export class Gallery {
   /** One manufacturer's robots within a category. */
   makerSection(category, { maker, robots }, index) {
     const heading = `maker-${category}-${index}`;
-    return `<section class="maker-group" aria-labelledby="${heading}">
+    return `<section class="maker-group" aria-labelledby="${heading}" data-size="${robots.length}">
       <h3 class="maker-heading" id="${heading}">${maker}<span class="count">${robots.length}</span></h3>
       <div class="grid">${robots.map((robot) => this.card(robot)).join('')}</div>
     </section>`;
+  }
+
+  /**
+   * Let short maker groups share a row without ever splitting a group that
+   * started part-way across it. A group occupies one parent-grid column per
+   * robot, capped at the number of columns currently available; CSS Grid then
+   * moves the whole group to the next row when its span will not fit.
+   */
+  syncMakerSpans() {
+    for (const groups of this.gridEl.querySelectorAll('.maker-groups')) {
+      const makers = [...groups.querySelectorAll('.maker-group')];
+      // Clear spans first: after a viewport becomes narrower, an old wider
+      // span would create implicit columns and make the measured count wrong.
+      for (const maker of makers) maker.style.removeProperty('--maker-span');
+      const tracks = getComputedStyle(groups).gridTemplateColumns
+        .split(' ')
+        .filter(Boolean).length;
+      const columns = Math.max(1, tracks);
+      for (const maker of makers) {
+        const size = Number.parseInt(maker.dataset.size, 10) || 1;
+        maker.style.setProperty('--maker-span', Math.min(size, columns));
+      }
+    }
   }
 
   /**
