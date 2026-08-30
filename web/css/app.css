@@ -1816,7 +1816,12 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
   .grid { grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 12px; }
   .sections { gap: 24px; }
   .cat-heading { font-size: 15.5px; margin-bottom: 12px; }
-  .maker-groups { gap: 18px 12px; }
+  /* Match the card grid's column width so short maker groups can share a row
+   * on phones too — the desktop minmax(224px) only ever yields one column here. */
+  .maker-groups {
+    grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+    gap: 18px 12px;
+  }
   .maker-heading { margin-bottom: 8px; }
   /* The chips are navigation now and the bar is sticky, so it stays one row:
    * wrapped, seven categories cost a third of a phone screen for the whole
