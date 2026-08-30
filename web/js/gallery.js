@@ -31,6 +31,10 @@ export class Gallery {
     this.gridEl.addEventListener('click', (event) => {
       const card = event.target.closest('.card');
       if (!card) return;
+      // MJCF-only cards use MuJoCo's own WebAssembly viewer. They are ordinary
+      // external links (new tab, copyable address), not hash routes into the
+      // URDF detail stage.
+      if (card.dataset.external === 'true') return;
       event.preventDefault();
       this.onOpen(card.dataset.id);
     });
@@ -208,10 +212,11 @@ export class Gallery {
   }
 
   card(robot) {
-    const thumb = `./thumbs/${robot.id}.webp`;
-    const dof = robot.dof || robot.urdf.moving_joints;
+    const thumb = robot.assets.thumbnail || `./thumbs/${robot.id}.webp`;
+    const dof = robot.dof || robot.urdf?.moving_joints;
     const height = robot.measured?.height_m;
     const versions = robot.variants?.length || 0;
+    const external = robot.external_url || null;
     const tags = [
       dof ? `<span class="tag dof">${dof} ${t('unit.dof')}</span>` : '',
       // Measured from the meshes, so the gallery can be scanned by size.
@@ -220,8 +225,10 @@ export class Gallery {
       // says so here — the numbers above are the one this card opens on.
       versions > 1 ? `<span class="tag versions">${t('unit.versions').replace('{n}', versions)}</span>` : '',
       robot.formats.includes('mjcf') ? `<span class="tag mjcf">MJCF</span>` : '',
+      external ? '<span class="tag versions">MuJoCo Live ↗</span>' : '',
     ].join('');
-    return `<a class="card" href="#robot=${robot.id}" data-id="${robot.id}">
+    return `<a class="card" href="${external || `#robot=${robot.id}`}" data-id="${robot.id}"
+      data-external="${!!external}"${external ? ' target="_blank" rel="noopener noreferrer"' : ''}>
       <figure class="card-figure">
         <img src="${thumb}" alt="${robot.name}" loading="lazy" decoding="async"
              onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'placeholder',textContent:'🖼️'}))">

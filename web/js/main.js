@@ -168,7 +168,7 @@ async function main() {
       views.gallery.hidden = true;
       views.detail.hidden = true;
       views.compare.hidden = false;
-      document.title = `${t('compare.title')} · Robot URDF Gallery Online`;
+      document.title = `${t('compare.title')} · Robot URDF & MJCF Gallery Online`;
       if (arriving) window.scrollTo({ top: 0 });
       await comparison().show({ category: at.compareCategory, ids: at.compareIds });
       return;
@@ -188,7 +188,7 @@ async function main() {
       if (detail?.isFullscreen()) detail.exitFullscreen();
       views.detail.hidden = true;
       views.gallery.hidden = false;
-      document.title = 'Robot URDF Gallery Online · 机器人 URDF 在线合集';
+      document.title = 'Robot URDF & MJCF Gallery Online · 机器人描述在线合集';
       // `#category=quadruped` is a link to a section of the page: honour it on
       // the first load and whenever the address bar names a section other than
       // the one being read. Coming back from a robot it names that same
@@ -202,6 +202,10 @@ async function main() {
     const robot = picked || byId(data, id);
     if (!robot) {
       location.hash = '';
+      return;
+    }
+    if (robot.external_url) {
+      location.href = robot.external_url;
       return;
     }
     if (!views.gallery.hidden) galleryScroll = window.scrollY;
@@ -224,7 +228,9 @@ async function main() {
   }
 
   function setupNeighbours(robot) {
-    const list = gallery.visible();
+    // MJCF-only cards open MuJoCo Live instead of this detail stage, so the
+    // stage's previous/next buttons walk only entries it can actually show.
+    const list = gallery.visible().filter((entry) => !entry.external_url);
     const index = list.findIndex((r) => r.id === robot.id);
     const pool = index === -1 ? data.robots : list;
     const at = index === -1 ? pool.findIndex((r) => r.id === robot.id) : index;

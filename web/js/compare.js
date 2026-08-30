@@ -36,6 +36,7 @@ import { loadUrdfSpec } from './urdf-spec.js';
 import { align, defaultMode, fingerOrder, limbs, REGION_ORDER, SIDE_ORDER } from './joint-align.js';
 
 const el = (id) => document.getElementById(id);
+const comparable = (robot) => robot?.formats?.includes('urdf');
 
 /**
  * As many columns as a table can carry and still be read across. Past six the
@@ -557,7 +558,7 @@ export class Compare {
    */
   find(id) {
     if (id === CUSTOM_ID) return customEntry();
-    return this.data.robots.find((robot) => robot.id === id) || null;
+    return this.data.robots.find((robot) => robot.id === id && comparable(robot)) || null;
   }
 
   /**
@@ -571,7 +572,7 @@ export class Compare {
     const query = this.filter.trim().toLowerCase();
     const list = this.data.robots.filter(
       (robot) =>
-        robot.category === this.category && (!query || robot._haystack.includes(query)),
+        comparable(robot) && robot.category === this.category && (!query || robot._haystack.includes(query)),
     );
     const local = customEntry();
     if (local && (!query || local.name.toLowerCase().includes(query))) list.unshift(local);
@@ -653,7 +654,11 @@ export class Compare {
       // instead of quietly dropping every id for belonging to another. The
       // picked file has no category to lend, so the first that has one speaks.
       const first = state.ids
-        .map((raw) => this.data.robots.find((robot) => robot.id === raw.split('.')[0]))
+        .map((raw) =>
+          this.data.robots.find(
+            (robot) => robot.id === raw.split('.')[0] && comparable(robot),
+          ),
+        )
         .find(Boolean);
       if (first) this.category = first.category;
     }
@@ -666,7 +671,7 @@ export class Compare {
           // machine, there are no files behind it, and the column goes rather
           // than the whole comparison.
           if (robotId === CUSTOM_ID) return customEntry() ? { robot: CUSTOM_ID, variant: null } : null;
-          const robot = this.data.robots.find((r) => r.id === robotId);
+          const robot = this.data.robots.find((r) => r.id === robotId && comparable(r));
           if (!robot || robot.category !== this.category) return null;
           const variant = (robot.variants || []).some((v) => v.id === variantId)
             ? variantId
@@ -686,7 +691,9 @@ export class Compare {
     const category = el('compare-category');
     category.innerHTML = this.data.categories
       .map((c) => {
-        const count = this.data.robots.filter((robot) => robot.category === c.id).length;
+        const count = this.data.robots.filter(
+          (robot) => comparable(robot) && robot.category === c.id,
+        ).length;
         return count
           ? `<option value="${c.id}">${esc(categoryLabel(c.id, this.data.categories))} (${count})</option>`
           : '';
@@ -1401,4 +1408,3 @@ function metricValue(joint, metric) {
   if (metric === 'effort') return joint.effort;
   return joint.power;
 }
-

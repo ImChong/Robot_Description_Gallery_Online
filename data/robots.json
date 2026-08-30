@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-08-29T17:37:25Z",
+ "generated": "2026-08-30T06:08:38Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -37,6 +37,26 @@
    "id": "mobile",
    "label": "Mobile manipulator",
    "label_zh": "移动操作"
+  },
+  {
+   "id": "biomechanical",
+   "label": "Biomechanical",
+   "label_zh": "生物力学"
+  },
+  {
+   "id": "drone",
+   "label": "Drone",
+   "label_zh": "无人机"
+  },
+  {
+   "id": "mobile_base",
+   "label": "Mobile base",
+   "label_zh": "移动底盘"
+  },
+  {
+   "id": "sensor",
+   "label": "Sensor",
+   "label_zh": "传感器"
   }
  ],
  "robots": [
@@ -98,10 +118,19 @@
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/daadf41ee9afce8f90fdc09a98506012691fa122/LICENSE",
     "mirror": null,
-    "mjcf": "robots/g1_description/g1_29dof_rev_1_0.xml"
+    "mjcf": "robots/g1_description/g1_29dof_rev_1_0.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "unitree_g1/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/unitree_g1/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/unitree_g1/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/unitree_g1"
+    }
    },
    "links": {
-    "official": "https://www.unitree.com/g1"
+    "official": "https://www.unitree.com/g1",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/unitree_g1"
    },
    "variants": [
     {
@@ -1009,6 +1038,7 @@
    "dof": 19,
    "license": "BSD-3-Clause",
    "formats": [
+    "mjcf",
     "urdf"
    ],
    "notes": null,
@@ -1057,10 +1087,19 @@
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description/LICENSE",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "unitree_h1/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/unitree_h1/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/unitree_h1/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/unitree_h1"
+    }
    },
    "links": {
-    "official": "https://www.unitree.com/h1"
+    "official": "https://www.unitree.com/h1",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/unitree_h1"
    }
   },
   {
@@ -1844,6 +1883,7 @@
    "dof": 23,
    "license": "Apache-2.0",
    "formats": [
+    "mjcf",
     "urdf"
    ],
    "notes": null,
@@ -1890,9 +1930,19 @@
     "tree_url": "https://github.com/FFTAI/Wiki-GRx-Models/tree/f8e683f00d1d99deb882deb9dfce6030095b466a/N1",
     "license_url": "https://github.com/FFTAI/Wiki-GRx-Models/blob/f8e683f00d1d99deb882deb9dfce6030095b466a/N1/LICENSE",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "fourier_n1/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/fourier_n1/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/fourier_n1/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/fourier_n1"
+    }
    },
-   "links": {}
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/fourier_n1"
+   }
   },
   {
    "id": "booster_t1",
@@ -1905,6 +1955,7 @@
    "dof": 23,
    "license": "Apache-2.0",
    "formats": [
+    "mjcf",
     "urdf"
    ],
    "notes": null,
@@ -1950,9 +2001,19 @@
     "tree_url": "https://github.com/BoosterRobotics/booster_gym/tree/687a33d08b08875fe45dc8d91b54db83766df8b9/resources/T1",
     "license_url": "https://github.com/BoosterRobotics/booster_gym/blob/687a33d08b08875fe45dc8d91b54db83766df8b9/resources/T1/LICENSE",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "booster_t1/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/booster_t1/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/booster_t1/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/booster_t1"
+    }
    },
-   "links": {}
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/booster_t1"
+   }
   },
   {
    "id": "booster_k1",
@@ -2216,6 +2277,7 @@
    "dof": 12,
    "license": "BSD-3-Clause",
    "formats": [
+    "mjcf",
     "urdf"
    ],
    "notes": null,
@@ -2264,10 +2326,19 @@
     "tree_url": "https://github.com/HybridRobotics/berkeley_humanoid_description/tree/d0d13d3f81d795480e25ed1910eaf83d5f0a1d0b",
     "license_url": "https://github.com/HybridRobotics/berkeley_humanoid_description/blob/d0d13d3f81d795480e25ed1910eaf83d5f0a1d0b/package.xml",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "berkeley_humanoid/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/berkeley_humanoid/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/berkeley_humanoid/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/berkeley_humanoid"
+    }
    },
    "links": {
-    "official": "https://berkeley-humanoid.com/"
+    "official": "https://berkeley-humanoid.com/",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/berkeley_humanoid"
    }
   },
   {
@@ -2345,6 +2416,7 @@
    "dof": 44,
    "license": "LGPL-3.0",
    "formats": [
+    "mjcf",
     "urdf"
    ],
    "notes": null,
@@ -2393,10 +2465,19 @@
     "tree_url": "https://github.com/stack-of-tasks/talos-data/tree/77169405d6a48a5d3f3f75eb014209f375ff23b6",
     "license_url": "https://github.com/stack-of-tasks/talos-data/blob/77169405d6a48a5d3f3f75eb014209f375ff23b6/LICENSE",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "pal_talos/scene_position.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/pal_talos/scene_position.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/pal_talos/scene_position.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/pal_talos"
+    }
    },
    "links": {
-    "official": "https://pal-robotics.com/robot/talos/"
+    "official": "https://pal-robotics.com/robot/talos/",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/pal_talos"
    }
   },
   {
@@ -4356,6 +4437,7 @@
    "dof": 12,
    "license": "BSD-3-Clause",
    "formats": [
+    "mjcf",
     "urdf"
    ],
    "notes": null,
@@ -4417,10 +4499,19 @@
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/go2_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/go2_description/LICENSE",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "unitree_go2/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/unitree_go2/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/unitree_go2/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/unitree_go2"
+    }
    },
    "links": {
-    "official": "https://www.unitree.com/go2"
+    "official": "https://www.unitree.com/go2",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/unitree_go2"
    }
   },
   {
@@ -4593,6 +4684,7 @@
    "dof": 12,
    "license": "BSD-3-Clause",
    "formats": [
+    "mjcf",
     "urdf"
    ],
    "notes": null,
@@ -4654,9 +4746,19 @@
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/a1_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/a1_description/LICENSE",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "unitree_a1/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/unitree_a1/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/unitree_a1/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/unitree_a1"
+    }
    },
-   "links": {}
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/unitree_a1"
+   }
   },
   {
    "id": "a2",
@@ -4971,6 +5073,7 @@
    "dof": 12,
    "license": "BSD-3-Clause",
    "formats": [
+    "mjcf",
     "urdf"
    ],
    "notes": null,
@@ -5028,10 +5131,19 @@
     "tree_url": "https://github.com/ANYbotics/anymal_b_simple_description/tree/988b5df22b84761bdf08111b1c2ccc883793f456",
     "license_url": "https://github.com/ANYbotics/anymal_b_simple_description/blob/988b5df22b84761bdf08111b1c2ccc883793f456/LICENSE",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "anybotics_anymal_b/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/anybotics_anymal_b/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/anybotics_anymal_b/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/anybotics_anymal_b"
+    }
    },
    "links": {
-    "official": "https://www.anybotics.com/robotics/anymal/"
+    "official": "https://www.anybotics.com/robotics/anymal/",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/anybotics_anymal_b"
    }
   },
   {
@@ -5045,6 +5157,7 @@
    "dof": 12,
    "license": "BSD-3-Clause",
    "formats": [
+    "mjcf",
     "urdf"
    ],
    "notes": null,
@@ -5102,10 +5215,19 @@
     "tree_url": "https://github.com/ANYbotics/anymal_c_simple_description/tree/f160b8f7fed840c47a6febe8e2bc78b32bf43a68",
     "license_url": "https://github.com/ANYbotics/anymal_c_simple_description/blob/f160b8f7fed840c47a6febe8e2bc78b32bf43a68/LICENSE",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "anybotics_anymal_c/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/anybotics_anymal_c/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/anybotics_anymal_c/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/anybotics_anymal_c"
+    }
    },
    "links": {
-    "official": "https://www.anybotics.com/robotics/anymal/"
+    "official": "https://www.anybotics.com/robotics/anymal/",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/anybotics_anymal_c"
    }
   },
   {
@@ -5766,10 +5888,19 @@
     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/google_barkour_v0",
     "license_url": "https://github.com/google-deepmind/mujoco_menagerie/blob/da76818e269b82289eba39808e2fb91d679d6994/google_barkour_v0/LICENSE",
     "mirror": null,
-    "mjcf": "google_barkour_v0/barkour_v0.xml"
+    "mjcf": "google_barkour_v0/barkour_v0.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "google_barkour_v0/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/google_barkour_v0/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/google_barkour_v0/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/google_barkour_v0"
+    }
    },
    "links": {
-    "paper": "https://arxiv.org/abs/2305.14654"
+    "paper": "https://arxiv.org/abs/2305.14654",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/google_barkour_v0"
    }
   },
   {
@@ -5841,10 +5972,19 @@
     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/google_barkour_vb",
     "license_url": "https://github.com/google-deepmind/mujoco_menagerie/blob/da76818e269b82289eba39808e2fb91d679d6994/google_barkour_vb/LICENSE",
     "mirror": null,
-    "mjcf": "google_barkour_vb/barkour_vb.xml"
+    "mjcf": "google_barkour_vb/barkour_vb.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "google_barkour_vb/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/google_barkour_vb/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/google_barkour_vb/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/google_barkour_vb"
+    }
    },
    "links": {
-    "paper": "https://arxiv.org/abs/2305.14654"
+    "paper": "https://arxiv.org/abs/2305.14654",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/google_barkour_vb"
    }
   },
   {
@@ -6111,6 +6251,7 @@
    "dof": 6,
    "license": "BSD-3-Clause",
    "formats": [
+    "mjcf",
     "urdf"
    ],
    "notes": null,
@@ -6163,10 +6304,19 @@
     "tree_url": "https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/z1_description",
     "license_url": "https://github.com/unitreerobotics/unitree_ros/blob/267182b8521c8d6a631bab1fe63836873237a525/robots/z1_description/LICENSE",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "unitree_z1/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/unitree_z1/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/unitree_z1/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/unitree_z1"
+    }
    },
    "links": {
-    "official": "https://www.unitree.com/z1"
+    "official": "https://www.unitree.com/z1",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/unitree_z1"
    }
   },
   {
@@ -6180,6 +6330,7 @@
    "dof": 9,
    "license": "Apache-2.0",
    "formats": [
+    "mjcf",
     "srdf",
     "urdf"
    ],
@@ -6231,10 +6382,19 @@
     "tree_url": "https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/panda_description",
     "license_url": "https://github.com/Gepetto/example-robot-data/blob/d0d9098d752014aec3725b07766962acf06c5418/robots/panda_description/robots/panda_description/LICENSE",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "franka_emika_panda/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/franka_emika_panda/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/franka_emika_panda/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/franka_emika_panda"
+    }
    },
    "links": {
-    "official": "https://franka.de/"
+    "official": "https://franka.de/",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/franka_emika_panda"
    }
   },
   {
@@ -6248,6 +6408,7 @@
    "dof": 7,
    "license": "BSD-3-Clause",
    "formats": [
+    "mjcf",
     "urdf"
    ],
    "notes": null,
@@ -6300,10 +6461,19 @@
     "tree_url": "https://github.com/RobotLocomotion/drake/tree/7abea0556ede980a5077fe1a8cfbae59b57c7c27/manipulation/models/iiwa_description",
     "license_url": "https://github.com/RobotLocomotion/drake/blob/7abea0556ede980a5077fe1a8cfbae59b57c7c27/manipulation/models/iiwa_description/manipulation/models/iiwa_description/LICENSE.TXT",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "kuka_iiwa_14/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/kuka_iiwa_14/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/kuka_iiwa_14/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/kuka_iiwa_14"
+    }
    },
    "links": {
-    "official": "https://www.kuka.com/en-de/products/robot-systems/industrial-robots/lbr-iiwa"
+    "official": "https://www.kuka.com/en-de/products/robot-systems/industrial-robots/lbr-iiwa",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/kuka_iiwa_14"
    }
   },
   {
@@ -6515,6 +6685,7 @@
    "dof": 8,
    "license": "MIT",
    "formats": [
+    "mjcf",
     "urdf"
    ],
    "notes": null,
@@ -6564,10 +6735,19 @@
     "tree_url": "https://github.com/agilexrobotics/Piper_ros/tree/f2ec6a67e1f404bcb478529e89861ccdf43fa298/src/piper_description",
     "license_url": "https://github.com/agilexrobotics/Piper_ros/blob/f2ec6a67e1f404bcb478529e89861ccdf43fa298/src/piper_description/LICENSE",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "agilex_piper/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/agilex_piper/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/agilex_piper/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/agilex_piper"
+    }
    },
    "links": {
-    "official": "https://global.agilex.ai/products/piper"
+    "official": "https://global.agilex.ai/products/piper",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/agilex_piper"
    }
   },
   {
@@ -6581,6 +6761,7 @@
    "dof": 6,
    "license": "MIT",
    "formats": [
+    "mjcf",
     "urdf"
    ],
    "notes": null,
@@ -6628,9 +6809,19 @@
     "tree_url": "https://github.com/robot-descriptions/i2rt/tree/7809b5b17227162d265f922e2e10598c0e214322/i2rt/robot_models/yam",
     "license_url": "https://github.com/robot-descriptions/i2rt/blob/7809b5b17227162d265f922e2e10598c0e214322/i2rt/robot_models/yam/LICENSE",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "i2rt_yam/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/i2rt_yam/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/i2rt_yam/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/i2rt_yam"
+    }
    },
-   "links": {}
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/i2rt_yam"
+   }
   },
   {
    "id": "so_arm100",
@@ -6643,6 +6834,7 @@
    "dof": 6,
    "license": "Apache-2.0",
    "formats": [
+    "mjcf",
     "urdf"
    ],
    "notes": null,
@@ -6688,10 +6880,19 @@
     "tree_url": "https://github.com/TheRobotStudio/SO-ARM100/tree/63eede5a636e548eb8f2854e558bd343c21db9f7/Simulation/SO100",
     "license_url": "https://github.com/TheRobotStudio/SO-ARM100/blob/63eede5a636e548eb8f2854e558bd343c21db9f7/Simulation/SO100/LICENSE",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "trs_so_arm100/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/trs_so_arm100/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/trs_so_arm100/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/trs_so_arm100"
+    }
    },
    "links": {
-    "official": "https://github.com/TheRobotStudio/SO-ARM100"
+    "official": "https://github.com/TheRobotStudio/SO-ARM100",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/trs_so_arm100"
    }
   },
   {
@@ -8133,6 +8334,7 @@
    "dof": 16,
    "license": "MIT",
    "formats": [
+    "mjcf",
     "urdf"
    ],
    "notes": null,
@@ -8181,11 +8383,20 @@
     "tree_url": "https://github.com/leap-hand/LEAP_Hand_Sim/tree/150bc3d4b61fd6619193ba5a8ef209f3609ced89/assets/leap_hand",
     "license_url": "https://github.com/leap-hand/LEAP_Hand_Sim/blob/150bc3d4b61fd6619193ba5a8ef209f3609ced89/assets/leap_hand/LICENSE.txt",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "leap_hand/scene_left.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/leap_hand/scene_left.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/leap_hand/scene_left.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/leap_hand"
+    }
    },
    "links": {
     "official": "https://leaphand.com/",
-    "paper": "https://arxiv.org/abs/2309.06440"
+    "paper": "https://arxiv.org/abs/2309.06440",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/leap_hand"
    }
   },
   {
@@ -8199,6 +8410,7 @@
    "dof": 16,
    "license": "BSD",
    "formats": [
+    "mjcf",
     "urdf"
    ],
    "notes": "Left hand; the same package also ships the right hand.",
@@ -8250,10 +8462,19 @@
     "tree_url": "https://github.com/RobotLocomotion/drake/tree/7abea0556ede980a5077fe1a8cfbae59b57c7c27/manipulation/models/allegro_hand_description",
     "license_url": "https://github.com/RobotLocomotion/drake/blob/7abea0556ede980a5077fe1a8cfbae59b57c7c27/manipulation/models/allegro_hand_description/manipulation/models/allegro_hand_description/LICENSE.TXT",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "wonik_allegro/scene_left.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/wonik_allegro/scene_left.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/wonik_allegro/scene_left.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/wonik_allegro"
+    }
    },
    "links": {
-    "official": "https://www.wonikrobotics.com/research-robot-hand"
+    "official": "https://www.wonikrobotics.com/research-robot-hand",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/wonik_allegro"
    }
   },
   {
@@ -8399,6 +8620,7 @@
    "dof": 6,
    "license": "BSD",
    "formats": [
+    "mjcf",
     "urdf"
    ],
    "notes": null,
@@ -8450,10 +8672,19 @@
     "tree_url": "https://github.com/a-price/robotiq_arg85_description/tree/a65190bdbb0666609fe7e8c3bb17341e09e81625",
     "license_url": "https://github.com/a-price/robotiq_arg85_description/blob/a65190bdbb0666609fe7e8c3bb17341e09e81625/package.xml",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "robotiq_2f85/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/robotiq_2f85/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/robotiq_2f85/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robotiq_2f85"
+    }
    },
    "links": {
-    "official": "https://robotiq.com/products/adaptive-grippers"
+    "official": "https://robotiq.com/products/adaptive-grippers",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robotiq_2f85"
    }
   },
   {
@@ -8931,10 +9162,19 @@
     "tree_url": "https://github.com/sharpa-robotics/sharpa-urdf-usd-xml/tree/6eea427eb24189519f32b9f21674cd534d3f973c/wave_01/right_sharpa_wave",
     "license_url": "https://github.com/sharpa-robotics/sharpa-urdf-usd-xml/blob/6eea427eb24189519f32b9f21674cd534d3f973c/LICENSE.txt",
     "mirror": null,
-    "mjcf": "wave_01/right_sharpa_wave/right_sharpa_wave.xml"
+    "mjcf": "wave_01/right_sharpa_wave/right_sharpa_wave.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "sharpa_wave/scene_left.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/sharpa_wave/scene_left.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/sharpa_wave/scene_left.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/sharpa_wave"
+    }
    },
    "links": {
-    "official": "https://www.sharpa.com/"
+    "official": "https://www.sharpa.com/",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/sharpa_wave"
    }
   },
   {
@@ -9518,6 +9758,233 @@
    }
   },
   {
+   "id": "shadow_hand",
+   "name": "Shadow Hand E3M5",
+   "maker": "Shadow Robot Company",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 24,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "Shadow Robot's anthropomorphic hand with four fingers, an opposable thumb and a two-axis wrist. The card opens the right motor hand; the version picker also exposes the left hand and the Plus forearm variants. These are the plain URDFs shipped beside sr_common's MuJoCo models, so they need no xacro expansion, and each version links its matching MJCF.",
+   "notes_zh": "Shadow Robot 的仿人灵巧手，包含四指、对掌拇指和两自由度手腕。卡片默认打开右手电机版，版本选择器还可切换左手及 Plus 前臂版本。这些是 sr_common 随 MuJoCo 模型一同发布的已展开 URDF，无需再运行 xacro；每个版本同时链接对应 MJCF。",
+   "pose": null,
+   "loops": null,
+   "preview_frame": {
+    "palm": "+y",
+    "fingers": "+z"
+   },
+   "measured": null,
+   "urdf": {
+    "xml_name": "shadowhand_motor",
+    "links": 33,
+    "joints": {
+     "fixed": 8,
+     "revolute": 24
+    },
+    "moving_joints": 24,
+    "mass_kg": 3.794,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 62797
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/shadow-robot/sr_common@f061f0e9e777d5f8a4db4c19a033bd03f8101312/",
+    "urdf": "sr_description/mujoco_models/urdfs/shadowhand_motor.urdf",
+    "packages": {
+     "sr_description": "sr_description"
+    },
+    "mesh_files": 11,
+    "mesh_bytes": 1332744,
+    "mesh_formats": [
+     ".dae"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "shadow-robot/sr_common",
+    "commit": "f061f0e9e777d5f8a4db4c19a033bd03f8101312",
+    "repo_url": "https://github.com/shadow-robot/sr_common",
+    "tree_url": "https://github.com/shadow-robot/sr_common/tree/f061f0e9e777d5f8a4db4c19a033bd03f8101312/sr_description",
+    "license_url": "https://github.com/shadow-robot/sr_common/blob/f061f0e9e777d5f8a4db4c19a033bd03f8101312/LICENSE",
+    "mirror": null,
+    "mjcf": "sr_description/mujoco_models/sr_hand_e_model.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "shadow_hand/scene_left.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/shadow_hand/scene_left.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/shadow_hand/scene_left.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/shadow_hand"
+    }
+   },
+   "links": {
+    "official": "https://www.shadowrobot.com/dexterous-hand-series/",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/shadow_hand"
+   },
+   "variants": [
+    {
+     "id": "shadowhand_motor",
+     "name": "Right hand",
+     "deprecated": false,
+     "dof": 24,
+     "formats": [
+      "mjcf",
+      "urdf"
+     ],
+     "notes": null,
+     "notes_zh": null,
+     "measured": null,
+     "mjcf": "sr_description/mujoco_models/sr_hand_e_model.xml",
+     "urdf": {
+      "xml_name": "shadowhand_motor",
+      "links": 33,
+      "joints": {
+       "fixed": 8,
+       "revolute": 24
+      },
+      "moving_joints": 24,
+      "mass_kg": 3.794,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 62797
+     },
+     "assets": {
+      "urdf": "sr_description/mujoco_models/urdfs/shadowhand_motor.urdf",
+      "packages": {
+       "sr_description": "sr_description"
+      },
+      "mesh_files": 11,
+      "mesh_bytes": 1332744,
+      "mesh_formats": [
+       ".dae"
+      ]
+     }
+    },
+    {
+     "id": "shadowhand_motor_left",
+     "name": "Left hand",
+     "deprecated": false,
+     "dof": 24,
+     "formats": [
+      "mjcf",
+      "urdf"
+     ],
+     "notes": null,
+     "notes_zh": null,
+     "measured": null,
+     "mjcf": "sr_description/mujoco_models/sr_hand_e_left_model.xml",
+     "urdf": {
+      "xml_name": "shadowhand_motor",
+      "links": 33,
+      "joints": {
+       "fixed": 8,
+       "revolute": 24
+      },
+      "moving_joints": 24,
+      "mass_kg": 3.794,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 62940
+     },
+     "assets": {
+      "urdf": "sr_description/mujoco_models/urdfs/shadowhand_motor_left.urdf",
+      "packages": {
+       "sr_description": "sr_description"
+      },
+      "mesh_files": 11,
+      "mesh_bytes": 1332744,
+      "mesh_formats": [
+       ".dae"
+      ]
+     }
+    },
+    {
+     "id": "shadowhand_motor_plus",
+     "name": "Right hand Plus",
+     "deprecated": false,
+     "dof": 24,
+     "formats": [
+      "mjcf",
+      "urdf"
+     ],
+     "notes": null,
+     "notes_zh": null,
+     "measured": null,
+     "mjcf": "sr_description/mujoco_models/sr_hand_e_plus_model.xml",
+     "urdf": {
+      "xml_name": "shadowhand_motor",
+      "links": 33,
+      "joints": {
+       "fixed": 8,
+       "revolute": 24
+      },
+      "moving_joints": 24,
+      "mass_kg": 3.794,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 62877
+     },
+     "assets": {
+      "urdf": "sr_description/mujoco_models/urdfs/shadowhand_motor_plus.urdf",
+      "packages": {
+       "sr_description": "sr_description"
+      },
+      "mesh_files": 12,
+      "mesh_bytes": 1451345,
+      "mesh_formats": [
+       ".dae",
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "shadowhand_motor_plus_left",
+     "name": "Left hand Plus",
+     "deprecated": false,
+     "dof": 24,
+     "formats": [
+      "mjcf",
+      "urdf"
+     ],
+     "notes": null,
+     "notes_zh": null,
+     "measured": null,
+     "mjcf": "sr_description/mujoco_models/sr_hand_e_plus_left_model.xml",
+     "urdf": {
+      "xml_name": "shadowhand_motor",
+      "links": 33,
+      "joints": {
+       "fixed": 8,
+       "revolute": 24
+      },
+      "moving_joints": 24,
+      "mass_kg": 3.794,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 63020
+     },
+     "assets": {
+      "urdf": "sr_description/mujoco_models/urdfs/shadowhand_motor_plus_left.urdf",
+      "packages": {
+       "sr_description": "sr_description"
+      },
+      "mesh_files": 12,
+      "mesh_bytes": 1451345,
+      "mesh_formats": [
+       ".dae",
+       ".stl"
+      ]
+     }
+    }
+   ]
+  },
+  {
    "id": "cassie",
    "name": "Cassie",
    "maker": "Agility Robotics",
@@ -9528,6 +9995,7 @@
    "dof": 16,
    "license": "MIT",
    "formats": [
+    "mjcf",
     "urdf"
    ],
    "notes": null,
@@ -9584,10 +10052,19 @@
     "tree_url": "https://github.com/robot-descriptions/cassie_description/tree/81a2d8bbd77201cc974afb127adda4e2857a6dbf",
     "license_url": "https://github.com/robot-descriptions/cassie_description/blob/81a2d8bbd77201cc974afb127adda4e2857a6dbf/LICENSE",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "agility_cassie/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/agility_cassie/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/agility_cassie/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/agility_cassie"
+    }
    },
    "links": {
-    "official": "https://agilityrobotics.com/"
+    "official": "https://agilityrobotics.com/",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/agility_cassie"
    }
   },
   {
@@ -12501,6 +12978,7 @@
    "dof": 48,
    "license": "CC-BY-NC-ND-3.0",
    "formats": [
+    "mjcf",
     "urdf"
    ],
    "notes": null,
@@ -12552,10 +13030,19 @@
     "tree_url": "https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/tiago_description",
     "license_url": "https://github.com/Gepetto/example-robot-data/blob/d0d9098d752014aec3725b07766962acf06c5418/robots/tiago_description/robots/tiago_description/README.md",
     "mirror": null,
-    "mjcf": null
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "pal_tiago/scene_position.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/pal_tiago/scene_position.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/pal_tiago/scene_position.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/pal_tiago"
+    }
    },
    "links": {
-    "official": "https://pal-robotics.com/robot/tiago/"
+    "official": "https://pal-robotics.com/robot/tiago/",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/pal_tiago"
    }
   },
   {
@@ -13913,6 +14400,1906 @@
     "mjcf": null
    },
    "links": {}
+  },
+  {
+   "id": "robotis_op3",
+   "name": "Robotis OP3",
+   "maker": "ROBOTIS",
+   "category": "humanoid",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 20,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 815
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "robotis_op3/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/robotis_op3-op3.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/robotis_op3/LICENSE",
+    "mirror": null,
+    "mjcf": "robotis_op3/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "robotis_op3/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/robotis_op3/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3/scene.xml"
+  },
+  {
+   "id": "toddlerbot_2xc",
+   "name": "ToddlerBot 2XC",
+   "maker": "Stanford University",
+   "category": "humanoid",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 44,
+   "license": "MIT",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 2846
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "toddlerbot_2xc/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/toddlerbot_2xc-toddlerbot_2xc.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xc",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xc/LICENSE",
+    "mirror": null,
+    "mjcf": "toddlerbot_2xc/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "toddlerbot_2xc/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xc/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xc/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xc"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xc"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xc/scene.xml"
+  },
+  {
+   "id": "pndbotics_adam_lite",
+   "name": "PNDbotics Adam_lite",
+   "maker": "PNDbotics",
+   "category": "humanoid",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 25,
+   "license": "MIT",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 827
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "pndbotics_adam_lite/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/pndbotics_adam_lite-adam_lite.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/pndbotics_adam_lite",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/pndbotics_adam_lite/LICENSE",
+    "mirror": null,
+    "mjcf": "pndbotics_adam_lite/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "pndbotics_adam_lite/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/pndbotics_adam_lite/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/pndbotics_adam_lite/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/pndbotics_adam_lite"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/pndbotics_adam_lite"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/pndbotics_adam_lite/scene.xml"
+  },
+  {
+   "id": "apptronik_apollo",
+   "name": "Apptronik Apollo",
+   "maker": "Apptronik",
+   "category": "humanoid",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 32,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 1518
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "apptronik_apollo/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/apptronik_apollo-apptronik_apollo.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/apptronik_apollo",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/apptronik_apollo/LICENSE",
+    "mirror": null,
+    "mjcf": "apptronik_apollo/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "apptronik_apollo/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/apptronik_apollo/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/apptronik_apollo/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/apptronik_apollo"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/apptronik_apollo"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/apptronik_apollo/scene.xml"
+  },
+  {
+   "id": "toddlerbot_2xm",
+   "name": "ToddlerBot 2XM",
+   "maker": "Stanford University",
+   "category": "humanoid",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 44,
+   "license": "MIT",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 2846
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "toddlerbot_2xm/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/toddlerbot_2xm-toddlerbot_2xm.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xm",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xm/LICENSE",
+    "mirror": null,
+    "mjcf": "toddlerbot_2xm/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "toddlerbot_2xm/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xm/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xm/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xm"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xm"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xm/scene.xml"
+  },
+  {
+   "id": "unitree_go1",
+   "name": "Unitree Go1",
+   "maker": "UNITREE Robotics",
+   "category": "quadruped",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 12,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 815
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "unitree_go1/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/unitree_go1-go1.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/unitree_go1",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/unitree_go1/LICENSE",
+    "mirror": null,
+    "mjcf": "unitree_go1/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "unitree_go1/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/unitree_go1/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/unitree_go1/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/unitree_go1"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/unitree_go1"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/unitree_go1/scene.xml"
+  },
+  {
+   "id": "boston_dynamics_spot",
+   "name": "Boston Dynamics Spot",
+   "maker": "Boston Dynamics",
+   "category": "quadruped",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 19,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 823
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "boston_dynamics_spot/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/boston_dynamics_spot-spot_arm.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/boston_dynamics_spot",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/boston_dynamics_spot/LICENSE",
+    "mirror": null,
+    "mjcf": "boston_dynamics_spot/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "boston_dynamics_spot/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/boston_dynamics_spot/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/boston_dynamics_spot/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/boston_dynamics_spot"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/boston_dynamics_spot"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/boston_dynamics_spot/scene.xml"
+  },
+  {
+   "id": "flybody",
+   "name": "Flybody",
+   "maker": "Google DeepMind / HHMI Janelia",
+   "category": "biomechanical",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 102,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 1001
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "flybody/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/flybody-fruitfly.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/flybody",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/flybody/LICENSE",
+    "mirror": null,
+    "mjcf": "flybody/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "flybody/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/flybody/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/flybody/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/flybody"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/flybody"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/flybody/scene.xml"
+  },
+  {
+   "id": "iit_softfoot",
+   "name": "IIT SoftFoot",
+   "maker": "Italian Institute of Technology",
+   "category": "biomechanical",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 92,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 1283
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "iit_softfoot/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/iit_softfoot-softfoot.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/iit_softfoot",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/iit_softfoot/LICENSE",
+    "mirror": null,
+    "mjcf": "iit_softfoot/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "iit_softfoot/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/iit_softfoot/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/iit_softfoot/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/iit_softfoot"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/iit_softfoot"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/iit_softfoot/scene.xml"
+  },
+  {
+   "id": "ms_human_700",
+   "name": "MS-Human-700",
+   "maker": "LNS Group",
+   "category": "biomechanical",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 85,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 1112
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "ms_human_700/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/ms_human_700-MS-Human-700.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/ms_human_700",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/ms_human_700/LICENSE",
+    "mirror": null,
+    "mjcf": "ms_human_700/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "ms_human_700/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/ms_human_700/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/ms_human_700/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/ms_human_700"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/ms_human_700"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/ms_human_700/scene.xml"
+  },
+  {
+   "id": "aloha",
+   "name": "ALOHA",
+   "maker": "Stanford University",
+   "category": "dual_arm",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 16,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 5330
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "aloha/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/aloha-aloha.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/aloha",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/aloha/LICENSE",
+    "mirror": null,
+    "mjcf": "aloha/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "aloha/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/aloha/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/aloha/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/aloha"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/aloha"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/aloha/scene.xml"
+  },
+  {
+   "id": "google_robot",
+   "name": "Google Robot",
+   "maker": "Google",
+   "category": "mobile",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 9,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 843
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "google_robot/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/google_robot-robot.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/google_robot",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/google_robot/LICENSE",
+    "mirror": null,
+    "mjcf": "google_robot/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "google_robot/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/google_robot/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/google_robot/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/google_robot"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/google_robot"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/google_robot/scene.xml"
+  },
+  {
+   "id": "stretch_2",
+   "name": "Hello Robot Stretch 2",
+   "maker": "Hello Robot",
+   "category": "mobile",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 17,
+   "license": "BSD-3-Clause-Clear",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 960
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "hello_robot_stretch/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/hello_robot_stretch-stretch.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch/LICENSE",
+    "mirror": null,
+    "mjcf": "hello_robot_stretch/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "hello_robot_stretch/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch/scene.xml"
+  },
+  {
+   "id": "stanford_tidybot",
+   "name": "Stanford TidyBot",
+   "maker": "Stanford University",
+   "category": "mobile",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 18,
+   "license": "MIT",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 842
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "stanford_tidybot/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/stanford_tidybot-tidybot.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/stanford_tidybot",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/stanford_tidybot/LICENSE",
+    "mirror": null,
+    "mjcf": "stanford_tidybot/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "stanford_tidybot/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/stanford_tidybot/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/stanford_tidybot/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/stanford_tidybot"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/stanford_tidybot"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/stanford_tidybot/scene.xml"
+  },
+  {
+   "id": "hello_robot_stretch_3",
+   "name": "Hello Robot Stretch 3",
+   "maker": "Hello Robot",
+   "category": "mobile",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 20,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 1221
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "hello_robot_stretch_3/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/hello_robot_stretch_3-stretch.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch_3",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch_3/LICENSE",
+    "mirror": null,
+    "mjcf": "hello_robot_stretch_3/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "hello_robot_stretch_3/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch_3/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch_3/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch_3"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch_3"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch_3/scene.xml"
+  },
+  {
+   "id": "pal_tiago_dual",
+   "name": "TIAGo++",
+   "maker": "PAL Robotics",
+   "category": "mobile",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 25,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 934
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "pal_tiago_dual/scene_position.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/pal_tiago_dual-tiago_dual.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/pal_tiago_dual",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/pal_tiago_dual/LICENSE",
+    "mirror": null,
+    "mjcf": "pal_tiago_dual/scene_position.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "pal_tiago_dual/scene_position.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/pal_tiago_dual/scene_position.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/pal_tiago_dual/scene_position.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/pal_tiago_dual"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/pal_tiago_dual"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/pal_tiago_dual/scene_position.xml"
+  },
+  {
+   "id": "skydio_x2",
+   "name": "Skydio X2",
+   "maker": "Skydio",
+   "category": "drone",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 0,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 875
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "skydio_x2/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/skydio_x2-x2.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/skydio_x2",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/skydio_x2/LICENSE",
+    "mirror": null,
+    "mjcf": "skydio_x2/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "skydio_x2/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/skydio_x2/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/skydio_x2/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/skydio_x2"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/skydio_x2"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/skydio_x2/scene.xml"
+  },
+  {
+   "id": "crazyflie_2",
+   "name": "Bitcraze Crazyflie 2",
+   "maker": "Bitcraze",
+   "category": "drone",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 0,
+   "license": "MIT",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 870
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "bitcraze_crazyflie_2/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/bitcraze_crazyflie_2-cf2.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/bitcraze_crazyflie_2",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/bitcraze_crazyflie_2/LICENSE",
+    "mirror": null,
+    "mjcf": "bitcraze_crazyflie_2/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "bitcraze_crazyflie_2/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/bitcraze_crazyflie_2/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/bitcraze_crazyflie_2/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/bitcraze_crazyflie_2"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/bitcraze_crazyflie_2"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/bitcraze_crazyflie_2/scene.xml"
+  },
+  {
+   "id": "franka_fr3",
+   "name": "Franka Robotics FR3",
+   "maker": "Franka Robotics",
+   "category": "arm",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 7,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 815
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "franka_fr3/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/franka_fr3-fr3.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/franka_fr3",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/franka_fr3/LICENSE",
+    "mirror": null,
+    "mjcf": "franka_fr3/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "franka_fr3/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/franka_fr3/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/franka_fr3/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/franka_fr3"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/franka_fr3"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/franka_fr3/scene.xml"
+  },
+  {
+   "id": "ufactory_lite6",
+   "name": "Lite 6",
+   "maker": "UFactory",
+   "category": "arm",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 6,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 819
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "ufactory_lite6/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/ufactory_lite6-lite6.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/ufactory_lite6",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/ufactory_lite6/LICENSE",
+    "mirror": null,
+    "mjcf": "ufactory_lite6/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "ufactory_lite6/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/ufactory_lite6/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/ufactory_lite6/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/ufactory_lite6"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/ufactory_lite6"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/ufactory_lite6/scene.xml"
+  },
+  {
+   "id": "universal_robots_ur5e",
+   "name": "Universal Robots UR5e",
+   "maker": "Universal Robots",
+   "category": "arm",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 6,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 817
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "universal_robots_ur5e/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/universal_robots_ur5e-ur5e.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/universal_robots_ur5e",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/universal_robots_ur5e/LICENSE",
+    "mirror": null,
+    "mjcf": "universal_robots_ur5e/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "universal_robots_ur5e/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/universal_robots_ur5e/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/universal_robots_ur5e/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/universal_robots_ur5e"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/universal_robots_ur5e"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/universal_robots_ur5e/scene.xml"
+  },
+  {
+   "id": "rethink_robotics_sawyer",
+   "name": "Rethink Robotics Sawyer",
+   "maker": "Rethink Robotics",
+   "category": "arm",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 7,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 821
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "rethink_robotics_sawyer/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/rethink_robotics_sawyer-sawyer.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/rethink_robotics_sawyer",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/rethink_robotics_sawyer/LICENSE",
+    "mirror": null,
+    "mjcf": "rethink_robotics_sawyer/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "rethink_robotics_sawyer/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/rethink_robotics_sawyer/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/rethink_robotics_sawyer/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/rethink_robotics_sawyer"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/rethink_robotics_sawyer"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/rethink_robotics_sawyer/scene.xml"
+  },
+  {
+   "id": "universal_robots_ur10e",
+   "name": "Universal Robots UR10e",
+   "maker": "Universal Robots",
+   "category": "arm",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 6,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 819
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "universal_robots_ur10e/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/universal_robots_ur10e-ur10e.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/universal_robots_ur10e",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/universal_robots_ur10e/LICENSE",
+    "mirror": null,
+    "mjcf": "universal_robots_ur10e/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "universal_robots_ur10e/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/universal_robots_ur10e/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/universal_robots_ur10e/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/universal_robots_ur10e"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/universal_robots_ur10e"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/universal_robots_ur10e/scene.xml"
+  },
+  {
+   "id": "trossen_vx300s",
+   "name": "ViperX 300 6DOF",
+   "maker": "Trossen Robotics",
+   "category": "arm",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 8,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 821
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "trossen_vx300s/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/trossen_vx300s-vx300s.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/trossen_vx300s",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/trossen_vx300s/LICENSE",
+    "mirror": null,
+    "mjcf": "trossen_vx300s/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "trossen_vx300s/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/trossen_vx300s/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/trossen_vx300s/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/trossen_vx300s"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/trossen_vx300s"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/trossen_vx300s/scene.xml"
+  },
+  {
+   "id": "ufactory_xarm7",
+   "name": "xArm7",
+   "maker": "UFactory",
+   "category": "arm",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 13,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 891
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "ufactory_xarm7/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/ufactory_xarm7-xarm7.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/ufactory_xarm7",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/ufactory_xarm7/LICENSE",
+    "mirror": null,
+    "mjcf": "ufactory_xarm7/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "ufactory_xarm7/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/ufactory_xarm7/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/ufactory_xarm7/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/ufactory_xarm7"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/ufactory_xarm7"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/ufactory_xarm7/scene.xml"
+  },
+  {
+   "id": "kinova_gen3",
+   "name": "Kinova Gen3",
+   "maker": "Kinova",
+   "category": "arm",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 7,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 836
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "kinova_gen3/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/kinova_gen3-gen3.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/kinova_gen3",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/kinova_gen3/LICENSE",
+    "mirror": null,
+    "mjcf": "kinova_gen3/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "kinova_gen3/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/kinova_gen3/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/kinova_gen3/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/kinova_gen3"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/kinova_gen3"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/kinova_gen3/scene.xml"
+  },
+  {
+   "id": "flexiv_rizon4",
+   "name": "Flexiv Robotics Rizon4",
+   "maker": "Flexiv Robotics",
+   "category": "arm",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 7,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 828
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "flexiv_rizon4/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/flexiv_rizon4-flexiv_rizon4.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/flexiv_rizon4",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/flexiv_rizon4/LICENSE",
+    "mirror": null,
+    "mjcf": "flexiv_rizon4/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "flexiv_rizon4/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/flexiv_rizon4/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/flexiv_rizon4/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/flexiv_rizon4"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/flexiv_rizon4"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/flexiv_rizon4/scene.xml"
+  },
+  {
+   "id": "arx_l5",
+   "name": "ARX L5",
+   "maker": "ARX Robotics",
+   "category": "arm",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 8,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 821
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "arx_l5/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/arx_l5-arx_l5.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/arx_l5",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/arx_l5/LICENSE",
+    "mirror": null,
+    "mjcf": "arx_l5/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "arx_l5/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/arx_l5/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/arx_l5/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/arx_l5"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/arx_l5"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/arx_l5/scene.xml"
+  },
+  {
+   "id": "flexiv_rizon4s",
+   "name": "Flexiv Robotics Rizon4S",
+   "maker": "Flexiv Robotics",
+   "category": "arm",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 7,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 830
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "flexiv_rizon4s/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/flexiv_rizon4s-flexiv_rizon4s.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/flexiv_rizon4s",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/flexiv_rizon4s/LICENSE",
+    "mirror": null,
+    "mjcf": "flexiv_rizon4s/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "flexiv_rizon4s/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/flexiv_rizon4s/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/flexiv_rizon4s/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/flexiv_rizon4s"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/flexiv_rizon4s"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/flexiv_rizon4s/scene.xml"
+  },
+  {
+   "id": "trossen_wx250s",
+   "name": "WidowX 250 6DOF",
+   "maker": "Trossen Robotics",
+   "category": "arm",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 8,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 821
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "trossen_wx250s/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/trossen_wx250s-wx250s.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/trossen_wx250s",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/trossen_wx250s/LICENSE",
+    "mirror": null,
+    "mjcf": "trossen_wx250s/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "trossen_wx250s/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/trossen_wx250s/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/trossen_wx250s/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/trossen_wx250s"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/trossen_wx250s"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/trossen_wx250s/scene.xml"
+  },
+  {
+   "id": "low_cost_robot_arm",
+   "name": "Low-Cost Robot Arm",
+   "maker": "Alexander Koch / Hugging Face",
+   "category": "arm",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 6,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 867
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "low_cost_robot_arm/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/low_cost_robot_arm-low_cost_robot_arm.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/low_cost_robot_arm",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/low_cost_robot_arm/LICENSE",
+    "mirror": null,
+    "mjcf": "low_cost_robot_arm/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "low_cost_robot_arm/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/low_cost_robot_arm/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/low_cost_robot_arm/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/low_cost_robot_arm"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/low_cost_robot_arm"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/low_cost_robot_arm/scene.xml"
+  },
+  {
+   "id": "seeed_rebot_devarm",
+   "name": "Seeed Studio reBot DevArm",
+   "maker": "Seeed Studio",
+   "category": "arm",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 8,
+   "license": "MIT",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 845
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "seeed_rebot_devarm/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/seeed_rebot_devarm-seeed_rebot_devarm.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/seeed_rebot_devarm",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/seeed_rebot_devarm/LICENSE",
+    "mirror": null,
+    "mjcf": "seeed_rebot_devarm/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "seeed_rebot_devarm/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/seeed_rebot_devarm/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/seeed_rebot_devarm/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/seeed_rebot_devarm"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/seeed_rebot_devarm"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/seeed_rebot_devarm/scene.xml"
+  },
+  {
+   "id": "panda_gripper",
+   "name": "Panda Gripper",
+   "maker": "Franka Robotics",
+   "category": "hand",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 2,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 4547
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "franka_emika_panda/hand.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/franka_emika_panda-hand.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/franka_emika_panda",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/franka_emika_panda/LICENSE",
+    "mirror": null,
+    "mjcf": "franka_emika_panda/hand.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "franka_emika_panda/hand.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/franka_emika_panda/hand.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/franka_emika_panda/hand.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/franka_emika_panda"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/franka_emika_panda"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/franka_emika_panda/hand.xml"
+  },
+  {
+   "id": "xarm7_gripper",
+   "name": "xarm7 Gripper",
+   "maker": "UFactory",
+   "category": "hand",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 6,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 5974
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "ufactory_xarm7/hand.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/ufactory_xarm7-hand.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/ufactory_xarm7",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/ufactory_xarm7/LICENSE",
+    "mirror": null,
+    "mjcf": "ufactory_xarm7/hand.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "ufactory_xarm7/hand.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/ufactory_xarm7/hand.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/ufactory_xarm7/hand.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/ufactory_xarm7"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/ufactory_xarm7"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/ufactory_xarm7/hand.xml"
+  },
+  {
+   "id": "shadow_dexee",
+   "name": "Shadow DEX-EE Hand",
+   "maker": "Shadow Robot Company",
+   "category": "hand",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 12,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 1033
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "shadow_dexee/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/shadow_dexee-shadow_dexee.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/shadow_dexee",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/shadow_dexee/LICENSE",
+    "mirror": null,
+    "mjcf": "shadow_dexee/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "shadow_dexee/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/shadow_dexee/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/shadow_dexee/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/shadow_dexee"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/shadow_dexee"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/shadow_dexee/scene.xml"
+  },
+  {
+   "id": "umi_gripper",
+   "name": "UMI-Gripper",
+   "maker": "Universal Manipulation Interface",
+   "category": "hand",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 8,
+   "license": "MIT",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 942
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "umi_gripper/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/umi_gripper-umi_gripper.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/umi_gripper",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/umi_gripper/LICENSE",
+    "mirror": null,
+    "mjcf": "umi_gripper/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "umi_gripper/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/umi_gripper/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/umi_gripper/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/umi_gripper"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/umi_gripper"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/umi_gripper/scene.xml"
+  },
+  {
+   "id": "robot_soccer_kit",
+   "name": "Robot soccer kit omnidirectional",
+   "maker": "Robot Soccer Kit",
+   "category": "mobile_base",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 64,
+   "license": "MIT",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 836
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "robot_soccer_kit/scene.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/robot_soccer_kit-robot_soccer_kit.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robot_soccer_kit",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/robot_soccer_kit/LICENSE",
+    "mirror": null,
+    "mjcf": "robot_soccer_kit/scene.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "robot_soccer_kit/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/robot_soccer_kit/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/robot_soccer_kit/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robot_soccer_kit"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robot_soccer_kit"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/robot_soccer_kit/scene.xml"
+  },
+  {
+   "id": "realsense_d435i",
+   "name": "Realsense D435i",
+   "maker": "Intel RealSense",
+   "category": "sensor",
+   "tags": [
+    "mjcf"
+   ],
+   "dof": 0,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "measured": null,
+   "mjcf": {
+    "bytes": 2174
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
+    "mjcf": "realsense_d435i/d435i.xml",
+    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/realsense_d435i-d435i.png",
+    "mesh_files": 0,
+    "mesh_bytes": 0,
+    "mesh_formats": []
+   },
+   "source": {
+    "description": null,
+    "github": "google-deepmind/mujoco_menagerie",
+    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
+    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/realsense_d435i",
+    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/realsense_d435i/LICENSE",
+    "mirror": null,
+    "mjcf": "realsense_d435i/d435i.xml",
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "realsense_d435i/d435i.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/realsense_d435i/d435i.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/realsense_d435i/d435i.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/realsense_d435i"
+    }
+   },
+   "links": {
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/realsense_d435i"
+   },
+   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/realsense_d435i/d435i.xml"
   }
  ]
 }

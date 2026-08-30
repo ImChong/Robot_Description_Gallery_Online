@@ -29,6 +29,7 @@ const visibility = existsSync(visibilityPath)
   ? parseVisibility(readFileSync(visibilityPath, 'utf8'))
   : new Map();
 const shown = registry.robots.filter((r) => visibility.get(r.id) !== false);
+const renderable = shown.filter((r) => r.formats.includes('urdf'));
 const hidden = registry.robots.length - shown.length;
 if (hidden) console.log(`${hidden} robot(s) hidden by data/visibility.md`);
 
@@ -52,14 +53,14 @@ function loads(robot, everyVersion) {
 
 let targets;
 if (flag('--robot')) {
-  targets = shown.filter((r) => r.id === flag('--robot')).flatMap((r) => loads(r, true));
+  targets = renderable.filter((r) => r.id === flag('--robot')).flatMap((r) => loads(r, true));
   if (!targets.length) console.log(`${flag('--robot')}: not shown (or unknown) — nothing to test`);
 } else if (args.includes('--all')) {
-  targets = shown.flatMap((r) => loads(r, true));
+  targets = renderable.flatMap((r) => loads(r, true));
 } else {
   // One representative (the lightest) per category keeps the default fast.
   const byCategory = new Map();
-  for (const robot of shown) {
+  for (const robot of renderable) {
     const current = byCategory.get(robot.category);
     if (!current || robot.assets.mesh_bytes < current.assets.mesh_bytes) {
       byCategory.set(robot.category, robot);

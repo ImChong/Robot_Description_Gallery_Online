@@ -1,15 +1,16 @@
-# Robot URDF Gallery Online · 机器人 URDF 在线合集
+# Robot URDF & MJCF Gallery Online · 机器人描述在线合集
 
 [![Pages](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/pages.yml/badge.svg)](https://imchong.github.io/Robot_URDF_Gallery_Online/)
 [![Verify](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml/badge.svg)](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-在浏览器里加载 **150 个**开源机器人 URDF：拖关节、看碰撞体与惯量，一键下载 URDF、
-网格 zip 或可直接 `colcon build` 的 ROS 2 功能包。
+收录 **189 个**开源机器人描述：151 个 URDF 可在站内拖关节、查看碰撞体与惯量，并下载
+URDF、网格 zip 或 ROS 2 功能包；纯 MJCF 条目使用 MuJoCo Live 在线预览。
 
 在线访问：<https://imchong.github.io/Robot_URDF_Gallery_Online/>
 
-人形 46 · 四足 22 · 机械臂 22 · 灵巧手 24 · 移动操作 14 · 双臂 11 · 双足 11
+人形 51 · 四足 24 · 机械臂 36 · 灵巧手 29 · 移动操作 19 · 双臂 12 · 双足 11
+生物力学 3 · 无人机 2 · 移动底盘 1 · 传感器 1
 
 ## 功能
 
@@ -25,6 +26,9 @@
 - **预览我自己的 URDF**：本地模型用同一个查看器打开，也能当成对比里的一列。
   **文件只在浏览器里解析，不会上传** —— 本站是纯静态页面，没有可以接收文件的后端。
 - **下载**：`.urdf`、URDF + 网格 zip、ROS 2 功能包。
+- **MJCF**：读取固定 commit 的 MuJoCo Menagerie 清单；已有 URDF 的 25 台合并到原卡片，
+  其余 38 台以 MJCF-only 卡片展示，点击后在 MuJoCo Live 打开固定版本的场景。Shadow Hand
+  另提供右手、左手和两套 Plus 共 4 个 URDF/MJCF 版本。
 
 **本仓库不托管任何模型文件。** 绝大多数条目只记录上游仓库 + 固定 commit，访问时从
 jsDelivr 的 GitHub CDN 流式加载；少数厂商从未公开可加载模型的机型，条目改为记录转载
@@ -42,8 +46,8 @@ npm run dev   # http://localhost:8080/web/
 
 ## 数据
 
-手写的只有两个文件：`data/curation.json`（收录哪些机器人）与 `data/visibility.md`
-（`[x]` 显示、`[ ]` 隐藏）。其余全部由脚本生成。
+手写的只有三个文件：`data/curation.json`（URDF 收录）、`data/menagerie.json`（MJCF 清单的
+固定版本、分类与去重映射）和 `data/visibility.md`（`[x]` 显示、`[ ]` 隐藏）。其余由脚本生成。
 
 ```bash
 pip install -r scripts/requirements.txt
@@ -55,12 +59,13 @@ npm run check:downloads              # 校验下载包
 npm run check:compare                # 校验对比页
 ```
 
-新增机器人：在 `data/curation.json` 的 `robots` 里加一条并写上 `category`，然后跑
+新增 URDF：在 `data/curation.json` 的 `robots` 里加一条并写上 `category`，然后跑
 `registry → thumbs → registry`。`npm run candidates` 可以列出所有可加载的候选模型。
+更新 Menagerie 时修改 `data/menagerie.json` 的固定 commit，并同步去重映射。
 
 ## 已知限制
 
-- 暂不支持只提供 xacro 的模型（Shadow Hand、Fetch 等）；自己上传时请先
+- 暂不支持只提供 xacro 的模型（如 Fetch）；自己上传时请先
   `xacro robot.urdf.xacro > robot.urdf`。厂商只发布 xacro、但有第三方公开了展开后的
   URDF 时收录后者——UR 三台走的就是 example-robot-data 这条路。
 - 网格是 Y-up 的 glTF（`obj2gltf` 的默认输出）时每个连杆都会摆错方向，这类模型同样
@@ -78,8 +83,9 @@ npm run check:compare                # 校验对比页
 
 ---
 
-**English** — A browsable 3D gallery of 150 open robot descriptions (humanoids,
-quadrupeds, arms, hands) that loads URDFs in the browser, lets you drag joints — or
+**English** — A browsable gallery of 189 open robot descriptions: 151 URDF entries
+load in the built-in viewer, while MJCF-only entries open as pinned MuJoCo Live scenes.
+The URDF viewer lets you drag joints — or
 play every joint in turn out to both its limits and back, a second each — and
 overlays collision geometry, joint axes and inertia. A compare page (`#compare=1`) puts
 two to six machines of one category side by side as numbers, lining their joints up by
@@ -88,7 +94,8 @@ anatomy or by position along the kinematic chain. A mechanism that closes back o
 MJCF does, so dragging a motor bends the whole linkage instead of pulling the leg apart.
 You can open a description from your own disk in the same viewer — parsed in the
 browser, never uploaded — and compare it against the gallery. Every robot downloads in
-one click as a `.urdf`, a zip of URDF + meshes, or a ready-to-build ROS 2 package. No
-model files are hosted here: entries pin an upstream repository and commit and stream
-from jsDelivr. Run it locally with `npm install && npm run dev`. Code is MIT; each model
-keeps its own upstream licence, some non-commercial.
+one click as a `.urdf`, a zip of URDF + meshes, or a ready-to-build ROS 2 package. The
+pinned MuJoCo Menagerie manifest is deduplicated against existing URDF cards. No model
+files are hosted here: entries pin an upstream repository and commit and stream from
+jsDelivr. Run it locally with `npm install && npm run dev`. Code is MIT; each model keeps
+its own upstream licence, some non-commercial.

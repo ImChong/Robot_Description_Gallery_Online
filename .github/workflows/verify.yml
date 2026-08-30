@@ -61,13 +61,29 @@ jobs:
           # but never fail the job: a CDN can legitimately report a different
           # Content-Length (compressed variants, for one) without the assets
           # themselves having moved.
-          STRUCTURAL = [
+          STRUCTURAL_COMMON = [
               ('source', 'commit'), ('source', 'github'),
-              ('assets', 'base'), ('assets', 'urdf'), ('assets', 'packages'),
+              ('assets', 'base'), ('formats',),
+          ]
+          STRUCTURAL_URDF = [
+              ('assets', 'urdf'), ('assets', 'packages'),
               ('assets', 'mesh_files'), ('assets', 'mesh_formats'),
               ('urdf', 'links'), ('urdf', 'joints'), ('urdf', 'moving_joints'),
           ]
-          INFORMATIONAL = [('assets', 'mesh_bytes'), ('urdf', 'mass_kg'), ('urdf', 'bytes')]
+          STRUCTURAL_MJCF = [
+              ('assets', 'mjcf'), ('assets', 'thumbnail'),
+              ('source', 'mjcf_external'), ('external_url',),
+          ]
+          INFORMATIONAL_URDF = [
+              ('assets', 'mesh_bytes'), ('urdf', 'mass_kg'), ('urdf', 'bytes'),
+          ]
+          INFORMATIONAL_MJCF = [('mjcf', 'bytes')]
+
+          def at(entry, path):
+              value = entry
+              for key in path:
+                  value = value.get(key) if isinstance(value, dict) else None
+              return value
 
           drifted = False
           for robot in committed['robots']:
@@ -76,18 +92,24 @@ jobs:
                   print(f"::error::{robot['id']} no longer resolves upstream")
                   drifted = True
                   continue
-              for section, key in STRUCTURAL:
-                  was, now = robot[section].get(key), new[section].get(key)
+              structural = STRUCTURAL_COMMON + (
+                  STRUCTURAL_URDF if robot.get('urdf') else STRUCTURAL_MJCF
+              )
+              informational = (
+                  INFORMATIONAL_URDF if robot.get('urdf') else INFORMATIONAL_MJCF
+              )
+              for path in structural:
+                  was, now = at(robot, path), at(new, path)
                   if was != now:
                       print(
-                          f"::error::{robot['id']} {section}.{key} drifted: "
+                          f"::error::{robot['id']} {'.'.join(path)} drifted: "
                           f"{was!r} -> {now!r} — re-run `npm run registry`"
                       )
                       drifted = True
-              for section, key in INFORMATIONAL:
-                  was, now = robot[section].get(key), new[section].get(key)
+              for path in informational:
+                  was, now = at(robot, path), at(new, path)
                   if was != now:
-                      print(f"::notice::{robot['id']} {section}.{key}: {was!r} -> {now!r}")
+                      print(f"::notice::{robot['id']} {'.'.join(path)}: {was!r} -> {now!r}")
 
           extra = sorted(set(fresh_by_id) - {r['id'] for r in committed['robots']})
           if extra:

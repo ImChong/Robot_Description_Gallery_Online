@@ -42,7 +42,9 @@ mkdirSync(thumbDir, { recursive: true });
 const measuredPath = new URL('data/measured.json', root);
 const measured = existsSync(measuredPath) ? JSON.parse(readFileSync(measuredPath)) : {};
 
-let robots = registry.robots;
+// MJCF-only cards already carry Menagerie's pinned preview image and open in
+// MuJoCo Live; this renderer is the URDF stage and has nothing to render for them.
+let robots = registry.robots.filter((robot) => robot.formats.includes('urdf'));
 if (flag('--robot')) robots = robots.filter((r) => r.id === flag('--robot'));
 
 /**
