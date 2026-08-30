@@ -117,10 +117,21 @@ export class Gallery {
     this.syncActive();
   }
 
-  section({ id, robots }) {
+  section({ id, robots, makers }) {
     const label = categoryLabel(id, this.data.categories);
     return `<section class="cat-section" id="cat-${id}" aria-labelledby="cat-${id}-h">
       <h2 class="cat-heading" id="cat-${id}-h">${label}<span class="count">${robots.length}</span></h2>
+      <div class="maker-groups">
+        ${makers.map((group, index) => this.makerSection(id, group, index)).join('')}
+      </div>
+    </section>`;
+  }
+
+  /** One manufacturer's robots within a category. */
+  makerSection(category, { maker, robots }, index) {
+    const heading = `maker-${category}-${index}`;
+    return `<section class="maker-group" aria-labelledby="${heading}">
+      <h3 class="maker-heading" id="${heading}">${maker}<span class="count">${robots.length}</span></h3>
       <div class="grid">${robots.map((robot) => this.card(robot)).join('')}</div>
     </section>`;
   }
