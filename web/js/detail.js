@@ -835,14 +835,17 @@ export class Detail {
     // A file the visitor picked off their own disk has no maker, no upstream
     // and nothing to download that they do not already have, so those panels
     // step aside for one that says what was read and where it stayed.
-    const local = robot.local === true;
+    const custom = robot.local === true;
+    const local = custom && robot.source.remote !== true;
     el('d-name').textContent = robot.modelName || robot.name;
     el('d-sub').textContent = local
       ? robot.source.fileName
-      : [robot.maker, categoryLabel(robot.category, this.data.categories)]
+      : custom
+        ? `${robot.source.github} · GitHub`
+        : [robot.maker, categoryLabel(robot.category, this.data.categories)]
           .filter(Boolean)
           .join(' · ');
-    el('stage-title').textContent = local
+    el('stage-title').textContent = custom
       ? robot.name
       : [robot.name, robot.maker].filter(Boolean).join(' · ');
     document.title = `${robot.name} · Robot URDF Gallery Online`;
@@ -855,8 +858,8 @@ export class Detail {
     // Prev/next walk the gallery; the local model is not in it. The compare
     // button stays: a file off a disk is exactly the thing worth reading beside
     // the machines it is meant to be like.
-    el('prev-robot').hidden = local;
-    el('next-robot').hidden = local;
+    el('prev-robot').hidden = custom;
+    el('next-robot').hidden = custom;
 
     this.renderVersions();
     this.renderSpecs();
@@ -946,7 +949,8 @@ export class Detail {
     // A mirrored entry has no commit to quote, because the archive it is read
     // from publishes none. Saying which host it came from is the honest row in
     // that slot, and the one a visitor needs to judge the model's provenance.
-    const upstream = r.local
+    const browserLocal = r.local && r.source.remote !== true;
+    const upstream = browserLocal
       ? []
       : [
           [t('spec.license'), r.license || '—'],
@@ -955,7 +959,7 @@ export class Detail {
             : [t('spec.commit'), `<span class="sub">${r.source.commit.slice(0, 10)}</span>`],
         ];
     const rows = [
-      ...(r.local ? [] : [[t('spec.maker'), r.maker || '—']]),
+      ...(browserLocal ? [] : [[t('spec.maker'), r.maker || '—']]),
       [t('spec.category'), categoryLabel(r.category, this.data.categories)],
       [t('spec.dof'), r.dof || r.urdf.moving_joints || '—'],
       [t('spec.links'), r.urdf.links],

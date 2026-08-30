@@ -2,11 +2,10 @@
  * "Preview my own URDF" — the picker on the gallery, and the file set it turns
  * into something js/viewer.js can load.
  *
- * Nothing here leaves the browser. The files are read with the File API, the
- * meshes reach three.js as `blob:` URLs, and the site is a static page with no
- * endpoint to upload anything to even if this module wanted one. That is the
- * promise the dialog makes to the visitor, so it is worth keeping: no `fetch`
- * to anywhere but a blob, and no analytics on what was picked.
+ * Local files never leave the browser: the File API and `blob:` URLs are the
+ * whole path to three.js. The alternative input is a public GitHub URL; that
+ * one is fetched directly from raw.githubusercontent.com, with no proxy,
+ * upload endpoint or analytics between the visitor and the repository.
  */
 import { LOCAL_URL_PREFIX } from './viewer.js';
 import { t } from './i18n.js';
@@ -21,6 +20,7 @@ export const CUSTOM_ID = '__local__';
 
 /** A description is a folder, not a workspace: past this, something is wrong. */
 const MAX_FILES = 6000;
+const MAX_GITHUB_URDF_BYTES = 5 * 1024 * 1024;
 
 const el = (id) => document.getElementById(id);
 
@@ -313,6 +313,153 @@ function buildEntry(fileSet, text) {
   };
 }
 
+// ------------------------------------------------------------- GitHub links
+
+/**
+ * Turn the two GitHub URLs people normally copy into a raw-content URL.
+ * Branches and tags with a single path segment are supported; raw URLs work as
+ * well as the more familiar `github.com/.../blob/...` form.
+ */
+export function parseGithubUrdfUrl(value) {
+  let url;
+  try {
+    url = new URL(String(value).trim());
+  } catch {
+    throw new PickError('custom.githubInvalid');
+  }
+  if (url.protocol !== 'https:') throw new PickError('custom.githubInvalid');
+
+  const parts = url.pathname
+    .split('/')
+    .filter(Boolean)
+    .map((part) => decodeURIComponent(part));
+  let owner;
+  let repo;
+  let ref;
+  let path;
+  if (url.hostname === 'github.com') {
+    [owner, repo] = parts;
+    const marker = parts[2];
+    if (!owner || !repo || !['blob', 'raw'].includes(marker)) {
+      throw new PickError('custom.githubInvalid');
+    }
+    ref = parts[3];
+    path = parts.slice(4).join('/');
+  } else if (url.hostname === 'raw.githubusercontent.com') {
+    [owner, repo, ref] = parts;
+    path = parts.slice(3).join('/');
+  } else {
+    throw new PickError('custom.githubInvalid');
+  }
+  repo = repo?.replace(/\.git$/i, '');
+  if (!owner || !repo || !ref || !path || !/\.urdf(?:\.xml)?$/i.test(path)) {
+    throw new PickError('custom.githubInvalid');
+  }
+
+  const encoded = [owner, repo, ref, ...path.split('/')]
+    .map((part) => encodeURIComponent(part))
+    .join('/');
+  const repoUrl = `https://github.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`;
+  return {
+    owner,
+    repo,
+    ref,
+    path,
+    rawUrl: `https://raw.githubusercontent.com/${encoded}`,
+    repoUrl,
+    treeUrl: `${repoUrl}/tree/${encodeURIComponent(ref)}/${path.replace(/[^/]+$/, '')}`,
+  };
+}
+
+/** Infer package roots from the URDF's own path and its package:// references. */
+export function inferGithubPackages(urdfPath, meshes) {
+  const segments = normalise(urdfPath).split('/');
+  const urdfDir = segments.slice(0, -1);
+  const urdfFolder = urdfDir.lastIndexOf('urdf');
+  const fallback = (urdfFolder === -1 ? urdfDir : urdfDir.slice(0, urdfFolder)).join('/');
+  const packages = {};
+  for (const filename of meshes) {
+    const match = /^package:\/\/([^/]+)/i.exec(filename);
+    if (!match || packages[match[1]] !== undefined) continue;
+    const index = urdfDir.lastIndexOf(match[1]);
+    packages[match[1]] = (index === -1 ? fallback : urdfDir.slice(0, index + 1).join('/'));
+  }
+  return packages;
+}
+
+/** Build the registry-shaped entry used by the existing detail and viewer code. */
+async function entryFromGithub(value) {
+  const source = parseGithubUrdfUrl(value);
+  const response = await fetch(source.rawUrl, { credentials: 'omit', referrerPolicy: 'no-referrer' });
+  if (!response.ok) {
+    throw new PickError('custom.githubFetch', { status: response.status });
+  }
+  const declaredBytes = Number(response.headers.get('content-length'));
+  if (declaredBytes > MAX_GITHUB_URDF_BYTES) throw new PickError('custom.githubTooLarge');
+  const text = await response.text();
+  const bytes = new TextEncoder().encode(text).byteLength;
+  if (bytes > MAX_GITHUB_URDF_BYTES) throw new PickError('custom.githubTooLarge');
+
+  const parsed = readUrdf(text);
+  const formats = new Set(
+    parsed.meshes
+      .map((name) => /\.[a-z0-9]+(?=$|[?#])/i.exec(name)?.[0]?.toLowerCase())
+      .filter(Boolean),
+  );
+  const fileName = basename(source.path);
+  const base = `https://raw.githubusercontent.com/${encodeURIComponent(source.owner)}/` +
+    `${encodeURIComponent(source.repo)}/${encodeURIComponent(source.ref)}/`;
+  return {
+    id: CUSTOM_ID,
+    // `local` means “the visitor's custom model” to routing and comparison.
+    // `source.remote` distinguishes this from File API data in the detail UI.
+    local: true,
+    name: parsed.name || fileName.replace(/\.[^.]+$/, ''),
+    maker: source.owner,
+    category: 'custom',
+    tags: [],
+    dof: parsed.moving_joints,
+    license: '',
+    formats: ['urdf'],
+    notes: null,
+    notes_zh: null,
+    pose: null,
+    preview_frame: null,
+    measured: null,
+    urdf: {
+      xml_name: parsed.name,
+      links: parsed.links,
+      joints: parsed.joints,
+      moving_joints: parsed.moving_joints,
+      mass_kg: parsed.mass_kg,
+      has_collision: parsed.has_collision,
+      has_inertia: parsed.has_inertia,
+      bytes,
+    },
+    assets: {
+      base,
+      urdf: source.path,
+      packages: inferGithubPackages(source.path, parsed.meshes),
+      mesh_files: parsed.meshes.length,
+      mesh_bytes: 0,
+      mesh_formats: [...formats],
+      referenced: parsed.meshes.length,
+      missing: [],
+    },
+    source: {
+      remote: true,
+      file: source.path,
+      fileName,
+      github: `${source.owner}/${source.repo}`,
+      repo_url: source.repoUrl,
+      tree_url: source.treeUrl,
+      commit: source.ref,
+      urdf_url: source.rawUrl,
+    },
+    links: {},
+  };
+}
+
 // ------------------------------------------------------------- picking files
 
 /** Walk a dropped directory, which arrives as a tree rather than a file list. */
@@ -380,6 +527,9 @@ export function setupCustomPicker({ onPreview }) {
   const select = el('custom-urdf');
   const go = el('custom-go');
   const drop = el('custom-drop');
+  const githubForm = el('custom-github-form');
+  const githubInput = el('custom-github-url');
+  const githubLoad = el('custom-github-load');
 
   /** The files picked so far, and the entry the current choice among them makes. */
   let picked = [];
@@ -399,7 +549,7 @@ export function setupCustomPicker({ onPreview }) {
   /** Read the chosen description and say what the picked files add up to. */
   async function analyse() {
     // Whatever the last look at these files made, unless it is on the stage.
-    if (pending && pending !== current) pending.assets.local.release();
+    if (pending && pending !== current) pending.assets.local?.release();
     pending = null;
     const path = select.value;
     if (!path) return fail(t('custom.noUrdf'));
@@ -444,6 +594,35 @@ export function setupCustomPicker({ onPreview }) {
     show(lines.join(''));
   }
 
+  /** Fetch and inspect a public GitHub URDF before enabling Preview. */
+  async function analyseGithub() {
+    if (pending && pending !== current) pending.assets.local?.release();
+    pending = null;
+    go.disabled = true;
+    githubLoad.disabled = true;
+    show(`<p>${esc(t('custom.githubLoading'))}</p>`);
+    try {
+      const entry = await entryFromGithub(githubInput.value);
+      pending = entry;
+      go.disabled = false;
+      const lines = [
+        `<p class="custom-good"><strong>${esc(entry.name)}</strong> · ${esc(entry.source.fileName)}</p>`,
+        `<p>${fill(t('custom.githubSource'), {
+          repo: entry.source.github,
+          ref: entry.source.commit,
+        })}</p>`,
+        entry.assets.referenced
+          ? `<p>${fill(t('custom.githubMeshes'), { total: entry.assets.referenced })}</p>`
+          : '',
+      ].filter(Boolean);
+      show(lines.join(''));
+    } catch (err) {
+      fail(err instanceof PickError ? err.text() : `${t('custom.githubReadFailed')} ${err.message || ''}`);
+    } finally {
+      githubLoad.disabled = false;
+    }
+  }
+
   /** Take a fresh set of files: find the descriptions in it, then read one. */
   async function accept(entries) {
     if (!entries.length) return;
@@ -481,6 +660,10 @@ export function setupCustomPicker({ onPreview }) {
     });
   }
   select.addEventListener('change', () => guard(analyse()));
+  githubForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    guard(analyseGithub());
+  });
 
   for (const type of ['dragenter', 'dragover']) {
     drop.addEventListener(type, (event) => {
@@ -505,7 +688,7 @@ export function setupCustomPicker({ onPreview }) {
   go.addEventListener('click', () => {
     if (!pending) return;
     // The blobs of whatever was on the stage before this one.
-    if (current && current !== pending) current.assets.local.release();
+    if (current && current !== pending) current.assets.local?.release();
     current = pending;
     pending = null;
     closeDialog(dialog);
