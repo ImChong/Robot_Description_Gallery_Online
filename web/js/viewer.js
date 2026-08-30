@@ -12,6 +12,7 @@ import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import URDFLoader from 'urdf-loader';
 import { applyMeshRewrite } from './registry.js';
+import { loadMJCF } from './mjcf.js';
 
 const UP_Z = -Math.PI / 2; // URDF is Z-up, three.js is Y-up.
 
@@ -656,11 +657,94 @@ export class RobotViewer {
 
   /**
    * Load a robot described by a registry entry.
+   *
+   * Two kinds of description arrive here and only one stage receives them. A
+   * URDF goes through urdf-loader; an MJCF goes through js/mjcf.js, which reads
+   * MuJoCo's XML into the same object graph out of the same classes — so the
+   * joint tree, the overlays, the loop solver, the link picker and the
+   * thumbnail crop are one implementation rather than two.
+   *
    * @param {object} entry registry entry (see data/robots.json)
    * @param {(loaded: number, total: number) => void} [onProgress]
    */
   async load(entry, onProgress) {
     this.clear();
+    const robot = entry.assets.urdf
+      ? await this._loadUrdf(entry, onProgress)
+      : await this._loadMjcf(entry, onProgress);
+    this._styleAll();
+    this._applyOverlays();
+    this.stats = { ...this.meshStats(), stripped: this._stripped || 0 };
+    this.frameCamera();
+    return robot;
+  }
+
+  /**
+   * Put a parsed robot on the stage, in the frame the entry asks to see it in.
+   *
+   * On the way in rather than at portrait time, because everything after this
+   * measures the robot where it leaves it: the camera fit at the end of the
+   * load, the bounding box the card image is cropped to, and the height the
+   * detail page quotes. Joint moves never touch the root, so the card and the
+   * detail page agree on which way the hand faces.
+   */
+  _mount(entry, robot) {
+    this.robot = robot;
+    this.world.add(robot);
+    const upright = previewRotation(entry.preview_frame);
+    if (upright) robot.quaternion.copy(upright);
+    this.entry = entry;
+  }
+
+  /**
+   * An MJCF entry, read by js/mjcf.js.
+   *
+   * A Menagerie scene file is a robot plus a room — a ground plane, a light,
+   * sometimes a table — so the registry records which of the files it includes
+   * is the robot itself, and that is what the stage shows. The gallery brings
+   * its own studio; the room would only be measured as part of the model.
+   */
+  async _loadMjcf(entry, onProgress) {
+    const base = entry.assets.base;
+    // A model the visitor picked off their own disk answers paths out of the
+    // files they handed over rather than out of a CDN. See js/custom.js.
+    const local = entry.assets.local || null;
+    const path = entry.assets.mjcf_model || entry.assets.mjcf;
+    const manager = new THREE.LoadingManager();
+    // A mesh no picked file answers to gets a URL that cannot resolve, which
+    // three.js' loaders report as a failed load — the same hole in the robot a
+    // missing mesh leaves on the URDF path, rather than a request to nowhere.
+    const resolve = local
+      ? (rel) => local.urlOf(rel) || `${LOCAL_URL_PREFIX}missing/${rel}`
+      : (rel) => base + rel;
+    const readXml = local
+      ? (rel) => local.readText(rel)
+      : async (rel) => {
+          const response = await fetch(base + rel);
+          return response.ok ? await response.text() : null;
+        };
+    const text = await readXml(path);
+    if (text === null || text === undefined) throw new Error(`MJCF not found: ${path}`);
+
+    const result = await loadMJCF({ text, path, resolve, readXml, manager, onProgress });
+    this._mount(entry, result.robot);
+    // Both of these come out of the parse rather than a second read of the
+    // file: MJCF states a joint's travel and a body's inertia in the same
+    // document the geometry is in, so there is nothing left to fetch.
+    this._jointMeta = result.jointMeta;
+    this._inertials = result.inertials;
+    this._freeUndeclaredJoints();
+    this._prepareLoops(entry.loops);
+    this.closeLoops();
+    // The stance the description nominates for itself — `<key name="home">` —
+    // which for a quadruped is the difference between a dog and a table.
+    this.homePose = result.home;
+    this.mjcf = result;
+    this._stripped = 0;
+    return result.robot;
+  }
+
+  async _loadUrdf(entry, onProgress) {
     const base = entry.assets.base;
     // A model the visitor picked off their own disk carries a file set instead
     // of a base URL: it resolves the paths the URDF writes against the files
@@ -801,16 +885,7 @@ export class RobotViewer {
       dropJointsWithoutChildLink(dropAxesWithoutXyz(urdfColorsToLinear(text))),
     );
     parsed = true;
-    this.robot = robot;
-    this.world.add(robot);
-    // On the way in rather than at portrait time, because everything after this
-    // measures the robot where it leaves it: the camera fit at the end of this
-    // method, the bounding box the card image is cropped to, and the height the
-    // detail page quotes. Joint moves never touch the root, so the card and the
-    // detail page agree on which way the hand faces.
-    const upright = previewRotation(entry.preview_frame);
-    if (upright) robot.quaternion.copy(upright);
-    this.entry = entry;
+    this._mount(entry, robot);
     // Two things urdf-loader cannot tell on its own, both read off the XML it
     // has just been handed: which joints were given no travel to work with, and
     // which of them a closed loop drives rather than a slider.
@@ -818,6 +893,8 @@ export class RobotViewer {
     this._freeUndeclaredJoints();
     this._prepareLoops(entry.loops);
     this.closeLoops();
+    // A URDF states no pose of its own; whatever the entry curates is it.
+    this.homePose = entry.pose || null;
     // Primitive geometry (<box>, <cylinder>, <sphere>) exists immediately;
     // mesh files arrive over the network, so styling runs again after they land.
     this._styleAll();
@@ -828,10 +905,7 @@ export class RobotViewer {
     // that never finishes loading.
     await Promise.race([settled, new Promise((r) => setTimeout(r, this.options.loadTimeout))]);
     this.loadedMeshes = { done, total };
-    this._styleAll();
-    this._applyOverlays();
-    this.stats = { ...this.meshStats(), stripped };
-    this.frameCamera();
+    this._stripped = stripped;
     return robot;
   }
 
@@ -1557,10 +1631,14 @@ export class RobotViewer {
     this.invalidate();
   }
 
-  /** Pose used for still frames: the entry's curated pose, or the zero pose. */
+  /**
+   * Pose used for still frames: the entry's curated pose where it has one,
+   * otherwise whatever the description nominates for itself — an MJCF's
+   * `<key name="home">` — and failing both, the zero pose.
+   */
   poseForPortrait(pose) {
     this.resetJoints();
-    this.applyPose(pose);
+    this.applyPose(pose || this.homePose);
   }
 
   // ------------------------------------------------------------ closed loops
@@ -1723,6 +1801,9 @@ export class RobotViewer {
     this._jointMeta = undefined;
     this._loops = [];
     this._loopJoints = undefined;
+    this.homePose = null;
+    this.mjcf = null;
+    this._stripped = 0;
     this.invalidate();
   }
 
