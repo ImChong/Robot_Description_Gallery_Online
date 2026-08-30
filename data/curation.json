@@ -599,6 +599,34 @@
       "notes_zh": "七自由度手臂版 T1：头部、腰部和双腿与上面 23 自由度的 Booster T1 相同，每条手臂多出 3 个关节。上游只为 23 自由度版本提供了 MJCF。"
     },
     {
+      "id": "booster_t2_31dof",
+      "name": "Booster T2 (31 DoF)",
+      "maker": "Booster Robotics",
+      "category": "humanoid",
+      "upstream": {
+        "github": "BoosterRobotics/booster_assets",
+        "commit": "38a0ae84b17743a8aa21511f69ed38e7d22d1664",
+        "package": "robots/T2/T2_31dof",
+        "urdf": "robots/T2/T2_31dof/T2_31dof.urdf",
+        "mjcf": "robots/T2/T2_31dof/T2_31dof.xml",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.booster.tech/booster-t2/",
+        "docs": "https://docs.booster.tech"
+      },
+      "notes": "31 joints: two in the head, seven per arm, three in the waist and six per leg. The upstream folder also includes standard and parallel-ankle MJCF models.",
+      "notes_zh": "31 个关节：头部 2 个、单臂 7 个、腰部 3 个、单腿 6 个。上游目录还提供标准版与并联踝版 MJCF 模型。"
+    },
+    {
       "description": "elf2_description",
       "category": "humanoid"
     },

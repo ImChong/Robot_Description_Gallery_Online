@@ -2143,6 +2143,64 @@
    }
   },
   {
+   "id": "booster_t2_31dof",
+   "name": "Booster T2 (31 DoF)",
+   "maker": "Booster Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 31,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "31 joints: two in the head, seven per arm, three in the waist and six per leg. The upstream folder also includes standard and parallel-ankle MJCF models.",
+   "notes_zh": "31 个关节：头部 2 个、单臂 7 个、腰部 3 个、单腿 6 个。上游目录还提供标准版与并联踝版 MJCF 模型。",
+   "pose": null,
+   "loops": null,
+   "preview_frame": null,
+   "measured": null,
+   "urdf": {
+    "xml_name": "T2_31dof",
+    "links": 35,
+    "joints": {
+     "fixed": 3,
+     "revolute": 31
+    },
+    "moving_joints": 31,
+    "mass_kg": 41.994,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 38510
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/BoosterRobotics/booster_assets@38a0ae84b17743a8aa21511f69ed38e7d22d1664/",
+    "urdf": "robots/T2/T2_31dof/T2_31dof.urdf",
+    "packages": {},
+    "mesh_files": 37,
+    "mesh_bytes": 49524208,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "BoosterRobotics/booster_assets",
+    "commit": "38a0ae84b17743a8aa21511f69ed38e7d22d1664",
+    "repo_url": "https://github.com/BoosterRobotics/booster_assets",
+    "tree_url": "https://github.com/BoosterRobotics/booster_assets/tree/38a0ae84b17743a8aa21511f69ed38e7d22d1664/robots/T2/T2_31dof",
+    "license_url": "https://github.com/BoosterRobotics/booster_assets/blob/38a0ae84b17743a8aa21511f69ed38e7d22d1664/LICENSE",
+    "mirror": null,
+    "mjcf": "robots/T2/T2_31dof/T2_31dof.xml"
+   },
+   "links": {
+    "official": "https://www.booster.tech/booster-t2/",
+    "docs": "https://docs.booster.tech"
+   }
+  },
+  {
    "id": "elf2",
    "name": "Elf2",
    "maker": "BXI Robotics",
