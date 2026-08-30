@@ -1030,8 +1030,8 @@
         "shoulder_roll_joint_right": -0.157,
         "shoulder_pitch_joint_left": 0.571,
         "shoulder_pitch_joint_right": -0.571,
-        "shoulder_yaw_joint_left": 0,
-        "shoulder_yaw_joint_right": 0,
+        "shoulder_yaw_joint_left": 0.0,
+        "shoulder_yaw_joint_right": -0.0,
         "elbow_joint_left": -0.836,
         "elbow_joint_right": 0.836
       }
@@ -1093,16 +1093,16 @@
         "official": "https://www.unitree.com/go2"
       },
       "pose": {
-        "FL_hip_joint": 0,
+        "FL_hip_joint": 0.0,
         "FL_thigh_joint": 0.78,
         "FL_calf_joint": -1.55,
-        "FR_hip_joint": 0,
+        "FR_hip_joint": 0.0,
         "FR_thigh_joint": 0.78,
         "FR_calf_joint": -1.55,
-        "RL_hip_joint": 0,
+        "RL_hip_joint": 0.0,
         "RL_thigh_joint": 0.78,
         "RL_calf_joint": -1.55,
-        "RR_hip_joint": 0,
+        "RR_hip_joint": 0.0,
         "RR_thigh_joint": 0.78,
         "RR_calf_joint": -1.55
       }
@@ -1130,16 +1130,16 @@
       "notes": "The wheeled Go2: each foot is a continuous wheel joint on top of the usual three leg joints.",
       "notes_zh": "轮足版 Go2：常规三个腿部关节之外，每只脚是一个连续转动的轮关节。",
       "pose": {
-        "FL_hip_joint": 0,
+        "FL_hip_joint": 0.0,
         "FL_thigh_joint": 0.78,
         "FL_calf_joint": -1.55,
-        "FR_hip_joint": 0,
+        "FR_hip_joint": 0.0,
         "FR_thigh_joint": 0.78,
         "FR_calf_joint": -1.55,
-        "RL_hip_joint": 0,
+        "RL_hip_joint": 0.0,
         "RL_thigh_joint": 0.78,
         "RL_calf_joint": -1.55,
-        "RR_hip_joint": 0,
+        "RR_hip_joint": 0.0,
         "RR_thigh_joint": 0.78,
         "RR_calf_joint": -1.55
       }
@@ -1151,16 +1151,16 @@
         "official": "https://www.unitree.com/b2"
       },
       "pose": {
-        "FL_hip_joint": 0,
+        "FL_hip_joint": 0.0,
         "FL_thigh_joint": 0.72,
         "FL_calf_joint": -1.45,
-        "FR_hip_joint": 0,
+        "FR_hip_joint": 0.0,
         "FR_thigh_joint": 0.72,
         "FR_calf_joint": -1.45,
-        "RL_hip_joint": 0,
+        "RL_hip_joint": 0.0,
         "RL_thigh_joint": 0.72,
         "RL_calf_joint": -1.45,
-        "RR_hip_joint": 0,
+        "RR_hip_joint": 0.0,
         "RR_thigh_joint": 0.72,
         "RR_calf_joint": -1.45
       }
@@ -1169,16 +1169,16 @@
       "description": "a1_description",
       "category": "quadruped",
       "pose": {
-        "FL_hip_joint": 0,
+        "FL_hip_joint": 0.0,
         "FL_thigh_joint": 0.78,
         "FL_calf_joint": -1.55,
-        "FR_hip_joint": 0,
+        "FR_hip_joint": 0.0,
         "FR_thigh_joint": 0.78,
         "FR_calf_joint": -1.55,
-        "RL_hip_joint": 0,
+        "RL_hip_joint": 0.0,
         "RL_thigh_joint": 0.78,
         "RL_calf_joint": -1.55,
-        "RR_hip_joint": 0,
+        "RR_hip_joint": 0.0,
         "RR_thigh_joint": 0.78,
         "RR_calf_joint": -1.55
       }
@@ -1203,16 +1203,16 @@
         "official": "https://www.unitree.com/A2"
       },
       "pose": {
-        "FL_hip_joint": 0,
+        "FL_hip_joint": 0.0,
         "FL_thigh_joint": 0.78,
         "FL_calf_joint": -1.55,
-        "FR_hip_joint": 0,
+        "FR_hip_joint": 0.0,
         "FR_thigh_joint": 0.78,
         "FR_calf_joint": -1.55,
-        "RL_hip_joint": 0,
+        "RL_hip_joint": 0.0,
         "RL_thigh_joint": 0.78,
         "RL_calf_joint": -1.55,
-        "RR_hip_joint": 0,
+        "RR_hip_joint": 0.0,
         "RR_thigh_joint": 0.78,
         "RR_calf_joint": -1.55
       }
@@ -1237,16 +1237,16 @@
       "notes": "Present in unitree_ros but absent from its README. The 12 leg joints sit under a floating base joint, which is why the URDF counts 13 movable joints.",
       "notes_zh": "unitree_ros 里有这个目录，但 README 没有列出。12 个腿部关节之上还有一个 floating 基座关节，所以 URDF 统计出 13 个可动关节。",
       "pose": {
-        "FL_hip_joint": 0,
+        "FL_hip_joint": 0.0,
         "FL_thigh_joint": 0.78,
         "FL_calf_joint": -1.55,
-        "FR_hip_joint": 0,
+        "FR_hip_joint": 0.0,
         "FR_thigh_joint": 0.78,
         "FR_calf_joint": -1.55,
-        "RL_hip_joint": 0,
+        "RL_hip_joint": 0.0,
         "RL_thigh_joint": 0.78,
         "RL_calf_joint": -1.55,
-        "RR_hip_joint": 0,
+        "RR_hip_joint": 0.0,
         "RR_thigh_joint": 0.78,
         "RR_calf_joint": -1.55
       }
@@ -1255,16 +1255,16 @@
       "description": "aliengo_description",
       "category": "quadruped",
       "pose": {
-        "FL_hip_joint": 0,
+        "FL_hip_joint": 0.0,
         "FL_thigh_joint": 0.78,
         "FL_calf_joint": -1.55,
-        "FR_hip_joint": 0,
+        "FR_hip_joint": 0.0,
         "FR_thigh_joint": 0.78,
         "FR_calf_joint": -1.55,
-        "RL_hip_joint": 0,
+        "RL_hip_joint": 0.0,
         "RL_thigh_joint": 0.78,
         "RL_calf_joint": -1.55,
-        "RR_hip_joint": 0,
+        "RR_hip_joint": 0.0,
         "RR_thigh_joint": 0.78,
         "RR_calf_joint": -1.55
       }
@@ -1273,16 +1273,16 @@
       "description": "laikago_description",
       "category": "quadruped",
       "pose": {
-        "FL_hip_joint": 0,
+        "FL_hip_joint": 0.0,
         "FL_thigh_joint": 0.7,
         "FL_calf_joint": -1.4,
-        "FR_hip_joint": 0,
+        "FR_hip_joint": 0.0,
         "FR_thigh_joint": 0.7,
         "FR_calf_joint": -1.4,
-        "RL_hip_joint": 0,
+        "RL_hip_joint": 0.0,
         "RL_thigh_joint": 0.7,
         "RL_calf_joint": -1.4,
-        "RR_hip_joint": 0,
+        "RR_hip_joint": 0.0,
         "RR_thigh_joint": 0.7,
         "RR_calf_joint": -1.4
       }
@@ -1397,16 +1397,16 @@
       "notes": "Shipped inside AgiBot's D1 SDK repository rather than a description package of its own, which is also why it records no licence: the ROS manifest beside it still says TODO instead of naming one.",
       "notes_zh": "它随智元 D1 SDK 仓库发布，而不是独立的描述包，这也是它没有许可证的原因：旁边的 ROS package.xml 里仍写着 TODO，而不是具体的许可证。",
       "pose": {
-        "leg0_fr_joint0": 0,
+        "leg0_fr_joint0": 0.0,
         "leg0_fr_joint1": -0.7,
         "leg0_fr_joint2": 1.4,
-        "leg1_fl_joint0": 0,
+        "leg1_fl_joint0": 0.0,
         "leg1_fl_joint1": -0.7,
         "leg1_fl_joint2": 1.4,
-        "leg2_hr_joint0": 0,
+        "leg2_hr_joint0": 0.0,
         "leg2_hr_joint1": -0.7,
         "leg2_hr_joint2": 1.4,
-        "leg3_hl_joint0": 0,
+        "leg3_hl_joint0": 0.0,
         "leg3_hl_joint1": -0.7,
         "leg3_hl_joint2": 1.4
       }
@@ -1433,16 +1433,16 @@
       "notes": "Three joints per leg plus a yawing head. The calf limits stop short of zero, so the knees stay bent whatever you do with the sliders.",
       "notes_zh": "每条腿 3 个关节，另有一个可左右转的头部。小腿关节的限位不包含 0，所以无论怎么拖滑块，膝盖都是弯的。",
       "pose": {
-        "FL_hip_joint": 0,
+        "FL_hip_joint": 0.0,
         "FL_thigh_joint": 0.78,
         "FL_calf_joint": -1.55,
-        "FR_hip_joint": 0,
+        "FR_hip_joint": 0.0,
         "FR_thigh_joint": 0.78,
         "FR_calf_joint": -1.55,
-        "RL_hip_joint": 0,
+        "RL_hip_joint": 0.0,
         "RL_thigh_joint": 0.78,
         "RL_calf_joint": -1.55,
-        "RR_hip_joint": 0,
+        "RR_hip_joint": 0.0,
         "RR_thigh_joint": 0.78,
         "RR_calf_joint": -1.55
       }
@@ -1475,16 +1475,16 @@
       "notes": "The wheeled MagicDog: a continuous wheel joint below the usual three leg joints, 16 in all. The head is a fixed link here, unlike on the legged version.",
       "notes_zh": "轮足版 MagicDog：常规三个腿部关节之下再挂一个连续转动的轮关节，共 16 个。和足式版不同，这里的头部是固定连杆。",
       "pose": {
-        "FL_hip_joint": 0,
+        "FL_hip_joint": 0.0,
         "FL_thigh_joint": 0.78,
         "FL_calf_joint": -1.55,
-        "FR_hip_joint": 0,
+        "FR_hip_joint": 0.0,
         "FR_thigh_joint": 0.78,
         "FR_calf_joint": -1.55,
-        "RL_hip_joint": 0,
+        "RL_hip_joint": 0.0,
         "RL_thigh_joint": 0.78,
         "RL_calf_joint": -1.55,
-        "RR_hip_joint": 0,
+        "RR_hip_joint": 0.0,
         "RR_thigh_joint": 0.78,
         "RR_calf_joint": -1.55
       }
@@ -1603,19 +1603,11 @@
           "connect": [
             {
               "link": "lower_leg_front_leftR_link",
-              "point": [
-                0,
-                0.005,
-                0.2
-              ]
+              "point": [0, 0.005, 0.2]
             },
             {
               "link": "lower_leg_front_leftL_link",
-              "point": [
-                0,
-                0.01,
-                0.2
-              ]
+              "point": [0, 0.01, 0.2]
             }
           ],
           "solve": [
@@ -1627,19 +1619,11 @@
           "connect": [
             {
               "link": "lower_leg_front_rightR_link",
-              "point": [
-                0,
-                0.005,
-                0.2
-              ]
+              "point": [0, 0.005, 0.2]
             },
             {
               "link": "lower_leg_front_rightL_link",
-              "point": [
-                0,
-                0.01,
-                0.2
-              ]
+              "point": [0, 0.01, 0.2]
             }
           ],
           "solve": [
@@ -1651,19 +1635,11 @@
           "connect": [
             {
               "link": "lower_leg_back_leftR_link",
-              "point": [
-                0,
-                0.005,
-                0.2
-              ]
+              "point": [0, 0.005, 0.2]
             },
             {
               "link": "lower_leg_back_leftL_link",
-              "point": [
-                0,
-                0.01,
-                0.2
-              ]
+              "point": [0, 0.01, 0.2]
             }
           ],
           "solve": [
@@ -1675,19 +1651,11 @@
           "connect": [
             {
               "link": "lower_leg_back_rightR_link",
-              "point": [
-                0,
-                0.005,
-                0.2
-              ]
+              "point": [0, 0.005, 0.2]
             },
             {
               "link": "lower_leg_back_rightL_link",
-              "point": [
-                0,
-                0.01,
-                0.2
-              ]
+              "point": [0, 0.01, 0.2]
             }
           ],
           "solve": [
@@ -1768,7 +1736,7 @@
       "pose": {
         "j2s6s200_joint_2": 2.6,
         "j2s6s200_joint_3": 4.7,
-        "j2s6s200_joint_4": 1,
+        "j2s6s200_joint_4": 1.0,
         "j2s6s200_joint_5": 3.1
       }
     },
@@ -1783,7 +1751,7 @@
       "category": "arm",
       "pose": {
         "joint_2": 0.6,
-        "joint_3": 1,
+        "joint_3": 1.0,
         "joint_5": 0.6
       }
     },
@@ -1829,7 +1797,7 @@
       "category": "arm",
       "pose": {
         "joint2": 0.7,
-        "joint3": 1,
+        "joint3": 1.0,
         "joint4": 0.6
       }
     },
@@ -1838,7 +1806,7 @@
       "category": "arm",
       "pose": {
         "joint2": 0.7,
-        "joint3": 1,
+        "joint3": 1.0,
         "joint4": 0.6
       }
     },
@@ -1847,7 +1815,7 @@
       "category": "arm",
       "pose": {
         "joint2": 0.7,
-        "joint3": 1,
+        "joint3": 1.0,
         "joint4": 0.6
       }
     },
@@ -1886,7 +1854,7 @@
         }
       ],
       "pose": {
-        "shoulder_lift_joint": -1,
+        "shoulder_lift_joint": -1.0,
         "elbow_joint": 1.7,
         "wrist_1_joint": -0.7
       }
@@ -1919,7 +1887,7 @@
         }
       ],
       "pose": {
-        "shoulder_lift_joint": -1,
+        "shoulder_lift_joint": -1.0,
         "elbow_joint": 1.7,
         "wrist_1_joint": -0.7
       }
@@ -1952,7 +1920,7 @@
         }
       ],
       "pose": {
-        "shoulder_lift_joint": -1,
+        "shoulder_lift_joint": -1.0,
         "elbow_joint": 1.7,
         "wrist_1_joint": -0.7
       }
