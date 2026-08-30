@@ -1405,12 +1405,37 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
 .drop-or { color: var(--text-faint); font-size: 12px; }
 .drop-picks { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
 
+.custom-source-divider {
+  display: flex; align-items: center; gap: 10px;
+  color: var(--text-faint); font-size: 12px;
+}
+.custom-source-divider::before, .custom-source-divider::after {
+  content: ''; height: 1px; flex: 1 1 auto; background: var(--border-soft);
+}
+.custom-github { display: flex; flex-direction: column; gap: 7px; }
+.custom-github > label { color: var(--text-muted); font-size: 12.5px; }
+.custom-github-row { display: flex; align-items: stretch; gap: 8px; }
+.custom-github-row input {
+  min-width: 0; flex: 1 1 auto; height: 36px; padding: 0 10px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--bg-alt); color: var(--text);
+  font: inherit; font-family: var(--font-mono); font-size: 11.5px;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.custom-github-row input:focus {
+  border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.custom-github-row .ghost-btn { flex: 0 0 auto; }
+.custom-github > p { margin: 0; color: var(--text-faint); font-size: 11.5px; line-height: 1.55; }
+
 /* The same fingertip the hero's two doors are sized for: on a touch screen
  * this dialog is the second half of that flow, and its pickers, its preview
  * button and the way out of it are what gets tapped. A 28px ✕ beside the
  * heading is a miss on a phone. */
 @media (pointer: coarse) {
   .drop-picks .ghost-btn { height: 44px; }
+  .custom-github-row input, .custom-github-row .ghost-btn { height: 44px; }
   .custom-actions .primary-btn { height: 44px; }
   .dialog-close { width: 40px; height: 40px; font-size: 15px; }
 }
@@ -1785,6 +1810,8 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
    * of it, and breaks mid-word if that is what it takes. */
   .hero-action-current { overflow-wrap: anywhere; }
   .custom-dialog { padding: 18px; }
+  .custom-github-row { flex-direction: column; }
+  .custom-github-row .ghost-btn { width: 100%; }
   .custom-actions .primary-btn { margin-left: 0; width: 100%; }
   .hero-stats dd { font-size: 17px; }
   .stage-hint { display: none; }

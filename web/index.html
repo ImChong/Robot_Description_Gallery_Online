@@ -367,8 +367,8 @@
 </footer>
 
 <!-- ---------------------------- custom URDF ------------------------------ -->
-<!-- Nothing in here posts anywhere: js/custom.js reads the files with the File
-     API and hands the viewer blob: URLs. See the module header. -->
+<!-- Nothing in here posts anywhere: js/custom.js reads local files with the
+     File API, or fetches a pasted public link directly from GitHub. -->
 <dialog id="custom-dialog" class="custom-dialog" aria-labelledby="custom-dialog-title">
   <div class="custom-head">
     <h2 id="custom-dialog-title" data-i18n="custom.title">预览我自己的 URDF</h2>
@@ -396,6 +396,19 @@
        that greys those out is a worse failure than an unfiltered one. -->
   <input type="file" id="custom-files" multiple hidden>
   <input type="file" id="custom-dir" webkitdirectory directory multiple hidden>
+
+  <div class="custom-source-divider"><span data-i18n="custom.orGithub"></span></div>
+  <form class="custom-github" id="custom-github-form">
+    <label for="custom-github-url" data-i18n="custom.githubLabel">GitHub URDF link</label>
+    <div class="custom-github-row">
+      <input id="custom-github-url" type="url" inputmode="url" autocomplete="url"
+             spellcheck="false" data-i18n-placeholder="custom.githubPlaceholder"
+             placeholder="https://github.com/owner/repo/blob/main/robot.urdf">
+      <button type="submit" class="ghost-btn" id="custom-github-load"
+              data-i18n="custom.githubLoad">Load link</button>
+    </div>
+    <p data-i18n="custom.githubHint"></p>
+  </form>
 
   <div class="custom-report" id="custom-report" role="status" hidden></div>
 
