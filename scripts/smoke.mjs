@@ -110,6 +110,49 @@ if (makerGroups !== expectedMakerGroups || nestedCards !== shown.length) {
   console.log(`gallery: ${makerGroups} maker groups`);
 }
 
+// Short maker groups share a card row, but one which starts after column zero
+// must fit there in full. Larger groups may wrap only when they own the row.
+const makerLayout = await page.locator('.maker-groups').evaluateAll((containers) =>
+  containers.flatMap((container, section) => {
+    const parent = container.getBoundingClientRect();
+    return [...container.children].map((group) => {
+      const box = group.getBoundingClientRect();
+      const cardRows = new Set(
+        [...group.querySelectorAll('.card')].map((card) =>
+          Math.round(card.getBoundingClientRect().top),
+        ),
+      ).size;
+      return {
+        section,
+        left: box.left,
+        right: box.right,
+        top: box.top,
+        parentLeft: parent.left,
+        parentRight: parent.right,
+        cardRows,
+      };
+    });
+  }),
+);
+const sharesRow = makerLayout.some((group, index) => {
+  const previous = makerLayout[index - 1];
+  return previous && previous.section === group.section && Math.abs(previous.top - group.top) < 1;
+});
+const badMakerLayout = makerLayout.filter(
+  (group) =>
+    group.right > group.parentRight + 1 ||
+    (group.cardRows > 1 && Math.abs(group.left - group.parentLeft) > 1),
+);
+if (!sharesRow || badMakerLayout.length) {
+  console.error(
+    `  ✗ maker packing: shared row ${sharesRow ? 'found' : 'missing'}, ` +
+      `${badMakerLayout.length} overflowing or partially-started wrapping groups`,
+  );
+  process.exitCode = 1;
+} else {
+  console.log('gallery: maker groups pack without crossing rows');
+}
+
 // The optional live link used to have no grid area on phones and was auto-
 // placed into a third row. Check the narrowest supported layout while a model
 // that offers the link is open: all four navigation actions share one row and
