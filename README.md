@@ -4,16 +4,17 @@
 [![Verify](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml/badge.svg)](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-收录 **189 个**开源机器人描述：151 个 URDF 可在站内拖关节、查看碰撞体与惯量，并下载
+收录 **190 个**开源机器人描述：152 个 URDF 可在站内拖关节、查看碰撞体与惯量，并下载
 URDF、网格 zip 或 ROS 2 功能包；纯 MJCF 条目使用 MuJoCo Live 在线预览。
 
 在线访问：<https://imchong.github.io/Robot_URDF_Gallery_Online/>
 
-人形 51 · 四足 24 · 机械臂 36 · 灵巧手 29 · 移动操作 19 · 双臂 12 · 双足 11
+人形 52 · 四足 24 · 机械臂 36 · 灵巧手 / 夹爪 29 · 移动操作 19 · 双臂 12 · 双足 11
 生物力学 3 · 无人机 2 · 移动底盘 1 · 传感器 1
 
 ## 功能
 
+- **浏览**：按类别分区，同一类别内再按厂商分组；支持搜索机器人、厂商与类别。
 - **查看**：关节滑块、碰撞体、关节轴、惯量。全屏里的关节浮窗默认占画面宽度的三分之一，
   可以拖边框调整；点「演示」就按运动链顺序逐个把关节滑到上下限再放回原位，每个约
   1 秒。上游把一台机器发布成多个 URDF 时（G1 有 21 个）仍然只占一张卡，详情页顶部用
@@ -23,8 +24,9 @@ URDF、网格 zip 或 ROS 2 功能包；纯 MJCF 条目使用 MuJoCo Live 在线
 - **横向对比**（`#compare=1`）：同一类别下选 2~6 台机器并排读整机、分肢与逐关节数据，
   关节按部位或按运动链顺序对齐。只下载 `.urdf`，不下载网格；表格可复制为 Markdown 或
   CSV，地址可分享。
-- **预览我自己的 URDF**：本地模型用同一个查看器打开，也能当成对比里的一列。
-  **文件只在浏览器里解析，不会上传** —— 本站是纯静态页面，没有可以接收文件的后端。
+- **预览我自己的模型**：本地 URDF、xacro、MuJoCo `.xml` 或 USD（`.usda`、`.usdc`、`.usdz`）
+  用同一个查看器打开，也能当成对比里的一列。**文件只在浏览器里解析，不会上传** ——
+  本站是纯静态页面，没有可以接收文件的后端。
 - **下载**：`.urdf`、URDF + 网格 zip、ROS 2 功能包。
 - **MJCF**：读取固定 commit 的 MuJoCo Menagerie 清单；已有 URDF 的 25 台合并到原卡片，
   其余 38 台以 MJCF-only 卡片展示，点击后在 MuJoCo Live 打开固定版本的场景。Shadow Hand
@@ -54,9 +56,13 @@ pip install -r scripts/requirements.txt
 npm run registry                     # 生成 data/robots.json
 npm run thumbs && npm run registry   # 缩略图 + 实测尺寸（顺序不能反）
 npm run visibility                   # 刷新 data/visibility.md
+npm run check:visibility             # 校验 visibility 与 robots.json 一致
 npm run smoke -- --all               # 冒烟测试
 npm run check:downloads              # 校验下载包
 npm run check:compare                # 校验对比页
+npm run check:custom-local           # 校验本地 URDF/xacro/MJCF/USD 预览
+npm run check:custom                 # 校验 GitHub 链接加载
+npm run check:custom-url             # 校验自定义 URL 路由
 ```
 
 新增 URDF：在 `data/curation.json` 的 `robots` 里加一条并写上 `category`，然后跑
@@ -71,6 +77,7 @@ npm run check:compare                # 校验对比页
 - 网格是 Y-up 的 glTF（`obj2gltf` 的默认输出）时每个连杆都会摆错方向，这类模型同样
   暂不收录，Drake 的双臂 iiwa 就是。
 - jsDelivr 单文件上限 20 MB，个别含超大网格的模型无法收录（Go1、B1、B2-W、PM01）。
+- USD 预览支持 `.usda`、`.usdc`、`.usdz`；二进制 `.usd` crate 格式暂不支持。
 
 ## 许可
 
@@ -83,19 +90,19 @@ npm run check:compare                # 校验对比页
 
 ---
 
-**English** — A browsable gallery of 189 open robot descriptions: 151 URDF entries
+**English** — A browsable gallery of 190 open robot descriptions: 152 URDF entries
 load in the built-in viewer, while MJCF-only entries open as pinned MuJoCo Live scenes.
-The URDF viewer lets you drag joints — or
-play every joint in turn out to both its limits and back, a second each — and
-overlays collision geometry, joint axes and inertia. A compare page (`#compare=1`) puts
-two to six machines of one category side by side as numbers, lining their joints up by
-anatomy or by position along the kinematic chain. A mechanism that closes back on itself
-— Minitaur's five-bar legs — is held shut by a point weld the registry states the way
-MJCF does, so dragging a motor bends the whole linkage instead of pulling the leg apart.
-You can open a description from your own disk in the same viewer — parsed in the
-browser, never uploaded — and compare it against the gallery. Every robot downloads in
-one click as a `.urdf`, a zip of URDF + meshes, or a ready-to-build ROS 2 package. The
-pinned MuJoCo Menagerie manifest is deduplicated against existing URDF cards. No model
-files are hosted here: entries pin an upstream repository and commit and stream from
-jsDelivr. Run it locally with `npm install && npm run dev`. Code is MIT; each model keeps
-its own upstream licence, some non-commercial.
+The gallery groups robots by category and then by maker. The URDF viewer lets you drag
+joints — or play every joint in turn out to both its limits and back, a second each —
+and overlays collision geometry, joint axes and inertia. A compare page (`#compare=1`)
+puts two to six machines of one category side by side as numbers, lining their joints up
+by anatomy or by position along the kinematic chain. A mechanism that closes back on
+itself — Minitaur's five-bar legs — is held shut by a point weld the registry states the
+way MJCF does, so dragging a motor bends the whole linkage instead of pulling the leg
+apart. You can open a description from your own disk — URDF, xacro, MuJoCo XML or USD —
+in the same viewer, parsed in the browser and never uploaded, and compare it against the
+gallery. Every robot downloads in one click as a `.urdf`, a zip of URDF + meshes, or a
+ready-to-build ROS 2 package. The pinned MuJoCo Menagerie manifest is deduplicated
+against existing URDF cards. No model files are hosted here: entries pin an upstream
+repository and commit and stream from jsDelivr. Run it locally with `npm install &&
+npm run dev`. Code is MIT; each model keeps its own upstream licence, some non-commercial.
