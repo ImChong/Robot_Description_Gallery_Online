@@ -1,6 +1,14 @@
 /** The detail view: 3D stage, overlay toggles, joint sliders, spec table. */
 import { RobotViewer, THEMES } from './viewer.js';
-import { formatBytes, urdfUrl, variantView } from './registry.js';
+import {
+  descriptionKind,
+  descriptionOf,
+  descriptionPath,
+  descriptionUrl,
+  formatBytes,
+  urdfUrl,
+  variantView,
+} from './registry.js';
 import { categoryLabel, lang, t } from './i18n.js';
 import { downloadBundle, downloadRos2, downloadUrdf, ros2PackageName } from './download.js';
 import { icon } from './icons.js';
@@ -216,7 +224,10 @@ const SNIPPETS = {
   // ones curated straight from a repository have no key to pass it, so they
   // get the equivalent: pinocchio pointed at the checkout the git tab clones.
   python: (r) =>
-    r.source.description
+    descriptionKind(r) === 'mjcf'
+      ? `# A model with no URDF: pinocchio has nothing to read here.
+# The mujoco tab is the one that loads ${r.name}.`
+      : r.source.description
       ? `# pip install robot_descriptions
 from robot_descriptions.loaders.pinocchio import load_robot_description
 
@@ -280,14 +291,14 @@ data = mujoco.MjData(model)`
     r.source.mirror
       ? `# ${r.name} has no upstream repository — ${r.source.mirror.host} re-hosts it over
 # HTTP, with no revision to pin. This is the copy the gallery reads:
-curl -O '${urdfUrl(r)}'
+curl -O '${descriptionUrl(r)}'
 # meshes resolve below ${r.assets.base}
 # — or use the gallery's zip button, which collects them for you.`
       : `git clone ${r.source.repo_url}.git
 cd ${repoDir(r)}
 git checkout ${r.source.commit}
-# URDF: ${r.assets.urdf}`,
-  url: (r) => urdfUrl(r),
+# ${descriptionKind(r).toUpperCase()}: ${descriptionPath(r)}`,
+  url: (r) => descriptionUrl(r),
 };
 
 function mjKey(robot) {
@@ -775,27 +786,34 @@ export class Detail {
   renderDownloads() {
     const r = this.robot;
     const meshes = r.assets.mesh_files;
-    const bundleSize = formatBytes(r.assets.mesh_bytes + r.urdf.bytes);
+    const isMjcf = descriptionKind(r) === 'mjcf';
+    const bundleSize = formatBytes(r.assets.mesh_bytes + descriptionOf(r).bytes);
     const rows = [
       {
         kind: 'urdf',
-        main: t('dl.urdf'),
-        sub: t('dl.urdfSub'),
-        size: formatBytes(r.urdf.bytes),
+        main: t(isMjcf ? 'dl.mjcf' : 'dl.urdf'),
+        sub: t(isMjcf ? 'dl.mjcfSub' : 'dl.urdfSub'),
+        size: formatBytes(descriptionOf(r).bytes),
       },
       {
         kind: 'bundle',
         main: t('dl.bundle'),
-        sub: `${t('dl.bundleSub')} · ${meshes} ${meshes === 1 ? 'mesh' : 'meshes'}`,
+        sub: `${t(isMjcf ? 'dl.bundleMjcfSub' : 'dl.bundleSub')} · ${meshes} ${meshes === 1 ? 'mesh' : 'meshes'}`,
         size: bundleSize,
       },
-      {
-        kind: 'ros2',
-        main: t('dl.ros2'),
-        sub: t('dl.ros2Sub'),
-        size: bundleSize,
-        title: ros2PackageName(r),
-      },
+      // A ROS 2 package is a URDF thing: nothing in the ROS toolchain reads an
+      // MJCF, so a package built around one would only look like it worked.
+      ...(isMjcf
+        ? []
+        : [
+            {
+              kind: 'ros2',
+              main: t('dl.ros2'),
+              sub: t('dl.ros2Sub'),
+              size: bundleSize,
+              title: ros2PackageName(r),
+            },
+          ]),
     ];
     el('d-downloads').innerHTML = rows
       .map(
@@ -869,6 +887,7 @@ export class Detail {
     // the machines it is meant to be like.
     el('prev-robot').hidden = custom;
     el('next-robot').hidden = custom;
+    this.renderLiveLink();
 
     this.renderVersions();
     this.renderSpecs();
@@ -895,9 +914,15 @@ export class Detail {
     // it is ready by the time they are. (The joint limits the loader also drops
     // are read by the viewer itself, at load: the pose it applies below depends
     // on them.)
-    const xmlText = fetch(urdfUrl(robot))
-      .then((response) => (response.ok ? response.text() : null))
-      .catch(() => null);
+    //
+    // An MJCF needs none of this: js/mjcf.js reads the whole document itself and
+    // hands the viewer the inertias along with the geometry.
+    const xmlText =
+      descriptionKind(robot) === 'mjcf'
+        ? Promise.resolve(null)
+        : fetch(urdfUrl(robot))
+            .then((response) => (response.ok ? response.text() : null))
+            .catch(() => null);
 
     try {
       await this.viewer.load(robot, (done, total) => {
@@ -946,7 +971,8 @@ export class Detail {
 
   renderSpecs() {
     const r = this.robot;
-    const joints = Object.entries(r.urdf.joints || {})
+    const description = descriptionOf(r);
+    const joints = Object.entries(description.joints || {})
       .map(([type, n]) => `${n}×${type}`)
       .join(', ');
     // Prefer the live measurement; fall back to the value recorded at build time
@@ -970,8 +996,8 @@ export class Detail {
     const rows = [
       ...(browserLocal ? [] : [[t('spec.maker'), r.maker || '—']]),
       [t('spec.category'), categoryLabel(r.category, this.data.categories)],
-      [t('spec.dof'), r.dof || r.urdf.moving_joints || '—'],
-      [t('spec.links'), r.urdf.links],
+      [t('spec.dof'), r.dof || description.moving_joints || '—'],
+      [t('spec.links'), description.links],
       [t('spec.joints'), `<span class="sub">${joints || '—'}</span>`],
       [t('spec.mass'), massCell(r)],
       [
@@ -1023,6 +1049,23 @@ export class Detail {
     el('d-local').innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
   }
 
+  /**
+   * The way out to MuJoCo Live, where the model has a pinned Menagerie scene.
+   *
+   * MJCF-only cards used to *be* this link: clicking one left the gallery for
+   * MuJoCo's viewer, which meant the whole detail page — joint sliders,
+   * collision hulls, inertia boxes, the spec table, the downloads — existed for
+   * URDF models and nowhere else. The description is rendered here now, and the
+   * link is what it should have been: one more thing on the page, next to the
+   * compare button, for the reader who wants the physics and the room too.
+   */
+  renderLiveLink() {
+    const live = this.robot.source?.mjcf_external?.live_url;
+    const link = el('mujoco-live');
+    link.hidden = !live;
+    if (live) link.href = live;
+  }
+
   renderResources() {
     const r = this.robot;
     const items = [
@@ -1032,8 +1075,13 @@ export class Detail {
         ? ['res.mirror', r.source.mirror.site, r.source.mirror.host]
         : ['res.repo', r.source.repo_url, r.source.github],
       r.source.tree_url ? ['res.tree', r.source.tree_url, 'tree'] : null,
-      ['res.urdf', urdfUrl(r), r.assets.urdf.split('/').pop()],
+      r.assets.urdf ? ['res.urdf', urdfUrl(r), r.assets.urdf.split('/').pop()] : null,
       r.source.mjcf ? ['res.mjcf', r.assets.base + r.source.mjcf, r.source.mjcf.split('/').pop()] : null,
+      // The file the stage actually renders, where a scene is not it: MuJoCo
+      // Live opens the room, and this is the robot inside it.
+      r.assets.mjcf_model && r.assets.mjcf_model !== r.source.mjcf
+        ? ['res.mjcfModel', r.assets.base + r.assets.mjcf_model, r.assets.mjcf_model.split('/').pop()]
+        : null,
       r.source.mjcf_external
         ? ['res.mjcfMenagerie', r.source.mjcf_external.url, r.source.mjcf_external.path.split('/').pop()]
         : null,
@@ -1892,12 +1940,12 @@ function assetsCell(robot) {
 }
 
 function massCell(robot) {
-  const mass = robot.urdf.mass_kg;
+  const mass = descriptionOf(robot)?.mass_kg;
   if (!mass) return '—';
   const suspect = mass > 2000;
   return (
     `${mass.toFixed(2)} kg${suspect ? ` <abbr title="${t('mass.suspect')}">?</abbr>` : ''}` +
-    `<br><span class="sub">${t('mass.fromUrdf')}</span>`
+    `<br><span class="sub">${t(descriptionKind(robot) === 'mjcf' ? 'mass.fromMjcf' : 'mass.fromUrdf')}</span>`
   );
 }
 

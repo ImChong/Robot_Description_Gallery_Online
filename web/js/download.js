@@ -1,9 +1,11 @@
 /**
  * One-click downloads.
  *
- * Three flavours, because a URDF on its own renders as nothing:
- *   - `downloadUrdf`   — just the .urdf file, exactly as upstream ships it.
- *   - `downloadBundle` — a .zip with the URDF plus every mesh it references,
+ * Three flavours, because a description on its own renders as nothing:
+ *   - `downloadUrdf`   — just the description file, exactly as upstream ships
+ *                        it: a `.urdf`, or the `.xml` of an MJCF-only model.
+ *   - `downloadBundle` — a .zip with the description plus every mesh it
+ *                        references — and, for an MJCF, every file it includes —
  *                        laid out at the same paths the upstream repository
  *                        uses, so `package://<pkg>/...` still resolves once the
  *                        package directory is on your ROS package path, and a
@@ -23,7 +25,8 @@
  * awkward to compress further.
  */
 
-import { applyMeshRewrite } from './registry.js';
+import { applyMeshRewrite, descriptionKind, descriptionPath } from './registry.js';
+import { listMJCFFiles } from './mjcf.js';
 
 const textEncoder = new TextEncoder();
 
@@ -228,44 +231,105 @@ function normalise(path) {
 /* ── public API ──────────────────────────────────────────── */
 
 export async function fetchUrdfText(robot) {
-  const url = robot.assets.base + robot.assets.urdf;
+  const url = robot.assets.base + descriptionPath(robot);
   const response = await fetch(url);
-  if (!response.ok) throw new Error(`URDF ${response.status}`);
+  if (!response.ok) throw new Error(`${descriptionKind(robot).toUpperCase()} ${response.status}`);
   return response.text();
 }
 
-/** Save the URDF file on its own. */
+/** Save the description file — a `.urdf` or a `.xml` — on its own. */
 export async function downloadUrdf(robot) {
   const text = await fetchUrdfText(robot);
-  const name = robot.assets.urdf.split('/').pop();
+  const name = descriptionPath(robot).split('/').pop();
   saveBlob(new Blob([text], { type: 'application/xml' }), name);
   return { files: 1, bytes: textEncoder.encode(text).length };
 }
 
 /**
- * Save the URDF and all of its meshes as a zip.
+ * Save the description and all of its meshes as a zip.
  * @param {object} robot registry entry
  * @param {(done: number, total: number) => void} [onProgress]
  */
 export async function downloadBundle(robot, onProgress) {
-  const urdfText = await fetchUrdfText(robot);
+  const text = await fetchUrdfText(robot);
+  const files =
+    descriptionKind(robot) === 'mjcf'
+      ? await mjcfBundle(robot, text, onProgress)
+      : await urdfBundle(robot, text, onProgress);
+  const blob = makeZip(files);
+  saveBlob(blob, `${robot.id}.zip`);
+  return { files: files.length, bytes: blob.size };
+}
+
+async function urdfBundle(robot, urdfText, onProgress) {
   const targets = meshTargets(robot, urdfText);
-  const files = [
+  return [
     { name: robot.assets.urdf, bytes: textEncoder.encode(urdfText) },
     { name: 'NOTICE.txt', bytes: textEncoder.encode(notice(robot, targets.length)) },
     ...(await fetchMeshes(targets, (target) => target.path, onProgress)),
   ];
+}
 
-  const blob = makeZip(files);
-  saveBlob(blob, `${robot.id}.zip`);
-  return { files: files.length, bytes: blob.size };
+/**
+ * The same for an MJCF, which is rarely one file.
+ *
+ * A Menagerie scene includes the description, which may include more files
+ * still, and the whole chain has to travel with the meshes for the zip to
+ * compile in MuJoCo. Every file keeps the path it has in the repository, so the
+ * `<include file>` and mesh references inside it resolve unchanged.
+ */
+async function mjcfBundle(robot, sceneText, onProgress) {
+  const { base } = robot.assets;
+  const read = async (path) => {
+    const response = await fetch(base + path);
+    return response.ok ? await response.text() : null;
+  };
+  const inventory = await listMJCFFiles({
+    text: sceneText,
+    path: descriptionPath(robot),
+    readXml: read,
+  });
+
+  // The scene is already in hand; the files it reaches are fetched here, and an
+  // asset is asked for at each of the paths MuJoCo would look at in turn.
+  const xml = await Promise.all(
+    inventory.xml.slice(1).map(async (path) => ({ path, text: await read(path) })),
+  );
+  // Files the CDN refuses — anything over its 20 MB per-file limit — are left
+  // out rather than requested: the reply is a sentence of English, not a mesh.
+  const skip = new Set(robot.assets.skip_meshes || []);
+  const assets = await fetchMeshes(
+    inventory.assets
+      .filter((candidates) => !candidates.every((path) => skip.has(path)))
+      .map((candidates) => ({
+        candidates,
+        path: candidates[0],
+        urls: candidates.map((path) => base + path),
+      })),
+    (target) => target.path,
+    onProgress,
+  );
+  return [
+    { name: descriptionPath(robot), bytes: textEncoder.encode(sceneText) },
+    ...xml
+      .filter((file) => file.text !== null)
+      .map((file) => ({ name: file.path, bytes: textEncoder.encode(file.text) })),
+    { name: 'NOTICE.txt', bytes: textEncoder.encode(notice(robot, assets.length)) },
+    ...assets,
+  ];
 }
 
 /**
  * Download every mesh, a handful at a time — enough parallelism to keep a big
  * robot quick, not so much that it hammers the CDN or blows up memory on a
  * phone.
- * @param {Array<{url: string, path: string}>} targets
+ * A target may name more than one URL, in which case they are tried in order
+ * and the one that answers is the file: an MJCF asset path resolves either
+ * against the model or against the file that declared it, and only the CDN
+ * knows which (see web/js/mjcf.js). The path the file keeps inside the zip
+ * follows the URL that won, so `<include>` and mesh references still resolve.
+ *
+ * @param {Array<{url?: string, urls?: string[], path: string, candidates?: string[]}>} targets
  * @param {(target: object) => string} nameFor path the file takes inside the zip
  * @param {(done: number, total: number) => void} [onProgress]
  */
@@ -279,9 +343,20 @@ async function fetchMeshes(targets, nameFor, onProgress) {
   const workers = Array.from({ length: Math.min(6, queue.length) }, async () => {
     while (queue.length) {
       const target = queue.shift();
-      const response = await fetch(target.url);
-      if (!response.ok) throw new Error(`${target.path} → HTTP ${response.status}`);
-      files.push({ name: nameFor(target), bytes: new Uint8Array(await response.arrayBuffer()) });
+      const urls = target.urls || [target.url];
+      let hit = null;
+      let last = '';
+      for (const [index, url] of urls.entries()) {
+        const response = await fetch(url);
+        if (response.ok) {
+          hit = response;
+          if (target.candidates) target.path = target.candidates[index];
+          break;
+        }
+        last = `${url} → HTTP ${response.status}`;
+      }
+      if (!hit) throw new Error(last || `${target.path} → not found`);
+      files.push({ name: nameFor(target), bytes: new Uint8Array(await hit.arrayBuffer()) });
       done += 1;
       onProgress?.(done, total);
     }
@@ -837,7 +912,7 @@ see \`NOTICE.txt\` for where the files came from and the licence that covers the
 function notice(robot, meshCount, ros2 = null) {
   const { source, assets } = robot;
   const packages =
-    Object.entries(assets.packages)
+    Object.entries(assets.packages || {})
       .map(([pkg, root]) => `  ${pkg} -> ${root || '.'}`)
       .join('\n') || '  (this URDF uses paths relative to the URDF file)';
 
@@ -878,7 +953,11 @@ contain does not load at all.`
       }
 Everything else — including where each mesh sits relative to the URDF — is as
 upstream ships it, so plain relative references still resolve too.`
-    : `Files keep their repository-relative paths, so package:// references resolve
+    : descriptionKind(robot) === 'mjcf'
+      ? `Files keep their repository-relative paths, so the <include file> chain and
+every mesh and texture reference inside it resolves as it does upstream:
+compile the .xml below with MuJoCo from the top of this archive.`
+      : `Files keep their repository-relative paths, so package:// references resolve
 once the package directory below is on your ROS package path:
 
 ${packages}`;
@@ -897,7 +976,7 @@ ${
     : `  repository : ${source.repo_url}
   commit     : ${source.commit}`
 }
-  URDF       : ${assets.urdf}
+  ${descriptionKind(robot) === 'mjcf' ? 'MJCF       ' : 'URDF       '}: ${descriptionPath(robot)}
   meshes     : ${meshCount}
   licence    : ${robot.license || 'see the upstream repository'}
 ${source.license_url ? `  licence file: ${source.license_url}\n` : ''}${

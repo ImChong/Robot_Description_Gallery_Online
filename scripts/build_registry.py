@@ -884,6 +884,11 @@ class MjcfFacts:
     # Assets the document names that the repository does not have. A pinned
     # Menagerie commit should never produce any, so these fail the build.
     missing: list[str] = field(default_factory=list)
+    # Assets the repository has and the CDN will not serve: jsDelivr refuses any
+    # single file over 20 MB, and four Menagerie models carry one visual mesh
+    # past it. Recorded so the viewer and the download writers skip the same
+    # files rather than requesting a page that says "File size exceeded".
+    skipped: list[str] = field(default_factory=list)
 
 
 # One MJCF joint is worth this many sliders in the viewer: a hinge or a slide is
@@ -926,7 +931,10 @@ def read_mjcf(base: str, path: str, http: Http, depth: int = 0) -> ET.Element | 
     if root.tag != "mujoco":
         return None
     here = posixpath.dirname(path)
-    for parent in root.iter():
+    # Materialised before splicing: an `<include>` inside a `<body>` brings a
+    # limb, so the children go where the include stood rather than at the top of
+    # the document, and the nodes inserted here have no includes left to find.
+    for parent in list(root.iter()):
         for index, child in reversed(list(enumerate(parent))):
             if child.tag != "include":
                 continue
@@ -977,15 +985,17 @@ def mjcf_asset_candidates(
 def mjcf_model_path(base: str, scene_path: str, http: Http) -> str:
     """Which file of a Menagerie directory is the robot.
 
-    A ``scene.xml`` is a robot plus a room: it includes the description and adds
+    A ``scene.xml`` is a robot plus a room: it brings in the description and adds
     a ground plane, a light, a skybox and — for Aloha — the table the arms are
     bolted to. MuJoCo Live is meant to open the room, and the gallery is not: it
     brings its own studio, and a table inside the model's bounding box would be
     measured as part of the robot and cropped into its card.
 
-    So where the scene includes exactly one file, that file is the model. A
-    self-contained scene is its own model, and web/js/mjcf.js drops the ground
-    plane and the lights on the way in.
+    A scene reaches its robot one of two ways, and both are read here: the older
+    ``<include>``, and MuJoCo 3's ``<asset><model file=…>`` with an ``<attach>``
+    in the worldbody. Where exactly one file arrives either way, that file is the
+    model. A self-contained scene is its own model, and web/js/mjcf.js drops the
+    ground plane and the lights on the way in.
     """
     raw = http.get(base + scene_path)
     if raw is None:
@@ -994,10 +1004,17 @@ def mjcf_model_path(base: str, scene_path: str, http: Http) -> str:
         root = ET.fromstring(raw)
     except ET.ParseError:
         return scene_path
-    includes = [node.get("file") for node in root.iter("include") if node.get("file")]
-    if len(includes) != 1:
+    files = [node.get("file") for node in root.iter("include") if node.get("file")]
+    if not files:
+        files = [
+            node.get("file")
+            for block in root.iter("asset")
+            for node in block
+            if node.tag == "model" and node.get("file")
+        ]
+    if len(files) != 1:
         return scene_path
-    return mjcf_join(posixpath.dirname(scene_path), includes[0])
+    return mjcf_join(posixpath.dirname(scene_path), files[0])
 
 
 def inspect_mjcf(base: str, scene_path: str, http: Http) -> MjcfFacts:
@@ -1079,20 +1096,31 @@ def inspect_mjcf(base: str, scene_path: str, http: Http) -> MjcfFacts:
         has_inertia=has_inertia,
     )
 
-    def resolve(candidates: list[str]) -> tuple[str, int]:
-        """The first candidate the repository actually has, and its size."""
+    def resolve(candidates: list[str]) -> tuple[str, int, int]:
+        """The first candidate the CDN answers for, its size, and its status.
+
+        A 403 is jsDelivr's way of saying the file is there and over its 20 MB
+        per-file limit, which is a different problem from a path that names
+        nothing: the first is a mesh to skip, the second a broken entry.
+        """
+        refused = ""
         for candidate in candidates:
             status, size = http.head(base + candidate, attempts=5)
             if status == 200:
-                return candidate, size
-        return "", 0
+                return candidate, size, 200
+            if status == 403 and not refused:
+                refused = candidate
+        return (refused, 0, 403) if refused else ("", 0, 404)
 
     seen: set[str] = set()
     formats: set[str] = set()
     with ThreadPoolExecutor(max_workers=4) as pool:
         results = list(pool.map(resolve, [candidates for _, candidates in assets]))
-    for (kind, candidates), (path, size) in zip(assets, results):
-        if not path:
+    for (kind, candidates), (path, size, status) in zip(assets, results):
+        if status == 403:
+            facts.skipped.append(path)
+            continue
+        if status != 200:
             facts.missing.append(candidates[0])
             continue
         if path in seen:
@@ -1105,6 +1133,7 @@ def inspect_mjcf(base: str, scene_path: str, http: Http) -> MjcfFacts:
         if kind == "mesh":
             formats.add(posixpath.splitext(path)[1].lower())
     facts.mesh_formats = sorted(formats)
+    facts.skipped.sort()
     return facts
 
 
@@ -1181,7 +1210,7 @@ def add_menagerie(
             continue
         scene_path = key
         thumb_path = model["thumb"]
-        scene_status, scene_bytes = http.head(base + scene_path)
+        scene_status, _ = http.head(base + scene_path)
         thumb_status, _ = http.head(base + thumb_path)
         if scene_status != 200:
             problems.append(f"MuJoCo Menagerie · {key}: scene returned HTTP {scene_status}")
@@ -1245,8 +1274,10 @@ def add_menagerie(
                 "mass_kg": facts.mass_kg,
                 "has_collision": facts.has_collision,
                 "has_inertia": facts.has_inertia,
-                "bytes": facts.model_bytes,
-                "scene_bytes": scene_bytes,
+                # What the single-file download hands over, which is the scene;
+                # the file the stage renders is usually a different one.
+                "bytes": len(http.get(base + scene_path) or b""),
+                "model_bytes": facts.model_bytes,
             },
             "assets": {
                 "base": base,
@@ -1258,6 +1289,7 @@ def add_menagerie(
                 "mesh_files": facts.mesh_files,
                 "mesh_bytes": facts.mesh_bytes,
                 "mesh_formats": facts.mesh_formats,
+                **({"skip_meshes": facts.skipped} if facts.skipped else {}),
                 # Menagerie's own preview image, kept as a fallback for a card
                 # whose thumbnail has not been rendered yet.
                 "upstream_thumbnail": base + thumb_path,

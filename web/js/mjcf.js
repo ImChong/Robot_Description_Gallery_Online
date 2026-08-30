@@ -359,13 +359,17 @@ export class MJCFDocument {
    * @param {(path: string) => string} options.resolve path → URL
    * @param {(path: string) => Promise<?string>} options.readXml for `<include>`
    * @param {THREE.LoadingManager} [options.manager]
+   * @param {string[]} [options.skip] asset paths not to request — jsDelivr
+   *   refuses any single file over 20 MB, and asking for one of those comes
+   *   back as a mesh loader choking on the words "File size exceeded"
    */
-  constructor({ text, path, resolve, readXml, manager }) {
+  constructor({ text, path, resolve, readXml, manager, skip }) {
     this.text = text;
     this.path = path;
     this.resolve = resolve;
     this.readXml = readXml;
     this.manager = manager || new THREE.LoadingManager();
+    this.skip = new Set(skip || []);
     /** Mesh and texture paths this document referenced, in the order they were
      *  first asked for — what the registry records and the download writer needs. */
     this.assetPaths = new Set();
@@ -400,33 +404,38 @@ export class MJCFDocument {
 
     const root = parse(this.text, this.path);
     const seen = new Set([normalize(this.path)]);
+    /** Every file spliced in, so a download can carry the whole document. */
+    this.included = [];
 
     const expand = async (element, dir, depth) => {
       if (depth > 12) throw new Error('MJCF includes nest too deeply');
       for (const include of [...element.querySelectorAll('include')]) {
+        // Held before anything is removed, because where the include stood is
+        // the whole answer: an `<include>` inside a `<body>` brings a limb, and
+        // the same file spliced in at the top of the document instead is
+        // outside every `<worldbody>` and part of no robot at all.
+        const parent = include.parentNode;
         const file = include.getAttribute('file');
         const at = file ? joinPath(dir, file) : '';
-        include.remove();
-        if (!at) continue;
-        if (seen.has(at)) continue; // MuJoCo refuses a repeat; so does this
-        seen.add(at);
-        const text = await this.readXml(at);
-        if (text === null || text === undefined) {
+        const text = at && !seen.has(at) ? await this.readXml(at) : null;
+        if (at && !seen.has(at) && text === null) {
           this.warnings.push(`include not found: ${at}`);
-          continue;
         }
-        const included = parse(text, at);
-        await expand(included, dirOf(at), depth + 1);
-        // The children go where the `<include>` stood, which is what makes a
-        // scene file's own `<worldbody>` come after the model's.
-        const holder = include.parentNode || element;
-        const from = dirOf(at);
-        for (const child of [...included.children]) {
-          // Only where a deeper include has not already answered: the stamp
-          // names the file that wrote the section, not the one that reached it.
-          if (!child.hasAttribute(SOURCE_DIR)) child.setAttribute(SOURCE_DIR, from);
-          holder.appendChild(child);
+        // MuJoCo refuses a repeated include; so does this.
+        if (at) seen.add(at);
+        if (text !== null && text !== undefined) {
+          this.included.push(at);
+          const included = parse(text, at);
+          await expand(included, dirOf(at), depth + 1);
+          const from = dirOf(at);
+          for (const child of [...included.children]) {
+            // Only where a deeper include has not already answered: the stamp
+            // names the file that wrote the section, not the one that reached it.
+            if (!child.hasAttribute(SOURCE_DIR)) child.setAttribute(SOURCE_DIR, from);
+            parent.insertBefore(child, include);
+          }
         }
+        parent.removeChild(include);
       }
     };
 
@@ -566,6 +575,14 @@ export class MJCFDocument {
    */
   async build(onProgress) {
     await this.flatten();
+    // MuJoCo 3's other way of composing models: `<asset><model file=…>` plus an
+    // `<attach>` in the worldbody, which grafts one model's subtree into
+    // another under a name prefix. The registry sidesteps it by pointing the
+    // stage at the attached model directly; a file picked off a disk cannot be
+    // redirected that way, so it is said out loud instead of drawn empty.
+    if (this.root.querySelector('attach')) {
+      this.warnings.push('<attach> is not supported: the attached model is not shown');
+    }
     this.readCompiler();
     this.classes = readDefaults([...this.root.querySelectorAll('mujoco > default')]);
     this.readAssets();
@@ -983,6 +1000,10 @@ export class MJCFDocument {
       this.warnings.push(`mesh format not supported: ${asset.candidates[0]}`);
       return false;
     }
+    // Not counted and not warned about: the build step already knows this file
+    // is out of the CDN's reach and said so in the registry, so the geom is a
+    // hole in the robot rather than a load that failed.
+    if (asset.candidates.every((path) => this.skip.has(path))) return false;
     let job = this.meshJobs.get(asset.name);
     if (!job) {
       job = { kind: 'mesh', ...asset, extension, users: [] };
@@ -1212,4 +1233,31 @@ export class MJCFDocument {
 export async function loadMJCF(options) {
   const document = new MJCFDocument(options);
   return document.build(options.onProgress);
+}
+
+/**
+ * Every file one MJCF document is made of, without building any geometry: the
+ * XML files it includes and the assets it names, each as the candidate paths
+ * MuJoCo would look at.
+ *
+ * This is what a download needs and a render does not — a Menagerie model is
+ * rarely one file, and a zip of the scene alone would be a zip of four lines of
+ * XML pointing at a repository. js/download.js takes the candidates and keeps
+ * whichever one the CDN answers.
+ *
+ * @param {object} options `text`, `path` and `readXml`, as `MJCFDocument` takes
+ * @returns {Promise<{xml: string[], assets: string[][]}>}
+ */
+export async function listMJCFFiles(options) {
+  const document = new MJCFDocument({ ...options, resolve: (path) => path });
+  await document.flatten();
+  document.readCompiler();
+  document.classes = readDefaults([...document.root.querySelectorAll('mujoco > default')]);
+  document.readAssets();
+  return {
+    xml: [normalize(document.path), ...document.included],
+    assets: [...document.meshes.values(), ...document.textures.values()].map(
+      (asset) => asset.candidates,
+    ),
+  };
 }

@@ -726,7 +726,15 @@ export class RobotViewer {
     const text = await readXml(path);
     if (text === null || text === undefined) throw new Error(`MJCF not found: ${path}`);
 
-    const result = await loadMJCF({ text, path, resolve, readXml, manager, onProgress });
+    const result = await loadMJCF({
+      text,
+      path,
+      resolve,
+      readXml,
+      manager,
+      onProgress,
+      skip: entry.assets.skip_meshes,
+    });
     this._mount(entry, result.robot);
     // Both of these come out of the parse rather than a second read of the
     // file: MJCF states a joint's travel and a body's inertia in the same

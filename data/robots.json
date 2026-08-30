@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-08-30T06:08:38Z",
+ "generated": "2026-08-30T08:21:13Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -1074,7 +1074,7 @@
      "h1_description": "robots/h1_description"
     },
     "mesh_files": 21,
-    "mesh_bytes": 13135470,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -1272,7 +1272,7 @@
     "urdf": "robots/h2_plus/H2_Plus.urdf",
     "packages": {},
     "mesh_files": 93,
-    "mesh_bytes": 32061602,
+    "mesh_bytes": 19049024,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -2528,7 +2528,7 @@
      "val_description": "val_description"
     },
     "mesh_files": 56,
-    "mesh_bytes": 1247056,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -2593,7 +2593,7 @@
      "r2_description": "r2_description"
     },
     "mesh_files": 30,
-    "mesh_bytes": 14443240,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -2656,7 +2656,7 @@
      "jvrc_description": ""
     },
     "mesh_files": 35,
-    "mesh_bytes": 1293040,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -2784,7 +2784,7 @@
      "multisense_sl_description": "roboschool/models_robot/multisense_sl_description"
     },
     "mesh_files": 23,
-    "mesh_bytes": 3405482,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -3043,7 +3043,7 @@
      "jaxon_description": ""
     },
     "mesh_files": 39,
-    "mesh_bytes": 25956225,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -3107,7 +3107,7 @@
      "romeo_description": "romeo_description"
     },
     "mesh_files": 93,
-    "mesh_bytes": 8434894,
+    "mesh_bytes": 1485064,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -3680,7 +3680,7 @@
      "resource": "assets/resource"
     },
     "mesh_files": 26,
-    "mesh_bytes": 15420961,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -3744,7 +3744,7 @@
     "urdf": "assets/resource/robot/t800pro/urdf/serial_t800pro.urdf",
     "packages": {},
     "mesh_files": 44,
-    "mesh_bytes": 42433933,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ],
@@ -4227,7 +4227,7 @@
      "gundam_rx78_description": "gundam_rx78_description"
     },
     "mesh_files": 79,
-    "mesh_bytes": 4626384,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -4486,7 +4486,7 @@
      "go2_description": "robots/go2_description"
     },
     "mesh_files": 7,
-    "mesh_bytes": 9413156,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -4575,7 +4575,7 @@
      "go2w_description": "robots/go2w_description"
     },
     "mesh_files": 8,
-    "mesh_bytes": 17741923,
+    "mesh_bytes": 3899868,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -4654,7 +4654,7 @@
      "b2_description": "robots/b2_description"
     },
     "mesh_files": 13,
-    "mesh_bytes": 9833560,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -4733,7 +4733,7 @@
      "a1_description": "robots/a1_description"
     },
     "mesh_files": 5,
-    "mesh_bytes": 1820658,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -4971,7 +4971,7 @@
      "aliengo_description": "robots/aliengo_description"
     },
     "mesh_files": 5,
-    "mesh_bytes": 4174974,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -5118,7 +5118,7 @@
      "anymal_b_simple_description": ""
     },
     "mesh_files": 8,
-    "mesh_bytes": 3534378,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -5202,7 +5202,7 @@
      "anymal_c_simple_description": ""
     },
     "mesh_files": 19,
-    "mesh_bytes": 2312807,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -5285,7 +5285,7 @@
      "anymal_d_simple_description": ""
     },
     "mesh_files": 17,
-    "mesh_bytes": 1259620,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -5359,7 +5359,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 4,
-    "mesh_bytes": 502586,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -6291,7 +6291,7 @@
      "z1_description": "robots/z1_description"
     },
     "mesh_files": 7,
-    "mesh_bytes": 4214398,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -6368,7 +6368,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 19,
-    "mesh_bytes": 6450878,
+    "mesh_bytes": 115756,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -6528,7 +6528,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 11,
-    "mesh_bytes": 6108063,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -7394,7 +7394,7 @@
      "poppy_ergo_jr_description": ""
     },
     "mesh_files": 6,
-    "mesh_bytes": 4166027,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -7463,7 +7463,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 14,
-    "mesh_bytes": 5695350,
+    "mesh_bytes": 1946838,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -7521,7 +7521,7 @@
        "example-robot-data": ""
       },
       "mesh_files": 14,
-      "mesh_bytes": 5695350,
+      "mesh_bytes": 1946838,
       "mesh_formats": [
        ".dae",
        ".stl"
@@ -7566,7 +7566,7 @@
        "example-robot-data": ""
       },
       "mesh_files": 14,
-      "mesh_bytes": 5695350,
+      "mesh_bytes": 1946838,
       "mesh_formats": [
        ".dae",
        ".stl"
@@ -7625,7 +7625,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 14,
-    "mesh_bytes": 1890972,
+    "mesh_bytes": 266988,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -7683,7 +7683,7 @@
        "example-robot-data": ""
       },
       "mesh_files": 14,
-      "mesh_bytes": 1890972,
+      "mesh_bytes": 266988,
       "mesh_formats": [
        ".dae",
        ".stl"
@@ -7728,7 +7728,7 @@
        "example-robot-data": ""
       },
       "mesh_files": 14,
-      "mesh_bytes": 1890972,
+      "mesh_bytes": 266988,
       "mesh_formats": [
        ".dae",
        ".stl"
@@ -7787,7 +7787,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 14,
-    "mesh_bytes": 3734842,
+    "mesh_bytes": 293688,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -7845,7 +7845,7 @@
        "example-robot-data": ""
       },
       "mesh_files": 14,
-      "mesh_bytes": 3734842,
+      "mesh_bytes": 293688,
       "mesh_formats": [
        ".dae",
        ".stl"
@@ -7890,7 +7890,7 @@
        "example-robot-data": ""
       },
       "mesh_files": 14,
-      "mesh_bytes": 3734842,
+      "mesh_bytes": 293688,
       "mesh_formats": [
        ".dae",
        ".stl"
@@ -9293,7 +9293,7 @@
      "meshes": "dg5f/meshes"
     },
     "mesh_files": 56,
-    "mesh_bytes": 7964964,
+    "mesh_bytes": 4508052,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -9363,7 +9363,7 @@
      "meshes": "dg5fs/meshes"
     },
     "mesh_files": 52,
-    "mesh_bytes": 5839953,
+    "mesh_bytes": 3707184,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -9800,7 +9800,7 @@
      "sr_description": "sr_description"
     },
     "mesh_files": 11,
-    "mesh_bytes": 1332744,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -9860,7 +9860,7 @@
        "sr_description": "sr_description"
       },
       "mesh_files": 11,
-      "mesh_bytes": 1332744,
+      "mesh_bytes": 0,
       "mesh_formats": [
        ".dae"
       ]
@@ -9877,7 +9877,14 @@
      ],
      "notes": null,
      "notes_zh": null,
-     "measured": null,
+     "measured": {
+      "size": {
+       "x": 0.1351,
+       "y": 0.4454,
+       "z": 0.1821
+      },
+      "height_m": 0.4454
+     },
      "mjcf": "sr_description/mujoco_models/sr_hand_e_left_model.xml",
      "urdf": {
       "xml_name": "shadowhand_motor",
@@ -9898,7 +9905,7 @@
        "sr_description": "sr_description"
       },
       "mesh_files": 11,
-      "mesh_bytes": 1332744,
+      "mesh_bytes": 0,
       "mesh_formats": [
        ".dae"
       ]
@@ -9915,7 +9922,14 @@
      ],
      "notes": null,
      "notes_zh": null,
-     "measured": null,
+     "measured": {
+      "size": {
+       "x": 0.1351,
+       "y": 0.4454,
+       "z": 0.1821
+      },
+      "height_m": 0.4454
+     },
      "mjcf": "sr_description/mujoco_models/sr_hand_e_plus_model.xml",
      "urdf": {
       "xml_name": "shadowhand_motor",
@@ -9936,7 +9950,7 @@
        "sr_description": "sr_description"
       },
       "mesh_files": 12,
-      "mesh_bytes": 1451345,
+      "mesh_bytes": 22684,
       "mesh_formats": [
        ".dae",
        ".stl"
@@ -9954,7 +9968,14 @@
      ],
      "notes": null,
      "notes_zh": null,
-     "measured": null,
+     "measured": {
+      "size": {
+       "x": 0.1351,
+       "y": 0.4454,
+       "z": 0.1821
+      },
+      "height_m": 0.4454
+     },
      "mjcf": "sr_description/mujoco_models/sr_hand_e_plus_left_model.xml",
      "urdf": {
       "xml_name": "shadowhand_motor",
@@ -9975,7 +9996,7 @@
        "sr_description": "sr_description"
       },
       "mesh_files": 12,
-      "mesh_bytes": 1451345,
+      "mesh_bytes": 22684,
       "mesh_formats": [
        ".dae",
        ".stl"
@@ -10241,7 +10262,7 @@
     "urdf": "urdf/rhea.urdf",
     "packages": {},
     "mesh_files": 7,
-    "mesh_bytes": 12000804,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -11749,7 +11770,7 @@
      "baxter_description": "baxter_description"
     },
     "mesh_files": 13,
-    "mesh_bytes": 11560871,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -11813,7 +11834,7 @@
     "urdf": "urdfs/robots/pr2/pr2.urdf",
     "packages": {},
     "mesh_files": 31,
-    "mesh_bytes": 918563,
+    "mesh_bytes": 362548,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -11876,7 +11897,7 @@
      "nextage_description": "nextage_description"
     },
     "mesh_files": 16,
-    "mesh_bytes": 1610563,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -12947,7 +12968,7 @@
      "stretch_description": ""
     },
     "mesh_files": 31,
-    "mesh_bytes": 41556359,
+    "mesh_bytes": 25773920,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -13016,7 +13037,7 @@
      "example-robot-data": ""
     },
     "mesh_files": 34,
-    "mesh_bytes": 4943814,
+    "mesh_bytes": 4753482,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -13092,7 +13113,7 @@
      "pepper_description": ""
     },
     "mesh_files": 99,
-    "mesh_bytes": 9391102,
+    "mesh_bytes": 137784,
     "mesh_formats": [
      ".dae",
      ".stl"
@@ -13156,7 +13177,7 @@
     "urdf": "models/rby1a/urdf/model.urdf",
     "packages": {},
     "mesh_files": 29,
-    "mesh_bytes": 41921229,
+    "mesh_bytes": 0,
     "mesh_formats": [
      ".dae"
     ]
@@ -13353,7 +13374,7 @@
     "urdf": "urdf/galbot_one_golf.urdf",
     "packages": {},
     "mesh_files": 118,
-    "mesh_bytes": 8303028,
+    "mesh_bytes": 240924,
     "mesh_formats": [
      ".glb",
      ".stl"
@@ -13421,7 +13442,7 @@
     "urdf": "urdf/galbot_s1.urdf",
     "packages": {},
     "mesh_files": 82,
-    "mesh_bytes": 8549656,
+    "mesh_bytes": 602444,
     "mesh_formats": [
      ".glb",
      ".stl"
@@ -14414,19 +14435,34 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 815
+    "xml_name": "robotis_op3",
+    "links": 22,
+    "joints": {
+     "free": 1,
+     "hinge": 20
+    },
+    "moving_joints": 20,
+    "mass_kg": 3.147,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 815,
+    "model_bytes": 13230
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "robotis_op3/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/robotis_op3-op3.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "robotis_op3/op3.xml",
+    "packages": {},
+    "mesh_files": 48,
+    "mesh_bytes": 46806532,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/robotis_op3-op3.png"
    },
    "source": {
     "description": null,
@@ -14448,8 +14484,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3/scene.xml"
+   }
   },
   {
    "id": "toddlerbot_2xc",
@@ -14464,19 +14499,34 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 2846
+    "xml_name": "toddlerbot_2xc",
+    "links": 46,
+    "joints": {
+     "free": 1,
+     "hinge": 44
+    },
+    "moving_joints": 44,
+    "mass_kg": 3.454,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 2846,
+    "model_bytes": 50292
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "toddlerbot_2xc/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/toddlerbot_2xc-toddlerbot_2xc.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "toddlerbot_2xc/toddlerbot_2xc.xml",
+    "packages": {},
+    "mesh_files": 47,
+    "mesh_bytes": 67610348,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/toddlerbot_2xc-toddlerbot_2xc.png"
    },
    "source": {
     "description": null,
@@ -14498,8 +14548,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xc"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xc/scene.xml"
+   }
   },
   {
    "id": "pndbotics_adam_lite",
@@ -14514,19 +14563,34 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 827
+    "xml_name": "adam_lite",
+    "links": 27,
+    "joints": {
+     "free": 1,
+     "hinge": 25
+    },
+    "moving_joints": 25,
+    "mass_kg": 58.188,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 827,
+    "model_bytes": 22100
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "pndbotics_adam_lite/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/pndbotics_adam_lite-adam_lite.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "pndbotics_adam_lite/adam_lite.xml",
+    "packages": {},
+    "mesh_files": 74,
+    "mesh_bytes": 171627872,
+    "mesh_formats": [
+     ".obj"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/pndbotics_adam_lite-adam_lite.png"
    },
    "source": {
     "description": null,
@@ -14548,8 +14612,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/pndbotics_adam_lite"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/pndbotics_adam_lite/scene.xml"
+   }
   },
   {
    "id": "apptronik_apollo",
@@ -14564,19 +14627,34 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 1518
+    "xml_name": "apptronik_apollo",
+    "links": 37,
+    "joints": {
+     "free": 1,
+     "hinge": 32
+    },
+    "moving_joints": 32,
+    "mass_kg": 80.898,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 1518,
+    "model_bytes": 35569
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "apptronik_apollo/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/apptronik_apollo-apptronik_apollo.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "apptronik_apollo/apptronik_apollo.xml",
+    "packages": {},
+    "mesh_files": 44,
+    "mesh_bytes": 71212146,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/apptronik_apollo-apptronik_apollo.png"
    },
    "source": {
     "description": null,
@@ -14598,8 +14676,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/apptronik_apollo"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/apptronik_apollo/scene.xml"
+   }
   },
   {
    "id": "toddlerbot_2xm",
@@ -14614,19 +14691,34 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 2846
+    "xml_name": "toddlerbot_2xm",
+    "links": 46,
+    "joints": {
+     "free": 1,
+     "hinge": 44
+    },
+    "moving_joints": 44,
+    "mass_kg": 3.769,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 2846,
+    "model_bytes": 50317
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "toddlerbot_2xm/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/toddlerbot_2xm-toddlerbot_2xm.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "toddlerbot_2xm/toddlerbot_2xm.xml",
+    "packages": {},
+    "mesh_files": 47,
+    "mesh_bytes": 67635548,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/toddlerbot_2xm-toddlerbot_2xm.png"
    },
    "source": {
     "description": null,
@@ -14648,8 +14740,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xm"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xm/scene.xml"
+   }
   },
   {
    "id": "unitree_go1",
@@ -14664,19 +14755,34 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 815
+    "xml_name": "go1",
+    "links": 14,
+    "joints": {
+     "free": 1,
+     "hinge": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": 12.743,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 815,
+    "model_bytes": 10875
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "unitree_go1/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/unitree_go1-go1.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "unitree_go1/go1.xml",
+    "packages": {},
+    "mesh_files": 5,
+    "mesh_bytes": 10316970,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/unitree_go1-go1.png"
    },
    "source": {
     "description": null,
@@ -14698,8 +14804,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/unitree_go1"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/unitree_go1/scene.xml"
+   }
   },
   {
    "id": "boston_dynamics_spot",
@@ -14714,19 +14819,34 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 823
+    "xml_name": "spot",
+    "links": 14,
+    "joints": {
+     "free": 1,
+     "hinge": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": 50.34,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 823,
+    "model_bytes": 8884
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "boston_dynamics_spot/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/boston_dynamics_spot-spot_arm.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "boston_dynamics_spot/spot.xml",
+    "packages": {},
+    "mesh_files": 23,
+    "mesh_bytes": 44339290,
+    "mesh_formats": [
+     ".obj"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/boston_dynamics_spot-spot_arm.png"
    },
    "source": {
     "description": null,
@@ -14748,8 +14868,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/boston_dynamics_spot"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/boston_dynamics_spot/scene.xml"
+   }
   },
   {
    "id": "flybody",
@@ -14764,19 +14883,37 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 1001
+    "xml_name": "fruitfly",
+    "links": 68,
+    "joints": {
+     "free": 1,
+     "hinge": 102
+    },
+    "moving_joints": 102,
+    "mass_kg": null,
+    "has_collision": true,
+    "has_inertia": false,
+    "bytes": 1001,
+    "model_bytes": 67727
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "flybody/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/flybody-fruitfly.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "flybody/fruitfly.xml",
+    "packages": {},
+    "mesh_files": 84,
+    "mesh_bytes": 109114179,
+    "mesh_formats": [
+     ".obj"
+    ],
+    "skip_meshes": [
+     "flybody/assets/head_red.obj"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/flybody-fruitfly.png"
    },
    "source": {
     "description": null,
@@ -14798,8 +14935,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/flybody"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/flybody/scene.xml"
+   }
   },
   {
    "id": "iit_softfoot",
@@ -14814,19 +14950,33 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 1283
+    "xml_name": "softfoot",
+    "links": 50,
+    "joints": {
+     "hinge": 92
+    },
+    "moving_joints": 92,
+    "mass_kg": 0.937,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 1283,
+    "model_bytes": 97014
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "iit_softfoot/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/iit_softfoot-softfoot.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "iit_softfoot/softfoot.xml",
+    "packages": {},
+    "mesh_files": 10,
+    "mesh_bytes": 3178740,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/iit_softfoot-softfoot.png"
    },
    "source": {
     "description": null,
@@ -14848,8 +14998,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/iit_softfoot"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/iit_softfoot/scene.xml"
+   }
   },
   {
    "id": "ms_human_700",
@@ -14864,19 +15013,35 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 1112
+    "xml_name": "MS_Human_700_Primary_Model",
+    "links": 81,
+    "joints": {
+     "hinge": 72,
+     "slide": 13
+    },
+    "moving_joints": 85,
+    "mass_kg": 57.792,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 1112,
+    "model_bytes": 4189
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "ms_human_700/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/ms_human_700-MS-Human-700.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "ms_human_700/MS-Human-700.xml",
+    "packages": {},
+    "mesh_files": 190,
+    "mesh_bytes": 23766548,
+    "mesh_formats": [
+     ".obj",
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/ms_human_700-MS-Human-700.png"
    },
    "source": {
     "description": null,
@@ -14898,8 +15063,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/ms_human_700"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/ms_human_700/scene.xml"
+   }
   },
   {
    "id": "aloha",
@@ -14914,19 +15078,33 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 5330
+    "xml_name": "aloha",
+    "links": 21,
+    "joints": {
+     "hinge": 16
+    },
+    "moving_joints": 16,
+    "mass_kg": 8.517,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 5330,
+    "model_bytes": 19150
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "aloha/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/aloha-aloha.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "aloha/aloha.xml",
+    "packages": {},
+    "mesh_files": 12,
+    "mesh_bytes": 8285808,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/aloha-aloha.png"
    },
    "source": {
     "description": null,
@@ -14948,8 +15126,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/aloha"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/aloha/scene.xml"
+   }
   },
   {
    "id": "google_robot",
@@ -14964,19 +15141,34 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 843
+    "xml_name": "robot",
+    "links": 13,
+    "joints": {
+     "hinge": 9
+    },
+    "moving_joints": 9,
+    "mass_kg": 6.363,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 843,
+    "model_bytes": 12331
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "google_robot/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/google_robot-robot.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "google_robot/robot.xml",
+    "packages": {},
+    "mesh_files": 50,
+    "mesh_bytes": 4457874,
+    "mesh_formats": [
+     ".obj",
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/google_robot-robot.png"
    },
    "source": {
     "description": null,
@@ -14998,8 +15190,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/google_robot"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/google_robot/scene.xml"
+   }
   },
   {
    "id": "stretch_2",
@@ -15014,19 +15205,38 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 960
+    "xml_name": "stretch",
+    "links": 27,
+    "joints": {
+     "free": 1,
+     "hinge": 17
+    },
+    "moving_joints": 17,
+    "mass_kg": null,
+    "has_collision": true,
+    "has_inertia": false,
+    "bytes": 960,
+    "model_bytes": 23669
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "hello_robot_stretch/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/hello_robot_stretch-stretch.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "hello_robot_stretch/stretch.xml",
+    "packages": {},
+    "mesh_files": 74,
+    "mesh_bytes": 51396998,
+    "mesh_formats": [
+     ".obj",
+     ".stl"
+    ],
+    "skip_meshes": [
+     "hello_robot_stretch/assets/base_link_8.obj"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/hello_robot_stretch-stretch.png"
    },
    "source": {
     "description": null,
@@ -15048,8 +15258,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch/scene.xml"
+   }
   },
   {
    "id": "stanford_tidybot",
@@ -15064,19 +15273,34 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 842
+    "xml_name": "tidybot",
+    "links": 23,
+    "joints": {
+     "hinge": 16,
+     "slide": 2
+    },
+    "moving_joints": 18,
+    "mass_kg": 9.088,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 842,
+    "model_bytes": 18268
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "stanford_tidybot/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/stanford_tidybot-tidybot.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "stanford_tidybot/tidybot.xml",
+    "packages": {},
+    "mesh_files": 20,
+    "mesh_bytes": 6646880,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/stanford_tidybot-tidybot.png"
    },
    "source": {
     "description": null,
@@ -15098,8 +15322,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/stanford_tidybot"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/stanford_tidybot/scene.xml"
+   }
   },
   {
    "id": "hello_robot_stretch_3",
@@ -15114,19 +15337,38 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 1221
+    "xml_name": "stretch",
+    "links": 38,
+    "joints": {
+     "free": 1,
+     "hinge": 20
+    },
+    "moving_joints": 20,
+    "mass_kg": null,
+    "has_collision": true,
+    "has_inertia": false,
+    "bytes": 1221,
+    "model_bytes": 32049
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "hello_robot_stretch_3/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/hello_robot_stretch_3-stretch.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "hello_robot_stretch_3/stretch.xml",
+    "packages": {},
+    "mesh_files": 95,
+    "mesh_bytes": 54177796,
+    "mesh_formats": [
+     ".obj",
+     ".stl"
+    ],
+    "skip_meshes": [
+     "hello_robot_stretch_3/assets/base_link_8.obj"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/hello_robot_stretch_3-stretch.png"
    },
    "source": {
     "description": null,
@@ -15148,8 +15390,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch_3"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch_3/scene.xml"
+   }
   },
   {
    "id": "pal_tiago_dual",
@@ -15164,19 +15405,35 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 934
+    "xml_name": "tiago_dual",
+    "links": 27,
+    "joints": {
+     "free": 1,
+     "hinge": 20,
+     "slide": 5
+    },
+    "moving_joints": 25,
+    "mass_kg": 91.404,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 934,
+    "model_bytes": 3587
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "pal_tiago_dual/scene_position.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/pal_tiago_dual-tiago_dual.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "pal_tiago_dual/tiago_dual_position.xml",
+    "packages": {},
+    "mesh_files": 17,
+    "mesh_bytes": 6872878,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/pal_tiago_dual-tiago_dual.png"
    },
    "source": {
     "description": null,
@@ -15198,8 +15455,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/pal_tiago_dual"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/pal_tiago_dual/scene_position.xml"
+   }
   },
   {
    "id": "skydio_x2",
@@ -15214,19 +15470,33 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 875
+    "xml_name": "Skydio X2",
+    "links": 2,
+    "joints": {
+     "free": 1
+    },
+    "moving_joints": 0,
+    "mass_kg": null,
+    "has_collision": true,
+    "has_inertia": false,
+    "bytes": 875,
+    "model_bytes": 2826
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "skydio_x2/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/skydio_x2-x2.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "skydio_x2/x2.xml",
+    "packages": {},
+    "mesh_files": 2,
+    "mesh_bytes": 839367,
+    "mesh_formats": [
+     ".obj"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/skydio_x2-x2.png"
    },
    "source": {
     "description": null,
@@ -15248,8 +15518,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/skydio_x2"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/skydio_x2/scene.xml"
+   }
   },
   {
    "id": "crazyflie_2",
@@ -15264,19 +15533,33 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 870
+    "xml_name": "cf2",
+    "links": 2,
+    "joints": {
+     "free": 1
+    },
+    "moving_joints": 0,
+    "mass_kg": 0.027,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 870,
+    "model_bytes": 5712
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "bitcraze_crazyflie_2/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/bitcraze_crazyflie_2-cf2.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "bitcraze_crazyflie_2/cf2.xml",
+    "packages": {},
+    "mesh_files": 39,
+    "mesh_bytes": 1089464,
+    "mesh_formats": [
+     ".obj"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/bitcraze_crazyflie_2-cf2.png"
    },
    "source": {
     "description": null,
@@ -15298,8 +15581,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/bitcraze_crazyflie_2"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/bitcraze_crazyflie_2/scene.xml"
+   }
   },
   {
    "id": "franka_fr3",
@@ -15314,19 +15596,34 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 815
+    "xml_name": "fr3",
+    "links": 10,
+    "joints": {
+     "hinge": 7
+    },
+    "moving_joints": 7,
+    "mass_kg": 15.495,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 815,
+    "model_bytes": 8843
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "franka_fr3/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/franka_fr3-fr3.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "franka_fr3/fr3.xml",
+    "packages": {},
+    "mesh_files": 36,
+    "mesh_bytes": 33728811,
+    "mesh_formats": [
+     ".obj",
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/franka_fr3-fr3.png"
    },
    "source": {
     "description": null,
@@ -15348,8 +15645,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/franka_fr3"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/franka_fr3/scene.xml"
+   }
   },
   {
    "id": "ufactory_lite6",
@@ -15364,19 +15660,33 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 819
+    "xml_name": "ufactory_lite6",
+    "links": 8,
+    "joints": {
+     "hinge": 6
+    },
+    "moving_joints": 6,
+    "mass_kg": 7.576,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 819,
+    "model_bytes": 5173
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "ufactory_lite6/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/ufactory_lite6-lite6.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "ufactory_lite6/lite6.xml",
+    "packages": {},
+    "mesh_files": 14,
+    "mesh_bytes": 3733976,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/ufactory_lite6-lite6.png"
    },
    "source": {
     "description": null,
@@ -15398,8 +15708,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/ufactory_lite6"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/ufactory_lite6/scene.xml"
+   }
   },
   {
    "id": "universal_robots_ur5e",
@@ -15414,19 +15723,33 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 817
+    "xml_name": "ur5e",
+    "links": 8,
+    "joints": {
+     "hinge": 6
+    },
+    "moving_joints": 6,
+    "mass_kg": 20.995,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 817,
+    "model_bytes": 6652
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "universal_robots_ur5e/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/universal_robots_ur5e-ur5e.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "universal_robots_ur5e/ur5e.xml",
+    "packages": {},
+    "mesh_files": 20,
+    "mesh_bytes": 30983304,
+    "mesh_formats": [
+     ".obj"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/universal_robots_ur5e-ur5e.png"
    },
    "source": {
     "description": null,
@@ -15448,8 +15771,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/universal_robots_ur5e"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/universal_robots_ur5e/scene.xml"
+   }
   },
   {
    "id": "rethink_robotics_sawyer",
@@ -15464,19 +15786,33 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 821
+    "xml_name": "sawyer",
+    "links": 10,
+    "joints": {
+     "hinge": 7
+    },
+    "moving_joints": 7,
+    "mass_kg": 20.734,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 821,
+    "model_bytes": 12037
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "rethink_robotics_sawyer/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/rethink_robotics_sawyer-sawyer.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "rethink_robotics_sawyer/sawyer.xml",
+    "packages": {},
+    "mesh_files": 49,
+    "mesh_bytes": 29788816,
+    "mesh_formats": [
+     ".obj"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/rethink_robotics_sawyer-sawyer.png"
    },
    "source": {
     "description": null,
@@ -15498,8 +15834,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/rethink_robotics_sawyer"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/rethink_robotics_sawyer/scene.xml"
+   }
   },
   {
    "id": "universal_robots_ur10e",
@@ -15514,19 +15849,33 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 819
+    "xml_name": "ur10e",
+    "links": 8,
+    "joints": {
+     "hinge": 6
+    },
+    "moving_joints": 6,
+    "mass_kg": 32.7,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 819,
+    "model_bytes": 6938
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "universal_robots_ur10e/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/universal_robots_ur10e-ur10e.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "universal_robots_ur10e/ur10e.xml",
+    "packages": {},
+    "mesh_files": 20,
+    "mesh_bytes": 33294601,
+    "mesh_formats": [
+     ".obj"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/universal_robots_ur10e-ur10e.png"
    },
    "source": {
     "description": null,
@@ -15548,8 +15897,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/universal_robots_ur10e"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/universal_robots_ur10e/scene.xml"
+   }
   },
   {
    "id": "trossen_vx300s",
@@ -15564,19 +15912,33 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 821
+    "xml_name": "vx300s",
+    "links": 11,
+    "joints": {
+     "hinge": 8
+    },
+    "moving_joints": 8,
+    "mass_kg": 3.742,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 821,
+    "model_bytes": 12159
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "trossen_vx300s/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/trossen_vx300s-vx300s.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "trossen_vx300s/vx300s.xml",
+    "packages": {},
+    "mesh_files": 11,
+    "mesh_bytes": 1393234,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/trossen_vx300s-vx300s.png"
    },
    "source": {
     "description": null,
@@ -15598,8 +15960,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/trossen_vx300s"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/trossen_vx300s/scene.xml"
+   }
   },
   {
    "id": "ufactory_xarm7",
@@ -15614,19 +15975,33 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 891
+    "xml_name": "xarm7",
+    "links": 16,
+    "joints": {
+     "hinge": 13
+    },
+    "moving_joints": 13,
+    "mass_kg": 12.068,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 891,
+    "model_bytes": 10682
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "ufactory_xarm7/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/ufactory_xarm7-xarm7.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "ufactory_xarm7/xarm7.xml",
+    "packages": {},
+    "mesh_files": 16,
+    "mesh_bytes": 4542494,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/ufactory_xarm7-xarm7.png"
    },
    "source": {
     "description": null,
@@ -15648,8 +16023,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/ufactory_xarm7"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/ufactory_xarm7/scene.xml"
+   }
   },
   {
    "id": "kinova_gen3",
@@ -15664,19 +16038,33 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 836
+    "xml_name": "gen3",
+    "links": 9,
+    "joints": {
+     "hinge": 7
+    },
+    "moving_joints": 7,
+    "mass_kg": 8.188,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 836,
+    "model_bytes": 5993
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "kinova_gen3/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/kinova_gen3-gen3.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "kinova_gen3/gen3.xml",
+    "packages": {},
+    "mesh_files": 8,
+    "mesh_bytes": 4348072,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/kinova_gen3-gen3.png"
    },
    "source": {
     "description": null,
@@ -15698,8 +16086,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/kinova_gen3"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/kinova_gen3/scene.xml"
+   }
   },
   {
    "id": "flexiv_rizon4",
@@ -15714,19 +16101,33 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 828
+    "xml_name": "A02L-M4",
+    "links": 9,
+    "joints": {
+     "hinge": 7
+    },
+    "moving_joints": 7,
+    "mass_kg": 16.295,
+    "has_collision": false,
+    "has_inertia": true,
+    "bytes": 828,
+    "model_bytes": 5120
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "flexiv_rizon4/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/flexiv_rizon4-flexiv_rizon4.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "flexiv_rizon4/flexiv_rizon4.xml",
+    "packages": {},
+    "mesh_files": 14,
+    "mesh_bytes": 4010858,
+    "mesh_formats": [
+     ".obj"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/flexiv_rizon4-flexiv_rizon4.png"
    },
    "source": {
     "description": null,
@@ -15748,8 +16149,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/flexiv_rizon4"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/flexiv_rizon4/scene.xml"
+   }
   },
   {
    "id": "arx_l5",
@@ -15764,19 +16164,33 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 821
+    "xml_name": "ARX L5",
+    "links": 10,
+    "joints": {
+     "hinge": 8
+    },
+    "moving_joints": 8,
+    "mass_kg": 3.467,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 821,
+    "model_bytes": 6910
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "arx_l5/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/arx_l5-arx_l5.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "arx_l5/arx_l5.xml",
+    "packages": {},
+    "mesh_files": 10,
+    "mesh_bytes": 11342120,
+    "mesh_formats": [
+     ".obj"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/arx_l5-arx_l5.png"
    },
    "source": {
     "description": null,
@@ -15798,8 +16212,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/arx_l5"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/arx_l5/scene.xml"
+   }
   },
   {
    "id": "flexiv_rizon4s",
@@ -15814,19 +16227,33 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 830
+    "xml_name": "A02LS-M2",
+    "links": 9,
+    "joints": {
+     "hinge": 7
+    },
+    "moving_joints": 7,
+    "mass_kg": 16.93,
+    "has_collision": false,
+    "has_inertia": true,
+    "bytes": 830,
+    "model_bytes": 6721
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "flexiv_rizon4s/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/flexiv_rizon4s-flexiv_rizon4s.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "flexiv_rizon4s/flexiv_rizon4s.xml",
+    "packages": {},
+    "mesh_files": 14,
+    "mesh_bytes": 4077075,
+    "mesh_formats": [
+     ".obj"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/flexiv_rizon4s-flexiv_rizon4s.png"
    },
    "source": {
     "description": null,
@@ -15848,8 +16275,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/flexiv_rizon4s"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/flexiv_rizon4s/scene.xml"
+   }
   },
   {
    "id": "trossen_wx250s",
@@ -15864,19 +16290,34 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 821
+    "xml_name": "wx250s",
+    "links": 10,
+    "joints": {
+     "hinge": 6,
+     "slide": 2
+    },
+    "moving_joints": 8,
+    "mass_kg": 2.134,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 821,
+    "model_bytes": 7608
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "trossen_wx250s/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/trossen_wx250s-wx250s.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "trossen_wx250s/wx250s.xml",
+    "packages": {},
+    "mesh_files": 11,
+    "mesh_bytes": 546134,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/trossen_wx250s-wx250s.png"
    },
    "source": {
     "description": null,
@@ -15898,8 +16339,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/trossen_wx250s"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/trossen_wx250s/scene.xml"
+   }
   },
   {
    "id": "low_cost_robot_arm",
@@ -15914,19 +16354,33 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 867
+    "xml_name": "low_cost_robot_arm",
+    "links": 8,
+    "joints": {
+     "hinge": 6
+    },
+    "moving_joints": 6,
+    "mass_kg": 0.226,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 867,
+    "model_bytes": 8151
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "low_cost_robot_arm/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/low_cost_robot_arm-low_cost_robot_arm.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "low_cost_robot_arm/low_cost_robot_arm.xml",
+    "packages": {},
+    "mesh_files": 22,
+    "mesh_bytes": 6525298,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/low_cost_robot_arm-low_cost_robot_arm.png"
    },
    "source": {
     "description": null,
@@ -15948,8 +16402,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/low_cost_robot_arm"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/low_cost_robot_arm/scene.xml"
+   }
   },
   {
    "id": "seeed_rebot_devarm",
@@ -15964,19 +16417,34 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 845
+    "xml_name": "seeed_rebot_devarm",
+    "links": 11,
+    "joints": {
+     "hinge": 6,
+     "slide": 2
+    },
+    "moving_joints": 8,
+    "mass_kg": 6.009,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 845,
+    "model_bytes": 22114
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "seeed_rebot_devarm/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/seeed_rebot_devarm-seeed_rebot_devarm.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "seeed_rebot_devarm/seeed_rebot_devarm.xml",
+    "packages": {},
+    "mesh_files": 115,
+    "mesh_bytes": 14941610,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/seeed_rebot_devarm-seeed_rebot_devarm.png"
    },
    "source": {
     "description": null,
@@ -15998,8 +16466,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/seeed_rebot_devarm"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/seeed_rebot_devarm/scene.xml"
+   }
   },
   {
    "id": "panda_gripper",
@@ -16014,19 +16481,34 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 4547
+    "xml_name": "panda hand",
+    "links": 4,
+    "joints": {
+     "hinge": 2
+    },
+    "moving_joints": 2,
+    "mass_kg": 0.76,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 4547,
+    "model_bytes": 4547
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "franka_emika_panda/hand.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/franka_emika_panda-hand.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "franka_emika_panda/hand.xml",
+    "packages": {},
+    "mesh_files": 8,
+    "mesh_bytes": 1943695,
+    "mesh_formats": [
+     ".obj",
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/franka_emika_panda-hand.png"
    },
    "source": {
     "description": null,
@@ -16048,8 +16530,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/franka_emika_panda"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/franka_emika_panda/hand.xml"
+   }
   },
   {
    "id": "xarm7_gripper",
@@ -16064,19 +16545,33 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 5974
+    "xml_name": "xarm7 hand",
+    "links": 8,
+    "joints": {
+     "hinge": 6
+    },
+    "moving_joints": 6,
+    "mass_kg": 0.751,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 5974,
+    "model_bytes": 5974
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "ufactory_xarm7/hand.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/ufactory_xarm7-hand.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "ufactory_xarm7/hand.xml",
+    "packages": {},
+    "mesh_files": 7,
+    "mesh_bytes": 2473938,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/ufactory_xarm7-hand.png"
    },
    "source": {
     "description": null,
@@ -16098,8 +16593,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/ufactory_xarm7"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/ufactory_xarm7/hand.xml"
+   }
   },
   {
    "id": "shadow_dexee",
@@ -16114,19 +16608,33 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 1033
+    "xml_name": "shadow_dexee",
+    "links": 20,
+    "joints": {
+     "hinge": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": null,
+    "has_collision": true,
+    "has_inertia": false,
+    "bytes": 1033,
+    "model_bytes": 27631
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "shadow_dexee/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/shadow_dexee-shadow_dexee.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "shadow_dexee/shadow_dexee.xml",
+    "packages": {},
+    "mesh_files": 21,
+    "mesh_bytes": 5510964,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/shadow_dexee-shadow_dexee.png"
    },
    "source": {
     "description": null,
@@ -16148,8 +16656,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/shadow_dexee"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/shadow_dexee/scene.xml"
+   }
   },
   {
    "id": "umi_gripper",
@@ -16164,19 +16671,33 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 942
+    "xml_name": "umi_gripper",
+    "links": 4,
+    "joints": {
+     "hinge": 8
+    },
+    "moving_joints": 8,
+    "mass_kg": 0.16,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 942,
+    "model_bytes": 8416
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "umi_gripper/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/umi_gripper-umi_gripper.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "umi_gripper/umi_gripper.xml",
+    "packages": {},
+    "mesh_files": 8,
+    "mesh_bytes": 1678931,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/umi_gripper-umi_gripper.png"
    },
    "source": {
     "description": null,
@@ -16198,8 +16719,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/umi_gripper"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/umi_gripper/scene.xml"
+   }
   },
   {
    "id": "robot_soccer_kit",
@@ -16214,19 +16734,35 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 836
+    "xml_name": "robot_soccer_kit",
+    "links": 66,
+    "joints": {
+     "free": 1,
+     "hinge": 63,
+     "slide": 1
+    },
+    "moving_joints": 64,
+    "mass_kg": 0.666,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 836,
+    "model_bytes": 117014
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "robot_soccer_kit/scene.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/robot_soccer_kit-robot_soccer_kit.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "robot_soccer_kit/robot_soccer_kit.xml",
+    "packages": {},
+    "mesh_files": 29,
+    "mesh_bytes": 6027836,
+    "mesh_formats": [
+     ".stl"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/robot_soccer_kit-robot_soccer_kit.png"
    },
    "source": {
     "description": null,
@@ -16248,8 +16784,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robot_soccer_kit"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/robot_soccer_kit/scene.xml"
+   }
   },
   {
    "id": "realsense_d435i",
@@ -16264,19 +16799,34 @@
    "formats": [
     "mjcf"
    ],
-   "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": null,
    "mjcf": {
-    "bytes": 2174
+    "xml_name": "d435i",
+    "links": 2,
+    "joints": {},
+    "moving_joints": 0,
+    "mass_kg": null,
+    "has_collision": true,
+    "has_inertia": false,
+    "bytes": 2174,
+    "model_bytes": 2174
    },
    "assets": {
     "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
     "mjcf": "realsense_d435i/d435i.xml",
-    "thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/realsense_d435i-d435i.png",
-    "mesh_files": 0,
-    "mesh_bytes": 0,
-    "mesh_formats": []
+    "mjcf_model": "realsense_d435i/d435i.xml",
+    "packages": {},
+    "mesh_files": 8,
+    "mesh_bytes": 15122021,
+    "mesh_formats": [
+     ".obj"
+    ],
+    "skip_meshes": [
+     "realsense_d435i/assets/d435i_8.obj"
+    ],
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/realsense_d435i-d435i.png"
    },
    "source": {
     "description": null,
@@ -16298,8 +16848,7 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/realsense_d435i"
-   },
-   "external_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/realsense_d435i/d435i.xml"
+   }
   }
  ]
 }
