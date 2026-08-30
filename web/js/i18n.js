@@ -2,9 +2,9 @@
 
 const STRINGS = {
   en: {
-    'hero.title': 'Robot URDF & MJCF Gallery Online',
+    'hero.title': 'Robot Description Gallery Online',
     'hero.lede':
-      'Browse open robot descriptions — URDF models load in the built-in viewer, while MJCF-only models open as pinned MuJoCo Live scenes. Models stream from their upstream repositories; nothing is re-hosted here.',
+      'Browse, preview and compare open-source robot descriptions and 3D models in URDF, MJCF, USD and more. Everything loads directly from pinned upstream repositories, keeping sources traceable without re-hosting.',
     'search.placeholder': 'Search robot, maker, category…',
     'stats.robots': 'Robots',
     'stats.makers': 'Makers',
@@ -411,9 +411,9 @@ const STRINGS = {
     'cmp.axis.tz': 'along Z',
   },
   zh: {
-    'hero.title': '机器人 URDF 与 MJCF 在线合集',
+    'hero.title': '机器人3D模型在线合集',
     'hero.lede':
-      '浏览开源机器人描述：URDF 在站内查看、操控和对比，纯 MJCF 模型以固定版本在 MuJoCo Live 打开。模型均从上游仓库加载，本站不二次托管。',
+      '浏览、预览和对比 URDF、MJCF、USD 等开源机器人描述文件与 3D 模型。所有资源均从固定版本的上游仓库直接加载，来源清晰，本站不重复托管。',
     'search.placeholder': '搜索机器人、厂商、类别…',
     'stats.robots': '机器人',
     'stats.makers': '厂商',

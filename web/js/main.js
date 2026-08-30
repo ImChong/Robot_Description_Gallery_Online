@@ -168,7 +168,7 @@ async function main() {
       views.gallery.hidden = true;
       views.detail.hidden = true;
       views.compare.hidden = false;
-      document.title = `${t('compare.title')} · Robot URDF & MJCF Gallery Online`;
+      document.title = `${t('compare.title')} · Robot Description Gallery Online`;
       if (arriving) window.scrollTo({ top: 0 });
       await comparison().show({ category: at.compareCategory, ids: at.compareIds });
       return;
@@ -188,7 +188,7 @@ async function main() {
       if (detail?.isFullscreen()) detail.exitFullscreen();
       views.detail.hidden = true;
       views.gallery.hidden = false;
-      document.title = 'Robot URDF & MJCF Gallery Online · 机器人描述在线合集';
+      document.title = 'Robot Description Gallery Online · 机器人3D模型在线合集';
       // `#category=quadruped` is a link to a section of the page: honour it on
       // the first load and whenever the address bar names a section other than
       // the one being read. Coming back from a robot it names that same
