@@ -61,15 +61,15 @@ human readers.
 - [x] `tron2_dasf` **TRON 2 DASF** — LimX Dynamics — [limxdynamics/tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description/tree/9939c22e69d27653ec0ba8a505859a2903dd1a71/tron2a/DASF_TRON2A)
 - [x] `t800` **T800** — EngineAI — [engineai-robotics/engineai_robotics_native_sdk](https://github.com/engineai-robotics/engineai_robotics_native_sdk/tree/335c60e88772c26c7852d0abd6b3c7439037dd8f/assets/resource/robot/t800)
 - [x] `t800pro` **T800 Pro** — EngineAI — [engineai-robotics/engineai_robotics_native_sdk](https://github.com/engineai-robotics/engineai_robotics_native_sdk/tree/335c60e88772c26c7852d0abd6b3c7439037dd8f/assets/resource/robot/t800pro)
-- [x] `mini_hi` **Mini Hi** — HighTorque Robotics — [HighTorque-Robotics/HT_Robot_URDF](https://github.com/HighTorque-Robotics/HT_Robot_URDF/tree/5675b9aa238d5c0431bd376f9fc708308c617d7b/hi_25dof)
+- [ ] `mini_hi` **Mini Hi** — HighTorque Robotics — [HighTorque-Robotics/HT_Robot_URDF](https://github.com/HighTorque-Robotics/HT_Robot_URDF/tree/5675b9aa238d5c0431bd376f9fc708308c617d7b/hi_25dof)
 - [x] `mini_pi_plus` **Mini Pi plus** — HighTorque Robotics — [HighTorque-Robotics/HT_Robot_URDF](https://github.com/HighTorque-Robotics/HT_Robot_URDF/tree/5675b9aa238d5c0431bd376f9fc708308c617d7b/pi_plus_24dof)
 - [x] `piplus_s` **PiPlus S** — HighTorque Robotics — [HighTorque-Robotics/HT_Robot_URDF](https://github.com/HighTorque-Robotics/HT_Robot_URDF/tree/c05257c64c79b624e773eae704752c09c6bdb007/ht_urdf/PiPlus_S_12L10A0G0H1W)
 - [x] `digit` **Digit** — Agility Robotics — [adubredu/DigitRobot.jl](https://github.com/adubredu/DigitRobot.jl/tree/bd3b99e2297c48c5f818f521791a9f8daf3ee303)
 - [x] `gundam_rx78` **Gundam RX-78** — Bandai Namco Filmworks — [gundam-global-challenge/gundam_robot](https://github.com/gundam-global-challenge/gundam_robot/tree/411d5db72a122b41bb4d691a0fbc19fd2ac88222/gundam_rx78_description)
-- [x] `x1` **X1** — AgiBot — [AgibotTech/agibot_x1_train](https://github.com/AgibotTech/agibot_x1_train/tree/e6651b9ab843fd1b1be70c087bfb7e8b28e44ccd/resources/robots/x1)
-- [x] `sigmaban` **SigmaBan** — Rhoban — [Rhoban/sigmaban_urdf · sigmaban_description](https://github.com/Rhoban/sigmaban_urdf/tree/d5d023fd35800d00d7647000bce8602617a4960d)
-- [x] `simple_humanoid` **Simple Humanoid** — — — [laas/simple_humanoid_description · simple_humanoid_description](https://github.com/laas/simple_humanoid_description/tree/4e859aed7df3c29954c9cca2a1ecb94069f7cfce)
-- [x] `robotis_op3` **Robotis OP3** — ROBOTIS — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3)
+- [ ] `x1` **X1** — AgiBot — [AgibotTech/agibot_x1_train](https://github.com/AgibotTech/agibot_x1_train/tree/e6651b9ab843fd1b1be70c087bfb7e8b28e44ccd/resources/robots/x1)
+- [ ] `sigmaban` **SigmaBan** — Rhoban — [Rhoban/sigmaban_urdf · sigmaban_description](https://github.com/Rhoban/sigmaban_urdf/tree/d5d023fd35800d00d7647000bce8602617a4960d)
+- [ ] `simple_humanoid` **Simple Humanoid** — — — [laas/simple_humanoid_description · simple_humanoid_description](https://github.com/laas/simple_humanoid_description/tree/4e859aed7df3c29954c9cca2a1ecb94069f7cfce)
+- [ ] `robotis_op3` **Robotis OP3** — ROBOTIS — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3)
 - [x] `toddlerbot_2xc` **ToddlerBot 2XC** — Stanford University — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xc)
 - [x] `pndbotics_adam_lite` **PNDbotics Adam_lite** — PNDbotics — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/pndbotics_adam_lite)
 - [x] `apptronik_apollo` **Apptronik Apollo** — Apptronik — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/apptronik_apollo)
@@ -170,7 +170,7 @@ human readers.
 - [x] `shadow_hand` **Shadow Hand E3M5** — Shadow Robot Company — [shadow-robot/sr_common](https://github.com/shadow-robot/sr_common/tree/f061f0e9e777d5f8a4db4c19a033bd03f8101312/sr_description)
 - [x] `panda_gripper` **Panda Gripper** — Franka Robotics — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/franka_emika_panda)
 - [x] `xarm7_gripper` **xarm7 Gripper** — UFactory — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/ufactory_xarm7)
-- [x] `shadow_dexee` **Shadow DEX-EE Hand** — Shadow Robot Company — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/shadow_dexee)
+- [ ] `shadow_dexee` **Shadow DEX-EE Hand** — Shadow Robot Company — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/shadow_dexee)
 - [x] `umi_gripper` **UMI-Gripper** — Universal Manipulation Interface — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/umi_gripper)
 
 ## 双足 Biped · 11
@@ -241,4 +241,4 @@ human readers.
 
 ## 传感器 Sensor · 1
 
-- [x] `realsense_d435i` **Realsense D435i** — Intel RealSense — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/realsense_d435i)
+- [ ] `realsense_d435i` **Realsense D435i** — Intel RealSense — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/realsense_d435i)
