@@ -245,7 +245,7 @@ print(robot.model.nq, "DOF")`,
   // an MJCF next to its URDF without robot_descriptions having a key for it,
   // and pointing at the checkout is the only way to load that one.
   mujoco: (r) =>
-    r.formats.includes('mjcf') && r.source.description
+    r.source.mjcf && r.source.description
       ? `# pip install robot_descriptions mujoco
 import mujoco
 from robot_descriptions import ${mjKey(r)}
@@ -260,6 +260,15 @@ data = mujoco.MjData(model)`
 import mujoco
 
 model = mujoco.MjModel.from_xml_path("${repoDir(r)}/${r.source.mjcf}")
+data = mujoco.MjData(model)`
+        : r.source.mjcf_external
+          ? `# pip install mujoco
+import mujoco
+
+# Pinned MuJoCo Menagerie scene.
+# git clone https://github.com/${r.source.mjcf_external.github}.git
+# git checkout ${r.source.mjcf_external.commit}
+model = mujoco.MjModel.from_xml_path("mujoco_menagerie/${r.source.mjcf_external.path}")
 data = mujoco.MjData(model)`
         : `# ${r.name} has no MJCF${r.source.description ? ' in robot_descriptions' : ' upstream'}.
 # Convert the URDF with MuJoCo's compiler:
@@ -843,12 +852,12 @@ export class Detail {
       : custom
         ? `${robot.source.github} · GitHub`
         : [robot.maker, categoryLabel(robot.category, this.data.categories)]
-          .filter(Boolean)
-          .join(' · ');
+            .filter(Boolean)
+            .join(' · ');
     el('stage-title').textContent = custom
       ? robot.name
       : [robot.name, robot.maker].filter(Boolean).join(' · ');
-    document.title = `${robot.name} · Robot URDF Gallery Online`;
+    document.title = `${robot.name} · Robot URDF & MJCF Gallery Online`;
     el('d-local-badge').hidden = !local;
     el('panel-local').hidden = !local;
     for (const id of ['panel-download', 'panel-resources', 'panel-reuse']) el(id).hidden = local;
@@ -1025,6 +1034,12 @@ export class Detail {
       r.source.tree_url ? ['res.tree', r.source.tree_url, 'tree'] : null,
       ['res.urdf', urdfUrl(r), r.assets.urdf.split('/').pop()],
       r.source.mjcf ? ['res.mjcf', r.assets.base + r.source.mjcf, r.source.mjcf.split('/').pop()] : null,
+      r.source.mjcf_external
+        ? ['res.mjcfMenagerie', r.source.mjcf_external.url, r.source.mjcf_external.path.split('/').pop()]
+        : null,
+      r.source.mjcf_external
+        ? ['res.mjcfLive', r.source.mjcf_external.live_url, 'live.mujoco.org']
+        : null,
       r.source.license_url ? ['res.license', r.source.license_url, r.license || 'licence'] : null,
       r.links.official ? ['res.official', r.links.official, host(r.links.official)] : null,
       r.links.docs ? ['res.docs', r.links.docs, host(r.links.docs)] : null,

@@ -67,6 +67,32 @@ for (const robot of registry.robots) {
   for (const rule of assets.mesh_rewrite || []) {
     if (!rule.from || rule.to === undefined) fail(id, 'mesh_rewrite rule needs a from and a to');
   }
+  if (source.mjcf_external) {
+    if (!source.mjcf_external.url?.includes(source.mjcf_external.commit)) {
+      fail(id, 'external MJCF URL is not pinned to its source commit');
+    }
+    if (!source.mjcf_external.live_url?.startsWith('https://live.mujoco.org/')) {
+      fail(id, 'external MJCF has no MuJoCo Live URL');
+    }
+  }
+  // MJCF-only entries are real gallery cards, but their interactive stage is
+  // MuJoCo Live rather than this repository's URDF viewer. They therefore
+  // carry a pinned scene and upstream thumbnail instead of URDF facts.
+  if (!urdf) {
+    if (robot.formats?.length !== 1 || robot.formats[0] !== 'mjcf') {
+      fail(id, 'description without URDF is not MJCF-only');
+    }
+    if (!assets.mjcf) fail(id, 'MJCF-only entry has no scene path');
+    if (!assets.thumbnail?.startsWith('https://')) fail(id, 'MJCF-only entry has no HTTPS thumbnail');
+    if (!robot.external_url?.startsWith('https://live.mujoco.org/')) {
+      fail(id, 'MJCF-only entry does not open MuJoCo Live');
+    }
+    if (!source.mjcf_external?.url?.includes(source.commit)) {
+      fail(id, 'MJCF-only scene is not pinned to the source commit');
+    }
+    if (!robot.license) warn(id, 'no SPDX licence recorded upstream');
+    continue;
+  }
   if (!assets.urdf) fail(id, 'missing assets.urdf');
   if (assets.urdf.startsWith('/')) fail(id, 'assets.urdf must be repo-relative');
   for (const [pkg, dir] of Object.entries(assets.packages || {})) {

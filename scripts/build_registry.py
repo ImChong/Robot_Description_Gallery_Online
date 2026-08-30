@@ -48,9 +48,11 @@ from __future__ import annotations
 
 import argparse
 import ast
+import html
 import json
 import os
 import posixpath
+import re
 import sys
 import time
 import urllib.error
@@ -65,6 +67,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
 CACHE = ROOT / ".cache"
+MENAGERIE = ROOT / "data" / "menagerie.json"
 CDN = "https://cdn.jsdelivr.net/gh"
 UA = {"User-Agent": "robot-urdf-gallery-online-build"}
 # Deliberately no Accept-Encoding header: jsDelivr answers a compression-capable
@@ -844,6 +847,165 @@ def entry_for(
     }
 
 
+# --------------------------------------------------------------------------- #
+# MJCF-only collection
+# --------------------------------------------------------------------------- #
+
+
+MENAGERIE_ROW = re.compile(
+    r"^\| <a href='(?P<live>[^']+)'[^>]*><img src='(?P<thumb>[^']+)'[^>]*></a> "
+    r"\| (?P<name>[^|]+?) \| (?P<dof>\d+) \| "
+    r"\[(?P<license>[^]]+)\]\((?P<license_path>[^)]+)\) \|$"
+)
+MENAGERIE_SECTION = re.compile(r"^\*\*(?P<name>.+)\.\*\*$")
+MENAGERIE_MODEL = re.compile(r"/main/(?P<directory>[^/]+)/(?P<scene>[^?]+)$")
+
+
+def add_menagerie(
+    entries: list[dict[str, Any]], http: Http, config_path: Path = MENAGERIE
+) -> list[str]:
+    """Merge the pinned MuJoCo Menagerie manifest into the gallery.
+
+    A model already represented by a URDF is not another card: its existing
+    entry gains a pinned Menagerie scene and a link to MuJoCo's browser viewer.
+    A model that has no URDF card becomes an MJCF-only card whose preview opens
+    in that viewer. Menagerie's own README is the source of names, DoFs,
+    licences, scene paths and preview images; ``data/menagerie.json`` only owns
+    the gallery-specific deduplication, category and maker decisions.
+    """
+    if not config_path.exists():
+        return []
+    config = json.loads(config_path.read_text())
+    github = config["github"]
+    commit = config["commit"]
+    base = f"{CDN}/{github}@{commit}/"
+    raw = http.get(base + config.get("readme", "README.md"))
+    if raw is None:
+        return ["MuJoCo Menagerie: README fetch failed"]
+
+    section: str | None = None
+    models: list[dict[str, Any]] = []
+    for line in raw.decode("utf-8").splitlines():
+        heading = MENAGERIE_SECTION.match(line)
+        if heading:
+            section = heading.group("name")
+            continue
+        row = MENAGERIE_ROW.match(line)
+        if not row:
+            continue
+        live_match = MENAGERIE_MODEL.search(row.group("live"))
+        if not live_match:
+            continue
+        models.append(
+            {
+                **row.groupdict(),
+                **live_match.groupdict(),
+                "section": section,
+                "name": html.unescape(row.group("name").strip()),
+                "dof": int(row.group("dof")),
+            }
+        )
+
+    problems: list[str] = []
+    by_id = {entry["id"]: entry for entry in entries}
+    merge_into = config.get("merge_into") or {}
+    id_overrides = config.get("id_overrides") or {}
+    makers = config.get("maker_by_directory") or {}
+    categories = config.get("section_categories") or {}
+    seen_keys: set[str] = set()
+
+    for model in models:
+        key = f"{model['directory']}/{model['scene']}"
+        seen_keys.add(key)
+        category = categories.get(model["section"])
+        if not category:
+            problems.append(f"MuJoCo Menagerie · {key}: unknown section {model['section']!r}")
+            continue
+        scene_path = key
+        thumb_path = model["thumb"]
+        scene_status, scene_bytes = http.head(base + scene_path)
+        thumb_status, _ = http.head(base + thumb_path)
+        if scene_status != 200:
+            problems.append(f"MuJoCo Menagerie · {key}: scene returned HTTP {scene_status}")
+            continue
+        if thumb_status != 200:
+            problems.append(f"MuJoCo Menagerie · {key}: thumbnail returned HTTP {thumb_status}")
+            continue
+
+        live = model["live"].replace(f"github:{github}/main/", f"github:{github}/{commit}/")
+        external = {
+            "github": github,
+            "commit": commit,
+            "path": scene_path,
+            "url": base + scene_path,
+            "live_url": live,
+            "tree_url": f"https://github.com/{github}/tree/{commit}/{model['directory']}",
+        }
+        target_id = merge_into.get(key)
+        if target_id:
+            target = by_id.get(target_id)
+            if target is None:
+                problems.append(f"MuJoCo Menagerie · {key}: merge target {target_id!r} is missing")
+                continue
+            target["formats"] = sorted({*target.get("formats", []), "mjcf"})
+            target["source"]["mjcf_external"] = external
+            target.setdefault("links", {})["menagerie"] = external["tree_url"]
+            continue
+
+        robot_id = id_overrides.get(key) or model["directory"]
+        if robot_id in by_id:
+            problems.append(f"MuJoCo Menagerie · {key}: id {robot_id!r} duplicates a URDF card")
+            continue
+        license_path = model["license_path"]
+        entry = {
+            "id": robot_id,
+            "name": model["name"],
+            "maker": makers.get(model["directory"]) or "MuJoCo Menagerie contributors",
+            "category": category,
+            "tags": ["mjcf"],
+            "dof": model["dof"],
+            "license": model["license"],
+            "formats": ["mjcf"],
+            "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
+            "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+            "measured": None,
+            "mjcf": {"bytes": scene_bytes},
+            "assets": {
+                "base": base,
+                "mjcf": scene_path,
+                "thumbnail": base + thumb_path,
+                "mesh_files": 0,
+                "mesh_bytes": 0,
+                "mesh_formats": [],
+            },
+            "source": {
+                "description": None,
+                "github": github,
+                "commit": commit,
+                "repo_url": f"https://github.com/{github}",
+                "tree_url": external["tree_url"],
+                "license_url": base + license_path,
+                "mirror": None,
+                "mjcf": scene_path,
+                "mjcf_external": external,
+            },
+            "links": {"menagerie": external["tree_url"]},
+            "external_url": live,
+        }
+        entries.append(entry)
+        by_id[robot_id] = entry
+
+    stale = sorted((set(merge_into) | set(id_overrides)) - seen_keys)
+    for key in stale:
+        problems.append(f"MuJoCo Menagerie: configured key {key!r} is not in the pinned README")
+    print(
+        f"MuJoCo Menagerie {commit[:10]}: {len(models)} models, "
+        f"{sum(1 for key in seen_keys if key in merge_into)} merged with URDF cards, "
+        f"{sum(1 for entry in entries if entry.get('external_url'))} MJCF-only"
+    )
+    return problems
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", default=str(ROOT / "data" / "robots.json"))
@@ -1005,6 +1167,8 @@ def main() -> int:
 
     order = {curated_id(item): i for i, item in enumerate(curation["robots"])}
     entries.sort(key=lambda e: order[e["id"]])
+    problems.extend(add_menagerie(entries, http))
+    http.save()
 
     registry = {
         "$schema": "./robots.schema.json",

@@ -2,9 +2,9 @@
 
 const STRINGS = {
   en: {
-    'hero.title': 'Robot URDF Gallery Online',
+    'hero.title': 'Robot URDF & MJCF Gallery Online',
     'hero.lede':
-      'Browse, inspect and compare open robot descriptions — humanoids, quadrupeds, arms and hands. Almost every model streams from its upstream repository at a pinned commit; a handful whose maker published none stream from an archive that re-hosts them, and say so. Nothing is re-hosted here.',
+      'Browse open robot descriptions — URDF models load in the built-in viewer, while MJCF-only models open as pinned MuJoCo Live scenes. Models stream from their upstream repositories; nothing is re-hosted here.',
     'search.placeholder': 'Search robot, maker, category…',
     'stats.robots': 'Robots',
     'stats.makers': 'Makers',
@@ -145,6 +145,8 @@ const STRINGS = {
     'res.tree': 'Description folder',
     'res.urdf': 'URDF file',
     'res.mjcf': 'MJCF (MuJoCo)',
+    'res.mjcfMenagerie': 'MuJoCo Menagerie scene',
+    'res.mjcfLive': 'Open in MuJoCo Live',
     'res.license': 'Licence file',
     'res.official': 'Official product page',
     'res.docs': 'Documentation',
@@ -392,9 +394,9 @@ const STRINGS = {
     'cmp.axis.tz': 'along Z',
   },
   zh: {
-    'hero.title': '机器人 URDF 在线合集',
+    'hero.title': '机器人 URDF 与 MJCF 在线合集',
     'hero.lede':
-      '浏览、查看并对比开源机器人模型——人形、四足、机械臂与灵巧手。绝大多数模型都从上游仓库的固定 commit 直接加载；少数厂商没有公开可加载模型的，从转载它们的存档站加载，并在详情页注明。本站不二次托管任何模型文件。',
+      '浏览开源机器人描述：URDF 在站内查看、操控和对比，纯 MJCF 模型以固定版本在 MuJoCo Live 打开。模型均从上游仓库加载，本站不二次托管。',
     'search.placeholder': '搜索机器人、厂商、类别…',
     'stats.robots': '机器人',
     'stats.makers': '厂商',
@@ -531,6 +533,8 @@ const STRINGS = {
     'res.tree': '模型目录',
     'res.urdf': 'URDF 文件',
     'res.mjcf': 'MJCF（MuJoCo）',
+    'res.mjcfMenagerie': 'MuJoCo Menagerie 场景',
+    'res.mjcfLive': '在 MuJoCo Live 中打开',
     'res.license': '许可文件',
     'res.official': '官方产品页',
     'res.docs': '文档',

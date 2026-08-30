@@ -95,6 +95,26 @@
       "id": "mobile",
       "label": "Mobile manipulator",
       "label_zh": "移动操作"
+    },
+    {
+      "id": "biomechanical",
+      "label": "Biomechanical",
+      "label_zh": "生物力学"
+    },
+    {
+      "id": "drone",
+      "label": "Drone",
+      "label_zh": "无人机"
+    },
+    {
+      "id": "mobile_base",
+      "label": "Mobile base",
+      "label_zh": "移动底盘"
+    },
+    {
+      "id": "sensor",
+      "label": "Sensor",
+      "label_zh": "传感器"
     }
   ],
   "robots": [
@@ -2542,6 +2562,57 @@
       },
       "notes": "The right hand of the open-source DexHand, and one of the few in the gallery that brings its wrist with it — 24 revolute joints — four per finger, five in the thumb and three at the wrist, over 43 cm from the forearm stump to the middle fingertip. Upstream ships the left hand too.",
       "notes_zh": "开源 DexHand 的右手，也是库里少数把手腕一并带上的灵巧手——24 个 revolute 关节：四指每指 4 个、拇指 5 个、手腕 3 个，从前臂断面到中指指尖 43 cm。上游同时提供左手。"
+    },
+    {
+      "id": "shadow_hand",
+      "name": "Shadow Hand E3M5",
+      "maker": "Shadow Robot Company",
+      "category": "hand",
+      "preview_frame": {
+        "palm": "+y",
+        "fingers": "+z"
+      },
+      "upstream": {
+        "github": "shadow-robot/sr_common",
+        "commit": "f061f0e9e777d5f8a4db4c19a033bd03f8101312",
+        "package": "sr_description",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "tags": [
+          "end_effector"
+        ]
+      },
+      "links": {
+        "official": "https://www.shadowrobot.com/dexterous-hand-series/"
+      },
+      "notes": "Shadow Robot's anthropomorphic hand with four fingers, an opposable thumb and a two-axis wrist. The card opens the right motor hand; the version picker also exposes the left hand and the Plus forearm variants. These are the plain URDFs shipped beside sr_common's MuJoCo models, so they need no xacro expansion, and each version links its matching MJCF.",
+      "notes_zh": "Shadow Robot 的仿人灵巧手，包含四指、对掌拇指和两自由度手腕。卡片默认打开右手电机版，版本选择器还可切换左手及 Plus 前臂版本。这些是 sr_common 随 MuJoCo 模型一同发布的已展开 URDF，无需再运行 xacro；每个版本同时链接对应 MJCF。",
+      "variants": [
+        {
+          "id": "shadowhand_motor",
+          "name": "Right hand",
+          "urdf": "sr_description/mujoco_models/urdfs/shadowhand_motor.urdf",
+          "mjcf": "sr_description/mujoco_models/sr_hand_e_model.xml"
+        },
+        {
+          "id": "shadowhand_motor_left",
+          "name": "Left hand",
+          "urdf": "sr_description/mujoco_models/urdfs/shadowhand_motor_left.urdf",
+          "mjcf": "sr_description/mujoco_models/sr_hand_e_left_model.xml"
+        },
+        {
+          "id": "shadowhand_motor_plus",
+          "name": "Right hand Plus",
+          "urdf": "sr_description/mujoco_models/urdfs/shadowhand_motor_plus.urdf",
+          "mjcf": "sr_description/mujoco_models/sr_hand_e_plus_model.xml"
+        },
+        {
+          "id": "shadowhand_motor_plus_left",
+          "name": "Left hand Plus",
+          "urdf": "sr_description/mujoco_models/urdfs/shadowhand_motor_plus_left.urdf",
+          "mjcf": "sr_description/mujoco_models/sr_hand_e_plus_left_model.xml"
+        }
+      ]
     },
     {
       "description": "cassie_description",

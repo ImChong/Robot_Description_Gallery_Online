@@ -42,6 +42,7 @@ const visibility = existsSync(visibilityPath)
   ? parseVisibility(readFileSync(visibilityPath, 'utf8'))
   : new Map();
 const shown = registry.robots.filter((r) => visibility.get(r.id) !== false);
+const downloadable = shown.filter((r) => r.formats.includes('urdf'));
 const hidden = registry.robots.length - shown.length;
 if (hidden) console.log(`${hidden} robot(s) hidden by data/visibility.md`);
 
@@ -66,15 +67,15 @@ function loads(robot, everyVersion) {
 
 let targets;
 if (flag('--robot')) {
-  targets = shown.filter((r) => r.id === flag('--robot')).flatMap((r) => loads(r, true));
+  targets = downloadable.filter((r) => r.id === flag('--robot')).flatMap((r) => loads(r, true));
   if (!targets.length) console.log(`${flag('--robot')}: not shown (or unknown) — nothing to test`);
 } else if (args.includes('--all')) {
-  targets = shown.flatMap((r) => loads(r, true));
+  targets = downloadable.flatMap((r) => loads(r, true));
 } else {
   // Default: the lightest shown robot per mesh format, so every loader path that
   // the bundle has to copy is covered without downloading a gigabyte.
   const byFormat = new Map();
-  for (const robot of shown) {
+  for (const robot of downloadable) {
     const key = robot.assets.mesh_formats.join('+');
     const current = byFormat.get(key);
     if (!current || robot.assets.mesh_bytes < current.assets.mesh_bytes) {
