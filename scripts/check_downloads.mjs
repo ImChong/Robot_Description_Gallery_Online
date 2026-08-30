@@ -42,7 +42,7 @@ const visibility = existsSync(visibilityPath)
   ? parseVisibility(readFileSync(visibilityPath, 'utf8'))
   : new Map();
 const shown = registry.robots.filter((r) => visibility.get(r.id) !== false);
-const downloadable = shown.filter((r) => r.formats.includes('urdf'));
+const downloadable = shown;
 const hidden = registry.robots.length - shown.length;
 if (hidden) console.log(`${hidden} robot(s) hidden by data/visibility.md`);
 
@@ -72,11 +72,12 @@ if (flag('--robot')) {
 } else if (args.includes('--all')) {
   targets = downloadable.flatMap((r) => loads(r, true));
 } else {
-  // Default: the lightest shown robot per mesh format, so every loader path that
-  // the bundle has to copy is covered without downloading a gigabyte.
+  // Default: the lightest shown robot per description language and mesh format,
+  // so every loader path the bundle has to copy is covered without downloading
+  // a gigabyte.
   const byFormat = new Map();
   for (const robot of downloadable) {
-    const key = robot.assets.mesh_formats.join('+');
+    const key = `${robot.assets.urdf ? 'urdf' : 'mjcf'}:${robot.assets.mesh_formats.join('+')}`;
     const current = byFormat.get(key);
     if (!current || robot.assets.mesh_bytes < current.assets.mesh_bytes) {
       byFormat.set(key, robot);
@@ -263,21 +264,26 @@ console.log(`checking downloads for ${targets.length} robot(s) → ${workDir}`);
 
 for (const robot of targets) {
   const page = await browser.newPage({ acceptDownloads: true });
+  // An MJCF-only entry has two buttons rather than three: nothing in the ROS
+  // toolchain reads a MuJoCo XML, so a package built around one would only look
+  // as though it worked.
+  const descriptionPath = robot.assets.urdf || robot.assets.mjcf;
+  const isMjcf = !robot.assets.urdf;
   try {
     await page.goto(`${base}/web/${robot.url}`, { waitUntil: 'commit' });
     await page.waitForSelector('button[data-download="bundle"]', { timeout: 60000 });
 
-    // --- single URDF ---
+    // --- the description on its own ---
     const urdfDownload = await Promise.all([
       page.waitForEvent('download', { timeout: 180000 }),
       page.click('button[data-download="urdf"]'),
     ]).then(([download]) => download);
-    const urdfPath = join(workDir, `${robot.id}.urdf`);
+    const urdfPath = join(workDir, `${robot.id}.${isMjcf ? 'xml' : 'urdf'}`);
     await urdfDownload.saveAs(urdfPath);
 
-    const upstream = await fetchText(robot.assets.base + robot.assets.urdf);
+    const upstream = await fetchText(robot.assets.base + descriptionPath);
     const saved = readFileSync(urdfPath, 'utf8');
-    if (saved !== upstream) throw new Error('saved URDF differs from upstream');
+    if (saved !== upstream) throw new Error('saved description differs from upstream');
 
     // --- bundle ---
     const zipDownload = await Promise.all([
@@ -294,19 +300,48 @@ for (const robot of targets) {
       .split('\n')
       .filter(Boolean);
 
-    const expected = robot.assets.mesh_files + 2; // meshes + URDF + NOTICE.txt
-    if (listing.length !== expected) {
-      throw new Error(`zip holds ${listing.length} entries, expected ${expected}`);
+    if (isMjcf) {
+      // The XML files an MJCF is spread across are not counted in the registry —
+      // the model reaches them through `<include>` — so the floor is the assets
+      // plus the notice, plus the scene and the file the stage renders, which
+      // for a self-contained description are the same file.
+      const files = new Set([robot.assets.mjcf, robot.assets.mjcf_model]);
+      const floor = robot.assets.mesh_files + 1 + files.size;
+      if (listing.length < floor) {
+        throw new Error(`zip holds ${listing.length} entries, expected at least ${floor}`);
+      }
+      if (!listing.includes(robot.assets.mjcf_model)) {
+        throw new Error(`zip is missing the file the stage renders: ${robot.assets.mjcf_model}`);
+      }
+    } else {
+      const expected = robot.assets.mesh_files + 2; // meshes + URDF + NOTICE.txt
+      if (listing.length !== expected) {
+        throw new Error(`zip holds ${listing.length} entries, expected ${expected}`);
+      }
     }
-    if (!listing.includes(robot.assets.urdf)) {
-      throw new Error(`zip is missing ${robot.assets.urdf}`);
+    if (!listing.includes(descriptionPath)) {
+      throw new Error(`zip is missing ${descriptionPath}`);
     }
     if (!listing.includes('NOTICE.txt')) throw new Error('zip is missing NOTICE.txt');
 
     const extractDir = join(workDir, robot.id);
     execFileSync('unzip', ['-qq', zipPath, '-d', extractDir], { stdio: 'pipe' });
-    const extracted = readFileSync(join(extractDir, robot.assets.urdf), 'utf8');
-    if (extracted !== upstream) throw new Error('URDF inside the zip differs from upstream');
+    const extracted = readFileSync(join(extractDir, descriptionPath), 'utf8');
+    if (extracted !== upstream) {
+      throw new Error('description inside the zip differs from upstream');
+    }
+
+    if (isMjcf) {
+      if (await page.locator('button[data-download="ros2"]').count()) {
+        throw new Error('an MJCF-only entry offers a ROS 2 package');
+      }
+      const zipSize = statSync(zipPath).size;
+      console.log(
+        `  ✓ ${robot.id.padEnd(24)} mjcf ${(saved.length / 1024).toFixed(0)} KB · ` +
+          `zip ${(zipSize / 1e6).toFixed(1)} MB · ${listing.length} entries`,
+      );
+      continue;
+    }
 
     // --- ROS 2 package ---
     const ros2Download = await Promise.all([

@@ -18,11 +18,14 @@
     "check:downloads": "node scripts/check_downloads.mjs",
     "check:compare": "node scripts/check_compare.mjs",
     "check:custom-url": "node scripts/check_custom_url.mjs",
-    "check:custom": "node scripts/check_custom_github.mjs"
+    "check:custom": "node scripts/check_custom_github.mjs",
+    "check:custom-local": "node scripts/check_custom_local.mjs"
   },
   "devDependencies": {
+    "expr-eval-fork": "3.0.3",
     "playwright": "^1.49.0",
     "three": "0.180.0",
-    "urdf-loader": "0.12.6"
+    "urdf-loader": "0.12.6",
+    "xacro-parser": "0.3.11"
   }
 }

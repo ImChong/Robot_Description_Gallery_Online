@@ -9,5 +9,14 @@ urdf-loader (URDFLoader.js, URDFClasses.js)
   Apache License 2.0
   https://github.com/gkjohnson/urdf-loaders
 
-Both are unmodified copies of the published npm packages; see VERSIONS.json
+xacro-parser (index.js, XacroParser.js, XacroLoader.js, ExpressionParser.js,
+              utils.js)
+  MIT License — see xacro-parser/LICENSE
+  https://github.com/gkjohnson/xacro-parser
+
+expr-eval-fork (index.mjs)
+  MIT License — see expr-eval-fork/LICENSE.txt
+  https://github.com/silentmatt/expr-eval
+
+All are unmodified copies of the published npm packages; see VERSIONS.json
 for the exact versions and regenerate with `npm run vendor`.

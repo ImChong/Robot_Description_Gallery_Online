@@ -1235,29 +1235,66 @@ export async function loadMJCF(options) {
   return document.build(options.onProgress);
 }
 
+/** How many sliders one MJCF joint is worth on the panel: a hinge or a slide is
+ *  one, a ball joint is re-parameterised as three hinges, and a free base is
+ *  pinned and gets none. Kept in step with `readJoints`. */
+const JOINT_DOF = { hinge: 1, slide: 1, ball: 3, free: 0 };
+
 /**
- * Every file one MJCF document is made of, without building any geometry: the
- * XML files it includes and the assets it names, each as the candidate paths
- * MuJoCo would look at.
+ * What an MJCF document is made of, without building any geometry: the files it
+ * is spread across, the assets it names as the candidate paths MuJoCo would
+ * look at, and the counts a spec table wants.
  *
- * This is what a download needs and a render does not — a Menagerie model is
- * rarely one file, and a zip of the scene alone would be a zip of four lines of
- * XML pointing at a repository. js/download.js takes the candidates and keeps
- * whichever one the CDN answers.
+ * Two callers, one for each half. A download needs the file list — a Menagerie
+ * model is rarely one file, and a zip of the scene alone would be four lines of
+ * XML pointing at a repository — and js/custom.js needs the counts before it
+ * has a stage to read them off, so that the picker can say what it found.
  *
  * @param {object} options `text`, `path` and `readXml`, as `MJCFDocument` takes
- * @returns {Promise<{xml: string[], assets: string[][]}>}
  */
-export async function listMJCFFiles(options) {
+export async function inspectMJCF(options) {
   const document = new MJCFDocument({ ...options, resolve: (path) => path });
   await document.flatten();
   document.readCompiler();
   document.classes = readDefaults([...document.root.querySelectorAll('mujoco > default')]);
   document.readAssets();
+
+  const joints = {};
+  for (const body of document.root.querySelectorAll('worldbody body')) {
+    for (const node of body.children) {
+      if (node.tagName === 'freejoint') joints.free = (joints.free || 0) + 1;
+      else if (node.tagName === 'joint') {
+        const type = withDefaults(node, 'joint', document.classes, '').type || 'hinge';
+        joints[type] = (joints[type] || 0) + 1;
+      }
+    }
+  }
+  let mass = 0;
+  for (const node of document.root.querySelectorAll('inertial')) {
+    mass += num(node.getAttribute('mass'), 0);
+  }
+  const groupOf = (node) =>
+    num(withDefaults(node, 'geom', document.classes, '').group, 0);
+
   return {
+    name: document.modelName,
+    // MuJoCo counts the world as body 0, and so does this: it is the frame the
+    // description hangs off, exactly as a URDF's root link is.
+    links: document.root.querySelectorAll('worldbody body').length + 1,
+    joints,
+    moving_joints: Object.entries(joints).reduce(
+      (sum, [type, n]) => sum + n * (JOINT_DOF[type] ?? 1),
+      0,
+    ),
+    mass_kg: mass ? +mass.toFixed(3) : null,
+    has_collision: [...document.root.querySelectorAll('geom')].some(
+      (node) => groupOf(node) >= COLLISION_GROUP,
+    ),
+    has_inertia: document.root.querySelector('inertial') !== null,
     xml: [normalize(document.path), ...document.included],
     assets: [...document.meshes.values(), ...document.textures.values()].map(
       (asset) => asset.candidates,
     ),
+    warnings: document.warnings,
   };
 }

@@ -26,7 +26,7 @@
  */
 
 import { applyMeshRewrite, descriptionKind, descriptionPath } from './registry.js';
-import { listMJCFFiles } from './mjcf.js';
+import { inspectMJCF } from './mjcf.js';
 
 const textEncoder = new TextEncoder();
 
@@ -284,7 +284,7 @@ async function mjcfBundle(robot, sceneText, onProgress) {
     const response = await fetch(base + path);
     return response.ok ? await response.text() : null;
   };
-  const inventory = await listMJCFFiles({
+  const inventory = await inspectMJCF({
     text: sceneText,
     path: descriptionPath(robot),
     readXml: read,

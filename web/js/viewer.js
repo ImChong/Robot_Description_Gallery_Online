@@ -13,8 +13,20 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import URDFLoader from 'urdf-loader';
 import { applyMeshRewrite } from './registry.js';
 import { loadMJCF } from './mjcf.js';
+import { URDFRobot, URDFVisual } from '../vendor/urdf-loader/URDFClasses.js';
 
 const UP_Z = -Math.PI / 2; // URDF is Z-up, three.js is Y-up.
+
+/**
+ * The first bytes of the two USD containers, and of the one this cannot read.
+ *
+ * `PXR-USDC` is USD's binary crate format, which three.js ships a parser stub
+ * for that returns an empty scene; refusing it is the difference between an
+ * error a visitor can act on and a stage that renders nothing for no stated
+ * reason. `PK\x03\x04` is a zip, which is what a `.usdz` is.
+ */
+const USD_CRATE = [0x50, 0x58, 0x52, 0x2d, 0x55, 0x53, 0x44, 0x43];
+const ZIP = [0x50, 0x4b, 0x03, 0x04];
 
 /**
  * The scheme a locally picked model is loaded through.
@@ -671,7 +683,9 @@ export class RobotViewer {
     this.clear();
     const robot = entry.assets.urdf
       ? await this._loadUrdf(entry, onProgress)
-      : await this._loadMjcf(entry, onProgress);
+      : entry.assets.mjcf
+        ? await this._loadMjcf(entry, onProgress)
+        : await this._loadUsd(entry, onProgress);
     this._styleAll();
     this._applyOverlays();
     this.stats = { ...this.meshStats(), stripped: this._stripped || 0 };
@@ -750,6 +764,70 @@ export class RobotViewer {
     this.mjcf = result;
     this._stripped = 0;
     return result.robot;
+  }
+
+  /**
+   * A USD stage, read by three.js' own USDLoader.
+   *
+   * USD describes a scene, not a mechanism: it has geometry, transforms and
+   * materials, and articulation only where a file also carries UsdPhysics
+   * joints, which nothing in three.js reads. So this arrives as one link with
+   * everything under it — the stage can be turned, measured, screenshotted and
+   * compared, and the joint panel honestly has nothing to show.
+   *
+   * The other difference is which way is up. USD's default is +Y and this
+   * stage's is +Z (which is what a URDF and an MJCF both mean), so a file that
+   * does not say otherwise is turned a quarter of a turn on the way in;
+   * js/custom.js reads `upAxis` out of an ASCII stage and says so.
+   */
+  async _loadUsd(entry, onProgress) {
+    const local = entry.assets.local || null;
+    const path = entry.assets.usd;
+    const url = local ? local.urlOf(path) : entry.assets.base + path;
+    if (!url) throw new Error(`USD not found: ${path}`);
+    const manager = new THREE.LoadingManager();
+    // On demand: the registry holds no USD, so the gallery never pays for this.
+    const { USDLoader } = await import('three/addons/loaders/USDLoader.js');
+    onProgress?.(0, 1);
+    // The file is read here rather than by the loader, and handed to `parse`
+    // according to what it turns out to be: USDLoader's own `load` always
+    // fetches bytes and reads anything that is not a crate file as a zip, so a
+    // plain `.usda` handed to it comes back as a broken archive. A string is
+    // the one thing it parses as ASCII.
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`USD ${response.status} ${path}`);
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    const starts = (magic) => magic.every((byte, index) => bytes[index] === byte);
+    if (starts(USD_CRATE)) throw new Error(`USD crate files are not supported: ${path}`);
+    const stage = new USDLoader(manager).parse(
+      starts(ZIP) ? bytes.buffer : new TextDecoder().decode(bytes),
+    );
+    onProgress?.(1, 1);
+
+    const robot = new URDFRobot();
+    robot.robotName = entry.name || 'usd';
+    robot.name = robot.robotName;
+    robot.urdfName = 'stage';
+    robot.links = { stage: robot };
+    robot.joints = {};
+    robot.colliders = {};
+    robot.visual = {};
+    const visual = new URDFVisual();
+    visual.urdfName = 'stage';
+    visual.name = 'stage';
+    if (entry.assets.usd_up !== 'Z') visual.rotation.x = Math.PI / 2;
+    visual.add(stage);
+    robot.add(visual);
+    robot.visual.stage = visual;
+    robot.frames = { ...robot.visual, ...robot.links };
+
+    this._mount(entry, robot);
+    this._jointMeta = new Map();
+    this._inertials = new Map();
+    this.homePose = null;
+    this._stripped = stripNonGeometry(stage);
+    this.loadedMeshes = { done: 1, total: 1 };
+    return robot;
   }
 
   async _loadUrdf(entry, onProgress) {
