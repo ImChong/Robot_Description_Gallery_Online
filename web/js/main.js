@@ -204,10 +204,6 @@ async function main() {
       location.hash = '';
       return;
     }
-    if (robot.external_url) {
-      location.href = robot.external_url;
-      return;
-    }
     if (!views.gallery.hidden) galleryScroll = window.scrollY;
     views.gallery.hidden = true;
     views.detail.hidden = false;
@@ -228,9 +224,7 @@ async function main() {
   }
 
   function setupNeighbours(robot) {
-    // MJCF-only cards open MuJoCo Live instead of this detail stage, so the
-    // stage's previous/next buttons walk only entries it can actually show.
-    const list = gallery.visible().filter((entry) => !entry.external_url);
+    const list = gallery.visible();
     const index = list.findIndex((r) => r.id === robot.id);
     const pool = index === -1 ? data.robots : list;
     const at = index === -1 ? pool.findIndex((r) => r.id === robot.id) : index;

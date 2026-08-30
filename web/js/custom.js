@@ -1,6 +1,24 @@
 /**
- * "Preview my own URDF" — the picker on the gallery, and the file set it turns
- * into something js/viewer.js can load.
+ * "Preview my own description" — the picker on the gallery, and the file set it
+ * turns into something js/viewer.js can load.
+ *
+ * Four languages arrive here, and what is done with each of them:
+ *
+ * - **URDF**, which is what most of the gallery is, loaded as it stands.
+ * - **Xacro**, expanded to a URDF in the browser by xacro-parser and then
+ *   treated as one. `xacro:include` and `$(find pkg)` are answered out of the
+ *   files the visitor handed over, so a description spread across a folder
+ *   works without running the ROS toolchain first.
+ * - **MJCF**, read by js/mjcf.js, the same code the gallery's own MuJoCo
+ *   entries go through. `<include>` and mesh paths resolve against the picked
+ *   files the same way.
+ * - **USD**, read by three.js' USDLoader. A stage rather than a mechanism: the
+ *   geometry is shown and the joint panel has nothing to say. ASCII stages
+ *   (`.usda`, `.usd`) and the `.usdz` archives that wrap them are supported;
+ *   USD's binary crate format is not, and is reported rather than drawn empty.
+ *
+ * Which language a file is in is decided by its root element rather than by its
+ * name, because `scene.xml` and `robot.xml` are told apart by nothing else.
  *
  * Local files never leave the browser: the File API and `blob:` URLs are the
  * whole path to three.js. The alternative input is a public GitHub URL; that
@@ -10,6 +28,7 @@
 import { LOCAL_URL_PREFIX } from './viewer.js';
 import { t } from './i18n.js';
 import { formatBytes } from './registry.js';
+import { inspectMJCF } from './mjcf.js';
 
 /**
  * The id the local model answers to — never a registry id, so it cannot clash.
@@ -73,9 +92,9 @@ export class LocalFileSet {
   /**
    * @param {{path: string, file: File}[]} entries picked files, with the path
    *   each had in the tree they came from
-   * @param {string} urdfPath which of them is the description
+   * @param {string} descriptionPath which of them is the description
    */
-  constructor(entries, urdfPath) {
+  constructor(entries, descriptionPath) {
     this.records = [];
     this.byPath = new Map();
     this.byBase = new Map();
@@ -90,10 +109,11 @@ export class LocalFileSet {
       if (!this.byBase.has(base)) this.byBase.set(base, []);
       this.byBase.get(base).push(record);
     }
-    this.urdf = this.byPath.get(normalise(urdfPath).toLowerCase());
-    if (!this.urdf) throw new PickError('custom.noUrdf');
-    /** Relative mesh paths hang off the URDF's own folder, with a trailing '/'. */
-    this.dir = this.urdf.path.replace(/[^/]*$/, '');
+    this.description = this.byPath.get(normalise(descriptionPath).toLowerCase());
+    if (!this.description) throw new PickError('custom.noUrdf');
+    /** Relative mesh paths hang off the description's own folder, with a
+     *  trailing '/'. */
+    this.dir = this.description.path.replace(/[^/]*$/, '');
     this._urls = [];
   }
 
@@ -166,12 +186,84 @@ export class LocalFileSet {
     return this.lookup(this.pathOf(filename));
   }
 
+  /**
+   * A blob URL for the picked file a path names, or null when nobody has it.
+   *
+   * The two entry points an MJCF and a USD need, in place of the
+   * `urdfgallery-local://` scheme the URDF path goes through: js/mjcf.js
+   * resolves its own `<include>` chain and asset paths, so it can ask for a URL
+   * and for text directly rather than through a loading manager's rewrite.
+   */
+  urlOf(path) {
+    const record = this.lookup(this.pathOf(path));
+    return record ? this.urlFor(record) : null;
+  }
+
+  /** @returns {Promise<?string>} the text of the picked file a path names */
+  async readText(path) {
+    const record = this.lookup(this.pathOf(path));
+    return record ? await record.file.text() : null;
+  }
+
+  /**
+   * A blob for text this session produced rather than read — the URDF an
+   * expanded xacro becomes — released with everything else.
+   */
+  blobFor(text, type = 'application/xml') {
+    const url = URL.createObjectURL(new Blob([text], { type }));
+    this._urls.push(url);
+    return url;
+  }
+
   /** Hand the blobs back. Called when another model replaces this one. */
   release() {
     for (const url of this._urls) URL.revokeObjectURL(url);
     this._urls.length = 0;
     for (const record of this.records) record.url = null;
   }
+}
+
+// ------------------------------------------------------ description languages
+
+/**
+ * The extensions each language usually arrives under.
+ *
+ * Order matters: `robot.urdf.xml` is a URDF and `scene.xml` is not, so the URDF
+ * pattern is tried before the bare `.xml` MuJoCo writes.
+ */
+const LANGUAGES = [
+  [/\.(usdz|usdc|usda|usd)$/i, 'usd'],
+  [/\.xacro$/i, 'xacro'],
+  [/\.urdf(\.xml)?$/i, 'urdf'],
+  [/\.(mjcf|xml)$/i, 'mjcf'],
+];
+
+/** Human-readable order for the picker: what a description is most likely to
+ *  be, so a dropped repository's hundred stray `.xml` files sort last. */
+const LANGUAGE_RANK = { urdf: 0, xacro: 1, usd: 2, mjcf: 3 };
+
+/** The language a file's name suggests, before anything has been read. */
+function namedLanguage(path) {
+  return LANGUAGES.find(([pattern]) => pattern.test(path))?.[1] ?? 'urdf';
+}
+
+/**
+ * Which language a picked file is actually written in.
+ *
+ * The name is only the first guess. A MuJoCo scene called `.xml` and a URDF
+ * called `.xml` are told apart by their root element and by nothing else, and a
+ * template is a template whatever it is called — several repositories ship an
+ * `arm.urdf` with `${arm_length}` still in it, which is a xacro to expand
+ * rather than a URDF to fail on.
+ */
+function describes(path, text) {
+  const named = namedLanguage(path);
+  // USD is binary as often as not, so its name is all there is to go on.
+  if (named === 'usd') return 'usd';
+  if (/<xacro:/i.test(text) || /\$\{/.test(text)) return 'xacro';
+  if (/<mujoco[\s>]/i.test(text)) return 'mjcf';
+  if (/<robot[\s>]/i.test(text)) return 'urdf';
+  return named;
 }
 
 // --------------------------------------------------------------- URDF parsing
@@ -191,12 +283,6 @@ const numberAttr = (node, name) => {
  * is ever opened.
  */
 function readUrdf(text) {
-  // An expanded URDF usually still declares the xacro namespace on <robot>, so
-  // that is no evidence either way; a xacro element or a substitution left in
-  // the file is. Checked before parsing, since a template whose namespace was
-  // never declared does not parse as XML at all and would otherwise be reported
-  // as malformed rather than as what it is.
-  if (/<xacro:/i.test(text) || /\$\{/.test(text)) throw new PickError('custom.xacro');
   const doc = new DOMParser().parseFromString(text, 'application/xml');
   if (doc.querySelector('parsererror')) throw new PickError('custom.badXml');
   const robot = doc.documentElement;
@@ -242,11 +328,76 @@ function readUrdf(text) {
 }
 
 /**
+ * Turn a xacro template into the URDF it stands for, in the browser.
+ *
+ * The parser is given the files the visitor handed over as its filesystem, so
+ * `xacro:include` resolves against the picked folder — and `$(find pkg)` is
+ * answered with `package://pkg`, which `LocalFileSet.pathOf` already knows how
+ * to look up. Arguments come from the template's own `<xacro:arg default>`
+ * declarations, which is what `xacro` itself would use with no command line.
+ *
+ * ROS Jade's semantics throughout (`inOrder`, `requirePrefix`,
+ * `localProperties`), which is what every xacro written this decade expects.
+ */
+async function expandXacro(fileSet, text) {
+  const { XacroParser } = await import('xacro-parser');
+  const parser = new XacroParser();
+  parser.inOrder = true;
+  parser.requirePrefix = true;
+  parser.localProperties = true;
+  parser.workingPath = fileSet.dir;
+  parser.arguments = xacroArguments(text);
+  parser.rospackCommands = { find: (pkg) => `package://${pkg}` };
+  parser.getFileContents = async (path) => {
+    const found = await fileSet.readText(path);
+    if (found === null) throw new PickError('custom.xacroInclude', { file: basename(path) });
+    return found;
+  };
+  let doc;
+  try {
+    doc = await parser.parse(text);
+  } catch (err) {
+    if (err instanceof PickError) throw err;
+    throw new PickError('custom.xacroFailed', { message: err.message || String(err) });
+  }
+  // Gazebo plugins and ROS control transmissions describe a simulation rather
+  // than a robot, and urdf-loader reads neither; a template that leaves a
+  // `<visual>` with an empty `<geometry>` behind — the usual shape of an
+  // unresolved conditional — would take the whole load down.
+  for (const node of doc.querySelectorAll('gazebo, transmission')) node.remove();
+  for (const geometry of doc.querySelectorAll('geometry')) {
+    if (geometry.children.length) continue;
+    const holder = geometry.parentNode;
+    if (holder?.nodeName === 'visual' || holder?.nodeName === 'collision') holder.remove();
+  }
+  return new XMLSerializer().serializeToString(doc).replace(/\sxmlns=""/g, '');
+}
+
+/**
+ * The arguments a template declares for itself, at the defaults it declares.
+ * A `<xacro:arg>` with no default has no value `xacro` could invent either, so
+ * it is given the empty string rather than left to throw halfway through.
+ */
+function xacroArguments(text) {
+  const args = {};
+  for (const [, name, value] of text.matchAll(
+    /<(?:xacro:)?arg\s+name=["']([^"']+)["'](?:\s+default=["']([^"']*)["'])?/g,
+  )) {
+    args[name] = value ?? '';
+  }
+  return args;
+}
+
+/**
  * A registry entry for a model that is not in the registry: the same shape
  * data/robots.json carries, so the detail view and the viewer need to know
  * nothing about where it came from beyond the `local` flag.
+ *
+ * @param {LocalFileSet} fileSet
+ * @param {string} text the URDF, which for a xacro is the expansion of one
+ * @param {?string} expandedFrom the template it came out of, where it did
  */
-function buildEntry(fileSet, text) {
+function buildEntry(fileSet, text, expandedFrom = null) {
   const parsed = readUrdf(text);
   const found = [];
   const missing = [];
@@ -262,25 +413,13 @@ function buildEntry(fileSet, text) {
     }
   }
   const bytes = found.reduce((sum, record) => sum + record.file.size, 0);
-  const fileName = basename(fileSet.urdf.path);
+  const fileName = basename(fileSet.description.path);
 
   return {
-    id: CUSTOM_ID,
-    local: true,
-    name: parsed.name || fileName.replace(/\.[^.]+$/, ''),
-    maker: '',
-    category: 'custom',
-    tags: [],
+    ...localShell(fileSet, parsed.name || fileName.replace(/\.[^.]+$/, ''), 'urdf'),
     dof: parsed.moving_joints,
-    license: '',
-    formats: ['urdf'],
-    notes: null,
-    notes_zh: null,
-    pose: null,
-    // A visitor's own model is shown in the frame its URDF was written in:
-    // nothing here knows which way its palm looks.
-    preview_frame: null,
-    measured: null,
+    kind: expandedFrom ? 'xacro' : 'urdf',
+    expandedFrom,
     urdf: {
       xml_name: parsed.name,
       links: parsed.links,
@@ -289,11 +428,15 @@ function buildEntry(fileSet, text) {
       mass_kg: parsed.mass_kg,
       has_collision: parsed.has_collision,
       has_inertia: parsed.has_inertia,
-      bytes: fileSet.urdf.file.size,
+      bytes: fileSet.description.file.size,
     },
     assets: {
       base: '',
-      urdf: fileSet.urlFor(fileSet.urdf),
+      // The picked file itself, unless a xacro was expanded — then the URDF
+      // exists only in this tab, as a blob of the text the parser produced.
+      urdf: expandedFrom
+        ? fileSet.blobFor(text)
+        : fileSet.urlFor(fileSet.description),
       packages: {},
       local: fileSet,
       mesh_files: found.length,
@@ -302,15 +445,178 @@ function buildEntry(fileSet, text) {
       referenced: parsed.meshes.length,
       missing,
     },
+  };
+}
+
+/**
+ * The half of a local entry that does not depend on which language the
+ * description is written in.
+ */
+function localShell(fileSet, name, format) {
+  const fileName = basename(fileSet.description.path);
+  return {
+    id: CUSTOM_ID,
+    local: true,
+    name,
+    maker: '',
+    category: 'custom',
+    tags: [],
+    dof: 0,
+    license: '',
+    formats: [format],
+    notes: null,
+    notes_zh: null,
+    pose: null,
+    // A visitor's own model is shown in the frame its description was written
+    // in: nothing here knows which way its palm looks.
+    preview_frame: null,
+    measured: null,
     source: {
       local: true,
-      file: fileSet.urdf.path,
+      file: fileSet.description.path,
       fileName,
       picked: fileSet.records.length,
       picked_bytes: fileSet.records.reduce((sum, record) => sum + record.file.size, 0),
     },
     links: {},
   };
+}
+
+/**
+ * A local MJCF, read by the same code the gallery's own MuJoCo entries go
+ * through — so `<include>`, `<default>` classes, geom groups and `<key
+ * name="home">` all mean here what they mean there.
+ *
+ * The assets are counted by asking the file set for each of the paths MuJoCo
+ * would look at, which is the same question the viewer will ask when it loads.
+ */
+async function buildMjcfEntry(fileSet, text) {
+  let facts;
+  try {
+    facts = await inspectMJCF({
+      text,
+      path: fileSet.description.path,
+      readXml: (path) => fileSet.readText(path),
+    });
+  } catch (err) {
+    throw new PickError('custom.mjcfFailed', { message: err.message || String(err) });
+  }
+  const found = [];
+  const missing = [];
+  const formats = new Set();
+  for (const candidates of facts.assets) {
+    const record = candidates.map((path) => fileSet.lookup(path)).find(Boolean);
+    if (record) {
+      found.push(record);
+      const dot = record.path.lastIndexOf('.');
+      if (dot !== -1) formats.add(record.path.slice(dot).toLowerCase());
+    } else {
+      missing.push(candidates[0]);
+    }
+  }
+  const fileName = basename(fileSet.description.path);
+  return {
+    ...localShell(fileSet, facts.name || fileName.replace(/\.[^.]+$/, ''), 'mjcf'),
+    dof: facts.moving_joints,
+    kind: 'mjcf',
+    mjcf: {
+      xml_name: facts.name,
+      links: facts.links,
+      joints: facts.joints,
+      moving_joints: facts.moving_joints,
+      mass_kg: facts.mass_kg,
+      has_collision: facts.has_collision,
+      has_inertia: facts.has_inertia,
+      bytes: fileSet.description.file.size,
+    },
+    assets: {
+      base: '',
+      // Repository-relative rather than a blob URL: js/mjcf.js resolves its own
+      // includes and asset paths and asks the file set for each of them.
+      mjcf: fileSet.description.path,
+      mjcf_model: fileSet.description.path,
+      packages: {},
+      local: fileSet,
+      mesh_files: found.length,
+      mesh_bytes: found.reduce((sum, record) => sum + record.file.size, 0),
+      mesh_formats: [...formats],
+      referenced: facts.assets.length,
+      missing,
+    },
+    warnings: facts.warnings,
+  };
+}
+
+/**
+ * A local USD stage.
+ *
+ * Nothing is parsed here: USD is binary as often as text, and three.js' loader
+ * is the thing that reads it — at load, in the viewer. Two facts do come off
+ * the file first, because both change what the visitor is shown rather than
+ * only how it looks: which axis the stage calls up, and whether this is the
+ * binary crate format, which three.js does not read and would otherwise draw
+ * as an empty stage.
+ */
+async function buildUsdEntry(fileSet) {
+  const record = fileSet.description;
+  const head = new Uint8Array(await record.file.slice(0, 8).arrayBuffer());
+  const crate = CRATE_MAGIC.every((byte, index) => head[index] === byte);
+  if (crate) throw new PickError('custom.usdCrate');
+  // Only worth reading out of a stage that is text; a `.usdz` is a zip and its
+  // stage says its own up axis inside, where the default (+Y) is the safe bet.
+  const text = /\.usd[ac]?$/i.test(record.path) ? await record.file.text() : '';
+  const up = /upAxis\s*=\s*"([XYZ])"/.exec(text)?.[1] || 'Y';
+  const fileName = basename(record.path);
+  return {
+    ...localShell(fileSet, fileName.replace(/\.[^.]+$/, ''), 'usd'),
+    kind: 'usd',
+    usd: {
+      xml_name: null,
+      // One link, holding the stage: see `RobotViewer._loadUsd`.
+      links: 1,
+      joints: {},
+      moving_joints: 0,
+      mass_kg: null,
+      has_collision: false,
+      has_inertia: false,
+      bytes: record.file.size,
+      up,
+    },
+    assets: {
+      base: '',
+      usd: record.path,
+      usd_up: up,
+      packages: {},
+      local: fileSet,
+      mesh_files: 0,
+      mesh_bytes: 0,
+      mesh_formats: [],
+      referenced: 0,
+      missing: [],
+    },
+  };
+}
+
+/** `PXR-USDC`, the first eight bytes of USD's binary crate format. */
+const CRATE_MAGIC = [0x50, 0x58, 0x52, 0x2d, 0x55, 0x53, 0x44, 0x43];
+
+/**
+ * One picked description, in whichever language it turns out to be written in.
+ * @param {LocalFileSet} fileSet
+ * @returns {Promise<object>} a registry-shaped entry
+ */
+async function buildLocalEntry(fileSet) {
+  const path = fileSet.description.path;
+  if (namedLanguage(path) === 'usd') return buildUsdEntry(fileSet);
+  const text = await fileSet.description.file.text();
+  switch (describes(path, text)) {
+    case 'xacro':
+      return buildEntry(fileSet, await expandXacro(fileSet, text), path);
+    case 'mjcf':
+      return buildMjcfEntry(fileSet, text);
+    default:
+      return buildEntry(fileSet, text);
+  }
 }
 
 // ------------------------------------------------------------- GitHub links
@@ -498,12 +804,21 @@ async function filesFromDrop(dataTransfer) {
 const fromInput = (input) =>
   [...input.files].map((file) => ({ path: file.webkitRelativePath || file.name, file }));
 
-/** Anything that could be a description, in the order a picker should offer it. */
-function urdfCandidates(entries) {
+/**
+ * Anything that could be a description, in the order a picker should offer it:
+ * shallowest first, and — at the same depth — a `.urdf` before the bare `.xml`
+ * that both MuJoCo and half a repository's configuration files are called.
+ */
+function descriptionCandidates(entries) {
   return entries
-    .filter(({ path }) => /\.(urdf|xacro)$/i.test(path) || /\.urdf\.xml$/i.test(path))
+    .filter(({ path }) => LANGUAGES.some(([pattern]) => pattern.test(path)))
     .map(({ path }) => path)
-    .sort((a, b) => a.split('/').length - b.split('/').length || a.localeCompare(b));
+    .sort(
+      (a, b) =>
+        a.split('/').length - b.split('/').length ||
+        LANGUAGE_RANK[namedLanguage(a)] - LANGUAGE_RANK[namedLanguage(b)] ||
+        a.localeCompare(b),
+    );
 }
 
 // ---------------------------------------------------------------------- view
@@ -561,7 +876,7 @@ export function setupCustomPicker({ onPreview }) {
     }
     let entry;
     try {
-      entry = buildEntry(fileSet, await fileSet.urdf.file.text());
+      entry = await buildLocalEntry(fileSet);
     } catch (err) {
       fileSet.release();
       return fail(err instanceof PickError ? err.text() : `${t('custom.badXml')} ${err.message || ''}`);
@@ -571,16 +886,24 @@ export function setupCustomPicker({ onPreview }) {
 
     const totalBytes = picked.reduce((sum, { file }) => sum + file.size, 0);
     const lines = [
-      `<p class="custom-good"><strong>${esc(entry.name)}</strong> · ${esc(basename(path))}</p>`,
+      `<p class="custom-good"><strong>${esc(entry.name)}</strong> · ${esc(basename(path))}` +
+        `<span class="custom-kind">${esc(t(`custom.kind.${entry.kind}`))}</span></p>`,
       `<p>${fill(t('custom.picked'), { files: picked.length, size: formatBytes(totalBytes) })}</p>`,
-      // Nothing to say about meshes for a description built out of primitives.
+      // Nothing to say about meshes for a description built out of primitives —
+      // or for a USD, whose geometry is inside the stage rather than beside it.
       entry.assets.referenced
         ? `<p>${fill(t('custom.meshes'), {
             found: entry.assets.mesh_files,
             total: entry.assets.referenced,
           })}</p>`
         : '',
+      // A USD is a scene, and the panel that would list its joints will be
+      // empty; better said before the stage opens than puzzled over after.
+      entry.kind === 'usd' ? `<p class="custom-warn">${esc(t('custom.usdNoJoints'))}</p>` : '',
     ].filter(Boolean);
+    for (const warning of entry.warnings || []) {
+      lines.push(`<p class="custom-warn">${esc(warning)}</p>`);
+    }
     if (entry.assets.missing.length) {
       const n = entry.assets.missing.length;
       lines.push(
@@ -630,7 +953,7 @@ export function setupCustomPicker({ onPreview }) {
       return fail(fill(t('custom.tooMany'), { n: MAX_FILES }));
     }
     picked = entries;
-    const candidates = urdfCandidates(entries);
+    const candidates = descriptionCandidates(entries);
     if (!candidates.length) {
       // Nothing here to choose between, so the chooser must not go on offering
       // the last pick's files.

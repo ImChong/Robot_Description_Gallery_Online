@@ -14,7 +14,9 @@
     "three": "./vendor/three/three.module.min.js",
     "three/addons/": "./vendor/three/jsm/",
     "three/examples/jsm/": "./vendor/three/jsm/",
-    "urdf-loader": "./vendor/urdf-loader/URDFLoader.js"
+    "urdf-loader": "./vendor/urdf-loader/URDFLoader.js",
+    "xacro-parser": "./vendor/xacro-parser/index.js",
+    "expr-eval-fork": "./vendor/expr-eval-fork/index.mjs"
   }
 }
 </script>
@@ -125,6 +127,12 @@
       <p id="d-local-badge" class="local-badge" hidden><span aria-hidden="true">🔒</span> <span data-i18n="custom.localOnly"></span></p>
     </div>
     <div class="detail-nav">
+      <!-- Where the pinned MuJoCo Menagerie scene this model also ships can be
+           opened in MuJoCo's own browser viewer: the physics, the actuators and
+           the room around the robot, none of which this stage shows. A link
+           rather than a button, so it can be copied and opened in a new tab. -->
+      <a id="mujoco-live" class="ghost-btn live-btn" target="_blank" rel="noopener noreferrer" hidden
+         data-i18n="res.mjcfLiveShort" data-i18n-title="res.mjcfLiveTitle">MuJoCo Live</a>
       <!-- Adds this robot — at the version on the stage — to a comparison of
            its own category, and opens it. -->
       <button id="add-compare" class="ghost-btn"

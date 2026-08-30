@@ -163,6 +163,36 @@ export function urdfUrl(robot) {
 }
 
 /**
+ * The description this entry is built on, whichever language it is written in.
+ *
+ * Most of the gallery is about URDF, but a MuJoCo Menagerie model that nobody
+ * ever published a URDF of is described by its MJCF and nothing else, and a
+ * file picked off a visitor's own disk can be a USD. The blocks carry the same
+ * fields — links, joints, moving joints, mass, size on disk — so a panel that
+ * only wants to say how big the description is asks this rather than asking
+ * which language it is in.
+ */
+export function descriptionOf(robot) {
+  return robot.urdf || robot.mjcf || robot.usd || null;
+}
+
+/** The file the description itself lives in, on the CDN or on the mirror. */
+export function descriptionUrl(robot) {
+  return robot.assets.base + descriptionPath(robot);
+}
+
+/** Its repository-relative path. */
+export function descriptionPath(robot) {
+  return robot.assets.urdf || robot.assets.mjcf || robot.assets.usd || '';
+}
+
+/** `urdf`, `mjcf` or `usd` — which of the three this entry is rendered from. */
+export function descriptionKind(robot) {
+  if (robot.assets.urdf) return 'urdf';
+  return robot.assets.mjcf ? 'mjcf' : 'usd';
+}
+
+/**
  * Apply an entry's `assets.mesh_rewrite` substitutions to a resolved mesh path.
  *
  * Only mirrored entries have any. An archive that re-hosts someone else's URDF

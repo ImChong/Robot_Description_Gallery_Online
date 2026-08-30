@@ -12,8 +12,21 @@ import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import URDFLoader from 'urdf-loader';
 import { applyMeshRewrite } from './registry.js';
+import { loadMJCF } from './mjcf.js';
+import { URDFRobot, URDFVisual } from '../vendor/urdf-loader/URDFClasses.js';
 
 const UP_Z = -Math.PI / 2; // URDF is Z-up, three.js is Y-up.
+
+/**
+ * The first bytes of the two USD containers, and of the one this cannot read.
+ *
+ * `PXR-USDC` is USD's binary crate format, which three.js ships a parser stub
+ * for that returns an empty scene; refusing it is the difference between an
+ * error a visitor can act on and a stage that renders nothing for no stated
+ * reason. `PK\x03\x04` is a zip, which is what a `.usdz` is.
+ */
+const USD_CRATE = [0x50, 0x58, 0x52, 0x2d, 0x55, 0x53, 0x44, 0x43];
+const ZIP = [0x50, 0x4b, 0x03, 0x04];
 
 /**
  * The scheme a locally picked model is loaded through.
@@ -656,11 +669,168 @@ export class RobotViewer {
 
   /**
    * Load a robot described by a registry entry.
+   *
+   * Two kinds of description arrive here and only one stage receives them. A
+   * URDF goes through urdf-loader; an MJCF goes through js/mjcf.js, which reads
+   * MuJoCo's XML into the same object graph out of the same classes — so the
+   * joint tree, the overlays, the loop solver, the link picker and the
+   * thumbnail crop are one implementation rather than two.
+   *
    * @param {object} entry registry entry (see data/robots.json)
    * @param {(loaded: number, total: number) => void} [onProgress]
    */
   async load(entry, onProgress) {
     this.clear();
+    const robot = entry.assets.urdf
+      ? await this._loadUrdf(entry, onProgress)
+      : entry.assets.mjcf
+        ? await this._loadMjcf(entry, onProgress)
+        : await this._loadUsd(entry, onProgress);
+    this._styleAll();
+    this._applyOverlays();
+    this.stats = { ...this.meshStats(), stripped: this._stripped || 0 };
+    this.frameCamera();
+    return robot;
+  }
+
+  /**
+   * Put a parsed robot on the stage, in the frame the entry asks to see it in.
+   *
+   * On the way in rather than at portrait time, because everything after this
+   * measures the robot where it leaves it: the camera fit at the end of the
+   * load, the bounding box the card image is cropped to, and the height the
+   * detail page quotes. Joint moves never touch the root, so the card and the
+   * detail page agree on which way the hand faces.
+   */
+  _mount(entry, robot) {
+    this.robot = robot;
+    this.world.add(robot);
+    const upright = previewRotation(entry.preview_frame);
+    if (upright) robot.quaternion.copy(upright);
+    this.entry = entry;
+  }
+
+  /**
+   * An MJCF entry, read by js/mjcf.js.
+   *
+   * A Menagerie scene file is a robot plus a room — a ground plane, a light,
+   * sometimes a table — so the registry records which of the files it includes
+   * is the robot itself, and that is what the stage shows. The gallery brings
+   * its own studio; the room would only be measured as part of the model.
+   */
+  async _loadMjcf(entry, onProgress) {
+    const base = entry.assets.base;
+    // A model the visitor picked off their own disk answers paths out of the
+    // files they handed over rather than out of a CDN. See js/custom.js.
+    const local = entry.assets.local || null;
+    const path = entry.assets.mjcf_model || entry.assets.mjcf;
+    const manager = new THREE.LoadingManager();
+    // A mesh no picked file answers to gets a URL that cannot resolve, which
+    // three.js' loaders report as a failed load — the same hole in the robot a
+    // missing mesh leaves on the URDF path, rather than a request to nowhere.
+    const resolve = local
+      ? (rel) => local.urlOf(rel) || `${LOCAL_URL_PREFIX}missing/${rel}`
+      : (rel) => base + rel;
+    const readXml = local
+      ? (rel) => local.readText(rel)
+      : async (rel) => {
+          const response = await fetch(base + rel);
+          return response.ok ? await response.text() : null;
+        };
+    const text = await readXml(path);
+    if (text === null || text === undefined) throw new Error(`MJCF not found: ${path}`);
+
+    const result = await loadMJCF({
+      text,
+      path,
+      resolve,
+      readXml,
+      manager,
+      onProgress,
+      skip: entry.assets.skip_meshes,
+    });
+    this._mount(entry, result.robot);
+    // Both of these come out of the parse rather than a second read of the
+    // file: MJCF states a joint's travel and a body's inertia in the same
+    // document the geometry is in, so there is nothing left to fetch.
+    this._jointMeta = result.jointMeta;
+    this._inertials = result.inertials;
+    this._freeUndeclaredJoints();
+    this._prepareLoops(entry.loops);
+    this.closeLoops();
+    // The stance the description nominates for itself — `<key name="home">` —
+    // which for a quadruped is the difference between a dog and a table.
+    this.homePose = result.home;
+    this.mjcf = result;
+    this._stripped = 0;
+    return result.robot;
+  }
+
+  /**
+   * A USD stage, read by three.js' own USDLoader.
+   *
+   * USD describes a scene, not a mechanism: it has geometry, transforms and
+   * materials, and articulation only where a file also carries UsdPhysics
+   * joints, which nothing in three.js reads. So this arrives as one link with
+   * everything under it — the stage can be turned, measured, screenshotted and
+   * compared, and the joint panel honestly has nothing to show.
+   *
+   * The other difference is which way is up. USD's default is +Y and this
+   * stage's is +Z (which is what a URDF and an MJCF both mean), so a file that
+   * does not say otherwise is turned a quarter of a turn on the way in;
+   * js/custom.js reads `upAxis` out of an ASCII stage and says so.
+   */
+  async _loadUsd(entry, onProgress) {
+    const local = entry.assets.local || null;
+    const path = entry.assets.usd;
+    const url = local ? local.urlOf(path) : entry.assets.base + path;
+    if (!url) throw new Error(`USD not found: ${path}`);
+    const manager = new THREE.LoadingManager();
+    // On demand: the registry holds no USD, so the gallery never pays for this.
+    const { USDLoader } = await import('three/addons/loaders/USDLoader.js');
+    onProgress?.(0, 1);
+    // The file is read here rather than by the loader, and handed to `parse`
+    // according to what it turns out to be: USDLoader's own `load` always
+    // fetches bytes and reads anything that is not a crate file as a zip, so a
+    // plain `.usda` handed to it comes back as a broken archive. A string is
+    // the one thing it parses as ASCII.
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`USD ${response.status} ${path}`);
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    const starts = (magic) => magic.every((byte, index) => bytes[index] === byte);
+    if (starts(USD_CRATE)) throw new Error(`USD crate files are not supported: ${path}`);
+    const stage = new USDLoader(manager).parse(
+      starts(ZIP) ? bytes.buffer : new TextDecoder().decode(bytes),
+    );
+    onProgress?.(1, 1);
+
+    const robot = new URDFRobot();
+    robot.robotName = entry.name || 'usd';
+    robot.name = robot.robotName;
+    robot.urdfName = 'stage';
+    robot.links = { stage: robot };
+    robot.joints = {};
+    robot.colliders = {};
+    robot.visual = {};
+    const visual = new URDFVisual();
+    visual.urdfName = 'stage';
+    visual.name = 'stage';
+    if (entry.assets.usd_up !== 'Z') visual.rotation.x = Math.PI / 2;
+    visual.add(stage);
+    robot.add(visual);
+    robot.visual.stage = visual;
+    robot.frames = { ...robot.visual, ...robot.links };
+
+    this._mount(entry, robot);
+    this._jointMeta = new Map();
+    this._inertials = new Map();
+    this.homePose = null;
+    this._stripped = stripNonGeometry(stage);
+    this.loadedMeshes = { done: 1, total: 1 };
+    return robot;
+  }
+
+  async _loadUrdf(entry, onProgress) {
     const base = entry.assets.base;
     // A model the visitor picked off their own disk carries a file set instead
     // of a base URL: it resolves the paths the URDF writes against the files
@@ -801,16 +971,7 @@ export class RobotViewer {
       dropJointsWithoutChildLink(dropAxesWithoutXyz(urdfColorsToLinear(text))),
     );
     parsed = true;
-    this.robot = robot;
-    this.world.add(robot);
-    // On the way in rather than at portrait time, because everything after this
-    // measures the robot where it leaves it: the camera fit at the end of this
-    // method, the bounding box the card image is cropped to, and the height the
-    // detail page quotes. Joint moves never touch the root, so the card and the
-    // detail page agree on which way the hand faces.
-    const upright = previewRotation(entry.preview_frame);
-    if (upright) robot.quaternion.copy(upright);
-    this.entry = entry;
+    this._mount(entry, robot);
     // Two things urdf-loader cannot tell on its own, both read off the XML it
     // has just been handed: which joints were given no travel to work with, and
     // which of them a closed loop drives rather than a slider.
@@ -818,6 +979,8 @@ export class RobotViewer {
     this._freeUndeclaredJoints();
     this._prepareLoops(entry.loops);
     this.closeLoops();
+    // A URDF states no pose of its own; whatever the entry curates is it.
+    this.homePose = entry.pose || null;
     // Primitive geometry (<box>, <cylinder>, <sphere>) exists immediately;
     // mesh files arrive over the network, so styling runs again after they land.
     this._styleAll();
@@ -828,10 +991,7 @@ export class RobotViewer {
     // that never finishes loading.
     await Promise.race([settled, new Promise((r) => setTimeout(r, this.options.loadTimeout))]);
     this.loadedMeshes = { done, total };
-    this._styleAll();
-    this._applyOverlays();
-    this.stats = { ...this.meshStats(), stripped };
-    this.frameCamera();
+    this._stripped = stripped;
     return robot;
   }
 
@@ -1557,10 +1717,14 @@ export class RobotViewer {
     this.invalidate();
   }
 
-  /** Pose used for still frames: the entry's curated pose, or the zero pose. */
+  /**
+   * Pose used for still frames: the entry's curated pose where it has one,
+   * otherwise whatever the description nominates for itself — an MJCF's
+   * `<key name="home">` — and failing both, the zero pose.
+   */
   poseForPortrait(pose) {
     this.resetJoints();
-    this.applyPose(pose);
+    this.applyPose(pose || this.homePose);
   }
 
   // ------------------------------------------------------------ closed loops
@@ -1723,6 +1887,9 @@ export class RobotViewer {
     this._jointMeta = undefined;
     this._loops = [];
     this._loopJoints = undefined;
+    this.homePose = null;
+    this.mjcf = null;
+    this._stripped = 0;
     this.invalidate();
   }
 

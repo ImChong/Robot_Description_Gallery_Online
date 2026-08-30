@@ -852,6 +852,291 @@ def entry_for(
 # --------------------------------------------------------------------------- #
 
 
+# --------------------------------------------------------------------------- #
+# MJCF inspection
+# --------------------------------------------------------------------------- #
+
+
+@dataclass
+class MjcfFacts:
+    """What reading an MJCF document and probing its assets tells us.
+
+    Deliberately the same shape as :class:`UrdfFacts` where the two answer the
+    same question, because the gallery shows one spec table for both.
+    """
+
+    ok: bool
+    error: str | None = None
+    xml_name: str | None = None
+    # The file the gallery renders, which is not always the file the entry
+    # points at; see :func:`mjcf_model_path`.
+    model_path: str = ""
+    n_bodies: int = 0
+    joint_counts: dict[str, int] = field(default_factory=dict)
+    n_moving_joints: int = 0
+    mass_kg: float | None = None
+    mesh_formats: list[str] = field(default_factory=list)
+    mesh_files: int = 0
+    mesh_bytes: int = 0
+    model_bytes: int = 0
+    has_collision: bool = False
+    has_inertia: bool = False
+    # Assets the document names that the repository does not have. A pinned
+    # Menagerie commit should never produce any, so these fail the build.
+    missing: list[str] = field(default_factory=list)
+    # Assets the repository has and the CDN will not serve: jsDelivr refuses any
+    # single file over 20 MB, and four Menagerie models carry one visual mesh
+    # past it. Recorded so the viewer and the download writers skip the same
+    # files rather than requesting a page that says "File size exceeded".
+    skipped: list[str] = field(default_factory=list)
+
+
+# One MJCF joint is worth this many sliders in the viewer: a hinge or a slide is
+# one, a ball joint is re-parameterised as three hinges, and a free base is
+# pinned exactly as a URDF root link is and gets none. See web/js/mjcf.js.
+MJCF_JOINT_DOF = {"hinge": 1, "slide": 1, "ball": 3, "free": 0}
+
+
+def mjcf_join(*parts: str) -> str:
+    """Join and normalise a repository-relative MJCF path."""
+    joined = posixpath.join(*[part for part in parts if part])
+    return posixpath.normpath(joined).lstrip("./")
+
+
+# Where a spliced-in section came from, stamped on it during include expansion.
+# MuJoCo writes the same thing onto the ``<include>`` element it leaves behind,
+# and for the same reason: see :func:`mjcf_asset_candidates`.
+MJCF_SOURCE_DIR = "mjcf-source-dir"
+
+
+def read_mjcf(base: str, path: str, http: Http, depth: int = 0) -> ET.Element | None:
+    """One MJCF document with every ``<include>`` spliced in where it stood.
+
+    MuJoCo resolves an include against the file that wrote it while resolving
+    asset directories against the main model file, so the caller keeps the two
+    apart: paths returned by this function are repository-relative, and the
+    asset directories are joined onto the model file's own directory. Each
+    spliced section is stamped with the directory it came out of, which is the
+    other half of the answer for an asset path.
+    """
+    if depth > 8:
+        return None
+    raw = http.get(base + path)
+    if raw is None:
+        return None
+    try:
+        root = ET.fromstring(raw)
+    except ET.ParseError:
+        return None
+    if root.tag != "mujoco":
+        return None
+    here = posixpath.dirname(path)
+    # Materialised before splicing: an `<include>` inside a `<body>` brings a
+    # limb, so the children go where the include stood rather than at the top of
+    # the document, and the nodes inserted here have no includes left to find.
+    for parent in list(root.iter()):
+        for index, child in reversed(list(enumerate(parent))):
+            if child.tag != "include":
+                continue
+            parent.remove(child)
+            target = child.get("file")
+            if not target:
+                continue
+            at = mjcf_join(here, target)
+            included = read_mjcf(base, at, http, depth + 1)
+            if included is None:
+                continue
+            source = posixpath.dirname(at)
+            for offset, node in enumerate(list(included)):
+                # Only where a deeper include has not already answered: the
+                # stamp names the file that wrote the section.
+                node.attrib.setdefault(MJCF_SOURCE_DIR, source)
+                parent.insert(index + offset, node)
+    return root
+
+
+def mjcf_asset_candidates(
+    root: ET.Element, node: ET.Element, model_dir: str, base_dir: str, file: str
+) -> list[str]:
+    """Where one asset file might be, in the order MuJoCo looks for it.
+
+    The documented rule is the main model file's directory plus ``meshdir`` plus
+    the name, but MuJoCo falls back to resolving the name against the directory
+    of the included file that declared it, and descriptions rely on it:
+    MS-Human-700 writes ``../geometry/sacrum.stl`` from a file two directories
+    down, which read against the model's own folder names nothing at all.
+    """
+    primary = mjcf_join(base_dir, file)
+    source = model_dir
+    # ElementTree has no parent pointers, so the enclosing stamp is found by
+    # walking down from the root to this node once.
+    stack = [(root, model_dir)]
+    while stack:
+        element, inherited = stack.pop()
+        here = element.get(MJCF_SOURCE_DIR, inherited)
+        if element is node:
+            source = here
+            break
+        stack.extend((child, here) for child in element)
+    fallback = mjcf_join(source, file)
+    return [primary] if fallback == primary else [primary, fallback]
+
+
+def mjcf_model_path(base: str, scene_path: str, http: Http) -> str:
+    """Which file of a Menagerie directory is the robot.
+
+    A ``scene.xml`` is a robot plus a room: it brings in the description and adds
+    a ground plane, a light, a skybox and — for Aloha — the table the arms are
+    bolted to. MuJoCo Live is meant to open the room, and the gallery is not: it
+    brings its own studio, and a table inside the model's bounding box would be
+    measured as part of the robot and cropped into its card.
+
+    A scene reaches its robot one of two ways, and both are read here: the older
+    ``<include>``, and MuJoCo 3's ``<asset><model file=…>`` with an ``<attach>``
+    in the worldbody. Where exactly one file arrives either way, that file is the
+    model. A self-contained scene is its own model, and web/js/mjcf.js drops the
+    ground plane and the lights on the way in.
+    """
+    raw = http.get(base + scene_path)
+    if raw is None:
+        return scene_path
+    try:
+        root = ET.fromstring(raw)
+    except ET.ParseError:
+        return scene_path
+    files = [node.get("file") for node in root.iter("include") if node.get("file")]
+    if not files:
+        files = [
+            node.get("file")
+            for block in root.iter("asset")
+            for node in block
+            if node.tag == "model" and node.get("file")
+        ]
+    if len(files) != 1:
+        return scene_path
+    return mjcf_join(posixpath.dirname(scene_path), files[0])
+
+
+def inspect_mjcf(base: str, scene_path: str, http: Http) -> MjcfFacts:
+    """Read an MJCF model and check that every mesh and texture it names is there."""
+    model_path = mjcf_model_path(base, scene_path, http)
+    root = read_mjcf(base, model_path, http)
+    if root is None:
+        return MjcfFacts(ok=False, error=f"mjcf read failed: {model_path}")
+
+    compiler: dict[str, str] = {}
+    for block in root.iter("compiler"):
+        compiler.update(block.attrib)
+    model_dir = posixpath.dirname(model_path)
+    asset_dir = compiler.get("assetdir", "")
+    mesh_dir = mjcf_join(model_dir, compiler.get("meshdir", asset_dir))
+    texture_dir = mjcf_join(model_dir, compiler.get("texturedir", asset_dir))
+
+    # Only `<asset>` children: `<mesh>` also appears inside `<default>`, where it
+    # carries a scale for a class rather than a file of its own.
+    assets: list[tuple[str, list[str]]] = []
+    for block in root.iter("asset"):
+        for node in block:
+            if node.tag == "mesh" and node.get("file"):
+                where = mesh_dir
+            elif node.tag == "texture" and node.get("file") and node.get("type") != "skybox":
+                where = texture_dir
+            else:
+                continue
+            assets.append(
+                (node.tag, mjcf_asset_candidates(root, node, model_dir, where, node.get("file")))
+            )
+
+    joint_counts: dict[str, int] = {}
+    for body in root.iter("body"):
+        for node in body:
+            if node.tag == "freejoint":
+                joint_counts["free"] = joint_counts.get("free", 0) + 1
+            elif node.tag == "joint":
+                jtype = node.get("type") or "hinge"
+                joint_counts[jtype] = joint_counts.get(jtype, 0) + 1
+
+    mass = 0.0
+    has_inertia = False
+    for inertial in root.iter("inertial"):
+        has_inertia = True
+        try:
+            mass += float(inertial.get("mass", "0"))
+        except ValueError:
+            pass
+
+    # The same reading web/js/mjcf.js takes: MuJoCo draws geom groups 0 to 2 and
+    # hides 3 and up, so group 3 is what the gallery calls collision geometry.
+    # Asked of the whole document rather than of each geom's effective class,
+    # because the answer wanted here is one bit — does this description separate
+    # contact geometry from the geometry it is drawn with — and a model that does
+    # says so by writing the group somewhere, on the geom or on its default.
+    def group_of(node: ET.Element) -> int:
+        try:
+            return int(node.get("group") or 0)
+        except ValueError:
+            return 0
+
+    has_collision = any(group_of(geom) >= 3 for geom in root.iter("geom"))
+
+    facts = MjcfFacts(
+        ok=True,
+        xml_name=root.get("model"),
+        model_path=model_path,
+        # MuJoCo counts the world as body 0, and so does this: it is the frame
+        # the description hangs off, exactly as a URDF's root link is.
+        n_bodies=len(list(root.iter("body"))) + 1,
+        joint_counts=dict(sorted(joint_counts.items())),
+        n_moving_joints=sum(
+            n * MJCF_JOINT_DOF.get(jtype, 1) for jtype, n in joint_counts.items()
+        ),
+        mass_kg=round(mass, 3) if mass > 0 else None,
+        model_bytes=len(http.get(base + model_path) or b""),
+        has_collision=has_collision,
+        has_inertia=has_inertia,
+    )
+
+    def resolve(candidates: list[str]) -> tuple[str, int, int]:
+        """The first candidate the CDN answers for, its size, and its status.
+
+        A 403 is jsDelivr's way of saying the file is there and over its 20 MB
+        per-file limit, which is a different problem from a path that names
+        nothing: the first is a mesh to skip, the second a broken entry.
+        """
+        refused = ""
+        for candidate in candidates:
+            status, size = http.head(base + candidate, attempts=5)
+            if status == 200:
+                return candidate, size, 200
+            if status == 403 and not refused:
+                refused = candidate
+        return (refused, 0, 403) if refused else ("", 0, 404)
+
+    seen: set[str] = set()
+    formats: set[str] = set()
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        results = list(pool.map(resolve, [candidates for _, candidates in assets]))
+    for (kind, candidates), (path, size, status) in zip(assets, results):
+        if status == 403:
+            facts.skipped.append(path)
+            continue
+        if status != 200:
+            facts.missing.append(candidates[0])
+            continue
+        if path in seen:
+            continue
+        seen.add(path)
+        facts.mesh_files += 1
+        facts.mesh_bytes += size
+        # A texture is an asset the download has to carry but not a mesh format:
+        # the spec row reads "48 × stl", and a .png in that list says nothing.
+        if kind == "mesh":
+            formats.add(posixpath.splitext(path)[1].lower())
+    facts.mesh_formats = sorted(formats)
+    facts.skipped.sort()
+    return facts
+
+
 MENAGERIE_ROW = re.compile(
     r"^\| <a href='(?P<live>[^']+)'[^>]*><img src='(?P<thumb>[^']+)'[^>]*></a> "
     r"\| (?P<name>[^|]+?) \| (?P<dof>\d+) \| "
@@ -867,11 +1152,13 @@ def add_menagerie(
     """Merge the pinned MuJoCo Menagerie manifest into the gallery.
 
     A model already represented by a URDF is not another card: its existing
-    entry gains a pinned Menagerie scene and a link to MuJoCo's browser viewer.
-    A model that has no URDF card becomes an MJCF-only card whose preview opens
-    in that viewer. Menagerie's own README is the source of names, DoFs,
-    licences, scene paths and preview images; ``data/menagerie.json`` only owns
-    the gallery-specific deduplication, category and maker decisions.
+    entry gains a pinned Menagerie scene and a link to MuJoCo Live. A model that
+    has no URDF card becomes a card of its own, rendered on the gallery's stage
+    from its MuJoCo XML the same way a URDF is — so its assets are read and
+    probed here exactly as a URDF's meshes are. Menagerie's own README is the
+    source of names, DoFs, licences, scene paths and preview images;
+    ``data/menagerie.json`` only owns the gallery-specific deduplication,
+    category and maker decisions.
     """
     if not config_path.exists():
         return []
@@ -923,7 +1210,7 @@ def add_menagerie(
             continue
         scene_path = key
         thumb_path = model["thumb"]
-        scene_status, scene_bytes = http.head(base + scene_path)
+        scene_status, _ = http.head(base + scene_path)
         thumb_status, _ = http.head(base + thumb_path)
         if scene_status != 200:
             problems.append(f"MuJoCo Menagerie · {key}: scene returned HTTP {scene_status}")
@@ -956,6 +1243,16 @@ def add_menagerie(
         if robot_id in by_id:
             problems.append(f"MuJoCo Menagerie · {key}: id {robot_id!r} duplicates a URDF card")
             continue
+        facts = inspect_mjcf(base, scene_path, http)
+        if not facts.ok:
+            problems.append(f"MuJoCo Menagerie · {key}: {facts.error}")
+            continue
+        if facts.missing:
+            problems.append(
+                f"MuJoCo Menagerie · {key}: {len(facts.missing)} asset(s) missing at this commit "
+                f"({', '.join(facts.missing[:3])})"
+            )
+            continue
         license_path = model["license_path"]
         entry = {
             "id": robot_id,
@@ -966,17 +1263,36 @@ def add_menagerie(
             "dof": model["dof"],
             "license": model["license"],
             "formats": ["mjcf"],
-            "notes": "MJCF-only model from MuJoCo Menagerie. The card opens the pinned scene in MuJoCo's browser viewer.",
-            "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型；点击卡片会在 MuJoCo 浏览器查看器中打开固定版本的场景。",
+            "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
+            "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
             "measured": None,
-            "mjcf": {"bytes": scene_bytes},
+            "mjcf": {
+                "xml_name": facts.xml_name,
+                "links": facts.n_bodies,
+                "joints": facts.joint_counts,
+                "moving_joints": facts.n_moving_joints,
+                "mass_kg": facts.mass_kg,
+                "has_collision": facts.has_collision,
+                "has_inertia": facts.has_inertia,
+                # What the single-file download hands over, which is the scene;
+                # the file the stage renders is usually a different one.
+                "bytes": len(http.get(base + scene_path) or b""),
+                "model_bytes": facts.model_bytes,
+            },
             "assets": {
                 "base": base,
+                # The scene is what MuJoCo Live opens and what the download
+                # button hands over; the model is the file the stage renders.
                 "mjcf": scene_path,
-                "thumbnail": base + thumb_path,
-                "mesh_files": 0,
-                "mesh_bytes": 0,
-                "mesh_formats": [],
+                "mjcf_model": facts.model_path,
+                "packages": {},
+                "mesh_files": facts.mesh_files,
+                "mesh_bytes": facts.mesh_bytes,
+                "mesh_formats": facts.mesh_formats,
+                **({"skip_meshes": facts.skipped} if facts.skipped else {}),
+                # Menagerie's own preview image, kept as a fallback for a card
+                # whose thumbnail has not been rendered yet.
+                "upstream_thumbnail": base + thumb_path,
             },
             "source": {
                 "description": None,
@@ -990,7 +1306,6 @@ def add_menagerie(
                 "mjcf_external": external,
             },
             "links": {"menagerie": external["tree_url"]},
-            "external_url": live,
         }
         entries.append(entry)
         by_id[robot_id] = entry
@@ -1001,7 +1316,7 @@ def add_menagerie(
     print(
         f"MuJoCo Menagerie {commit[:10]}: {len(models)} models, "
         f"{sum(1 for key in seen_keys if key in merge_into)} merged with URDF cards, "
-        f"{sum(1 for entry in entries if entry.get('external_url'))} MJCF-only"
+        f"{sum(1 for entry in entries if entry['formats'] == ['mjcf'])} MJCF-only"
     )
     return problems
 

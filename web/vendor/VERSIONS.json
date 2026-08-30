@@ -1,5 +1,7 @@
 {
   "three": "0.180.0",
   "urdf-loader": "0.12.6",
-  "vendored_at": "2026-08-20"
+  "xacro-parser": "0.3.11",
+  "expr-eval-fork": "3.0.3",
+  "vendored_at": "2026-08-30"
 }

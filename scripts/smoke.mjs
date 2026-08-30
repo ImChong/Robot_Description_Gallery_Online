@@ -29,7 +29,9 @@ const visibility = existsSync(visibilityPath)
   ? parseVisibility(readFileSync(visibilityPath, 'utf8'))
   : new Map();
 const shown = registry.robots.filter((r) => visibility.get(r.id) !== false);
-const renderable = shown.filter((r) => r.formats.includes('urdf'));
+// Every card opens on the same stage, whether the description behind it is a
+// URDF or an MJCF, so every card is worth loading here.
+const renderable = shown;
 const hidden = registry.robots.length - shown.length;
 if (hidden) console.log(`${hidden} robot(s) hidden by data/visibility.md`);
 

@@ -71,13 +71,18 @@ jobs:
               ('urdf', 'links'), ('urdf', 'joints'), ('urdf', 'moving_joints'),
           ]
           STRUCTURAL_MJCF = [
-              ('assets', 'mjcf'), ('assets', 'thumbnail'),
-              ('source', 'mjcf_external'), ('external_url',),
+              ('assets', 'mjcf'), ('assets', 'mjcf_model'),
+              ('assets', 'mesh_files'), ('assets', 'mesh_formats'),
+              ('assets', 'skip_meshes'),
+              ('mjcf', 'links'), ('mjcf', 'joints'), ('mjcf', 'moving_joints'),
+              ('source', 'mjcf_external'),
           ]
           INFORMATIONAL_URDF = [
               ('assets', 'mesh_bytes'), ('urdf', 'mass_kg'), ('urdf', 'bytes'),
           ]
-          INFORMATIONAL_MJCF = [('mjcf', 'bytes')]
+          INFORMATIONAL_MJCF = [
+              ('assets', 'mesh_bytes'), ('mjcf', 'mass_kg'), ('mjcf', 'bytes'),
+          ]
 
           def at(entry, path):
               value = entry
@@ -142,6 +147,13 @@ jobs:
             sleep 1
           done
           node scripts/check_compare.mjs --base http://localhost:8081
+
+      # One description in each of the four languages the picker reads, handed
+      # to the real file input: this is the only check that exercises the xacro
+      # expander and three.js' USD parser at all, since nothing in the registry
+      # is written in either.
+      - name: Local description check
+        run: BASE_URL=http://localhost:8081 node scripts/check_custom_local.mjs
 
       # Loads every robot from the CDN in a real browser, so it is the slow
       # step; it is also the only one that catches a robot that silently stopped

@@ -54,10 +54,13 @@ for (const robot of registry.robots) {
       fail(id, `upstream ref is not pinned to a sha or version tag: ${ref}`);
     }
   }
-  // Only a mirror may leave meshes out; a repository entry with a mesh missing
+  // Two reasons a description may reference geometry this gallery does not
+  // serve, and no others: an archive that re-hosts someone else's URDF keeps
+  // only the meshes it renders, and jsDelivr refuses any single file over
+  // 20 MB. A repository entry whose URDF names a mesh that simply is not there
   // is a broken entry, and the build refuses it rather than recording it here.
-  if (assets.skip_meshes?.length && !source.mirror) {
-    fail(id, 'skips meshes but is not a mirrored entry');
+  if (assets.skip_meshes?.length && !source.mirror && urdf) {
+    fail(id, 'skips meshes but is neither a mirrored entry nor an MJCF description');
   }
   for (const path of assets.skip_meshes || []) {
     if (path.startsWith('/') || path.startsWith('http')) {
@@ -75,20 +78,31 @@ for (const robot of registry.robots) {
       fail(id, 'external MJCF has no MuJoCo Live URL');
     }
   }
-  // MJCF-only entries are real gallery cards, but their interactive stage is
-  // MuJoCo Live rather than this repository's URDF viewer. They therefore
-  // carry a pinned scene and upstream thumbnail instead of URDF facts.
+  // An MJCF-only entry is rendered on the same stage a URDF is, from its MuJoCo
+  // XML, so it has to carry the same facts — the difference is which file they
+  // were read out of, and that its detail page also links to MuJoCo Live.
   if (!urdf) {
+    const mjcf = robot.mjcf;
     if (robot.formats?.length !== 1 || robot.formats[0] !== 'mjcf') {
       fail(id, 'description without URDF is not MJCF-only');
     }
     if (!assets.mjcf) fail(id, 'MJCF-only entry has no scene path');
-    if (!assets.thumbnail?.startsWith('https://')) fail(id, 'MJCF-only entry has no HTTPS thumbnail');
-    if (!robot.external_url?.startsWith('https://live.mujoco.org/')) {
-      fail(id, 'MJCF-only entry does not open MuJoCo Live');
+    if (!assets.mjcf_model) fail(id, 'MJCF-only entry does not say which file to render');
+    if (assets.mjcf.startsWith('/') || assets.mjcf_model?.startsWith('/')) {
+      fail(id, 'MJCF paths must be repo-relative');
     }
+    if (robot.external_url) fail(id, 'MJCF-only entry should open its own detail page');
+    if (!mjcf?.links) fail(id, 'no bodies parsed from the MJCF');
+    if (!assets.mesh_files && !mjcf?.links) fail(id, 'no geometry at all');
     if (!source.mjcf_external?.url?.includes(source.commit)) {
       fail(id, 'MJCF-only scene is not pinned to the source commit');
+    }
+    if (!source.mjcf_external?.live_url) fail(id, 'MJCF-only entry has no MuJoCo Live link');
+    if (robot.dof && mjcf?.moving_joints && robot.dof > mjcf.moving_joints) {
+      warn(id, `declared DOF ${robot.dof} exceeds ${mjcf.moving_joints} moving joints`);
+    }
+    if (args.includes('--thumbs') && !existsSync(new URL(`web/thumbs/${robot.id}.webp`, root))) {
+      fail(id, 'no thumbnail — run `npm run thumbs`');
     }
     if (!robot.license) warn(id, 'no SPDX licence recorded upstream');
     continue;

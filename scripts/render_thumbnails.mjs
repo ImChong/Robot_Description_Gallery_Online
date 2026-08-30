@@ -9,7 +9,9 @@
  *
  * Cards are static images on purpose: seventy live WebGL contexts on one page
  * would melt a laptop. Renders run in headless Chromium against web/thumb.html,
- * so they use exactly the same viewer code the detail page uses.
+ * so they use exactly the same viewer code the detail page uses — which is why
+ * an MJCF-only entry is rendered here too rather than falling back to
+ * Menagerie's own preview image: it is on the same stage as everything else.
  *
  * Side effect: each successful render records the model's measured bounding box
  * in data/measured.json, which is the only honest source for "how tall is this
@@ -42,9 +44,7 @@ mkdirSync(thumbDir, { recursive: true });
 const measuredPath = new URL('data/measured.json', root);
 const measured = existsSync(measuredPath) ? JSON.parse(readFileSync(measuredPath)) : {};
 
-// MJCF-only cards already carry Menagerie's pinned preview image and open in
-// MuJoCo Live; this renderer is the URDF stage and has nothing to render for them.
-let robots = registry.robots.filter((robot) => robot.formats.includes('urdf'));
+let robots = registry.robots;
 if (flag('--robot')) robots = robots.filter((r) => r.id === flag('--robot'));
 
 /**
