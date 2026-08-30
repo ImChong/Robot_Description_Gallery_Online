@@ -382,10 +382,6 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
   margin: 26px 0 0;
 }
 .hero-action { display: flex; flex-direction: column; align-items: flex-start; gap: 9px; }
-/* Button and the way back to the last file previewed, on one line. The link is
- * a second door to the same dialog, so it reads beside the button rather than
- * under the promise; it wraps below when the line runs out. */
-.hero-action-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 /* The promise, and what a comparison is: the smallest type on the page but
  * never behind a click — the visitor decides while reading it. One line each
  * in both languages at this size, so no measure of its own; `align-items:
@@ -395,6 +391,11 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
   margin: 0;
   color: var(--text-faint); font-size: 12px; line-height: 1.55;
 }
+/* The way back to the last file previewed: a second door to the same dialog,
+ * so it takes the line straight under the button rather than sitting after the
+ * promise — the two doors stay one block, and the fine print under them reads
+ * as covering both. A filename is not a heading; it stays the small type the
+ * link around it is. */
 .hero-action-current { margin: 0; font-size: 12.5px; }
 .hero-action-current a { color: var(--accent); text-decoration: none; }
 .hero-action-current a:hover { text-decoration: underline; }
@@ -1498,7 +1499,7 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
  * thing this gallery can do, given the same weight as previewing your own file
  * but not the same colour — one filled button per screen is enough. It carries
  * the primary button's height rather than the ghost row's 34px, so the two
- * doors sit on one baseline and share one line under them. */
+ * doors sit on one baseline, each over its own fine print. */
 .hero-compare-btn {
   display: inline-flex; align-items: center; gap: 9px;
   height: 38px; padding: 0 16px; border-radius: var(--radius);
@@ -1803,8 +1804,6 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
    * things rather than as a list. */
   .hero-actions { flex-direction: column; align-items: stretch; gap: 15px; margin-top: 18px; }
   .hero-action { align-self: stretch; gap: 7px; }
-  /* No room beside a full-width button: the link takes the line under it. */
-  .hero-action-row { align-self: stretch; flex-direction: column; align-items: stretch; gap: 9px; }
   .hero-action .primary-btn, .hero-action .hero-compare-btn { width: 100%; }
   /* A filename can be longer than the screen; it wraps rather than running out
    * of it, and breaks mid-word if that is what it takes. */

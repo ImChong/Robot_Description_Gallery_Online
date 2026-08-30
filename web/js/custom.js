@@ -701,7 +701,7 @@ export function setupCustomPicker({ onPreview }) {
   renderHeroCurrent();
 }
 
-/** A way back to the model already previewed, next to the button that made it. */
+/** A way back to the model already previewed, under the button that made it. */
 function renderHeroCurrent() {
   const host = el('custom-current');
   if (!host) return;
