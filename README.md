@@ -1,4 +1,4 @@
-# Robot URDF & MJCF Gallery Online · 机器人描述在线合集
+# Robot Description Gallery Online · 机器人3D模型在线合集
 
 [![Pages](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/pages.yml/badge.svg)](https://imchong.github.io/Robot_URDF_Gallery_Online/)
 [![Verify](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml/badge.svg)](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml)
