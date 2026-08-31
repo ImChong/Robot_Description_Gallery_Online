@@ -755,7 +755,7 @@ export class RobotViewer {
     // document the geometry is in, so there is nothing left to fetch.
     this._jointMeta = result.jointMeta;
     this._inertials = result.inertials;
-    this._freeUndeclaredJoints();
+    this._configureJointLimits();
     this._prepareLoops(entry.loops);
     this.closeLoops();
     // The stance the description nominates for itself — `<key name="home">` —
@@ -976,7 +976,7 @@ export class RobotViewer {
     // has just been handed: which joints were given no travel to work with, and
     // which of them a closed loop drives rather than a slider.
     this.setJointMeta(text);
-    this._freeUndeclaredJoints();
+    this._configureJointLimits();
     this._prepareLoops(entry.loops);
     this.closeLoops();
     // A URDF states no pose of its own; whatever the entry curates is it.
@@ -1443,7 +1443,7 @@ export class RobotViewer {
   }
 
   /**
-   * Unpin the joints whose URDF declares no travel for them.
+   * Configure the joints whose declared limits cannot be applied literally.
    *
    * A `<limit>` that carries only `effort` and `velocity` is legal, and several
    * descriptions write one — Minitaur's knees, SigmaBan's whole upper body,
@@ -1455,11 +1455,24 @@ export class RobotViewer {
    *
    * Only a limit that declares neither end counts: `lower="0" upper="0"` is a
    * description saying, in as many words, that this joint does not move.
+   *
+   * A mimic joint is different: its position is not an independent command to
+   * clamp, but exactly `multiplier * source + offset`. Some otherwise useful
+   * descriptions still give the follower a range that contradicts that
+   * equation — Robotiq 2F-85 declares three negative followers as 0..0.8757,
+   * for example. urdf-loader clamps those followers to zero and breaks the
+   * linkage. The source joint already bounds the only slider the mechanism
+   * exposes, so followers keep the relation the URDF declares and do not apply
+   * a second, potentially contradictory clamp.
    */
-  _freeUndeclaredJoints() {
+  _configureJointLimits() {
     if (!this.robot) return;
     for (const joint of Object.values(this.robot.joints)) {
       if (joint.jointType !== 'revolute' && joint.jointType !== 'prismatic') continue;
+      if (joint.mimicJoint) {
+        joint.ignoreLimits = true;
+        continue;
+      }
       const meta = this._jointMeta?.get(joint.urdfName || joint.name);
       if (!meta || meta.lower !== null || meta.upper !== null) continue;
       joint.ignoreLimits = true;
