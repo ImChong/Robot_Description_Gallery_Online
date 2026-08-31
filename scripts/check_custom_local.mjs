@@ -124,7 +124,7 @@ const CASES = [
     model: 'from_mjcf',
     pick: 'scene.xml',
     joints: 2,
-    visualMeshes: 3,
+    visualMeshes: 4,
     files: {
       'scene.xml': `<mujoco model="from_mjcf">
   <include file="robot.xml"/>
@@ -144,6 +144,9 @@ const CASES = [
          mirrors MS-Human-700, whose collision capsules exposed the regression. -->
     <default class="visual"><geom group="0" contype="0" conaffinity="0" material="grey"/></default>
     <default class="collision"><geom group="1"/></default>
+    <!-- xArm7 also has visible meshes in both its primary group and a second,
+         explicitly non-contact group. Both belong in the normal view. -->
+    <default class="secondary_visual"><geom group="2" contype="0" conaffinity="0" material="grey"/></default>
   </default>
   <worldbody>
     <body name="base" pos="0 0 0.1">
@@ -156,6 +159,9 @@ const CASES = [
         <body name="wrist" pos="0.2 0 0">
           <joint name="reach" type="slide" axis="1 0 0" range="0 0.1"/>
           <geom class="visual" type="capsule" fromto="0 0 0 0.1 0 0" size="0.02"/>
+          <body name="finger" pos="0.1 0 0">
+            <geom class="secondary_visual" type="mesh" mesh="wedge"/>
+          </body>
         </body>
       </body>
     </body>
