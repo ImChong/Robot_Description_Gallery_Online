@@ -31,8 +31,9 @@
  * - **Geometry says whether it is for looking at or for touching.** Authors
  *   normally separate render and contact shapes by geom group, but the group
  *   numbers are only labels — Menagerie mostly uses 2/3 while MS-Human-700
- *   uses 0/1. The mesh-rich, non-contact group is therefore selected as the
- *   visual view and the other groups become the collision view.
+ *   uses 0/1. The mesh-rich group and any additional groups explicitly marked
+ *   non-contact therefore form the visual view; the rest form the collision
+ *   view.
  *
  * Nothing in here touches the DOM or the network directly: the caller supplies
  * a URL resolver and a loading manager, which is what lets the same code serve
@@ -602,7 +603,7 @@ export class MJCFDocument {
     this.textureJobs = new Map();
     this.mass = 0;
     this.geomCounts = { visual: 0, collision: 0 };
-    this.visualGeomGroup = this.primaryVisualGeomGroup();
+    this.visualGeomGroups = this.visualGeomGroupSet();
 
     for (const worldbody of this.root.querySelectorAll('mujoco > worldbody')) {
       for (const body of worldbody.children) {
@@ -916,9 +917,27 @@ export class MJCFDocument {
   }
 
   /**
+   * Every geom group that belongs in the normal render.
+   *
+   * A single primary group covers the common "complete visual mesh plus a
+   * complete collision mesh" convention. Some models legitimately split the
+   * visible robot across groups, though: xArm7 keeps the base and knuckles in
+   * group 0 and marks only its finger meshes as the non-contact visual group
+   * 2. Those explicitly non-contact groups must be kept alongside the primary
+   * group or the normal view loses pieces of the robot.
+   */
+  visualGeomGroupSet(groups = this.geomGroups()) {
+    const visual = new Set([this.primaryVisualGeomGroup(groups)]);
+    for (const facts of groups.values()) {
+      if (facts.geoms > 0 && facts.nonContact === facts.geoms) visual.add(facts.group);
+    }
+    return visual;
+  }
+
+  /**
    * One `<geom>`, wrapped the way the overlay toggles expect: a `URDFVisual`
-   * for the model's primary render group, a `URDFCollider` for every other
-   * group. Keeping group views separate prevents alternative render/contact
+   * for one of the model's render groups, a `URDFCollider` for every other
+   * group. Keeping the two views separate prevents alternative render/contact
    * representations from being baked together in cards and snapshots.
    */
   attachGeom(element, link, childClass) {
@@ -927,7 +946,7 @@ export class MJCFDocument {
     if (SKIPPED_GEOMS.has(type)) return;
 
     const group = num(attrs.group, 0);
-    const isCollision = group !== this.visualGeomGroup;
+    const isCollision = !this.visualGeomGroups.has(group);
     const wrapper = isCollision ? new URDFCollider() : new URDFVisual();
     const name = attrs.name || `${link.urdfName}·${type}`;
     wrapper.urdfName = name;
@@ -1324,7 +1343,7 @@ export async function inspectMJCF(options) {
     mass += num(node.getAttribute('mass'), 0);
   }
   const geomGroups = document.geomGroups();
-  const visualGeomGroup = document.primaryVisualGeomGroup(geomGroups);
+  const visualGeomGroups = document.visualGeomGroupSet(geomGroups);
 
   return {
     name: document.modelName,
@@ -1337,7 +1356,7 @@ export async function inspectMJCF(options) {
       0,
     ),
     mass_kg: mass ? +mass.toFixed(3) : null,
-    has_collision: [...geomGroups.keys()].some((group) => group !== visualGeomGroup),
+    has_collision: [...geomGroups.keys()].some((group) => !visualGeomGroups.has(group)),
     has_inertia: document.root.querySelector('inertial') !== null,
     xml: [normalize(document.path), ...document.included],
     assets: [...document.meshes.values(), ...document.textures.values()].map(
