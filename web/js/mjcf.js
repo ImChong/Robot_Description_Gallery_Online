@@ -28,9 +28,11 @@
  * - **A free joint is six.** The gallery pins every robot the way a URDF root
  *   link is pinned, so a free joint becomes a fixed one — the base is where the
  *   description puts it and there is nothing to actuate.
- * - **Geometry says whether it is for looking at or for touching.** MuJoCo
- *   draws geom groups 0–2 and hides 3 and up, which is exactly the split the
- *   gallery's visual/collision toggle wants, so that is the rule used here.
+ * - **Geometry says whether it is for looking at or for touching.** Authors
+ *   normally separate render and contact shapes by geom group, but the group
+ *   numbers are only labels — Menagerie mostly uses 2/3 while MS-Human-700
+ *   uses 0/1. The mesh-rich, non-contact group is therefore selected as the
+ *   visual view and the other groups become the collision view.
  *
  * Nothing in here touches the DOM or the network directly: the caller supplies
  * a URL resolver and a loading manager, which is what lets the same code serve
@@ -53,18 +55,6 @@ const DEFAULT_ANGLE = 'degree';
 
 /** The grey MuJoCo paints a geom that names neither `rgba` nor a material. */
 const DEFAULT_RGBA = [0.5, 0.5, 0.5, 1];
-
-/**
- * Geom groups the gallery reads as collision geometry.
- *
- * MuJoCo's viewer draws groups 0, 1 and 2 and leaves 3 and up switched off,
- * and Menagerie is written to that convention: a `class="visual"` default sets
- * `group="2"`, a `class="collision"` one sets `group="3"`. Following the same
- * line means a model that never split the two — one geom doing both jobs, as
- * most simple descriptions do — comes out as visible geometry rather than as a
- * robot made entirely of translucent hulls.
- */
-const COLLISION_GROUP = 3;
 
 /** Geom types that describe the world rather than the robot, or that nothing
  *  here can draw: an infinite ground plane, a height field, a signed-distance
@@ -612,6 +602,7 @@ export class MJCFDocument {
     this.textureJobs = new Map();
     this.mass = 0;
     this.geomCounts = { visual: 0, collision: 0 };
+    this.visualGeomGroup = this.primaryVisualGeomGroup();
 
     for (const worldbody of this.root.querySelectorAll('mujoco > worldbody')) {
       for (const body of worldbody.children) {
@@ -866,8 +857,69 @@ export class MJCFDocument {
   // -------------------------------------------------------------------- geoms
 
   /**
+   * The effective geom groups used by robot bodies, with the clues that say
+   * which one is meant to be looked at. Group numbers are not semantic: most
+   * Menagerie models use 2 for meshes and 3 for contact hulls, while
+   * MS-Human-700 uses 0 for bone meshes and 1 for capsule contact shapes.
+   *
+   * Includes are already flattened and defaults are already resolved here.
+   * `childclass` still has to be carried down the body tree, exactly as it is
+   * when the same geom is attached below.
+   */
+  geomGroups() {
+    const groups = new Map();
+    const walk = (body, inheritedClass) => {
+      const childClass = body.getAttribute('childclass') || inheritedClass;
+      for (const node of body.children) {
+        if (node.tagName === 'body') {
+          walk(node, childClass);
+          continue;
+        }
+        if (node.tagName !== 'geom') continue;
+        const attrs = withDefaults(node, 'geom', this.classes, childClass);
+        const type = attrs.type || (attrs.mesh ? 'mesh' : 'sphere');
+        if (SKIPPED_GEOMS.has(type)) continue;
+        const group = num(attrs.group, 0);
+        const facts = groups.get(group) || { group, geoms: 0, meshes: 0, nonContact: 0 };
+        facts.geoms += 1;
+        if (type === 'mesh') facts.meshes += 1;
+        if (num(attrs.contype, 1) === 0 && num(attrs.conaffinity, 1) === 0) {
+          facts.nonContact += 1;
+        }
+        groups.set(group, facts);
+      }
+    };
+    for (const worldbody of this.root.querySelectorAll('mujoco > worldbody')) {
+      for (const body of worldbody.children) {
+        if (body.tagName === 'body') walk(body, '');
+      }
+    }
+    return groups;
+  }
+
+  /**
+   * Pick one group for the normal render. Mesh count is the strongest clue;
+   * contact-disabled geoms are next. Group 2 only breaks a remaining tie so
+   * the conventional 2/3 spelling stays conventional without being assumed.
+   * A one-group model simply uses the group it has.
+   */
+  primaryVisualGeomGroup(groups = this.geomGroups()) {
+    const ranked = [...groups.values()].sort(
+      (a, b) =>
+        b.meshes - a.meshes ||
+        b.nonContact - a.nonContact ||
+        Number(b.group === 2) - Number(a.group === 2) ||
+        b.geoms - a.geoms ||
+        a.group - b.group,
+    );
+    return ranked[0]?.group ?? 0;
+  }
+
+  /**
    * One `<geom>`, wrapped the way the overlay toggles expect: a `URDFVisual`
-   * for geometry MuJoCo would draw, a `URDFCollider` for the groups it hides.
+   * for the model's primary render group, a `URDFCollider` for every other
+   * group. Keeping group views separate prevents alternative render/contact
+   * representations from being baked together in cards and snapshots.
    */
   attachGeom(element, link, childClass) {
     const attrs = withDefaults(element, 'geom', this.classes, childClass);
@@ -875,9 +927,7 @@ export class MJCFDocument {
     if (SKIPPED_GEOMS.has(type)) return;
 
     const group = num(attrs.group, 0);
-    // MuJoCo hides group 3 and up; everything it draws is what this gallery
-    // calls visual geometry.
-    const isCollision = group >= COLLISION_GROUP;
+    const isCollision = group !== this.visualGeomGroup;
     const wrapper = isCollision ? new URDFCollider() : new URDFVisual();
     const name = attrs.name || `${link.urdfName}·${type}`;
     wrapper.urdfName = name;
@@ -1273,8 +1323,8 @@ export async function inspectMJCF(options) {
   for (const node of document.root.querySelectorAll('inertial')) {
     mass += num(node.getAttribute('mass'), 0);
   }
-  const groupOf = (node) =>
-    num(withDefaults(node, 'geom', document.classes, '').group, 0);
+  const geomGroups = document.geomGroups();
+  const visualGeomGroup = document.primaryVisualGeomGroup(geomGroups);
 
   return {
     name: document.modelName,
@@ -1287,9 +1337,7 @@ export async function inspectMJCF(options) {
       0,
     ),
     mass_kg: mass ? +mass.toFixed(3) : null,
-    has_collision: [...document.root.querySelectorAll('geom')].some(
-      (node) => groupOf(node) >= COLLISION_GROUP,
-    ),
+    has_collision: [...geomGroups.keys()].some((group) => group !== visualGeomGroup),
     has_inertia: document.root.querySelector('inertial') !== null,
     xml: [normalize(document.path), ...document.included],
     assets: [...document.meshes.values(), ...document.textures.values()].map(

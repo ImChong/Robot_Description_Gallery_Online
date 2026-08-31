@@ -124,6 +124,7 @@ const CASES = [
     model: 'from_mjcf',
     pick: 'scene.xml',
     joints: 2,
+    visualMeshes: 3,
     files: {
       'scene.xml': `<mujoco model="from_mjcf">
   <include file="robot.xml"/>
@@ -139,8 +140,10 @@ const CASES = [
     <mesh file="wedge.stl"/>
   </asset>
   <default>
-    <default class="visual"><geom group="2" contype="0" conaffinity="0" material="grey"/></default>
-    <default class="collision"><geom group="3"/></default>
+    <!-- Group numbers are labels, not a fixed 2/3 convention. This 0/1 split
+         mirrors MS-Human-700, whose collision capsules exposed the regression. -->
+    <default class="visual"><geom group="0" contype="0" conaffinity="0" material="grey"/></default>
+    <default class="collision"><geom group="1"/></default>
   </default>
   <worldbody>
     <body name="base" pos="0 0 0.1">
@@ -248,11 +251,44 @@ for (const testCase of CASES) {
     throw new Error(`${testCase.name}: staged as ${staged.name}, wanted ${testCase.model}`);
   }
   if (!staged.meshes) throw new Error(`${testCase.name}: nothing rendered`);
+  if (testCase.visualMeshes && staged.meshes !== testCase.visualMeshes) {
+    throw new Error(
+      `${testCase.name}: ${staged.meshes} visual meshes, wanted ${testCase.visualMeshes} ` +
+        '(a collision group was probably mixed into the visual view)',
+    );
+  }
   if (!(staged.height > 0)) throw new Error(`${testCase.name}: measured no height`);
   if (staged.sliders !== testCase.joints) {
     throw new Error(
       `${testCase.name}: ${staged.sliders} joint sliders, wanted ${testCase.joints}`,
     );
+  }
+
+  // MJCF's visual and collision geom groups are alternative views: choosing
+  // either one must switch the other off. URDF still permits the collision
+  // shell to be inspected over its rendered mesh.
+  if (testCase.name === 'urdf' || testCase.name === 'mjcf') {
+    const visual = page.locator('[data-overlay="visual"]');
+    const collision = page.locator('[data-overlay="collision"]');
+    await collision.click();
+    let overlays = {
+      visual: await visual.getAttribute('aria-pressed'),
+      collision: await collision.getAttribute('aria-pressed'),
+    };
+    const wantedVisual = testCase.name === 'mjcf' ? 'false' : 'true';
+    if (overlays.visual !== wantedVisual || overlays.collision !== 'true') {
+      throw new Error(`${testCase.name}: unexpected collision view ${JSON.stringify(overlays)}`);
+    }
+    if (testCase.name === 'mjcf') {
+      await visual.click();
+      overlays = {
+        visual: await visual.getAttribute('aria-pressed'),
+        collision: await collision.getAttribute('aria-pressed'),
+      };
+      if (overlays.visual !== 'true' || overlays.collision !== 'false') {
+        throw new Error(`mjcf: unexpected visual view ${JSON.stringify(overlays)}`);
+      }
+    }
   }
   console.log(
     `✓ ${testCase.kind.padEnd(6)} ${staged.name.padEnd(12)} ` +
