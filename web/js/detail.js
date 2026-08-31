@@ -354,8 +354,19 @@ export class Detail {
       if (!button) return;
       const key = button.dataset.overlay;
       const next = button.getAttribute('aria-pressed') !== 'true';
-      button.setAttribute('aria-pressed', String(next));
-      this.viewer.setOverlay(key, next);
+      // MJCF authors conventionally put render and contact geometry in
+      // separate geom groups. Showing both at once turns that separation back
+      // into the opaque pile the groups were meant to avoid, so those two
+      // choices behave as an exclusive view for MJCF. URDF keeps the useful
+      // collision-over-visual inspection mode it has always offered.
+      if (
+        next &&
+        (key === 'visual' || key === 'collision') &&
+        descriptionKind(this.robot) === 'mjcf'
+      ) {
+        this.setOverlay(key === 'visual' ? 'collision' : 'visual', false);
+      }
+      this.setOverlay(key, next);
     });
 
     el('stage-toolbar').addEventListener('click', (event) => {
@@ -440,6 +451,28 @@ export class Detail {
     this.bindStage();
     this.bindPanelResize();
     this.watchToolbarHeight();
+  }
+
+  /** Keep the button and the scene graph on the same overlay state. */
+  setOverlay(key, enabled) {
+    const button = el('overlay-toggles').querySelector(`[data-overlay="${key}"]`);
+    button?.setAttribute('aria-pressed', String(enabled));
+    this.viewer.setOverlay(key, enabled);
+  }
+
+  /**
+   * A visitor can arrive from a URDF with its visual and collision overlays
+   * both enabled. MJCF treats those as alternative geom-group views, so enter
+   * it on the visual group rather than carrying the mixed URDF view across.
+   */
+  applyOverlayPolicy(robot) {
+    if (
+      descriptionKind(robot) === 'mjcf' &&
+      this.viewer.overlays.visual &&
+      this.viewer.overlays.collision
+    ) {
+      this.setOverlay('collision', false);
+    }
   }
 
   /**
@@ -859,6 +892,7 @@ export class Detail {
     const stage = el('canvas-host').parentElement;
     delete stage.dataset.loaded;
     this.robot = robot;
+    this.applyOverlayPolicy(robot);
     // A file the visitor picked off their own disk has no maker, no upstream
     // and nothing to download that they do not already have, so those panels
     // step aside for one that says what was read and where it stayed.

@@ -1065,19 +1065,19 @@ def inspect_mjcf(base: str, scene_path: str, http: Http) -> MjcfFacts:
         except ValueError:
             pass
 
-    # The same reading web/js/mjcf.js takes: MuJoCo draws geom groups 0 to 2 and
-    # hides 3 and up, so group 3 is what the gallery calls collision geometry.
-    # Asked of the whole document rather than of each geom's effective class,
-    # because the answer wanted here is one bit — does this description separate
-    # contact geometry from the geometry it is drawn with — and a model that does
-    # says so by writing the group somewhere, on the geom or on its default.
+    # Group numbers are labels rather than a fixed visual/collision threshold:
+    # Menagerie commonly uses 2/3, while MS-Human-700 uses 0/1 for its bone
+    # meshes and capsule contact shapes. The browser picks the primary visual
+    # group from the effective body geoms; this build-time bit only needs to say
+    # whether the document declares more than one group at all. Asked of both
+    # body geoms and defaults so an inherited group still counts.
     def group_of(node: ET.Element) -> int:
         try:
             return int(node.get("group") or 0)
         except ValueError:
             return 0
 
-    has_collision = any(group_of(geom) >= 3 for geom in root.iter("geom"))
+    has_collision = len({group_of(geom) for geom in root.iter("geom")}) > 1
 
     facts = MjcfFacts(
         ok=True,
