@@ -11,7 +11,8 @@
  *     add up to, how complete the description is;
  *   - its limbs: how many joints each carries, how much torque, how long it is;
  *   - and every joint, lined up with the joint that does the same job on the
- *     others — travel, speed limit, torque limit, and the power those two imply.
+ *     others — travel, speed limit, torque limit, the power those two imply,
+ *     and the mass of the child link that joint moves.
  *     A chain — a finger, an arm, a leg — is read down its length, from the
  *     joint it starts at to the joint it ends at, so a thumb of four knuckles
  *     can be read against a thumb of three.
@@ -107,7 +108,8 @@ function cellText(joint, metric, unit) {
   if (metric === 'range') return travelText(joint, unit);
   if (metric === 'velocity') return velocityText(joint, unit);
   if (metric === 'effort') return effortText(joint);
-  return isNum(joint.power) ? `${fmt(joint.power, 0)} W` : '—';
+  if (metric === 'power') return isNum(joint.power) ? `${fmt(joint.power, 0)} W` : '—';
+  return isNum(joint.linkMass) ? `${fmt(joint.linkMass, 3)} kg` : '—';
 }
 
 /* ── what one description is worth as numbers ───────────────────────────── */
@@ -1148,6 +1150,7 @@ export class Compare {
           ['velocity', t('limit.velocity'), t('limit.velocityFull')],
           ['effort', t('limit.effort'), t('limit.effortFull')],
           ['power', t('compare.power'), t('cmp.help.powerPeak')],
+          ['mass', t('compare.linkMass'), t('compare.linkMassFull')],
         ],
         this.metric,
       ) +
@@ -1406,5 +1409,6 @@ function metricValue(joint, metric) {
   if (metric === 'range') return joint.travel;
   if (metric === 'velocity') return joint.velocity;
   if (metric === 'effort') return joint.effort;
-  return joint.power;
+  if (metric === 'power') return joint.power;
+  return joint.linkMass;
 }

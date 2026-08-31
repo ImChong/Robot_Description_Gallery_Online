@@ -262,6 +262,10 @@ function buildTree(spec) {
   };
   for (const joint of spec.joints) {
     joint.subtreeMass = joint.child ? below(joint.child, new Set()) : 0;
+    // A joint moves its child link. Keep that link's own mass on the joint as
+    // well as the mass of the whole sub-tree so the joint-by-joint comparison
+    // can put like-for-like link masses beside one another.
+    joint.linkMass = joint.child ? spec.linkByName.get(joint.child)?.mass ?? null : null;
   }
 
   spec.moving = spec.joints.filter((joint) => joint.movable);
