@@ -19,6 +19,36 @@ const warnings = [];
 const fail = (id, message) => problems.push(`${id}: ${message}`);
 const warn = (id, message) => warnings.push(`${id}: ${message}`);
 
+/**
+ * Card renders are transparent WebP files. A screenshot copied from a viewer
+ * can have the right name and dimensions while baking the studio grid into the
+ * image, so existence alone is not enough to catch that mistake.
+ */
+function checkThumbnail(id) {
+  const path = new URL(`web/thumbs/${id}.webp`, root);
+  if (!existsSync(path)) {
+    fail(id, 'no thumbnail — run `npm run thumbs`');
+    return;
+  }
+  const bytes = readFileSync(path);
+  let alpha = false;
+  if (bytes.subarray(0, 4).toString() === 'RIFF' && bytes.subarray(8, 12).toString() === 'WEBP') {
+    for (let offset = 12; offset + 8 <= bytes.length;) {
+      const chunk = bytes.subarray(offset, offset + 4).toString();
+      const size = bytes.readUInt32LE(offset + 4);
+      const data = offset + 8;
+      if (chunk === 'ALPH' || (chunk === 'VP8X' && size && (bytes[data] & 0x10))) {
+        alpha = true;
+        break;
+      }
+      offset = data + size + (size & 1);
+    }
+  }
+  if (!alpha) {
+    fail(id, 'thumbnail has no alpha channel — regenerate it with `npm run thumbs -- --force`');
+  }
+}
+
 const categories = new Set(registry.categories.map((c) => c.id));
 const ids = new Set();
 const variantIds = new Set();
@@ -101,9 +131,7 @@ for (const robot of registry.robots) {
     if (robot.dof && mjcf?.moving_joints && robot.dof > mjcf.moving_joints) {
       warn(id, `declared DOF ${robot.dof} exceeds ${mjcf.moving_joints} moving joints`);
     }
-    if (args.includes('--thumbs') && !existsSync(new URL(`web/thumbs/${robot.id}.webp`, root))) {
-      fail(id, 'no thumbnail — run `npm run thumbs`');
-    }
+    if (args.includes('--thumbs')) checkThumbnail(id);
     if (!robot.license) warn(id, 'no SPDX licence recorded upstream');
     continue;
   }
@@ -129,9 +157,7 @@ for (const robot of registry.robots) {
   if (assets.mesh_bytes > 60e6) {
     warn(id, `${(assets.mesh_bytes / 1e6).toFixed(0)} MB of meshes — slow to load`);
   }
-  if (args.includes('--thumbs') && !existsSync(new URL(`web/thumbs/${robot.id}.webp`, root))) {
-    fail(id, 'no thumbnail — run `npm run thumbs`');
-  }
+  if (args.includes('--thumbs')) checkThumbnail(id);
 
   // A machine upstream publishes as several URDFs is one entry with a version
   // picker on its detail page. The versions are addressed by id in the site's

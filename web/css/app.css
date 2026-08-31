@@ -658,6 +658,13 @@ html[lang^='zh'] .footer-text-zh { display: block; }
   #add-compare { grid-area: cmp; align-self: start; }
 }
 
+/* At the 320px floor, the four translated labels are wider than the content
+ * column even though each has its own grid area. Keep the conventional back
+ * arrow and its accessible name, but drop the repeated visible word. */
+@media (max-width: 360px) {
+  #back-btn [data-i18n='detail.back'] { display: none; }
+}
+
 /* A fingertip's target rather than a pointer's — the 44px the hero's doors
  * take, and by the pointer rather than the width of the screen for the same
  * reason they are. */
