@@ -20,7 +20,7 @@ The gallery fetches this file at startup: rows checked `[x]` are shown, rows lef
 the site matches on; the name, organisation and upstream link after it are for
 human readers.
 
-## 人形 Humanoid · 52
+## 人形 Humanoid · 53
 
 - [x] `g1` **G1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description)
 - [x] `h1` **H1** — UNITREE Robotics — [unitreerobotics/unitree_ros · h1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description)
@@ -61,6 +61,7 @@ human readers.
 - [x] `tron2_dasf` **TRON 2 DASF** — LimX Dynamics — [limxdynamics/tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description/tree/9939c22e69d27653ec0ba8a505859a2903dd1a71/tron2a/DASF_TRON2A)
 - [x] `t800` **T800** — EngineAI — [engineai-robotics/engineai_robotics_native_sdk](https://github.com/engineai-robotics/engineai_robotics_native_sdk/tree/335c60e88772c26c7852d0abd6b3c7439037dd8f/assets/resource/robot/t800)
 - [x] `t800pro` **T800 Pro** — EngineAI — [engineai-robotics/engineai_robotics_native_sdk](https://github.com/engineai-robotics/engineai_robotics_native_sdk/tree/335c60e88772c26c7852d0abd6b3c7439037dd8f/assets/resource/robot/t800pro)
+- [x] `pm01` **PM01** — EngineAI — [engineai-robotics/engineai_robotics_description](https://github.com/engineai-robotics/engineai_robotics_description/tree/1d2d7601f520f716863c32a83abe9c77b26ee06c/pm01_edu)
 - [ ] `mini_hi` **Mini Hi** — HighTorque Robotics — [HighTorque-Robotics/HT_Robot_URDF](https://github.com/HighTorque-Robotics/HT_Robot_URDF/tree/5675b9aa238d5c0431bd376f9fc708308c617d7b/hi_25dof)
 - [x] `mini_pi_plus` **Mini Pi plus** — HighTorque Robotics — [HighTorque-Robotics/HT_Robot_URDF](https://github.com/HighTorque-Robotics/HT_Robot_URDF/tree/5675b9aa238d5c0431bd376f9fc708308c617d7b/pi_plus_24dof)
 - [x] `piplus_s` **PiPlus S** — HighTorque Robotics — [HighTorque-Robotics/HT_Robot_URDF](https://github.com/HighTorque-Robotics/HT_Robot_URDF/tree/c05257c64c79b624e773eae704752c09c6bdb007/ht_urdf/PiPlus_S_12L10A0G0H1W)
