@@ -325,6 +325,46 @@ for (const target of targets) {
     continue;
   }
 
+  // Robotiq 2F-85 exposes one slider and drives five followers from it. Three
+  // followers have multiplier -1 but an upstream 0..0.8757 limit; applying
+  // that limit after the mimic equation pins them at zero and visibly tears
+  // the linkage apart. Exercise the real slider and read the rendered values,
+  // so this catches both a scene-graph regression and a stale joint panel.
+  if (target.id === 'robotiq_2f85') {
+    const linked = await page.evaluate(() => {
+      const input = document.querySelector('#d-tree input[data-joint="finger_joint"]');
+      if (!input) return { error: 'finger_joint slider missing' };
+      input.value = '0.5';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      const read = (joint) => {
+        const raw = document.querySelector(`[data-tree-value="${joint}"]`)?.textContent || '';
+        const match = raw.replace('\u2212', '-').match(/-?\d+(?:\.\d+)?/);
+        return match ? Number(match[0]) : null;
+      };
+      return {
+        source: read('finger_joint'),
+        leftOuter: read('left_inner_knuckle_joint'),
+        leftInner: read('left_inner_finger_joint'),
+        rightKnuckle: read('right_inner_knuckle_joint'),
+        rightInner: read('right_inner_finger_joint'),
+        rightOuter: read('right_outer_knuckle_joint'),
+      };
+    });
+    const positive = ['source', 'leftOuter', 'rightInner'];
+    const negative = ['leftInner', 'rightKnuckle', 'rightOuter'];
+    const linkedOk =
+      !linked.error &&
+      positive.every((key) => Number.isFinite(linked[key]) && linked[key] > 0.1) &&
+      negative.every((key) => Number.isFinite(linked[key]) && linked[key] < -0.1);
+    if (!linkedOk) {
+      console.error(
+        `  ✗ ${name} mimic linkage did not follow finger_joint: ${JSON.stringify(linked)}`,
+      );
+      failures += 1;
+      continue;
+    }
+  }
+
   // The blocks that carry a readout instead of a slider, and what holds them
   // there: the joint they mimic, a closed loop, or — for a description with
   // both — neither word, just the count.
