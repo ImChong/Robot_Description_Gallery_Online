@@ -1615,6 +1615,22 @@
   },
   "height_m": 0.3619
  },
+ "shadow_hand": {
+  "size": {
+   "x": 0.1351,
+   "y": 0.4454,
+   "z": 0.1821
+  },
+  "height_m": 0.4454
+ },
+ "shadowhand_motor": {
+  "size": {
+   "x": 0.1351,
+   "y": 0.4454,
+   "z": 0.1821
+  },
+  "height_m": 0.4454
+ },
  "shadowhand_motor_left": {
   "size": {
    "x": 0.1351,
