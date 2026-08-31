@@ -4547,6 +4547,203 @@
    }
   },
   {
+   "id": "walker_s2",
+   "name": "Walker S2",
+   "maker": "UBTECH Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 50,
+   "license": "OpenAtom Open Hardware License v1.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "UBTECH's Walker S2 EDU exploration model and the official simulation model for the 2026 Global Humanoid Robot Competition. The repository publishes three URDF configurations of the same body: a pair of third-generation dexterous hands, parallel grippers, or simple fixed hands in a ROS 2 package, plus a separate USD model for Isaac Sim.",
+   "notes_zh": "优必选 Walker S2 EDU 探索者，也是 2026 全球人形机器人挑战赛官方指定仿真模型。仓库为同一本体提供三种 URDF 配置：第三代灵巧手、平行夹爪，以及 ROS 2 功能包中的固定手版本；另附用于 Isaac Sim 的 USD 模型。",
+   "pose": null,
+   "loops": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.7361,
+     "y": 1.7648,
+     "z": 0.343
+    },
+    "height_m": 1.7648
+   },
+   "urdf": {
+    "xml_name": "walker_s2",
+    "links": 63,
+    "joints": {
+     "fixed": 11,
+     "floating": 1,
+     "revolute": 50
+    },
+    "moving_joints": 51,
+    "mass_kg": 21.255,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 63649
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/UBTECH-Robot/WalkerS2-Model@ca2ab983363d52a5e22ddf3a4d979ceaa675c374/",
+    "urdf": "walker_s2_urdf_with_hand3/walker_s2.urdf",
+    "packages": {},
+    "mesh_files": 59,
+    "mesh_bytes": 36972606,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "UBTECH-Robot/WalkerS2-Model",
+    "commit": "ca2ab983363d52a5e22ddf3a4d979ceaa675c374",
+    "repo_url": "https://github.com/UBTECH-Robot/WalkerS2-Model",
+    "tree_url": "https://github.com/UBTECH-Robot/WalkerS2-Model/tree/ca2ab983363d52a5e22ddf3a4d979ceaa675c374/walker_s2_urdf_with_hand3",
+    "license_url": "https://github.com/UBTECH-Robot/WalkerS2-Model/blob/ca2ab983363d52a5e22ddf3a4d979ceaa675c374/LICENSE",
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.ubtrobot.com/en/humanoid/products/walker-s2"
+   },
+   "variants": [
+    {
+     "id": "walker_s2_hand3",
+     "name": "Third-generation dexterous hands",
+     "deprecated": false,
+     "dof": 50,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "The body with two third-generation five-finger hands: eleven revolute joints per hand on top of the body's twenty-eight, fifty actuated joints in all. The URDF also declares its world-to-base root as floating.",
+     "notes_zh": "本体加两只第三代五指灵巧手：在本体 28 个运动关节之外，每只手有 11 个 revolute 关节，合计 50 个执行关节；URDF 另把 world 到 base 的根关节声明为 floating。",
+     "measured": {
+      "size": {
+       "x": 0.7361,
+       "y": 1.7648,
+       "z": 0.343
+      },
+      "height_m": 1.7648
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "walker_s2",
+      "links": 63,
+      "joints": {
+       "fixed": 11,
+       "floating": 1,
+       "revolute": 50
+      },
+      "moving_joints": 51,
+      "mass_kg": 21.255,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 63649
+     },
+     "assets": {
+      "urdf": "walker_s2_urdf_with_hand3/walker_s2.urdf",
+      "packages": {},
+      "mesh_files": 59,
+      "mesh_bytes": 36972606,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "walker_s2_gripper",
+     "name": "Parallel grippers",
+     "deprecated": false,
+     "dof": 32,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "The body with a parallel gripper on each wrist: twenty-eight revolute body joints and four prismatic gripper joints, thirty-two actuated joints in all. The URDF also declares its world-to-base root as floating.",
+     "notes_zh": "本体的两只手腕各装一个平行夹爪：本体 28 个 revolute 关节加夹爪 4 个 prismatic 关节，合计 32 个执行关节；URDF 另把 world 到 base 的根关节声明为 floating。",
+     "measured": {
+      "size": {
+       "x": 0.7722,
+       "y": 1.7648,
+       "z": 0.343
+      },
+      "height_m": 1.7648
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "walker_s2",
+      "links": 40,
+      "joints": {
+       "fixed": 6,
+       "floating": 1,
+       "prismatic": 4,
+       "revolute": 28
+      },
+      "moving_joints": 33,
+      "mass_kg": 20.893,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 39935
+     },
+     "assets": {
+      "urdf": "walker_s2_with_gripper_urdf/walker_s2.urdf",
+      "packages": {},
+      "mesh_files": 38,
+      "mesh_bytes": 11208842,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "walker_s2_fixed_hands",
+     "name": "ROS 2 fixed hands",
+     "deprecated": false,
+     "dof": 30,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "The ROS 2 package's thirty-revolute-joint body with simple hands fixed to the wrists.",
+     "notes_zh": "ROS 2 功能包里的 30 个 revolute 关节本体，手部固定在手腕上。",
+     "measured": {
+      "size": {
+       "x": 0.7485,
+       "y": 1.7648,
+       "z": 0.343
+      },
+      "height_m": 1.7648
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "walker_s2_v1_world_description",
+      "links": 35,
+      "joints": {
+       "fixed": 4,
+       "revolute": 30
+      },
+      "moving_joints": 30,
+      "mass_kg": 69.088,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 47964
+     },
+     "assets": {
+      "urdf": "walker_s2_v1_world_description/urdf/s2_v1_world/s2_v1_world.urdf",
+      "packages": {
+       "walker_s2_v1_world_description": "walker_s2_v1_world_description"
+      },
+      "mesh_files": 35,
+      "mesh_bytes": 8572140,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    }
+   ]
+  },
+  {
    "id": "sigmaban",
    "name": "SigmaBan",
    "maker": "Rhoban",
