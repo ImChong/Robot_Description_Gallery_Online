@@ -7,6 +7,25 @@ const el = (id) => document.getElementById(id);
 /** How far below the section heading the chips consider it "the one being read". */
 const SPY_SLACK = 12;
 
+/**
+ * How many columns a grid is laid out in right now.
+ *
+ * Only the resolved value answers that: it is one pixel length per track —
+ * `235.2px 235.2px 235.2px` — so the tracks can be counted. A grid the browser
+ * is not laying out has nothing to resolve and reports the value as written
+ * instead, `repeat(auto-fill, minmax(224px, 1fr))`, whose three space-separated
+ * pieces are not three columns. Anything that is not a list of lengths is
+ * therefore not an answer, and says so with 0.
+ */
+function columnCount(grid) {
+  const tracks = getComputedStyle(grid)
+    .gridTemplateColumns.trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  if (!tracks.length || !tracks.every((track) => track.endsWith('px'))) return 0;
+  return tracks.length;
+}
+
 export class Gallery {
   /**
    * @param {object} data registry
@@ -147,20 +166,35 @@ export class Gallery {
    * moves the whole group to the next row when its span will not fit.
    */
   syncMakerSpans() {
+    // A grid of no width is a grid the browser is not laying out — the gallery
+    // is hidden behind a robot's page or a comparison — and there is nothing on
+    // it to measure: the tracks resolve to the `repeat(auto-fill, ...)` they
+    // were written as, whose three space-separated pieces were read as three
+    // columns and froze every group three cards wide for the rest of the visit.
+    // The spans already on the page, the last ones measured for real, are the
+    // better answer until `relayout()` can take a real measurement.
+    if (!this.gridEl.clientWidth) return;
     for (const groups of this.gridEl.querySelectorAll('.maker-groups')) {
       const makers = [...groups.querySelectorAll('.maker-group')];
       // Clear spans first: after a viewport becomes narrower, an old wider
       // span would create implicit columns and make the measured count wrong.
       for (const maker of makers) maker.style.removeProperty('--maker-span');
-      const tracks = getComputedStyle(groups).gridTemplateColumns
-        .split(' ')
-        .filter(Boolean).length;
-      const columns = Math.max(1, tracks);
+      const columns = Math.max(1, columnCount(groups));
       for (const maker of makers) {
         const size = Number.parseInt(maker.dataset.size, 10) || 1;
         maker.style.setProperty('--maker-span', Math.min(size, columns));
       }
     }
+  }
+
+  /**
+   * Back on screen. The search box is in the header, so the gallery re-renders
+   * behind a robot's page and behind a comparison, where its grid cannot be
+   * measured — and nothing else is coming: leaving a stage fires no resize. So
+   * the spans are taken again here, before the frame the reader sees.
+   */
+  relayout() {
+    this.syncMakerSpans();
   }
 
   /**
