@@ -81,6 +81,7 @@ await page.goto(`${base}/web/`, { waitUntil: 'networkidle' });
 
 let failures = 0;
 let ran = 0;
+let checkedLinkMass = false;
 const fail = (message) => {
   console.error(`  ✗ ${message}`);
   failures += 1;
@@ -110,6 +111,16 @@ for (const test of CASES) {
     }
 
     const problems = [];
+    for (const entry of entries) {
+      for (const joint of entry.spec.joints) {
+        const expected = joint.child ? entry.spec.linkByName.get(joint.child)?.mass ?? null : null;
+        if (joint.linkMass !== expected) {
+          problems.push(
+            `${entry.id}: ${joint.name} link mass is ${joint.linkMass}, expected ${expected}`,
+          );
+        }
+      }
+    }
     const perMode = {};
     for (const mode of modes) {
       const { groups, leftovers, coverage } = align(entries, mode);
@@ -263,6 +274,29 @@ for (const test of CASES) {
   }
   if (drawn.failed) fail(`${label} — ${drawn.failed}`);
   if (drawn.overviewRows < 20) fail(`${label} — only ${drawn.overviewRows} overview rows`);
+
+  // The mass attached to a joint is the mass of the child link it moves. Check
+  // the new metric through the real toolbar once, including that the values
+  // reach the rendered table rather than stopping at the parser.
+  if (!checkedLinkMass) {
+    const mass = await page.evaluate(() => {
+      const button = document.querySelector('#compare-tools [data-set="metric:mass"]');
+      if (!button) return { button: false, cells: 0, mismatch: 'missing control' };
+      button.click();
+      const cells = [...document.querySelectorAll('#compare-joints tbody td:not(.is-absent)')];
+      const massCells = cells.filter((cell) => /(?:\d|—)\s*kg$/.test(cell.querySelector('.cell-value')?.textContent.trim() || ''));
+      const mismatch = massCells.find((cell) => {
+        const title = cell.getAttribute('title');
+        const shown = cell.querySelector('.cell-value')?.textContent.trim() || '';
+        return title && !/^(?:—|[\d,.]+ kg)$/.test(shown);
+      });
+      return { button: true, cells: massCells.length, mismatch: mismatch?.textContent.trim() || '' };
+    });
+    if (!mass.button) fail(`${label} — no child-link mass control`);
+    if (!mass.cells) fail(`${label} — child-link mass drew no values`);
+    if (mass.mismatch) fail(`${label} — malformed child-link mass cell: ${mass.mismatch}`);
+    checkedLinkMass = mass.button && mass.cells > 0 && !mass.mismatch;
+  }
 
   console.log(
     `  ✓ ${label.padEnd(46)} ${String(drawn.overviewRows).padStart(2)} metrics · ` +
