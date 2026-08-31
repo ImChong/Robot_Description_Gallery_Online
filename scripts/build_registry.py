@@ -385,6 +385,22 @@ def rewrite_mesh_path(path: str, rules: list[tuple[str, str]]) -> str:
     return path
 
 
+def mesh_rewrite_rules(*blocks: dict[str, Any]) -> list[tuple[str, str]]:
+    """Concatenated ``mesh_rewrite`` lists from one or more curation blocks.
+
+    The entry's ``upstream`` (or ``mirror``) block holds the rules every version
+    shares; a version may add more of its own — a different directory than the
+    ``package://`` lines still name, or a stand-in for one mesh the CDN will not
+    serve. The two lists are applied in that order, the same way a single list
+    is.
+    """
+    rules: list[tuple[str, str]] = []
+    for block in blocks:
+        for rule in block.get("mesh_rewrite") or []:
+            rules.append((rule["from"], rule["to"]))
+    return rules
+
+
 def package_candidates(up: Upstream, package: str) -> list[str]:
     """Plausible repository roots for a ``package://<package>/`` reference.
 
@@ -682,6 +698,12 @@ def upstream_from_curation(item: dict[str, Any]) -> Upstream:
     # need not name that file a second time here.
     first = (item.get("variants") or [{}])[0]
     urdf_path = spec.get("urdf") or first["urdf"]
+    if spec.get("package") is not None:
+        package_path = spec["package"]
+    elif first.get("package") is not None:
+        package_path = first["package"]
+    else:
+        package_path = posixpath.dirname(urdf_path)
     return Upstream(
         key=curated_id(item),
         robot=item.get("name") or curated_id(item),
@@ -696,7 +718,7 @@ def upstream_from_curation(item: dict[str, Any]) -> Upstream:
         # An explicit empty string means the repository root is the package —
         # true of every repository that ships exactly one description. Only an
         # absent key falls back to the directory holding the URDF.
-        package_path=spec["package"] if spec.get("package") is not None else posixpath.dirname(urdf_path),
+        package_path=package_path,
         urdf_path=urdf_path,
         mjcf_path=spec["mjcf"] if "mjcf" in spec else first.get("mjcf"),
         uses_xacro=False,
@@ -709,7 +731,7 @@ def upstream_from_curation(item: dict[str, Any]) -> Upstream:
         # Then the entry says where the files really are, the same way a mirror
         # does — see mirror_from_curation.
         packages=spec.get("packages") or {},
-        mesh_rewrite=[(r["from"], r["to"]) for r in spec.get("mesh_rewrite") or []],
+        mesh_rewrite=mesh_rewrite_rules(spec, first),
     )
 
 
@@ -724,6 +746,12 @@ def mirror_from_curation(item: dict[str, Any]) -> Upstream:
     spec = item["mirror"]
     first = (item.get("variants") or [{}])[0]
     urdf_path = spec.get("urdf") or first["urdf"]
+    if spec.get("package") is not None:
+        package_path = spec["package"]
+    elif first.get("package") is not None:
+        package_path = first["package"]
+    else:
+        package_path = posixpath.dirname(urdf_path)
     return Upstream(
         key=curated_id(item),
         robot=item.get("name") or curated_id(item),
@@ -735,7 +763,7 @@ def mirror_from_curation(item: dict[str, Any]) -> Upstream:
         license_path=None,
         github=None,
         commit=None,
-        package_path=spec["package"] if spec.get("package") is not None else posixpath.dirname(urdf_path),
+        package_path=package_path,
         urdf_path=urdf_path,
         mjcf_path=spec.get("mjcf") or first.get("mjcf"),
         uses_xacro=False,
@@ -747,7 +775,7 @@ def mirror_from_curation(item: dict[str, Any]) -> Upstream:
             license_url=spec.get("license_url"),
         ),
         packages=spec.get("packages") or {},
-        mesh_rewrite=[(r["from"], r["to"]) for r in spec.get("mesh_rewrite") or []],
+        mesh_rewrite=mesh_rewrite_rules(spec, first),
     )
 
 
@@ -1450,11 +1478,19 @@ def main() -> int:
                 urdf_path=spec["urdf"],
                 mjcf_path=spec.get("mjcf"),
                 package_path=spec["package"] if "package" in spec else up.package_path,
+                # Shared rules from the entry, then this version's own — the
+                # default version's extras are already on `up`, so this matches
+                # it and the already-read check below reuses that parse.
+                mesh_rewrite=mesh_rewrite_rules(
+                    item.get("upstream") or item.get("mirror") or {}, spec
+                ),
             )
             # The default version has already been read; the rest are new files.
             # Same file read against another package root is another reading.
             already_read = (
-                vup.urdf_path == up.urdf_path and vup.package_path == up.package_path
+                vup.urdf_path == up.urdf_path
+                and vup.package_path == up.package_path
+                and vup.mesh_rewrite == up.mesh_rewrite
             )
             vfacts = facts if already_read else inspect_urdf(vup, http)
             if not vfacts.ok:

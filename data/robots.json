@@ -3828,6 +3828,187 @@
    }
   },
   {
+   "id": "pm01",
+   "name": "PM01",
+   "maker": "EngineAI",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 24,
+   "license": null,
+   "formats": [
+    "urdf"
+   ],
+   "notes": "EngineAI's 138 cm humanoid. The description publishes 24 joints — six per leg, one at the torso, five per arm and one in the head — on a 41 kg body, against the 23 the spec sheet counts by giving the neck none. Fixed frames hang off the feet, both elbow ends, and a camera on the head and another on the torso. Textured Collada like T800. Both URDFs still name package://resource/robot/pm01_edu/, the layout EngineAI's native SDK uses; this repository keeps each version in its own directory, so those paths are rewritten onto the tree that actually holds the files. The Edu build's torso Collada is 29 MB, past jsDelivr's 20 MB file limit, so the gallery loads the OBJ sitting next to it; the navigation build's torso is under the limit and keeps its Collada, and adds a fixed Livox frame on the torso. The repository publishes no licence file.",
+   "notes_zh": "众擎 138 cm 人形机器人。描述文件里是 24 个关节——单腿 6 个、躯干 1 个、单臂 5 个、头部 1 个——整机 41 kg，而规格表按颈部 0 自由度计成 23 个。脚底、两只肘末端、头部相机和躯干相机各挂了一个固定坐标系。网格与 T800 一样是带贴图的 Collada。两份 URDF 仍写成 package://resource/robot/pm01_edu/，那是众擎 native SDK 的目录布局；这个仓库把每个版本放在自己的目录里，所以这些路径会被改写到文件实际所在的树上。Edu 版本的躯干 Collada 有 29 MB，超过 jsDelivr 单文件 20 MB 上限，因此合集改加载旁边的 OBJ；导航版的躯干未超限，保留 Collada，并在躯干上多了一个固定的 Livox 坐标系。仓库没有许可证文件。",
+   "pose": null,
+   "loops": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.2522,
+     "y": 1.4203,
+     "z": 0.5356
+    },
+    "height_m": 1.4203
+   },
+   "urdf": {
+    "xml_name": "engineai_pm01",
+    "links": 31,
+    "joints": {
+     "fixed": 6,
+     "revolute": 24
+    },
+    "moving_joints": 24,
+    "mass_kg": 40.921,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 31217
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/engineai-robotics/engineai_robotics_description@1d2d7601f520f716863c32a83abe9c77b26ee06c/",
+    "urdf": "pm01_edu/urdf/serial_pm01_edu.urdf",
+    "packages": {
+     "resource": "pm01_edu"
+    },
+    "mesh_files": 25,
+    "mesh_bytes": 18758352,
+    "mesh_formats": [
+     ".dae"
+    ],
+    "mesh_rewrite": [
+     {
+      "from": "/robot/pm01_edu/",
+      "to": "/"
+     },
+     {
+      "from": "LINK_TORSO_YAW.dae",
+      "to": "LINK_TORSO_YAW.obj"
+     }
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "engineai-robotics/engineai_robotics_description",
+    "commit": "1d2d7601f520f716863c32a83abe9c77b26ee06c",
+    "repo_url": "https://github.com/engineai-robotics/engineai_robotics_description",
+    "tree_url": "https://github.com/engineai-robotics/engineai_robotics_description/tree/1d2d7601f520f716863c32a83abe9c77b26ee06c/pm01_edu",
+    "license_url": null,
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.engineai.com.cn/"
+   },
+   "variants": [
+    {
+     "id": "pm01_edu",
+     "name": "pm01_edu",
+     "deprecated": false,
+     "dof": 24,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "The current educational description (v2): 24 joints, cameras on the head and torso. The torso visual is the OBJ, because the Collada next to it exceeds jsDelivr's 20 MB limit.",
+     "notes_zh": "当前的教育版描述（v2）：24 个关节，头部和躯干各有相机。躯干外观改用 OBJ，因为旁边的 Collada 超过 jsDelivr 的 20 MB 上限。",
+     "measured": {
+      "size": {
+       "x": 0.2522,
+       "y": 1.4203,
+       "z": 0.5356
+      },
+      "height_m": 1.4203
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "engineai_pm01",
+      "links": 31,
+      "joints": {
+       "fixed": 6,
+       "revolute": 24
+      },
+      "moving_joints": 24,
+      "mass_kg": 40.921,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 31217
+     },
+     "assets": {
+      "urdf": "pm01_edu/urdf/serial_pm01_edu.urdf",
+      "packages": {
+       "resource": "pm01_edu"
+      },
+      "mesh_files": 25,
+      "mesh_bytes": 18758352,
+      "mesh_formats": [
+       ".dae"
+      ],
+      "mesh_rewrite": [
+       {
+        "from": "/robot/pm01_edu/",
+        "to": "/"
+       },
+       {
+        "from": "LINK_TORSO_YAW.dae",
+        "to": "LINK_TORSO_YAW.obj"
+       }
+      ]
+     }
+    },
+    {
+     "id": "pm01_lidar",
+     "name": "pm01_lidar",
+     "deprecated": false,
+     "dof": 24,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "The navigation description (v1): the same 24 joints plus a fixed Livox frame on the torso, and a torso Collada small enough to load as-is.",
+     "notes_zh": "导航版描述（v1）：同样 24 个关节，躯干上多一个固定的 Livox 坐标系，躯干 Collada 未超限，按原文件加载。",
+     "measured": {
+      "size": {
+       "x": 0.2626,
+       "y": 1.4203,
+       "z": 0.5356
+      },
+      "height_m": 1.4203
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "engineai_pm01",
+      "links": 32,
+      "joints": {
+       "fixed": 7,
+       "revolute": 24
+      },
+      "moving_joints": 24,
+      "mass_kg": 40.921,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 31649
+     },
+     "assets": {
+      "urdf": "pm01_lidar/urdf/serial_pm01_edu.urdf",
+      "packages": {
+       "resource": "pm01_lidar"
+      },
+      "mesh_files": 25,
+      "mesh_bytes": 19571151,
+      "mesh_formats": [
+       ".dae"
+      ],
+      "mesh_rewrite": [
+       {
+        "from": "/robot/pm01_edu/",
+        "to": "/"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
    "id": "mini_hi",
    "name": "Mini Hi",
    "maker": "HighTorque Robotics",

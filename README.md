@@ -4,12 +4,12 @@
 [![Verify](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml/badge.svg)](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-收录 **190 个**开源机器人描述：152 个 URDF 可在站内拖关节、查看碰撞体与惯量，并下载
+收录 **191 个**开源机器人描述：153 个 URDF 可在站内拖关节、查看碰撞体与惯量，并下载
 URDF、网格 zip 或 ROS 2 功能包；纯 MJCF 条目使用 MuJoCo Live 在线预览。
 
 在线访问：<https://imchong.github.io/Robot_Description_Gallery_Online/web/>
 
-人形 52 · 四足 24 · 机械臂 36 · 灵巧手 / 夹爪 29 · 移动操作 19 · 双臂 12 · 双足 11
+人形 53 · 四足 24 · 机械臂 36 · 灵巧手 / 夹爪 29 · 移动操作 19 · 双臂 12 · 双足 11
 生物力学 3 · 无人机 2 · 移动底盘 1 · 传感器 1
 
 ## 功能
@@ -76,7 +76,8 @@ npm run check:custom-url             # 校验自定义 URL 路由
   URDF 时收录后者——UR 三台走的就是 example-robot-data 这条路。
 - 网格是 Y-up 的 glTF（`obj2gltf` 的默认输出）时每个连杆都会摆错方向，这类模型同样
   暂不收录，Drake 的双臂 iiwa 就是。
-- jsDelivr 单文件上限 20 MB，个别含超大网格的模型无法收录（Go1、B1、B2-W、PM01）。
+- jsDelivr 单文件上限 20 MB，个别含超大网格的模型无法收录（Go1、B1、B2-W）。PM01 Edu
+  的躯干 Collada 超过该上限，卡片改用仓库里同名的 OBJ。
 - USD 预览支持 `.usda`、`.usdc`、`.usdz`；二进制 `.usd` crate 格式暂不支持。
 
 ## 许可
@@ -90,7 +91,7 @@ npm run check:custom-url             # 校验自定义 URL 路由
 
 ---
 
-**English** — A browsable gallery of 190 open robot descriptions: 152 URDF entries
+**English** — A browsable gallery of 191 open robot descriptions: 153 URDF entries
 load in the built-in viewer, while MJCF-only entries open as pinned MuJoCo Live scenes.
 The gallery groups robots by category and then by maker. The URDF viewer lets you drag
 joints — or play every joint in turn out to both its limits and back, a second each —
