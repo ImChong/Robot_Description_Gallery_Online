@@ -1127,6 +1127,55 @@
       "notes_zh": "智元用来训练开源 X1 运动策略的描述文件：12 个 revolute 关节，每条腿 6 个；腰部以上的躯干、手臂与头部全部固定。总共 58 个连杆、35 kg。仓库没有许可证文件。"
     },
     {
+      "id": "walker_s2",
+      "name": "Walker S2",
+      "maker": "UBTECH Robotics",
+      "category": "humanoid",
+      "dof": 50,
+      "upstream": {
+        "github": "UBTECH-Robot/WalkerS2-Model",
+        "commit": "ca2ab983363d52a5e22ddf3a4d979ceaa675c374",
+        "license": "OpenAtom Open Hardware License v1.0",
+        "license_file": "LICENSE",
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.ubtrobot.com/en/humanoid/products/walker-s2"
+      },
+      "notes": "UBTECH's Walker S2 EDU exploration model and the official simulation model for the 2026 Global Humanoid Robot Competition. The repository publishes three URDF configurations of the same body: a pair of third-generation dexterous hands, parallel grippers, or simple fixed hands in a ROS 2 package, plus a separate USD model for Isaac Sim.",
+      "notes_zh": "优必选 Walker S2 EDU 探索者，也是 2026 全球人形机器人挑战赛官方指定仿真模型。仓库为同一本体提供三种 URDF 配置：第三代灵巧手、平行夹爪，以及 ROS 2 功能包中的固定手版本；另附用于 Isaac Sim 的 USD 模型。",
+      "variants": [
+        {
+          "id": "walker_s2_hand3",
+          "name": "Third-generation dexterous hands",
+          "dof": 50,
+          "urdf": "walker_s2_urdf_with_hand3/walker_s2.urdf",
+          "package": "walker_s2_urdf_with_hand3",
+          "notes": "The body with two third-generation five-finger hands: eleven revolute joints per hand on top of the body's twenty-eight, fifty actuated joints in all. The URDF also declares its world-to-base root as floating.",
+          "notes_zh": "本体加两只第三代五指灵巧手：在本体 28 个运动关节之外，每只手有 11 个 revolute 关节，合计 50 个执行关节；URDF 另把 world 到 base 的根关节声明为 floating。"
+        },
+        {
+          "id": "walker_s2_gripper",
+          "name": "Parallel grippers",
+          "dof": 32,
+          "urdf": "walker_s2_with_gripper_urdf/walker_s2.urdf",
+          "package": "walker_s2_with_gripper_urdf",
+          "notes": "The body with a parallel gripper on each wrist: twenty-eight revolute body joints and four prismatic gripper joints, thirty-two actuated joints in all. The URDF also declares its world-to-base root as floating.",
+          "notes_zh": "本体的两只手腕各装一个平行夹爪：本体 28 个 revolute 关节加夹爪 4 个 prismatic 关节，合计 32 个执行关节；URDF 另把 world 到 base 的根关节声明为 floating。"
+        },
+        {
+          "id": "walker_s2_fixed_hands",
+          "name": "ROS 2 fixed hands",
+          "urdf": "walker_s2_v1_world_description/urdf/s2_v1_world/s2_v1_world.urdf",
+          "package": "walker_s2_v1_world_description",
+          "notes": "The ROS 2 package's thirty-revolute-joint body with simple hands fixed to the wrists.",
+          "notes_zh": "ROS 2 功能包里的 30 个 revolute 关节本体，手部固定在手腕上。"
+        }
+      ]
+    },
+    {
       "description": "sigmaban_description",
       "category": "humanoid",
       "notes": "Rhoban's kid-size football humanoid, four kilos over twenty joints. Written out of the CAD by onshape-to-robot as pure geometry: every link is a box or a cylinder, so the model has inertias and collision shapes but not one mesh file — the first such entry in the gallery.",

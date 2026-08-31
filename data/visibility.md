@@ -20,7 +20,7 @@ The gallery fetches this file at startup: rows checked `[x]` are shown, rows lef
 the site matches on; the name, organisation and upstream link after it are for
 human readers.
 
-## 人形 Humanoid · 53
+## 人形 Humanoid · 54
 
 - [x] `g1` **G1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description)
 - [x] `h1` **H1** — UNITREE Robotics — [unitreerobotics/unitree_ros · h1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description)
@@ -68,6 +68,7 @@ human readers.
 - [x] `digit` **Digit** — Agility Robotics — [adubredu/DigitRobot.jl](https://github.com/adubredu/DigitRobot.jl/tree/bd3b99e2297c48c5f818f521791a9f8daf3ee303)
 - [x] `gundam_rx78` **Gundam RX-78** — Bandai Namco Filmworks — [gundam-global-challenge/gundam_robot](https://github.com/gundam-global-challenge/gundam_robot/tree/411d5db72a122b41bb4d691a0fbc19fd2ac88222/gundam_rx78_description)
 - [ ] `x1` **X1** — AgiBot — [AgibotTech/agibot_x1_train](https://github.com/AgibotTech/agibot_x1_train/tree/e6651b9ab843fd1b1be70c087bfb7e8b28e44ccd/resources/robots/x1)
+- [x] `walker_s2` **Walker S2** — UBTECH Robotics — [UBTECH-Robot/WalkerS2-Model](https://github.com/UBTECH-Robot/WalkerS2-Model/tree/ca2ab983363d52a5e22ddf3a4d979ceaa675c374/walker_s2_urdf_with_hand3)
 - [ ] `sigmaban` **SigmaBan** — Rhoban — [Rhoban/sigmaban_urdf · sigmaban_description](https://github.com/Rhoban/sigmaban_urdf/tree/d5d023fd35800d00d7647000bce8602617a4960d)
 - [ ] `simple_humanoid` **Simple Humanoid** — — — [laas/simple_humanoid_description · simple_humanoid_description](https://github.com/laas/simple_humanoid_description/tree/4e859aed7df3c29954c9cca2a1ecb94069f7cfce)
 - [ ] `robotis_op3` **Robotis OP3** — ROBOTIS — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3)
