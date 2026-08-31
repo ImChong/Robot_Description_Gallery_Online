@@ -153,6 +153,49 @@ if (!sharesRow || badMakerLayout.length) {
   console.log('gallery: maker groups pack without crossing rows');
 }
 
+// Those spans are measured from the laid-out grid, and the gallery is not
+// always laid out when it re-renders: the search box is in the header, so it is
+// reachable from a comparison or a robot's page, and the gallery behind them is
+// `hidden`. A grid the browser is not laying out resolves no tracks to count —
+// `getComputedStyle` answers with the `repeat(auto-fill, ...)` the stylesheet
+// wrote — and a count taken from that froze every group three cards wide for
+// the rest of the visit, with two thirds of the page left empty. Coming back
+// has to measure again.
+await page.evaluate(() => {
+  location.hash = 'compare=1';
+});
+await page.locator('#view-gallery').waitFor({ state: 'hidden' });
+await page.fill('#search', 'a');
+await page.fill('#search', '');
+await page.locator('#compare-back').click();
+await page.locator('#view-gallery').waitFor({ state: 'visible' });
+const spans = await page.locator('#grid .maker-groups').evaluateAll((containers) =>
+  containers.map((container) => {
+    const columns = getComputedStyle(container)
+      .gridTemplateColumns.split(' ')
+      .filter(Boolean).length;
+    const wrong = [...container.children].filter(
+      (group) =>
+        Number(group.style.getPropertyValue('--maker-span')) !==
+        Math.min(Number(group.dataset.size), columns),
+    ).length;
+    return { columns, wrong };
+  }),
+);
+const respanned = Math.max(0, ...spans.map((s) => s.columns));
+const misspanned = spans.reduce((total, s) => total + s.wrong, 0);
+// Four is not the answer — five columns fit at 1440px — but it is well clear of
+// the three the unmeasured grid used to report.
+if (misspanned || respanned < 4) {
+  console.error(
+    `  ✗ maker spans after a re-render behind another view: ${respanned} columns, ` +
+      `${misspanned} group(s) not spanning what fits`,
+  );
+  process.exitCode = 1;
+} else {
+  console.log(`gallery: maker spans re-measure on the way back (${respanned} columns)`);
+}
+
 // The optional live link used to have no grid area on phones and was auto-
 // placed into a third row. Check the narrowest supported layout while a model
 // that offers the link is open: all four navigation actions share one row and

@@ -188,6 +188,10 @@ async function main() {
       if (detail?.isFullscreen()) detail.exitFullscreen();
       views.detail.hidden = true;
       views.gallery.hidden = false;
+      // The card grid measures itself, and a hidden view has nothing to measure:
+      // a search run from a stage re-renders the gallery behind it, so the way
+      // back is where those spans are worked out.
+      gallery.relayout();
       document.title = 'Robot Description Gallery Online · 机器人3D模型在线合集';
       // `#category=quadruped` is a link to a section of the page: honour it on
       // the first load and whenever the address bar names a section other than
