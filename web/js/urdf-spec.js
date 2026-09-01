@@ -91,6 +91,9 @@ export function parseUrdfSpec(xmlText) {
     if (!name) continue;
     const inertial = node.querySelector(':scope > inertial');
     const inertia = inertial?.querySelector('inertia') || null;
+    const inertiaTrace = inertia
+      ? ['ixx', 'iyy', 'izz'].reduce((sum, key) => sum + (num(inertia, key) ?? 0), 0)
+      : null;
     links.push({
       name,
       mass: inertial ? num(inertial.querySelector('mass'), 'value') : null,
@@ -100,6 +103,10 @@ export function parseUrdfSpec(xmlText) {
       inertiaSum: inertia
         ? ['ixx', 'iyy', 'izz'].reduce((sum, key) => sum + Math.abs(num(inertia, key) ?? 0), 0)
         : 0,
+      // The trace is invariant to a rotation of the inertial frame, unlike an
+      // individual Ixx/Iyy/Izz component. That makes it the useful one-number
+      // reading when like-for-like child links are compared across robots.
+      inertiaTrace: inertiaTrace !== null && inertiaTrace > 0 ? inertiaTrace : null,
       collisions: node.querySelectorAll(':scope > collision').length,
     });
   }
@@ -266,6 +273,9 @@ function buildTree(spec) {
     // well as the mass of the whole sub-tree so the joint-by-joint comparison
     // can put like-for-like link masses beside one another.
     joint.linkMass = joint.child ? spec.linkByName.get(joint.child)?.mass ?? null : null;
+    joint.linkInertia = joint.child
+      ? spec.linkByName.get(joint.child)?.inertiaTrace ?? null
+      : null;
   }
 
   spec.moving = spec.joints.filter((joint) => joint.movable);

@@ -12,7 +12,7 @@
  *   - its limbs: how many joints each carries, how much torque, how long it is;
  *   - and every joint, lined up with the joint that does the same job on the
  *     others — travel, speed limit, torque limit, the power those two imply,
- *     and the mass of the child link that joint moves.
+ *     and the mass and inertia of the child link that joint moves.
  *     A chain — a finger, an arm, a leg — is read down its length, from the
  *     joint it starts at to the joint it ends at, so a thumb of four knuckles
  *     can be read against a thumb of three.
@@ -103,12 +103,20 @@ function effortText(joint) {
   return `${fmt(joint.effort, 1)} ${jointIsLinear(joint) ? 'N' : 'N·m'}`;
 }
 
+function inertiaText(joint) {
+  if (!isNum(joint.linkInertia) || joint.linkInertia <= 0) return '—';
+  const amount =
+    joint.linkInertia < 0.000001 ? joint.linkInertia.toExponential(2) : fmt(joint.linkInertia, 6);
+  return `${amount} kg·m²`;
+}
+
 /** What one joint reads as under the metric the table is showing. */
 function cellText(joint, metric, unit) {
   if (metric === 'range') return travelText(joint, unit);
   if (metric === 'velocity') return velocityText(joint, unit);
   if (metric === 'effort') return effortText(joint);
   if (metric === 'power') return isNum(joint.power) ? `${fmt(joint.power, 0)} W` : '—';
+  if (metric === 'inertia') return inertiaText(joint);
   return isNum(joint.linkMass) ? `${fmt(joint.linkMass, 3)} kg` : '—';
 }
 
@@ -1151,6 +1159,7 @@ export class Compare {
           ['effort', t('limit.effort'), t('limit.effortFull')],
           ['power', t('compare.power'), t('cmp.help.powerPeak')],
           ['mass', t('compare.linkMass'), t('compare.linkMassFull')],
+          ['inertia', t('compare.linkInertia'), t('compare.linkInertiaFull')],
         ],
         this.metric,
       ) +
@@ -1410,5 +1419,6 @@ function metricValue(joint, metric) {
   if (metric === 'velocity') return joint.velocity;
   if (metric === 'effort') return joint.effort;
   if (metric === 'power') return joint.power;
+  if (metric === 'inertia') return joint.linkInertia;
   return joint.linkMass;
 }

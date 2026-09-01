@@ -82,6 +82,7 @@ await page.goto(`${base}/web/`, { waitUntil: 'networkidle' });
 let failures = 0;
 let ran = 0;
 let checkedLinkMass = false;
+let checkedLinkInertia = false;
 const fail = (message) => {
   console.error(`  ✗ ${message}`);
   failures += 1;
@@ -117,6 +118,14 @@ for (const test of CASES) {
         if (joint.linkMass !== expected) {
           problems.push(
             `${entry.id}: ${joint.name} link mass is ${joint.linkMass}, expected ${expected}`,
+          );
+        }
+        const expectedInertia = joint.child
+          ? entry.spec.linkByName.get(joint.child)?.inertiaTrace ?? null
+          : null;
+        if (joint.linkInertia !== expectedInertia) {
+          problems.push(
+            `${entry.id}: ${joint.name} link inertia is ${joint.linkInertia}, expected ${expectedInertia}`,
           );
         }
       }
@@ -296,6 +305,30 @@ for (const test of CASES) {
     if (!mass.cells) fail(`${label} — child-link mass drew no values`);
     if (mass.mismatch) fail(`${label} — malformed child-link mass cell: ${mass.mismatch}`);
     checkedLinkMass = mass.button && mass.cells > 0 && !mass.mismatch;
+  }
+
+  // Inertia is shown as the trace of the child link's tensor. Besides being a
+  // compact scalar for the table, the trace stays comparable when two URDFs
+  // choose differently rotated inertial frames for equivalent links.
+  if (!checkedLinkInertia) {
+    const inertia = await page.evaluate(() => {
+      const button = document.querySelector('#compare-tools [data-set="metric:inertia"]');
+      if (!button) return { button: false, cells: 0, mismatch: 'missing control' };
+      button.click();
+      const cells = [...document.querySelectorAll('#compare-joints tbody td:not(.is-absent)')];
+      const inertiaCells = cells.filter((cell) =>
+        /(?:\d|—)\s*kg·m²$/.test(cell.querySelector('.cell-value')?.textContent.trim() || ''),
+      );
+      const mismatch = inertiaCells.find((cell) => {
+        const shown = cell.querySelector('.cell-value')?.textContent.trim() || '';
+        return !/^(?:—|[\d,.]+(?:e[+-]?\d+)? kg·m²)$/.test(shown);
+      });
+      return { button: true, cells: inertiaCells.length, mismatch: mismatch?.textContent.trim() || '' };
+    });
+    if (!inertia.button) fail(`${label} — no child-link inertia control`);
+    if (!inertia.cells) fail(`${label} — child-link inertia drew no values`);
+    if (inertia.mismatch) fail(`${label} — malformed child-link inertia cell: ${inertia.mismatch}`);
+    checkedLinkInertia = inertia.button && inertia.cells > 0 && !inertia.mismatch;
   }
 
   console.log(
