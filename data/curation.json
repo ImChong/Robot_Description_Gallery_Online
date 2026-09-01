@@ -3069,6 +3069,29 @@
       "notes_zh": "迪士尼研究院为乐园做的那台会自己走路的机器人，这里是一个强化学习仓库重新画出的版本：13.8 kg 机身上共 16 个关节——每条腿 5 个，颈部与头部 4 个，两根天线各 1 个。许可证是该仓库从 IsaacGymEnvs 继承来的 NVIDIA License，不是迪士尼的。"
     },
     {
+      "id": "open_duck_mini_v2",
+      "name": "Open Duck Mini",
+      "maker": "Antoine Pirrone",
+      "category": "biped",
+      "upstream": {
+        "github": "apirrone/Open_Duck_Mini",
+        "commit": "b23317a485b3cec7d8417f352478778b3475173c",
+        "package": "mini_bdx/robots/open_duck_mini_v2",
+        "urdf": "mini_bdx/robots/open_duck_mini_v2/robot.urdf",
+        "mjcf": "mini_bdx/robots/open_duck_mini_v2/robot.xml",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "tags": [
+          "biped"
+        ]
+      },
+      "links": {
+        "official": "https://github.com/apirrone/Open_Duck_Mini"
+      },
+      "notes": "A community-built miniature of Disney's BD-X droid: sixteen joints on a 2.1 kg body — five per leg, four through the neck and head, and one per antenna — exported from Onshape with every mesh as an STL beside the URDF. The upstream URDF names meshes with an empty `package://` prefix; the build resolves them from the same directory as the file.",
+      "notes_zh": "社区自制的迪士尼 BD-X 迷你版：2.1 kg 机身、16 个关节——每条腿 5 个，颈部与头部 4 个，两根天线各 1 个——从 Onshape 导出，所有网格都是与 URDF 同目录的 STL。上游 URDF 用空的 `package://` 前缀引用网格；构建时从该文件所在目录解析。"
+    },
+    {
       "id": "r1_a5",
       "name": "R1-A5",
       "maker": "UNITREE Robotics",
