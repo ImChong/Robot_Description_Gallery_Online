@@ -9215,7 +9215,7 @@
    "pose": null,
    "loops": null,
    "preview_frame": {
-    "palm": "-x",
+    "palm": "+x",
     "fingers": "+z"
    },
    "measured": {
@@ -17109,7 +17109,18 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "preview_frame": {
+    "palm": "+x",
+    "fingers": "+y"
+   },
+   "measured": {
+    "size": {
+     "x": 0.1736,
+     "y": 0.2284,
+     "z": 0.2129
+    },
+    "height_m": 0.2284
+   },
    "mjcf": {
     "xml_name": "umi_gripper",
     "links": 4,

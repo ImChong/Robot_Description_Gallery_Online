@@ -3,7 +3,8 @@
     "Pinned MuJoCo Menagerie collection imported by scripts/build_registry.py.",
     "The upstream README is the model manifest: name, DoF, licence, scene and",
     "preview image are read from its tables. This file supplies gallery-specific",
-    "categories, deduplication and maker names. Keys are <directory>/<scene>.",
+    "categories, deduplication, maker names, and optional preview_frame overrides",
+    "for MJCF-only cards. Keys are <directory>/<scene>.",
     "Entries in merge_into enrich an existing URDF card with Menagerie MJCF;",
     "every other table row becomes an MJCF-only card opening MuJoCo's web viewer."
   ],
@@ -94,5 +95,11 @@
     "umi_gripper": "Universal Manipulation Interface",
     "robot_soccer_kit": "Robot Soccer Kit",
     "realsense_d435i": "Intel RealSense"
+  },
+  "preview_frame": {
+    "umi_gripper": {
+      "palm": "+x",
+      "fingers": "+y"
+    }
   }
 }

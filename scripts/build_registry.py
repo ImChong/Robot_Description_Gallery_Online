@@ -1227,6 +1227,7 @@ def add_menagerie(
     id_overrides = config.get("id_overrides") or {}
     makers = config.get("maker_by_directory") or {}
     categories = config.get("section_categories") or {}
+    preview_frames = config.get("preview_frame") or {}
     seen_keys: set[str] = set()
 
     for model in models:
@@ -1335,6 +1336,13 @@ def add_menagerie(
             },
             "links": {"menagerie": external["tree_url"]},
         }
+        frame = preview_frames.get(robot_id)
+        if frame is not None:
+            problem = preview_frame_problem(frame)
+            if problem:
+                problems.append(f"MuJoCo Menagerie · {key}: {problem}")
+                continue
+            entry["preview_frame"] = frame
         entries.append(entry)
         by_id[robot_id] = entry
 

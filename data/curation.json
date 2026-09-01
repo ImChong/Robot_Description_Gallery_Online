@@ -26,7 +26,9 @@
     "fixes no facing, so the hands arrive pointing six different ways and no two",
     "cards can be compared. `palm` is the way a fingertip travels when the finger",
     "flexes, `fingers` the direction the four fingers grow; on a gripper, the side",
-    "you see the jaws spread across and the direction they reach. The two must be",
+    "you see the jaws spread across and the direction they reach. On a humanoid or",
+    "arm, read `palm` as the direction the model should face and `fingers` as up.",
+    "The two must be",
     "different axes — the build rejects the pair otherwise.",
     "",
     "A robot that robot_descriptions.py does not ship (unitree_ros carries a dozen",
@@ -2293,7 +2295,7 @@
       "category": "hand",
       "dof": 6,
       "preview_frame": {
-        "palm": "-x",
+        "palm": "+x",
         "fingers": "+z"
       },
       "upstream": {
