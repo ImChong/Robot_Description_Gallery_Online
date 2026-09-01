@@ -2,7 +2,8 @@
 <!--
   Offscreen renderer used by scripts/render_thumbnails.mjs.
 
-  Open with ?robot=<id> (plus optional &v=<version>, &w=&h=&azimuth=&elevation=),
+  Open with ?robot=<id> (plus optional &v=<version>, &w=&h=&azimuth=&elevation=,
+  &preview_palm=&preview_fingers= for one-off orientation checks),
   wait for window.__thumb.ready, then screenshot the canvas. Kept separate from
   the gallery page so a card image never depends on the site's chrome or layout.
 -->
@@ -46,6 +47,11 @@ try {
   const data = await loadRegistry('../data/robots.json', { visibility: false });
   const entry = byId(data, params.get('robot'));
   if (!entry) throw new Error(`unknown robot: ${params.get('robot')}`);
+  const previewPalm = params.get('preview_palm');
+  const previewFingers = params.get('preview_fingers');
+  if (previewPalm && previewFingers) {
+    entry.preview_frame = { palm: previewPalm, fingers: previewFingers };
+  }
   // A machine upstream publishes as several URDFs is measured one version at a
   // time; without `v` that is the one its card is rendered from.
   const wanted = params.get('v');
