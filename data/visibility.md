@@ -193,6 +193,7 @@ human readers.
 - [x] `mini_pi` **Mini Pi** — HighTorque Robotics — [HighTorque-Robotics/HT_Robot_URDF](https://github.com/HighTorque-Robotics/HT_Robot_URDF/tree/5675b9aa238d5c0431bd376f9fc708308c617d7b/pi_12dof)
 - [x] `spryped` **Spryped** — Benjamin Bokser — [bbokser/spryped · spryped_description](https://github.com/bbokser/spryped/tree/f360a6b78667a4d97c86cad465ef8f4c9512462b/spryped_urdf_rev06)
 - [x] `bdx` **BD-X** — Disney Research — [rimim/AWD](https://github.com/rimim/AWD/tree/9022468fb50cbf69b716b0d71f101cb8f7435b4f/awd/data/assets/go_bdx)
+- [x] `open_duck_mini_v2` **Open Duck Mini** — Antoine Pirrone — [apirrone/Open_Duck_Mini](https://github.com/apirrone/Open_Duck_Mini/tree/b23317a485b3cec7d8417f352478778b3475173c/mini_bdx/robots/open_duck_mini_v2)
 - [x] `microduck` **Microduck** — Pollen Robotics — [pollen-robotics/microduck_rl](https://github.com/pollen-robotics/microduck_rl/tree/1e79c29c97d8b38aee9eefde77a545860ba7658e/src/mjlab_microduck/robot/microduck)
 
 ## 双臂 Dual arm · 12

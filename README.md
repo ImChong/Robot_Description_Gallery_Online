@@ -4,12 +4,12 @@
 [![Verify](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml/badge.svg)](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-收录 **199 个**开源机器人描述：160 个 URDF 可在站内拖关节、查看碰撞体与惯量，并下载
+收录 **200 个**开源机器人描述：161 个 URDF 可在站内拖关节、查看碰撞体与惯量，并下载
 URDF、网格 zip 或 ROS 2 功能包；纯 MJCF 条目使用 MuJoCo Live 在线预览。
 
 在线访问：<https://imchong.github.io/Robot_Description_Gallery_Online/web/>
 
-人形 59 · 四足 24 · 机械臂 36 · 灵巧手 / 夹爪 29 · 移动操作 20 · 双臂 12 · 双足 12
+人形 59 · 四足 24 · 机械臂 36 · 灵巧手 / 夹爪 29 · 移动操作 20 · 双臂 12 · 双足 13
 生物力学 3 · 无人机 2 · 移动底盘 1 · 传感器 1
 
 ## 功能

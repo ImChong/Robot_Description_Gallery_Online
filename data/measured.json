@@ -1319,6 +1319,14 @@
   },
   "height_m": 0.3338
  },
+ "open_duck_mini_v2": {
+  "size": {
+   "x": 0.255,
+   "y": 0.5185,
+   "z": 0.246
+  },
+  "height_m": 0.5185
+ },
  "open_manipulator_x": {
   "size": {
    "x": 0.3299,

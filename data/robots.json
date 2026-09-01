@@ -12835,6 +12835,71 @@
    }
   },
   {
+   "id": "open_duck_mini_v2",
+   "name": "Open Duck Mini",
+   "maker": "Antoine Pirrone",
+   "category": "biped",
+   "tags": [
+    "biped"
+   ],
+   "dof": 16,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": null,
+   "notes_zh": null,
+   "pose": null,
+   "loops": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.255,
+     "y": 0.5185,
+     "z": 0.246
+    },
+    "height_m": 0.5185
+   },
+   "urdf": {
+    "xml_name": "onshape",
+    "links": 21,
+    "joints": {
+     "fixed": 4,
+     "revolute": 16
+    },
+    "moving_joints": 16,
+    "mass_kg": 2.062,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 126658
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/apirrone/Open_Duck_Mini@b23317a485b3cec7d8417f352478778b3475173c/",
+    "urdf": "mini_bdx/robots/open_duck_mini_v2/robot.urdf",
+    "packages": {
+     "": "mini_bdx/robots/open_duck_mini_v2"
+    },
+    "mesh_files": 45,
+    "mesh_bytes": 18686880,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "apirrone/Open_Duck_Mini",
+    "commit": "b23317a485b3cec7d8417f352478778b3475173c",
+    "repo_url": "https://github.com/apirrone/Open_Duck_Mini",
+    "tree_url": "https://github.com/apirrone/Open_Duck_Mini/tree/b23317a485b3cec7d8417f352478778b3475173c/mini_bdx/robots/open_duck_mini_v2",
+    "license_url": "https://github.com/apirrone/Open_Duck_Mini/blob/b23317a485b3cec7d8417f352478778b3475173c/LICENSE",
+    "mirror": null,
+    "mjcf": "mini_bdx/robots/open_duck_mini_v2/robot.xml"
+   },
+   "links": {
+    "official": "https://github.com/apirrone/Open_Duck_Mini"
+   }
+  },
+  {
    "id": "microduck",
    "name": "Microduck",
    "maker": "Pollen Robotics",
