@@ -3069,6 +3069,49 @@
       "notes_zh": "迪士尼研究院为乐园做的那台会自己走路的机器人，这里是一个强化学习仓库重新画出的版本：13.8 kg 机身上共 16 个关节——每条腿 5 个，颈部与头部 4 个，两根天线各 1 个。许可证是该仓库从 IsaacGymEnvs 继承来的 NVIDIA License，不是迪士尼的。"
     },
     {
+      "id": "microduck",
+      "name": "Microduck",
+      "maker": "Pollen Robotics",
+      "category": "biped",
+      "dof": 14,
+      "upstream": {
+        "github": "pollen-robotics/microduck_rl",
+        "commit": "1e79c29c97d8b38aee9eefde77a545860ba7658e",
+        "package": "",
+        "mjcf": "src/mjlab_microduck/robot/microduck/scene.xml",
+        "formats": [
+          "mjcf"
+        ],
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "tags": [
+          "biped",
+          "mjcf"
+        ]
+      },
+      "links": {
+        "official": "https://pollen-robotics.com/microduck"
+      },
+      "notes": "Pollen Robotics' tiny biped duck: about 25 cm and 800 g, fifteen servos on the hardware and fourteen actuated joints in the MuJoCo model — five per leg and four in the neck and head. The main microduck repository ships only a mesh-free kinematics file; the visual model with STL meshes lives here in microduck_rl, which is where the walking policies are trained.",
+      "notes_zh": "Pollen Robotics 的小型双足鸭子机器人：高约 25 cm、约 800 g，实机十五个舵机，MuJoCo 模型里十四个驱动关节——每条腿五个，颈与头四个。主仓库 microduck 只发布无网格的运动学文件；带 STL 网格的可视模型在训练策略用的 microduck_rl 仓库里。",
+      "pose": {
+        "left_hip_yaw": 0,
+        "left_hip_roll": -0.087,
+        "left_hip_pitch": -0.458,
+        "left_knee": -0.005,
+        "left_ankle": 0.453,
+        "neck_pitch": 0.349,
+        "head_pitch": 0.349,
+        "head_yaw": 0,
+        "head_roll": 0,
+        "right_hip_yaw": 0,
+        "right_hip_roll": 0.087,
+        "right_hip_pitch": 0.458,
+        "right_knee": 0.005,
+        "right_ankle": -0.453
+      }
+    },
+    {
       "id": "r1_a5",
       "name": "R1-A5",
       "maker": "UNITREE Robotics",
