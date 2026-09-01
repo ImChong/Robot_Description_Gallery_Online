@@ -97,8 +97,8 @@ The gallery groups robots by category and then by maker. The URDF viewer lets yo
 joints — or play every joint in turn out to both its limits and back, a second each —
 and overlays collision geometry, joint axes and inertia. A compare page (`#compare=1`)
 puts two to six machines of one category side by side as numbers, lining their joints up
-by anatomy or by position along the kinematic chain, including the mass of the child link
-each joint moves. A mechanism that closes back on
+by anatomy or by position along the kinematic chain, including the mass and rotation-invariant
+inertia trace of the child link each joint moves. A mechanism that closes back on
 itself — Minitaur's five-bar legs — is held shut by a point weld the registry states the
 way MJCF does, so dragging a motor bends the whole linkage instead of pulling the leg
 apart. You can open a description from your own disk — URDF, xacro, MuJoCo XML or USD —

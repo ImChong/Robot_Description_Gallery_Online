@@ -203,7 +203,7 @@ const STRINGS = {
 
     // ---- side-by-side comparison ---------------------------------------
     'compare.cta': 'Compare robots side by side',
-    'compare.heroNote': 'Two to six of one kind, joint by joint — limits, mass, torque.',
+    'compare.heroNote': 'Two to six of one kind, joint by joint — limits, mass, inertia, torque.',
     'compare.title': 'Side-by-side comparison',
     'compare.lede':
       'Two to six descriptions of one category, read as numbers. The URDFs are parsed in your browser and the meshes are never fetched, so a comparison costs less than opening one robot.',
@@ -253,8 +253,12 @@ const STRINGS = {
     'compare.power': 'max power',
     'compare.linkMass': 'link mass',
     'compare.linkMassFull': 'Mass of the child link moved by this joint, from <inertial><mass>',
+    'compare.linkInertia': 'link inertia',
+    'compare.linkInertiaFull':
+      'Rotation-invariant inertia trace (Ixx + Iyy + Izz) of the child link moved by this joint, in kg·m²',
     'compare.metricRange': 'Travel',
     'compare.mass': 'Child link mass',
+    'compare.inertia': 'Child link inertia',
     'compare.velocity': 'Velocity limit',
     'compare.effort': 'Effort limit',
     'compare.copyMd': 'copy as Markdown',
@@ -607,7 +611,7 @@ const STRINGS = {
 
     // ---- 横向对比 -------------------------------------------------------
     'compare.cta': '横向对比多台机器人',
-    'compare.heroNote': '同类 2~6 台，逐关节对比限位、速度与力矩。',
+    'compare.heroNote': '同类 2~6 台，逐关节对比限位、质量、惯量与力矩。',
     'compare.title': '横向对比',
     'compare.lede':
       '选择同一类别下的 2~6 个模型，把它们当作数据来读。URDF 在浏览器里解析，全程不下载网格文件，所以一次对比比打开一台机器还轻。',
@@ -656,8 +660,11 @@ const STRINGS = {
     'compare.power': '功率上限',
     'compare.linkMass': '连杆质量',
     'compare.linkMassFull': '该关节所驱动子连杆的质量，来自 <inertial><mass>',
+    'compare.linkInertia': '连杆惯量',
+    'compare.linkInertiaFull': '该关节所驱动子连杆的惯量张量迹（Ixx + Iyy + Izz），不随惯性坐标系旋转而变化，单位 kg·m²',
     'compare.metricRange': '关节限位',
     'compare.mass': '对应连杆质量',
+    'compare.inertia': '对应连杆惯量',
     'compare.velocity': '最大速度',
     'compare.effort': '最大力矩',
     'compare.copyMd': '复制 Markdown',
