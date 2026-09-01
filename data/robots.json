@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-08-30T08:21:13Z",
+ "generated": "2026-09-01T14:36:37Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -1945,6 +1945,304 @@
    }
   },
   {
+   "id": "gr2",
+   "name": "GR-2",
+   "maker": "Fourier",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 29,
+   "license": "GPL-3.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "Fourier's second-generation full-size humanoid in the Wiki-GRx-Models tree. The basic build has twenty-nine moving joints and dummy-hand stubs at both wrists; upstream also ships the same body with a six-DoF Fourier hand per side.",
+   "notes_zh": "傅利叶第二代全尺寸人形机器人在 Wiki-GRx-Models 仓库里的描述。基础版有 29 个可动关节，两只手腕各接一个 dummy-hand 桩；上游还提供两侧各装六自由度傅利叶灵巧手的版本。",
+   "pose": null,
+   "loops": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.3069,
+     "y": 1.7379,
+     "z": 0.5522
+    },
+    "height_m": 1.7379
+   },
+   "urdf": {
+    "xml_name": "gr2v3_8_7",
+    "links": 35,
+    "joints": {
+     "fixed": 5,
+     "revolute": 29
+    },
+    "moving_joints": 29,
+    "mass_kg": 62.981,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 32037
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/FFTAI/Wiki-GRx-Models@7d96c758f048fe1bf92b3258864d94771ae0c093/",
+    "urdf": "GRX/GR2/gr2v3_8_7/basic_urdf/gr2v3_8_7.urdf",
+    "packages": {},
+    "mesh_files": 31,
+    "mesh_bytes": 27669204,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "FFTAI/Wiki-GRx-Models",
+    "commit": "7d96c758f048fe1bf92b3258864d94771ae0c093",
+    "repo_url": "https://github.com/FFTAI/Wiki-GRx-Models",
+    "tree_url": "https://github.com/FFTAI/Wiki-GRx-Models/tree/7d96c758f048fe1bf92b3258864d94771ae0c093/GRX/GR2/gr2v3_8_7/basic_urdf",
+    "license_url": "https://github.com/FFTAI/Wiki-GRx-Models/blob/7d96c758f048fe1bf92b3258864d94771ae0c093/LICENSE",
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.fftai.com/"
+   },
+   "variants": [
+    {
+     "id": "gr2v3_8_7",
+     "name": "gr2v3_8_7",
+     "deprecated": false,
+     "dof": 29,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "The basic body without explicit dummy-hand links at the wrists.",
+     "notes_zh": "不带手腕 dummy-hand 连杆的基础本体。",
+     "measured": {
+      "size": {
+       "x": 0.3069,
+       "y": 1.7379,
+       "z": 0.5522
+      },
+      "height_m": 1.7379
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "gr2v3_8_7",
+      "links": 35,
+      "joints": {
+       "fixed": 5,
+       "revolute": 29
+      },
+      "moving_joints": 29,
+      "mass_kg": 62.981,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 32037
+     },
+     "assets": {
+      "urdf": "GRX/GR2/gr2v3_8_7/basic_urdf/gr2v3_8_7.urdf",
+      "packages": {},
+      "mesh_files": 31,
+      "mesh_bytes": 27669204,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "gr2v3_8_7_dummy_hand",
+     "name": "gr2v3_8_7_dummy_hand",
+     "deprecated": false,
+     "dof": 29,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "The same twenty-nine body joints with the dummy-hand wrist stubs spelled out as separate links.",
+     "notes_zh": "同样的 29 个本体关节，手腕 dummy-hand 桩被建成独立连杆。",
+     "measured": {
+      "size": {
+       "x": 0.4318,
+       "y": 1.7379,
+       "z": 0.5522
+      },
+      "height_m": 1.7379
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "gr2v3_8_7",
+      "links": 37,
+      "joints": {
+       "fixed": 7,
+       "revolute": 29
+      },
+      "moving_joints": 29,
+      "mass_kg": 63.918,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 33859
+     },
+     "assets": {
+      "urdf": "GRX/GR2/gr2v3_8_7/basic_urdf/gr2v3_8_7_dummy_hand.urdf",
+      "packages": {},
+      "mesh_files": 33,
+      "mesh_bytes": 29669322,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "gr3",
+   "name": "GR-3",
+   "maker": "Fourier",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 31,
+   "license": "GPL-3.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "Fourier's care-focused GR-3 in the Wiki-GRx-Models repository: thirty-one moving joints on a seventy-kilogram body in the basic build, with the same dummy-hand wrist option as GR-2.",
+   "notes_zh": "傅利叶面向照护场景的 GR-3，收录在 Wiki-GRx-Models 仓库：基础版 31 个可动关节、整机约 70 kg，手腕同样提供 dummy-hand 版本。",
+   "pose": null,
+   "loops": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.3854,
+     "y": 1.6418,
+     "z": 0.604
+    },
+    "height_m": 1.6418
+   },
+   "urdf": {
+    "xml_name": "gr3v2_1_1",
+    "links": 37,
+    "joints": {
+     "fixed": 5,
+     "revolute": 31
+    },
+    "moving_joints": 31,
+    "mass_kg": 69.692,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 35005
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/FFTAI/Wiki-GRx-Models@7d96c758f048fe1bf92b3258864d94771ae0c093/",
+    "urdf": "GRX/GR3/gr3v2_1_1/basic_urdf/gr3v2_1_1.urdf",
+    "packages": {},
+    "mesh_files": 35,
+    "mesh_bytes": 29639790,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "FFTAI/Wiki-GRx-Models",
+    "commit": "7d96c758f048fe1bf92b3258864d94771ae0c093",
+    "repo_url": "https://github.com/FFTAI/Wiki-GRx-Models",
+    "tree_url": "https://github.com/FFTAI/Wiki-GRx-Models/tree/7d96c758f048fe1bf92b3258864d94771ae0c093/GRX/GR3/gr3v2_1_1/basic_urdf",
+    "license_url": "https://github.com/FFTAI/Wiki-GRx-Models/blob/7d96c758f048fe1bf92b3258864d94771ae0c093/LICENSE",
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.fftai.com/"
+   },
+   "variants": [
+    {
+     "id": "gr3v2_1_1",
+     "name": "gr3v2_1_1",
+     "deprecated": false,
+     "dof": 31,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "The basic body without explicit dummy-hand links at the wrists.",
+     "notes_zh": "不带手腕 dummy-hand 连杆的基础本体。",
+     "measured": {
+      "size": {
+       "x": 0.3854,
+       "y": 1.6418,
+       "z": 0.604
+      },
+      "height_m": 1.6418
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "gr3v2_1_1",
+      "links": 37,
+      "joints": {
+       "fixed": 5,
+       "revolute": 31
+      },
+      "moving_joints": 31,
+      "mass_kg": 69.692,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 35005
+     },
+     "assets": {
+      "urdf": "GRX/GR3/gr3v2_1_1/basic_urdf/gr3v2_1_1.urdf",
+      "packages": {},
+      "mesh_files": 35,
+      "mesh_bytes": 29639790,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "gr3v2_1_1_dummy_hand",
+     "name": "gr3v2_1_1_dummy_hand",
+     "deprecated": false,
+     "dof": 31,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "The same thirty-one body joints with explicit dummy-hand wrist links.",
+     "notes_zh": "同样的 31 个本体关节，手腕 dummy-hand 建成独立连杆。",
+     "measured": {
+      "size": {
+       "x": 0.3854,
+       "y": 1.6418,
+       "z": 0.6072
+      },
+      "height_m": 1.6418
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "gr3v2_1_1",
+      "links": 39,
+      "joints": {
+       "fixed": 7,
+       "revolute": 31
+      },
+      "moving_joints": 31,
+      "mass_kg": 70.629,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 36900
+     },
+     "assets": {
+      "urdf": "GRX/GR3/gr3v2_1_1/basic_urdf/gr3v2_1_1_dummy_hand.urdf",
+      "packages": {},
+      "mesh_files": 37,
+      "mesh_bytes": 31639908,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    }
+   ]
+  },
+  {
    "id": "booster_t1",
    "name": "Booster T1",
    "maker": "Booster Robotics",
@@ -2161,7 +2459,14 @@
    "pose": null,
    "loops": null,
    "preview_frame": null,
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.2499,
+     "y": 1.4133,
+     "z": 1.4889
+    },
+    "height_m": 1.4133
+   },
    "urdf": {
     "xml_name": "T2_31dof",
     "links": 35,
@@ -4566,11 +4871,11 @@
    "preview_frame": null,
    "measured": {
     "size": {
-     "x": 0.7361,
-     "y": 1.7648,
-     "z": 0.343
+     "x": 0.343,
+     "y": 1.7654,
+     "z": 0.7497
     },
-    "height_m": 1.7648
+    "height_m": 1.7654
    },
    "urdf": {
     "xml_name": "walker_s2",
@@ -4622,11 +4927,11 @@
      "notes_zh": "本体加两只第三代五指灵巧手：在本体 28 个运动关节之外，每只手有 11 个 revolute 关节，合计 50 个执行关节；URDF 另把 world 到 base 的根关节声明为 floating。",
      "measured": {
       "size": {
-       "x": 0.7361,
-       "y": 1.7648,
-       "z": 0.343
+       "x": 0.343,
+       "y": 1.7654,
+       "z": 0.7497
       },
-      "height_m": 1.7648
+      "height_m": 1.7654
      },
      "mjcf": null,
      "urdf": {
@@ -4665,11 +4970,11 @@
      "notes_zh": "本体的两只手腕各装一个平行夹爪：本体 28 个 revolute 关节加夹爪 4 个 prismatic 关节，合计 32 个执行关节；URDF 另把 world 到 base 的根关节声明为 floating。",
      "measured": {
       "size": {
-       "x": 0.7722,
-       "y": 1.7648,
-       "z": 0.343
+       "x": 0.343,
+       "y": 1.7654,
+       "z": 0.8052
       },
-      "height_m": 1.7648
+      "height_m": 1.7654
      },
      "mjcf": null,
      "urdf": {
@@ -4709,11 +5014,11 @@
      "notes_zh": "ROS 2 功能包里的 30 个 revolute 关节本体，手部固定在手腕上。",
      "measured": {
       "size": {
-       "x": 0.7485,
-       "y": 1.7648,
-       "z": 0.343
+       "x": 0.343,
+       "y": 1.7654,
+       "z": 0.7506
       },
-      "height_m": 1.7648
+      "height_m": 1.7654
      },
      "mjcf": null,
      "urdf": {
@@ -4736,6 +5041,551 @@
       },
       "mesh_files": 35,
       "mesh_bytes": 8572140,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "openloong",
+   "name": "OpenLoong",
+   "maker": "Humanoid Robot (Shanghai)",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 31,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "The open-source Qinglong humanoid from the OpenLoong retargeting project: thirty-one moving joints on a twenty-two-kilogram body in this URDF, with meshes referenced relative to the package directory rather than through package:// lines. The same folder also ships a MuJoCo model beside it.",
+   "notes_zh": "OpenLoong 重定向项目里的开源青龙人形机器人：这份 URDF 有 31 个可动关节、整机约 22 kg，网格用相对路径而不是 package:// 引用。同一目录下还附带 MuJoCo 模型。",
+   "pose": null,
+   "loops": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.3375,
+     "y": 1.8164,
+     "z": 2.1909
+    },
+    "height_m": 1.8164
+   },
+   "urdf": {
+    "xml_name": "OpenLoog",
+    "links": 32,
+    "joints": {
+     "revolute": 31
+    },
+    "moving_joints": 31,
+    "mass_kg": 77.353,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 40674
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/loongOpen/loong_retarget@f4924844b17fc419b7353b5898b7c34d443269be/",
+    "urdf": "robot/openloong/OpenLoong.urdf",
+    "packages": {},
+    "mesh_files": 32,
+    "mesh_bytes": 32009388,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "loongOpen/loong_retarget",
+    "commit": "f4924844b17fc419b7353b5898b7c34d443269be",
+    "repo_url": "https://github.com/loongOpen/loong_retarget",
+    "tree_url": "https://github.com/loongOpen/loong_retarget/tree/f4924844b17fc419b7353b5898b7c34d443269be/robot/openloong",
+    "license_url": "https://github.com/loongOpen/loong_retarget/blob/f4924844b17fc419b7353b5898b7c34d443269be/license",
+    "mirror": null,
+    "mjcf": "robot/openloong/OpenLoong.xml"
+   },
+   "links": {
+    "official": "https://www.openloong.net/"
+   }
+  },
+  {
+   "id": "tiankung",
+   "name": "TienKung",
+   "maker": "X-Humanoid",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 50,
+   "license": "OpenAtom Open Hardware License v1.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "X-Humanoid's open TienKung / Tiangong URDF collection. The version picker swaps between the Pro body, Tiangong 2.0 Pro with and without dexterous hands, Tiangong 3.0, Tianyi 2.0 and the Tiangong 2 Dex build. The Lite publish folder is not listed: its pelvis and waist meshes exceed jsDelivr's twenty-megabyte file limit.",
+   "notes_zh": "北京人形机器人创新中心（X-Humanoid）公开的天工 URDF 合集。版本选择器可在 Pro 本体、带/不带灵巧手的天工 2.0 Pro、天工 3.0、天轶 2.0 与天工 2 Dex 之间切换。Lite 发布目录未收录：其骨盆与腰部网格超过 jsDelivr 单文件 20 MB 上限。",
+   "pose": null,
+   "loops": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.2695,
+     "y": 1.6149,
+     "z": 0.9077
+    },
+    "height_m": 1.6149
+   },
+   "urdf": {
+    "xml_name": "humanoid",
+    "links": 56,
+    "joints": {
+     "fixed": 5,
+     "revolute": 50
+    },
+    "moving_joints": 50,
+    "mass_kg": 51.53,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 67939
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/Open-X-Humanoid/TienKung_URDF@5c221783fb92fcc4af891ef1dc0502963caf2266/",
+    "urdf": "pro_urdf_publish/pro_urdf_publish/urdf/humanoid.urdf",
+    "packages": {},
+    "mesh_files": 48,
+    "mesh_bytes": 76240332,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "Open-X-Humanoid/TienKung_URDF",
+    "commit": "5c221783fb92fcc4af891ef1dc0502963caf2266",
+    "repo_url": "https://github.com/Open-X-Humanoid/TienKung_URDF",
+    "tree_url": "https://github.com/Open-X-Humanoid/TienKung_URDF/tree/5c221783fb92fcc4af891ef1dc0502963caf2266/pro_urdf_publish/pro_urdf_publish",
+    "license_url": "https://github.com/Open-X-Humanoid/TienKung_URDF/blob/5c221783fb92fcc4af891ef1dc0502963caf2266/licence",
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.x-humanoid.com/"
+   },
+   "variants": [
+    {
+     "id": "tiankung_pro",
+     "name": "TienKung Pro",
+     "deprecated": false,
+     "dof": 50,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "The Pro humanoid body: fifty moving joints.",
+     "notes_zh": "Pro 人形本体：50 个可动关节。",
+     "measured": {
+      "size": {
+       "x": 0.2695,
+       "y": 1.6149,
+       "z": 0.9077
+      },
+      "height_m": 1.6149
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "humanoid",
+      "links": 56,
+      "joints": {
+       "fixed": 5,
+       "revolute": 50
+      },
+      "moving_joints": 50,
+      "mass_kg": 51.53,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 67939
+     },
+     "assets": {
+      "urdf": "pro_urdf_publish/pro_urdf_publish/urdf/humanoid.urdf",
+      "packages": {},
+      "mesh_files": 48,
+      "mesh_bytes": 76240332,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "tiangong2pro",
+     "name": "Tiangong 2.0 Pro",
+     "deprecated": false,
+     "dof": 30,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "The Tiangong 2.0 Pro body without hands: thirty moving joints.",
+     "notes_zh": "不带灵巧手的天工 2.0 Pro 本体：30 个可动关节。",
+     "measured": {
+      "size": {
+       "x": 0.3028,
+       "y": 1.7529,
+       "z": 0.6203
+      },
+      "height_m": 1.7529
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "tiangong2pro_urdf",
+      "links": 37,
+      "joints": {
+       "fixed": 6,
+       "revolute": 30
+      },
+      "moving_joints": 30,
+      "mass_kg": 67.965,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 39770
+     },
+     "assets": {
+      "urdf": "tiangong2pro_urdf/urdf/tiangong2.0_pro_urdf.urdf",
+      "packages": {
+       "tiangong2pro_urdf": "tiangong2pro_urdf"
+      },
+      "mesh_files": 37,
+      "mesh_bytes": 107356658,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "tiangong2pro_hands",
+     "name": "Tiangong 2.0 Pro with hands",
+     "deprecated": false,
+     "dof": 54,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "Tiangong 2.0 Pro with two dexterous hands: fifty-four moving joints in all.",
+     "notes_zh": "带两只灵巧手的天工 2.0 Pro：合计 54 个可动关节。",
+     "measured": {
+      "size": {
+       "x": 0.3028,
+       "y": 1.7529,
+       "z": 0.6203
+      },
+      "height_m": 1.7529
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "tiangong2pro_urdf_with_hands",
+      "links": 63,
+      "joints": {
+       "fixed": 8,
+       "revolute": 54
+      },
+      "moving_joints": 54,
+      "mass_kg": 69.043,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 68394
+     },
+     "assets": {
+      "urdf": "tiangong2pro_urdf/urdf/tiangong2.0_pro_with_hands.urdf",
+      "packages": {
+       "tiangong2pro_urdf": "tiangong2pro_urdf"
+      },
+      "mesh_files": 63,
+      "mesh_bytes": 121471692,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "tiangong3",
+     "name": "Tiangong 3.0",
+     "deprecated": false,
+     "dof": 25,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "The Tiangong 3.0 body: twenty-five moving joints.",
+     "notes_zh": "天工 3.0 本体：25 个可动关节。",
+     "measured": {
+      "size": {
+       "x": 0.2812,
+       "y": 1.6956,
+       "z": 0.6362
+      },
+      "height_m": 1.6956
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "tiangong3",
+      "links": 31,
+      "joints": {
+       "fixed": 5,
+       "revolute": 25
+      },
+      "moving_joints": 25,
+      "mass_kg": 60.81,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 33265
+     },
+     "assets": {
+      "urdf": "tiangong3_urdf/urdf/tiangong3.urdf",
+      "packages": {
+       "tiangong3_urdf": "tiangong3_urdf"
+      },
+      "mesh_files": 31,
+      "mesh_bytes": 118063504,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "tianyi2",
+     "name": "Tianyi 2.0",
+     "deprecated": false,
+     "dof": 21,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "The Tianyi 2.0 humanoid: twenty-one moving joints.",
+     "notes_zh": "天轶 2.0 人形机器人：21 个可动关节。",
+     "measured": {
+      "size": {
+       "x": 0.5443,
+       "y": 1.4443,
+       "z": 0.6218
+      },
+      "height_m": 1.4443
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "tianyi2_urdf",
+      "links": 25,
+      "joints": {
+       "fixed": 3,
+       "revolute": 21
+      },
+      "moving_joints": 21,
+      "mass_kg": 80.324,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 26978
+     },
+     "assets": {
+      "urdf": "tianyi2_urdf/urdf/tianyi2.0_URDF.urdf",
+      "packages": {
+       "tianyi2_urdf": "tianyi2_urdf"
+      },
+      "mesh_files": 50,
+      "mesh_bytes": 65634250,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "tiangong2dex",
+     "name": "Tiangong 2 Dex",
+     "deprecated": false,
+     "dof": 31,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "The Tiangong 2 Dex build: thirty-one moving joints.",
+     "notes_zh": "天工 2 Dex 版本：31 个可动关节。",
+     "measured": {
+      "size": {
+       "x": 0.2789,
+       "y": 1.6877,
+       "z": 0.6142
+      },
+      "height_m": 1.6877
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "tiangong2dex_urdf",
+      "links": 39,
+      "joints": {
+       "fixed": 7,
+       "revolute": 31
+      },
+      "moving_joints": 31,
+      "mass_kg": 63.272,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 41963
+     },
+     "assets": {
+      "urdf": "tiangong2dex_urdf/urdf/tiangong2dex.urdf",
+      "packages": {
+       "tiangong2dex_urdf": "tiangong2dex_urdf"
+      },
+      "mesh_files": 39,
+      "mesh_bytes": 110226876,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "dobot_atom",
+   "name": "Atom",
+   "maker": "Dobot",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 29,
+   "license": null,
+   "formats": [
+    "urdf"
+   ],
+   "notes": "Dobot's full-size Atom humanoid line. The P2 folder is the default card: twenty-nine moving joints on the upper-body build. P3 is a twelve-joint lower-body variant in its own mesh tree. The wheeled Atom-W builds live in a separate card because upstream keeps them in different packages.",
+   "notes_zh": "越疆全尺寸 Atom 人形机器人系列。默认卡片取 P2 目录：上半身构型 29 个可动关节。P3 是 12 关节下半身变体，网格在独立目录。轮式 Atom-W 因上游包结构不同，收录在另一张卡片里。",
+   "pose": null,
+   "loops": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.47,
+     "y": 1.6293,
+     "z": 0.623
+    },
+    "height_m": 1.6293
+   },
+   "urdf": {
+    "xml_name": "atom",
+    "links": 31,
+    "joints": {
+     "fixed": 1,
+     "revolute": 29
+    },
+    "moving_joints": 29,
+    "mass_kg": 58.911,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 31193
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/Dobot-Arm/dobot_atom_urdf@d27e011e490c59002097966ef22492d98d06f6a4/",
+    "urdf": "atom-p2/urdf/atom.urdf",
+    "packages": {
+     "atom_p2": "atom-p2"
+    },
+    "mesh_files": 30,
+    "mesh_bytes": 45166820,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "Dobot-Arm/dobot_atom_urdf",
+    "commit": "d27e011e490c59002097966ef22492d98d06f6a4",
+    "repo_url": "https://github.com/Dobot-Arm/dobot_atom_urdf",
+    "tree_url": "https://github.com/Dobot-Arm/dobot_atom_urdf/tree/d27e011e490c59002097966ef22492d98d06f6a4/atom-p2",
+    "license_url": null,
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.dobot-robots.com/products/humanoid-robots/atom.html"
+   },
+   "variants": [
+    {
+     "id": "atom_p2",
+     "name": "Atom P2",
+     "deprecated": false,
+     "dof": 29,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "The P2 upper-body humanoid: twenty-nine moving joints.",
+     "notes_zh": "P2 上半身人形构型：29 个可动关节。",
+     "measured": {
+      "size": {
+       "x": 0.47,
+       "y": 1.6293,
+       "z": 0.623
+      },
+      "height_m": 1.6293
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "atom",
+      "links": 31,
+      "joints": {
+       "fixed": 1,
+       "revolute": 29
+      },
+      "moving_joints": 29,
+      "mass_kg": 58.911,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 31193
+     },
+     "assets": {
+      "urdf": "atom-p2/urdf/atom.urdf",
+      "packages": {
+       "atom_p2": "atom-p2"
+      },
+      "mesh_files": 30,
+      "mesh_bytes": 45166820,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "atom_p3",
+     "name": "Atom P3",
+     "deprecated": false,
+     "dof": 12,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "The P3 lower-body build: twelve moving joints.",
+     "notes_zh": "P3 下半身构型：12 个可动关节。",
+     "measured": {
+      "size": {
+       "x": 0.4838,
+       "y": 1.6468,
+       "z": 0.516
+      },
+      "height_m": 1.6468
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "atom_p3",
+      "links": 39,
+      "joints": {
+       "fixed": 26,
+       "revolute": 12
+      },
+      "moving_joints": 12,
+      "mass_kg": 61.814,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 43398
+     },
+     "assets": {
+      "urdf": "atom-p3/urdf/atom_p3.urdf",
+      "packages": {
+       "atom_p3": "atom-p3"
+      },
+      "mesh_files": 30,
+      "mesh_bytes": 26925070,
       "mesh_formats": [
        ".stl"
       ]
@@ -10215,7 +11065,14 @@
     "palm": "+y",
     "fingers": "+z"
    },
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.1351,
+     "y": 0.4454,
+     "z": 0.1821
+    },
+    "height_m": 0.4454
+   },
    "urdf": {
     "xml_name": "shadowhand_motor",
     "links": 33,
@@ -10275,7 +11132,14 @@
      ],
      "notes": null,
      "notes_zh": null,
-     "measured": null,
+     "measured": {
+      "size": {
+       "x": 0.1351,
+       "y": 0.4454,
+       "z": 0.1821
+      },
+      "height_m": 0.4454
+     },
      "mjcf": "sr_description/mujoco_models/sr_hand_e_model.xml",
      "urdf": {
       "xml_name": "shadowhand_motor",
@@ -13445,6 +14309,166 @@
    }
   },
   {
+   "id": "dobot_atom_w",
+   "name": "Atom-W",
+   "maker": "Dobot",
+   "category": "mobile",
+   "tags": [
+    "mobile_manipulator",
+    "wheeled"
+   ],
+   "dof": 38,
+   "license": null,
+   "formats": [
+    "urdf"
+   ],
+   "notes": "Dobot's wheeled Atom builds from the same repository as the biped Atom. P2 carries thirty-eight moving joints on a hundred-and-fifteen-kilogram body; P3 is a twenty-two-joint variant with its own mesh tree.",
+   "notes_zh": "与双足 Atom 同仓库的越疆轮式构型。P2 有 38 个可动关节、整机约 115 kg；P3 是 22 关节变体，网格目录独立。",
+   "pose": null,
+   "loops": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.7576,
+     "y": 1.7719,
+     "z": 0.5764
+    },
+    "height_m": 1.7719
+   },
+   "urdf": {
+    "xml_name": "atom_w_p2",
+    "links": 49,
+    "joints": {
+     "continuous": 12,
+     "fixed": 10,
+     "revolute": 26
+    },
+    "moving_joints": 38,
+    "mass_kg": 114.982,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 60394
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/Dobot-Arm/dobot_atom_urdf@d27e011e490c59002097966ef22492d98d06f6a4/",
+    "urdf": "atom-w-p2/urdf/atom-w-p2.urdf",
+    "packages": {
+     "atom-w-p2": "atom-w-p2"
+    },
+    "mesh_files": 31,
+    "mesh_bytes": 31157940,
+    "mesh_formats": [
+     ".obj",
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "Dobot-Arm/dobot_atom_urdf",
+    "commit": "d27e011e490c59002097966ef22492d98d06f6a4",
+    "repo_url": "https://github.com/Dobot-Arm/dobot_atom_urdf",
+    "tree_url": "https://github.com/Dobot-Arm/dobot_atom_urdf/tree/d27e011e490c59002097966ef22492d98d06f6a4/atom-w-p2",
+    "license_url": null,
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.dobot-robots.com/products/humanoid-robots/atom.html"
+   },
+   "variants": [
+    {
+     "id": "atom_w_p2",
+     "name": "Atom-W P2",
+     "deprecated": false,
+     "dof": 38,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "The P2 wheeled build: thirty-eight moving joints.",
+     "notes_zh": "轮式 P2 构型：38 个可动关节。",
+     "measured": {
+      "size": {
+       "x": 0.7576,
+       "y": 1.7719,
+       "z": 0.5764
+      },
+      "height_m": 1.7719
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "atom_w_p2",
+      "links": 49,
+      "joints": {
+       "continuous": 12,
+       "fixed": 10,
+       "revolute": 26
+      },
+      "moving_joints": 38,
+      "mass_kg": 114.982,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 60394
+     },
+     "assets": {
+      "urdf": "atom-w-p2/urdf/atom-w-p2.urdf",
+      "packages": {
+       "atom-w-p2": "atom-w-p2"
+      },
+      "mesh_files": 31,
+      "mesh_bytes": 31157940,
+      "mesh_formats": [
+       ".obj",
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "atom_w_p3",
+     "name": "Atom-W P3",
+     "deprecated": false,
+     "dof": 22,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "The P3 wheeled build: twenty-two moving joints.",
+     "notes_zh": "轮式 P3 构型：22 个可动关节。",
+     "measured": {
+      "size": {
+       "x": 0.71,
+       "y": 1.7721,
+       "z": 0.516
+      },
+      "height_m": 1.7721
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "atom_w_p3",
+      "links": 23,
+      "joints": {
+       "continuous": 2,
+       "revolute": 20
+      },
+      "moving_joints": 22,
+      "mass_kg": 137.25,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 27266
+     },
+     "assets": {
+      "urdf": "atom-w-p3/urdf/atom-w-p3.urdf",
+      "packages": {
+       "atom-w-p3": "atom-w-p3"
+      },
+      "mesh_files": 23,
+      "mesh_bytes": 35588332,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    }
+   ]
+  },
+  {
    "id": "stretch",
    "name": "Stretch RE1",
    "maker": "Hello Robot",
@@ -14961,7 +15985,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.1745,
+     "y": 0.5109,
+     "z": 0.6508
+    },
+    "height_m": 0.5109
+   },
    "mjcf": {
     "xml_name": "robotis_op3",
     "links": 22,
@@ -15025,7 +16056,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.1676,
+     "y": 0.5325,
+     "z": 0.2828
+    },
+    "height_m": 0.5325
+   },
    "mjcf": {
     "xml_name": "toddlerbot_2xc",
     "links": 46,
@@ -15089,7 +16127,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.3008,
+     "y": 1.6695,
+     "z": 0.555
+    },
+    "height_m": 1.6695
+   },
    "mjcf": {
     "xml_name": "adam_lite",
     "links": 27,
@@ -15153,7 +16198,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.538,
+     "y": 1.7938,
+     "z": 0.8564
+    },
+    "height_m": 1.7938
+   },
    "mjcf": {
     "xml_name": "apptronik_apollo",
     "links": 37,
@@ -15217,7 +16269,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.1676,
+     "y": 0.5325,
+     "z": 0.2828
+    },
+    "height_m": 0.5325
+   },
    "mjcf": {
     "xml_name": "toddlerbot_2xm",
     "links": 46,
@@ -15281,7 +16340,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.6952,
+     "y": 0.3692,
+     "z": 0.294
+    },
+    "height_m": 0.3692
+   },
    "mjcf": {
     "xml_name": "go1",
     "links": 14,
@@ -15345,7 +16411,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 1.0664,
+     "y": 0.5706,
+     "z": 0.4485
+    },
+    "height_m": 0.5706
+   },
    "mjcf": {
     "xml_name": "spot",
     "links": 14,
@@ -15409,7 +16482,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.3013,
+     "y": 0.1856,
+     "z": 0.6183
+    },
+    "height_m": 0.1856
+   },
    "mjcf": {
     "xml_name": "fruitfly",
     "links": 68,
@@ -15476,7 +16556,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.2736,
+     "y": 0.1391,
+     "z": 0.1072
+    },
+    "height_m": 0.1391
+   },
    "mjcf": {
     "xml_name": "softfoot",
     "links": 50,
@@ -15539,7 +16626,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.3182,
+     "y": 1.729,
+     "z": 0.436
+    },
+    "height_m": 1.729
+   },
    "mjcf": {
     "xml_name": "MS_Human_700_Primary_Model",
     "links": 81,
@@ -15604,7 +16698,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 1.4819,
+     "y": 0.4122,
+     "z": 0.204
+    },
+    "height_m": 0.4122
+   },
    "mjcf": {
     "xml_name": "aloha",
     "links": 21,
@@ -15667,7 +16768,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.5899,
+     "y": 1.8142,
+     "z": 0.5923
+    },
+    "height_m": 1.8142
+   },
    "mjcf": {
     "xml_name": "robot",
     "links": 13,
@@ -15731,7 +16839,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.3218,
+     "y": 1.4103,
+     "z": 0.5392
+    },
+    "height_m": 1.4103
+   },
    "mjcf": {
     "xml_name": "stretch",
     "links": 27,
@@ -15799,7 +16914,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.8467,
+     "y": 1.0637,
+     "z": 0.4814
+    },
+    "height_m": 1.0637
+   },
    "mjcf": {
     "xml_name": "tidybot",
     "links": 23,
@@ -15863,7 +16985,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.3218,
+     "y": 1.4103,
+     "z": 0.5933
+    },
+    "height_m": 1.4103
+   },
    "mjcf": {
     "xml_name": "stretch",
     "links": 38,
@@ -15931,7 +17060,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.7163,
+     "y": 1.0889,
+     "z": 2.4676
+    },
+    "height_m": 1.0889
+   },
    "mjcf": {
     "xml_name": "tiago_dual",
     "links": 27,
@@ -15996,7 +17132,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.5498,
+     "y": 0.2193,
+     "z": 0.641
+    },
+    "height_m": 0.2193
+   },
    "mjcf": {
     "xml_name": "Skydio X2",
     "links": 2,
@@ -16059,7 +17202,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.1055,
+     "y": 0.031,
+     "z": 0.098
+    },
+    "height_m": 0.031
+   },
    "mjcf": {
     "xml_name": "cf2",
     "links": 2,
@@ -16122,7 +17272,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.8235,
+     "y": 0.8134,
+     "z": 0.2593
+    },
+    "height_m": 0.8134
+   },
    "mjcf": {
     "xml_name": "fr3",
     "links": 10,
@@ -16186,7 +17343,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.348,
+     "y": 0.5755,
+     "z": 0.2026
+    },
+    "height_m": 0.5755
+   },
    "mjcf": {
     "xml_name": "ufactory_lite6",
     "links": 8,
@@ -16249,7 +17413,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.2853,
+     "y": 0.6476,
+     "z": 0.611
+    },
+    "height_m": 0.6476
+   },
    "mjcf": {
     "xml_name": "ur5e",
     "links": 8,
@@ -16312,7 +17483,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.6235,
+     "y": 0.7644,
+     "z": 0.3738
+    },
+    "height_m": 0.7644
+   },
    "mjcf": {
     "xml_name": "sawyer",
     "links": 10,
@@ -16375,7 +17553,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.3642,
+     "y": 0.8534,
+     "z": 0.8371
+    },
+    "height_m": 0.8534
+   },
    "mjcf": {
     "xml_name": "ur10e",
     "links": 8,
@@ -16438,7 +17623,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.5626,
+     "y": 0.3712,
+     "z": 0.204
+    },
+    "height_m": 0.3712
+   },
    "mjcf": {
     "xml_name": "vx300s",
     "links": 11,
@@ -16501,7 +17693,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.5609,
+     "y": 0.6912,
+     "z": 0.2259
+    },
+    "height_m": 0.6912
+   },
    "mjcf": {
     "xml_name": "xarm7",
     "links": 16,
@@ -16564,7 +17763,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.5159,
+     "y": 0.7553,
+     "z": 0.1153
+    },
+    "height_m": 0.7553
+   },
    "mjcf": {
     "xml_name": "gen3",
     "links": 9,
@@ -16627,7 +17833,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.6475,
+     "y": 0.8859,
+     "z": 0.2454
+    },
+    "height_m": 0.8859
+   },
    "mjcf": {
     "xml_name": "A02L-M4",
     "links": 9,
@@ -16690,7 +17903,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.5354,
+     "y": 0.3582,
+     "z": 0.174
+    },
+    "height_m": 0.3582
+   },
    "mjcf": {
     "xml_name": "ARX L5",
     "links": 10,
@@ -16753,7 +17973,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.6475,
+     "y": 0.8859,
+     "z": 0.2454
+    },
+    "height_m": 0.8859
+   },
    "mjcf": {
     "xml_name": "A02LS-M2",
     "links": 9,
@@ -16816,7 +18043,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.4717,
+     "y": 0.3185,
+     "z": 0.1531
+    },
+    "height_m": 0.3185
+   },
    "mjcf": {
     "xml_name": "wx250s",
     "links": 10,
@@ -16880,7 +18114,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.2971,
+     "y": 0.1851,
+     "z": 0.1585
+    },
+    "height_m": 0.1851
+   },
    "mjcf": {
     "xml_name": "low_cost_robot_arm",
     "links": 8,
@@ -16943,7 +18184,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.5613,
+     "y": 0.3208,
+     "z": 0.2
+    },
+    "height_m": 0.3208
+   },
    "mjcf": {
     "xml_name": "seeed_rebot_devarm",
     "links": 11,
@@ -17007,7 +18255,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.063,
+     "y": 0.1382,
+     "z": 0.2045
+    },
+    "height_m": 0.1382
+   },
    "mjcf": {
     "xml_name": "panda hand",
     "links": 4,
@@ -17071,7 +18326,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.075,
+     "y": 0.1711,
+     "z": 0.1729
+    },
+    "height_m": 0.1711
+   },
    "mjcf": {
     "xml_name": "xarm7 hand",
     "links": 8,
@@ -17134,7 +18396,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.1734,
+     "y": 0.3619,
+     "z": 0.241
+    },
+    "height_m": 0.3619
+   },
    "mjcf": {
     "xml_name": "shadow_dexee",
     "links": 20,
@@ -17271,7 +18540,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.1703,
+     "y": 0.0822,
+     "z": 0.1584
+    },
+    "height_m": 0.0822
+   },
    "mjcf": {
     "xml_name": "robot_soccer_kit",
     "links": 66,
@@ -17336,7 +18612,14 @@
    ],
    "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.0859,
+     "y": 0.0241,
+     "z": 0.0211
+    },
+    "height_m": 0.0241
+   },
    "mjcf": {
     "xml_name": "d435i",
     "links": 2,
