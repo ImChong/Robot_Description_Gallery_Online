@@ -103,15 +103,20 @@ function effortText(joint) {
   return `${fmt(joint.effort, 1)} ${jointIsLinear(joint) ? 'N' : 'N·m'}`;
 }
 
+function inertiaText(joint) {
+  if (!isNum(joint.linkInertia) || joint.linkInertia <= 0) return '—';
+  const amount =
+    joint.linkInertia < 0.000001 ? joint.linkInertia.toExponential(2) : fmt(joint.linkInertia, 6);
+  return `${amount} kg·m²`;
+}
+
 /** What one joint reads as under the metric the table is showing. */
 function cellText(joint, metric, unit) {
   if (metric === 'range') return travelText(joint, unit);
   if (metric === 'velocity') return velocityText(joint, unit);
   if (metric === 'effort') return effortText(joint);
   if (metric === 'power') return isNum(joint.power) ? `${fmt(joint.power, 0)} W` : '—';
-  if (metric === 'inertia') {
-    return isNum(joint.linkInertia) ? `${fmt(joint.linkInertia, 6)} kg·m²` : '—';
-  }
+  if (metric === 'inertia') return inertiaText(joint);
   return isNum(joint.linkMass) ? `${fmt(joint.linkMass, 3)} kg` : '—';
 }
 

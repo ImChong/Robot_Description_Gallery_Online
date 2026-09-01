@@ -321,7 +321,7 @@ for (const test of CASES) {
       );
       const mismatch = inertiaCells.find((cell) => {
         const shown = cell.querySelector('.cell-value')?.textContent.trim() || '';
-        return !/^(?:—|[\d,.]+ kg·m²)$/.test(shown);
+        return !/^(?:—|[\d,.]+(?:e[+-]?\d+)? kg·m²)$/.test(shown);
       });
       return { button: true, cells: inertiaCells.length, mismatch: mismatch?.textContent.trim() || '' };
     });
