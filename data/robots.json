@@ -11971,6 +11971,94 @@
    }
   },
   {
+   "id": "microduck",
+   "name": "Microduck",
+   "maker": "Pollen Robotics",
+   "category": "biped",
+   "tags": [
+    "biped",
+    "mjcf"
+   ],
+   "dof": 14,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf"
+   ],
+   "notes": "Pollen Robotics' tiny biped duck: about 25 cm and 800 g, fifteen servos on the hardware and fourteen actuated joints in the MuJoCo model — five per leg and four in the neck and head. The main microduck repository ships only a mesh-free kinematics file; the visual model with STL meshes lives here in microduck_rl, which is where the walking policies are trained.",
+   "notes_zh": "Pollen Robotics 的小型双足鸭子机器人：高约 25 cm、约 800 g，实机十五个舵机，MuJoCo 模型里十四个驱动关节——每条腿五个，颈与头四个。主仓库 microduck 只发布无网格的运动学文件；带 STL 网格的可视模型在训练策略用的 microduck_rl 仓库里。",
+   "pose": {
+    "left_hip_yaw": 0,
+    "left_hip_roll": -0.087,
+    "left_hip_pitch": -0.458,
+    "left_knee": -0.005,
+    "left_ankle": 0.453,
+    "neck_pitch": 0.349,
+    "head_pitch": 0.349,
+    "head_yaw": 0,
+    "head_roll": 0,
+    "right_hip_yaw": 0,
+    "right_hip_roll": 0.087,
+    "right_hip_pitch": 0.458,
+    "right_knee": 0.005,
+    "right_ankle": -0.453
+   },
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.1227,
+     "y": 0.2745,
+     "z": 0.1436
+    },
+    "height_m": 0.2745
+   },
+   "mjcf": {
+    "xml_name": "microduck",
+    "links": 16,
+    "joints": {
+     "free": 1,
+     "hinge": 14
+    },
+    "moving_joints": 14,
+    "mass_kg": 0.737,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 2350,
+    "model_bytes": 32898
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/pollen-robotics/microduck_rl@1e79c29c97d8b38aee9eefde77a545860ba7658e/",
+    "mjcf": "src/mjlab_microduck/robot/microduck/scene.xml",
+    "mjcf_model": "src/mjlab_microduck/robot/microduck/robot_allcollisions.xml",
+    "packages": {},
+    "mesh_files": 38,
+    "mesh_bytes": 21590692,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "pollen-robotics/microduck_rl",
+    "commit": "1e79c29c97d8b38aee9eefde77a545860ba7658e",
+    "repo_url": "https://github.com/pollen-robotics/microduck_rl",
+    "tree_url": "https://github.com/pollen-robotics/microduck_rl/tree/1e79c29c97d8b38aee9eefde77a545860ba7658e/src/mjlab_microduck/robot/microduck",
+    "license_url": "https://github.com/pollen-robotics/microduck_rl/blob/1e79c29c97d8b38aee9eefde77a545860ba7658e/LICENSE",
+    "mirror": null,
+    "mjcf": "src/mjlab_microduck/robot/microduck/scene.xml",
+    "mjcf_external": {
+     "github": "pollen-robotics/microduck_rl",
+     "commit": "1e79c29c97d8b38aee9eefde77a545860ba7658e",
+     "path": "src/mjlab_microduck/robot/microduck/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/pollen-robotics/microduck_rl@1e79c29c97d8b38aee9eefde77a545860ba7658e/src/mjlab_microduck/robot/microduck/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:pollen-robotics/microduck_rl/1e79c29c97d8b38aee9eefde77a545860ba7658e/src/mjlab_microduck/robot/microduck/scene.xml",
+     "tree_url": "https://github.com/pollen-robotics/microduck_rl/tree/1e79c29c97d8b38aee9eefde77a545860ba7658e/src/mjlab_microduck/robot/microduck"
+    }
+   },
+   "links": {
+    "official": "https://pollen-robotics.com/microduck"
+   }
+  },
+  {
    "id": "r1_a5",
    "name": "R1-A5",
    "maker": "UNITREE Robotics",
