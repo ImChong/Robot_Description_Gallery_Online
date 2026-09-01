@@ -20,7 +20,7 @@ The gallery fetches this file at startup: rows checked `[x]` are shown, rows lef
 the site matches on; the name, organisation and upstream link after it are for
 human readers.
 
-## 人形 Humanoid · 54
+## 人形 Humanoid · 59
 
 - [x] `g1` **G1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description)
 - [x] `h1` **H1** — UNITREE Robotics — [unitreerobotics/unitree_ros · h1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description)
@@ -37,6 +37,8 @@ human readers.
 - [x] `magicbot_z1` **Magicbot Z1** — MagicLab — [MagiclabRobotics/magicbot-z1_description](https://github.com/MagiclabRobotics/magicbot-z1_description/tree/f58c620ac323fe8c1ffda410d9fdb9074fe8adfc)
 - [x] `gr1` **GR-1** — Fourier — [FFTAI/Wiki-GRx-Models · gr1_description](https://github.com/FFTAI/Wiki-GRx-Models/tree/351245ac8fa4bf6f4b0c41556e1e6976a438bcef/GRX/GR1/GR1T1)
 - [x] `n1` **N1** — Fourier — [FFTAI/Wiki-GRx-Models · n1_description](https://github.com/FFTAI/Wiki-GRx-Models/tree/f8e683f00d1d99deb882deb9dfce6030095b466a/N1)
+- [x] `gr2` **GR-2** — Fourier — [FFTAI/Wiki-GRx-Models](https://github.com/FFTAI/Wiki-GRx-Models/tree/7d96c758f048fe1bf92b3258864d94771ae0c093/GRX/GR2/gr2v3_8_7/basic_urdf)
+- [x] `gr3` **GR-3** — Fourier — [FFTAI/Wiki-GRx-Models](https://github.com/FFTAI/Wiki-GRx-Models/tree/7d96c758f048fe1bf92b3258864d94771ae0c093/GRX/GR3/gr3v2_1_1/basic_urdf)
 - [x] `booster_t1` **Booster T1** — Booster Robotics — [BoosterRobotics/booster_gym · booster_t1_description](https://github.com/BoosterRobotics/booster_gym/tree/687a33d08b08875fe45dc8d91b54db83766df8b9/resources/T1)
 - [x] `booster_k1` **Booster K1** — Booster Robotics — [BoosterRobotics/booster_assets](https://github.com/BoosterRobotics/booster_assets/tree/508cbee6ca9ae6fbc8c0b38dd58785a6f3fc61a2/robots/K1)
 - [x] `booster_t1_29dof` **Booster T1 (29 DoF)** — Booster Robotics — [BoosterRobotics/booster_assets](https://github.com/BoosterRobotics/booster_assets/tree/508cbee6ca9ae6fbc8c0b38dd58785a6f3fc61a2/robots/T1)
@@ -69,6 +71,9 @@ human readers.
 - [x] `gundam_rx78` **Gundam RX-78** — Bandai Namco Filmworks — [gundam-global-challenge/gundam_robot](https://github.com/gundam-global-challenge/gundam_robot/tree/411d5db72a122b41bb4d691a0fbc19fd2ac88222/gundam_rx78_description)
 - [ ] `x1` **X1** — AgiBot — [AgibotTech/agibot_x1_train](https://github.com/AgibotTech/agibot_x1_train/tree/e6651b9ab843fd1b1be70c087bfb7e8b28e44ccd/resources/robots/x1)
 - [x] `walker_s2` **Walker S2** — UBTECH Robotics — [UBTECH-Robot/WalkerS2-Model](https://github.com/UBTECH-Robot/WalkerS2-Model/tree/ca2ab983363d52a5e22ddf3a4d979ceaa675c374/walker_s2_urdf_with_hand3)
+- [x] `openloong` **OpenLoong** — Humanoid Robot (Shanghai) — [loongOpen/loong_retarget](https://github.com/loongOpen/loong_retarget/tree/f4924844b17fc419b7353b5898b7c34d443269be/robot/openloong)
+- [x] `tiankung` **TienKung** — X-Humanoid — [Open-X-Humanoid/TienKung_URDF](https://github.com/Open-X-Humanoid/TienKung_URDF/tree/5c221783fb92fcc4af891ef1dc0502963caf2266/pro_urdf_publish/pro_urdf_publish)
+- [x] `dobot_atom` **Atom** — Dobot — [Dobot-Arm/dobot_atom_urdf](https://github.com/Dobot-Arm/dobot_atom_urdf/tree/d27e011e490c59002097966ef22492d98d06f6a4/atom-p2)
 - [ ] `sigmaban` **SigmaBan** — Rhoban — [Rhoban/sigmaban_urdf · sigmaban_description](https://github.com/Rhoban/sigmaban_urdf/tree/d5d023fd35800d00d7647000bce8602617a4960d)
 - [ ] `simple_humanoid` **Simple Humanoid** — — — [laas/simple_humanoid_description · simple_humanoid_description](https://github.com/laas/simple_humanoid_description/tree/4e859aed7df3c29954c9cca2a1ecb94069f7cfce)
 - [ ] `robotis_op3` **Robotis OP3** — ROBOTIS — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3)
@@ -205,9 +210,10 @@ human readers.
 - [x] `tron2_dach` **TRON 2 DACH** — LimX Dynamics — [limxdynamics/tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description/tree/9939c22e69d27653ec0ba8a505859a2903dd1a71/tron2a/DACH_TRON2A)
 - [x] `aloha` **ALOHA** — Stanford University — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/aloha)
 
-## 移动操作 Mobile manipulator · 19
+## 移动操作 Mobile manipulator · 20
 
 - [x] `g1_d` **G1-D** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_d_description)
+- [x] `dobot_atom_w` **Atom-W** — Dobot — [Dobot-Arm/dobot_atom_urdf](https://github.com/Dobot-Arm/dobot_atom_urdf/tree/d27e011e490c59002097966ef22492d98d06f6a4/atom-w-p2)
 - [x] `stretch` **Stretch RE1** — Hello Robot — [robot-descriptions/stretch_description · stretch_description](https://github.com/robot-descriptions/stretch_description/tree/4b838429fe4c5d9f2937efe698444bd68968f376)
 - [x] `tiago` **TIAGo** — PAL Robotics — [Gepetto/example-robot-data · tiago_description](https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/tiago_description)
 - [x] `pepper` **Pepper** — SoftBank Robotics — [jrl-umi3218/pepper_description · pepper_description](https://github.com/jrl-umi3218/pepper_description/tree/cd9715bb5df7ad57445d953db7b1924255305944)
