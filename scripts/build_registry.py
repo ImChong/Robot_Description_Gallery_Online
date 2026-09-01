@@ -697,20 +697,29 @@ def upstream_from_curation(item: dict[str, Any]) -> Upstream:
     # the first one is what its card and its detail page open on — so the entry
     # need not name that file a second time here.
     first = (item.get("variants") or [{}])[0]
-    urdf_path = spec.get("urdf") or first["urdf"]
+    mjcf_path = spec["mjcf"] if "mjcf" in spec else first.get("mjcf")
+    formats = sorted(spec.get("formats") or (["mjcf"] if mjcf_path and "urdf" not in spec and "urdf" not in first else ["urdf"]))
+    if formats == ["mjcf"]:
+        if not mjcf_path:
+            raise KeyError("mjcf")
+        urdf_path = None
+    else:
+        urdf_path = spec.get("urdf") or first["urdf"]
     if spec.get("package") is not None:
         package_path = spec["package"]
     elif first.get("package") is not None:
         package_path = first["package"]
-    else:
+    elif urdf_path:
         package_path = posixpath.dirname(urdf_path)
+    else:
+        package_path = posixpath.dirname(mjcf_path)
     return Upstream(
         key=curated_id(item),
         robot=item.get("name") or curated_id(item),
         maker=item.get("maker"),
         dof=item.get("dof"),
         tags=sorted(spec.get("tags") or []),
-        formats=sorted(spec.get("formats") or ["urdf"]),
+        formats=formats,
         license_spdx=spec.get("license"),
         license_path=spec.get("license_file"),
         github=spec["github"],
@@ -720,7 +729,7 @@ def upstream_from_curation(item: dict[str, Any]) -> Upstream:
         # absent key falls back to the directory holding the URDF.
         package_path=package_path,
         urdf_path=urdf_path,
-        mjcf_path=spec["mjcf"] if "mjcf" in spec else first.get("mjcf"),
+        mjcf_path=mjcf_path,
         uses_xacro=False,
         from_descriptions=False,
         # Probing finds the package root for almost every repository, but a URDF
@@ -880,6 +889,85 @@ def entry_for(
 # --------------------------------------------------------------------------- #
 
 
+def mjcf_external(up: Upstream, scene_path: str) -> dict[str, Any]:
+    """Pinned CDN and MuJoCo Live links for one MJCF scene."""
+    base = base_url(up)
+    return {
+        "github": up.github,
+        "commit": up.commit,
+        "path": scene_path,
+        "url": base + scene_path,
+        "live_url": f"https://live.mujoco.org/?model=github:{up.github}/{up.commit}/{scene_path}",
+        "tree_url": f"https://github.com/{up.github}/tree/{up.commit}/{posixpath.dirname(scene_path)}",
+    }
+
+
+def entry_for_mjcf(
+    up: Upstream,
+    facts: MjcfFacts,
+    curated: dict[str, Any],
+    scene_path: str,
+    http: Http,
+    measured: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Merge upstream metadata, parsed MJCF facts and curation into one entry."""
+    base = base_url(up)
+    external = mjcf_external(up, scene_path)
+    dof = curated.get("dof") or up.dof or facts.n_moving_joints
+    return {
+        "id": curated.get("id") or up.key,
+        "name": curated.get("name") or up.robot,
+        "maker": curated.get("maker") or up.maker,
+        "category": curated["category"],
+        "tags": sorted({*(up.tags or []), "mjcf"}),
+        "dof": dof,
+        "license": up.license_spdx,
+        "formats": ["mjcf"],
+        "notes": curated.get("notes"),
+        "notes_zh": curated.get("notes_zh"),
+        "pose": curated.get("pose"),
+        "preview_frame": curated.get("preview_frame"),
+        "measured": measured,
+        "mjcf": {
+            "xml_name": facts.xml_name,
+            "links": facts.n_bodies,
+            "joints": facts.joint_counts,
+            "moving_joints": facts.n_moving_joints,
+            "mass_kg": facts.mass_kg,
+            "has_collision": facts.has_collision,
+            "has_inertia": facts.has_inertia,
+            "bytes": len(http.get(base + scene_path) or b""),
+            "model_bytes": facts.model_bytes,
+        },
+        "assets": {
+            "base": base,
+            "mjcf": scene_path,
+            "mjcf_model": facts.model_path,
+            "packages": {},
+            "mesh_files": facts.mesh_files,
+            "mesh_bytes": facts.mesh_bytes,
+            "mesh_formats": facts.mesh_formats,
+            **({"skip_meshes": facts.skipped} if facts.skipped else {}),
+        },
+        "source": {
+            "description": None,
+            "github": up.github,
+            "commit": up.commit,
+            "repo_url": f"https://github.com/{up.github}",
+            "tree_url": external["tree_url"],
+            "license_url": (
+                f"https://github.com/{up.github}/blob/{up.commit}/{up.license_path}"
+                if up.github and up.license_path
+                else None
+            ),
+            "mirror": None,
+            "mjcf": scene_path,
+            "mjcf_external": external,
+        },
+        "links": curated.get("links", {}),
+    }
+
+
 # --------------------------------------------------------------------------- #
 # MJCF inspection
 # --------------------------------------------------------------------------- #
@@ -901,6 +989,7 @@ class MjcfFacts:
     model_path: str = ""
     n_bodies: int = 0
     joint_counts: dict[str, int] = field(default_factory=dict)
+    joint_names: list[str] = field(default_factory=list)
     n_moving_joints: int = 0
     mass_kg: float | None = None
     mesh_formats: list[str] = field(default_factory=list)
@@ -1076,6 +1165,7 @@ def inspect_mjcf(base: str, scene_path: str, http: Http) -> MjcfFacts:
             )
 
     joint_counts: dict[str, int] = {}
+    joint_names: list[str] = []
     for body in root.iter("body"):
         for node in body:
             if node.tag == "freejoint":
@@ -1083,6 +1173,8 @@ def inspect_mjcf(base: str, scene_path: str, http: Http) -> MjcfFacts:
             elif node.tag == "joint":
                 jtype = node.get("type") or "hinge"
                 joint_counts[jtype] = joint_counts.get(jtype, 0) + 1
+                if name := node.get("name"):
+                    joint_names.append(name)
 
     mass = 0.0
     has_inertia = False
@@ -1115,6 +1207,7 @@ def inspect_mjcf(base: str, scene_path: str, http: Http) -> MjcfFacts:
         # the description hangs off, exactly as a URDF's root link is.
         n_bodies=len(list(root.iter("body"))) + 1,
         joint_counts=dict(sorted(joint_counts.items())),
+        joint_names=joint_names,
         n_moving_joints=sum(
             n * MJCF_JOINT_DOF.get(jtype, 1) for jtype, n in joint_counts.items()
         ),
@@ -1447,6 +1540,26 @@ def main() -> int:
             up = upstream.get(key)
             if up is None:
                 return item, None, f"{key}: not in robot_descriptions"
+        if up.urdf_path is None:
+            if not up.mjcf_path:
+                return item, None, f"{key}: no URDF and no MJCF path"
+            facts = inspect_mjcf(base_url(up), up.mjcf_path, http)
+            if not facts.ok:
+                return item, None, f"{key}: {facts.error}"
+            if facts.missing:
+                return item, None, (
+                    f"{key}: {len(facts.missing)} unresolved assets, e.g. {facts.missing[0]}"
+                )
+            problem = preview_frame_problem(item.get("preview_frame"))
+            if problem:
+                return item, None, f"{key}: {problem}"
+            unknown = sorted(set(item.get("pose") or ()) - set(facts.joint_names))
+            if unknown:
+                return item, None, f"{key}: pose names unknown joints {unknown}"
+            entry = entry_for_mjcf(
+                up, facts, item, up.mjcf_path, http, measured.get(curated_id(item))
+            )
+            return item, entry, None
         facts = inspect_urdf(up, http)
         if not facts.ok:
             return item, None, f"{key}: {facts.error}"

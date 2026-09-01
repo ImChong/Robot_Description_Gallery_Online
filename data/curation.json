@@ -546,6 +546,78 @@
       "category": "humanoid"
     },
     {
+      "id": "gr2",
+      "name": "GR-2",
+      "maker": "Fourier",
+      "category": "humanoid",
+      "upstream": {
+        "github": "FFTAI/Wiki-GRx-Models",
+        "commit": "7d96c758f048fe1bf92b3258864d94771ae0c093",
+        "package": "GRX/GR2/gr2v3_8_7/basic_urdf",
+        "license": "GPL-3.0",
+        "license_file": "LICENSE",
+        "formats": [
+          "urdf"
+        ],
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.fftai.com/"
+      },
+      "notes": "Fourier's second-generation full-size humanoid in the Wiki-GRx-Models tree. The basic build has twenty-nine moving joints and dummy-hand stubs at both wrists; upstream also ships the same body with a six-DoF Fourier hand per side.",
+      "notes_zh": "傅利叶第二代全尺寸人形机器人在 Wiki-GRx-Models 仓库里的描述。基础版有 29 个可动关节，两只手腕各接一个 dummy-hand 桩；上游还提供两侧各装六自由度傅利叶灵巧手的版本。",
+      "variants": [
+        {
+          "urdf": "GRX/GR2/gr2v3_8_7/basic_urdf/gr2v3_8_7.urdf",
+          "notes": "The basic body without explicit dummy-hand links at the wrists.",
+          "notes_zh": "不带手腕 dummy-hand 连杆的基础本体。"
+        },
+        {
+          "urdf": "GRX/GR2/gr2v3_8_7/basic_urdf/gr2v3_8_7_dummy_hand.urdf",
+          "notes": "The same twenty-nine body joints with the dummy-hand wrist stubs spelled out as separate links.",
+          "notes_zh": "同样的 29 个本体关节，手腕 dummy-hand 桩被建成独立连杆。"
+        }
+      ]
+    },
+    {
+      "id": "gr3",
+      "name": "GR-3",
+      "maker": "Fourier",
+      "category": "humanoid",
+      "upstream": {
+        "github": "FFTAI/Wiki-GRx-Models",
+        "commit": "7d96c758f048fe1bf92b3258864d94771ae0c093",
+        "package": "GRX/GR3/gr3v2_1_1/basic_urdf",
+        "license": "GPL-3.0",
+        "license_file": "LICENSE",
+        "formats": [
+          "urdf"
+        ],
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.fftai.com/"
+      },
+      "notes": "Fourier's care-focused GR-3 in the Wiki-GRx-Models repository: thirty-one moving joints on a seventy-kilogram body in the basic build, with the same dummy-hand wrist option as GR-2.",
+      "notes_zh": "傅利叶面向照护场景的 GR-3，收录在 Wiki-GRx-Models 仓库：基础版 31 个可动关节、整机约 70 kg，手腕同样提供 dummy-hand 版本。",
+      "variants": [
+        {
+          "urdf": "GRX/GR3/gr3v2_1_1/basic_urdf/gr3v2_1_1.urdf",
+          "notes": "The basic body without explicit dummy-hand links at the wrists.",
+          "notes_zh": "不带手腕 dummy-hand 连杆的基础本体。"
+        },
+        {
+          "urdf": "GRX/GR3/gr3v2_1_1/basic_urdf/gr3v2_1_1_dummy_hand.urdf",
+          "notes": "The same thirty-one body joints with explicit dummy-hand wrist links.",
+          "notes_zh": "同样的 31 个本体关节，手腕 dummy-hand 建成独立连杆。"
+        }
+      ]
+    },
+    {
       "description": "booster_t1_description",
       "category": "humanoid"
     },
@@ -1174,6 +1246,145 @@
           "package": "walker_s2_v1_world_description",
           "notes": "The ROS 2 package's thirty-revolute-joint body with simple hands fixed to the wrists.",
           "notes_zh": "ROS 2 功能包里的 30 个 revolute 关节本体，手部固定在手腕上。"
+        }
+      ]
+    },
+    {
+      "id": "openloong",
+      "name": "OpenLoong",
+      "maker": "Humanoid Robot (Shanghai)",
+      "category": "humanoid",
+      "upstream": {
+        "github": "loongOpen/loong_retarget",
+        "commit": "f4924844b17fc419b7353b5898b7c34d443269be",
+        "package": "robot/openloong",
+        "urdf": "robot/openloong/OpenLoong.urdf",
+        "mjcf": "robot/openloong/OpenLoong.xml",
+        "license": "Apache-2.0",
+        "license_file": "license",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.openloong.net/"
+      },
+      "notes": "The open-source Qinglong humanoid from the OpenLoong retargeting project: thirty-one moving joints on a twenty-two-kilogram body in this URDF, with meshes referenced relative to the package directory rather than through package:// lines. The same folder also ships a MuJoCo model beside it.",
+      "notes_zh": "OpenLoong 重定向项目里的开源青龙人形机器人：这份 URDF 有 31 个可动关节、整机约 22 kg，网格用相对路径而不是 package:// 引用。同一目录下还附带 MuJoCo 模型。"
+    },
+    {
+      "id": "tiankung",
+      "name": "TienKung",
+      "maker": "X-Humanoid",
+      "category": "humanoid",
+      "upstream": {
+        "github": "Open-X-Humanoid/TienKung_URDF",
+        "commit": "5c221783fb92fcc4af891ef1dc0502963caf2266",
+        "package": "pro_urdf_publish/pro_urdf_publish",
+        "license": "OpenAtom Open Hardware License v1.0",
+        "license_file": "licence",
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.x-humanoid.com/"
+      },
+      "notes": "X-Humanoid's open TienKung / Tiangong URDF collection. The version picker swaps between the Pro body, Tiangong 2.0 Pro with and without dexterous hands, Tiangong 3.0, Tianyi 2.0 and the Tiangong 2 Dex build. The Lite publish folder is not listed: its pelvis and waist meshes exceed jsDelivr's twenty-megabyte file limit.",
+      "notes_zh": "北京人形机器人创新中心（X-Humanoid）公开的天工 URDF 合集。版本选择器可在 Pro 本体、带/不带灵巧手的天工 2.0 Pro、天工 3.0、天轶 2.0 与天工 2 Dex 之间切换。Lite 发布目录未收录：其骨盆与腰部网格超过 jsDelivr 单文件 20 MB 上限。",
+      "variants": [
+        {
+          "id": "tiankung_pro",
+          "name": "TienKung Pro",
+          "urdf": "pro_urdf_publish/pro_urdf_publish/urdf/humanoid.urdf",
+          "package": "pro_urdf_publish/pro_urdf_publish",
+          "notes": "The Pro humanoid body: fifty moving joints.",
+          "notes_zh": "Pro 人形本体：50 个可动关节。"
+        },
+        {
+          "id": "tiangong2pro",
+          "name": "Tiangong 2.0 Pro",
+          "urdf": "tiangong2pro_urdf/urdf/tiangong2.0_pro_urdf.urdf",
+          "package": "tiangong2pro_urdf",
+          "notes": "The Tiangong 2.0 Pro body without hands: thirty moving joints.",
+          "notes_zh": "不带灵巧手的天工 2.0 Pro 本体：30 个可动关节。"
+        },
+        {
+          "id": "tiangong2pro_hands",
+          "name": "Tiangong 2.0 Pro with hands",
+          "urdf": "tiangong2pro_urdf/urdf/tiangong2.0_pro_with_hands.urdf",
+          "package": "tiangong2pro_urdf",
+          "notes": "Tiangong 2.0 Pro with two dexterous hands: fifty-four moving joints in all.",
+          "notes_zh": "带两只灵巧手的天工 2.0 Pro：合计 54 个可动关节。"
+        },
+        {
+          "id": "tiangong3",
+          "name": "Tiangong 3.0",
+          "urdf": "tiangong3_urdf/urdf/tiangong3.urdf",
+          "package": "tiangong3_urdf",
+          "notes": "The Tiangong 3.0 body: twenty-five moving joints.",
+          "notes_zh": "天工 3.0 本体：25 个可动关节。"
+        },
+        {
+          "id": "tianyi2",
+          "name": "Tianyi 2.0",
+          "urdf": "tianyi2_urdf/urdf/tianyi2.0_URDF.urdf",
+          "package": "tianyi2_urdf",
+          "notes": "The Tianyi 2.0 humanoid: twenty-one moving joints.",
+          "notes_zh": "天轶 2.0 人形机器人：21 个可动关节。"
+        },
+        {
+          "id": "tiangong2dex",
+          "name": "Tiangong 2 Dex",
+          "urdf": "tiangong2dex_urdf/urdf/tiangong2dex.urdf",
+          "package": "tiangong2dex_urdf",
+          "notes": "The Tiangong 2 Dex build: thirty-one moving joints.",
+          "notes_zh": "天工 2 Dex 版本：31 个可动关节。"
+        }
+      ]
+    },
+    {
+      "id": "dobot_atom",
+      "name": "Atom",
+      "maker": "Dobot",
+      "category": "humanoid",
+      "upstream": {
+        "github": "Dobot-Arm/dobot_atom_urdf",
+        "commit": "d27e011e490c59002097966ef22492d98d06f6a4",
+        "package": "atom-p2",
+        "packages": {
+          "atom_p2": "atom-p2",
+          "atom_p3": "atom-p3"
+        },
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.dobot-robots.com/products/humanoid-robots/atom.html"
+      },
+      "notes": "Dobot's full-size Atom humanoid line. The P2 folder is the default card: twenty-nine moving joints on the upper-body build. P3 is a twelve-joint lower-body variant in its own mesh tree. The wheeled Atom-W builds live in a separate card because upstream keeps them in different packages.",
+      "notes_zh": "越疆全尺寸 Atom 人形机器人系列。默认卡片取 P2 目录：上半身构型 29 个可动关节。P3 是 12 关节下半身变体，网格在独立目录。轮式 Atom-W 因上游包结构不同，收录在另一张卡片里。",
+      "variants": [
+        {
+          "id": "atom_p2",
+          "name": "Atom P2",
+          "urdf": "atom-p2/urdf/atom.urdf",
+          "package": "atom-p2",
+          "notes": "The P2 upper-body humanoid: twenty-nine moving joints.",
+          "notes_zh": "P2 上半身人形构型：29 个可动关节。"
+        },
+        {
+          "id": "atom_p3",
+          "name": "Atom P3",
+          "urdf": "atom-p3/urdf/atom_p3.urdf",
+          "package": "atom-p3",
+          "notes": "The P3 lower-body build: twelve moving joints.",
+          "notes_zh": "P3 下半身构型：12 个可动关节。"
         }
       ]
     },
@@ -3092,6 +3303,49 @@
       "notes_zh": "社区自制的迪士尼 BD-X 迷你版：2.1 kg 机身、16 个关节——每条腿 5 个，颈部与头部 4 个，两根天线各 1 个——从 Onshape 导出，所有网格都是与 URDF 同目录的 STL。上游 URDF 用空的 `package://` 前缀引用网格；构建时从该文件所在目录解析。"
     },
     {
+      "id": "microduck",
+      "name": "Microduck",
+      "maker": "Pollen Robotics",
+      "category": "biped",
+      "dof": 14,
+      "upstream": {
+        "github": "pollen-robotics/microduck_rl",
+        "commit": "1e79c29c97d8b38aee9eefde77a545860ba7658e",
+        "package": "",
+        "mjcf": "src/mjlab_microduck/robot/microduck/scene.xml",
+        "formats": [
+          "mjcf"
+        ],
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "tags": [
+          "biped",
+          "mjcf"
+        ]
+      },
+      "links": {
+        "official": "https://pollen-robotics.com/microduck"
+      },
+      "notes": "Pollen Robotics' tiny biped duck: about 25 cm and 800 g, fifteen servos on the hardware and fourteen actuated joints in the MuJoCo model — five per leg and four in the neck and head. The main microduck repository ships only a mesh-free kinematics file; the visual model with STL meshes lives here in microduck_rl, which is where the walking policies are trained.",
+      "notes_zh": "Pollen Robotics 的小型双足鸭子机器人：高约 25 cm、约 800 g，实机十五个舵机，MuJoCo 模型里十四个驱动关节——每条腿五个，颈与头四个。主仓库 microduck 只发布无网格的运动学文件；带 STL 网格的可视模型在训练策略用的 microduck_rl 仓库里。",
+      "pose": {
+        "left_hip_yaw": 0,
+        "left_hip_roll": -0.087,
+        "left_hip_pitch": -0.458,
+        "left_knee": -0.005,
+        "left_ankle": 0.453,
+        "neck_pitch": 0.349,
+        "head_pitch": 0.349,
+        "head_yaw": 0,
+        "head_roll": 0,
+        "right_hip_yaw": 0,
+        "right_hip_roll": 0.087,
+        "right_hip_pitch": 0.458,
+        "right_knee": 0.005,
+        "right_ankle": -0.453
+      }
+    },
+    {
       "id": "r1_a5",
       "name": "R1-A5",
       "maker": "UNITREE Robotics",
@@ -3397,6 +3651,48 @@
       },
       "notes": "G1's upper body and two-finger grippers on a two-wheel base with a prismatic lifting column.",
       "notes_zh": "G1 的上半身与两指夹爪装在两轮底盘上，中间是一根可升降的直线导轨。"
+    },
+    {
+      "id": "dobot_atom_w",
+      "name": "Atom-W",
+      "maker": "Dobot",
+      "category": "mobile",
+      "upstream": {
+        "github": "Dobot-Arm/dobot_atom_urdf",
+        "commit": "d27e011e490c59002097966ef22492d98d06f6a4",
+        "package": "atom-w-p2",
+        "packages": {
+          "atom-w-p2": "atom-w-p2",
+          "atom-w-p3": "atom-w-p3"
+        },
+        "tags": [
+          "mobile_manipulator",
+          "wheeled"
+        ]
+      },
+      "links": {
+        "official": "https://www.dobot-robots.com/products/humanoid-robots/atom.html"
+      },
+      "notes": "Dobot's wheeled Atom builds from the same repository as the biped Atom. P2 carries thirty-eight moving joints on a hundred-and-fifteen-kilogram body; P3 is a twenty-two-joint variant with its own mesh tree.",
+      "notes_zh": "与双足 Atom 同仓库的越疆轮式构型。P2 有 38 个可动关节、整机约 115 kg；P3 是 22 关节变体，网格目录独立。",
+      "variants": [
+        {
+          "id": "atom_w_p2",
+          "name": "Atom-W P2",
+          "urdf": "atom-w-p2/urdf/atom-w-p2.urdf",
+          "package": "atom-w-p2",
+          "notes": "The P2 wheeled build: thirty-eight moving joints.",
+          "notes_zh": "轮式 P2 构型：38 个可动关节。"
+        },
+        {
+          "id": "atom_w_p3",
+          "name": "Atom-W P3",
+          "urdf": "atom-w-p3/urdf/atom-w-p3.urdf",
+          "package": "atom-w-p3",
+          "notes": "The P3 wheeled build: twenty-two moving joints.",
+          "notes_zh": "轮式 P3 构型：22 个可动关节。"
+        }
+      ]
     },
     {
       "description": "stretch_description",
