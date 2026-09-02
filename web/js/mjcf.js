@@ -31,9 +31,12 @@
  * - **Geometry says whether it is for looking at or for touching.** Authors
  *   normally separate render and contact shapes by geom group, but the group
  *   numbers are only labels — Menagerie mostly uses 2/3 while MS-Human-700
- *   uses 0/1. The mesh-rich group and any additional groups explicitly marked
- *   non-contact therefore form the visual view; the rest form the collision
- *   view.
+ *   uses 0/1 for bone meshes vs skin capsules. The mesh-rich group and any
+ *   additional groups that are both non-contact *and* carry meshes form the
+ *   visual view (xArm7 keeps finger meshes in a second visual group this way).
+ *   A group of only non-contact primitives is a helper — MS-Human-700's group 3
+ *   tendon wrapping cylinders — and is skipped rather than drawn as a second
+ *   visual or a false collision hull. Everything else is the collision view.
  *
  * Nothing in here touches the DOM or the network directly: the caller supplies
  * a URL resolver and a loading manager, which is what lets the same code serve
@@ -603,7 +606,9 @@ export class MJCFDocument {
     this.textureJobs = new Map();
     this.mass = 0;
     this.geomCounts = { visual: 0, collision: 0 };
-    this.visualGeomGroups = this.visualGeomGroupSet();
+    const groups = this.geomGroups();
+    this.visualGeomGroups = this.visualGeomGroupSet(groups);
+    this.hiddenGeomGroups = this.hiddenGeomGroupSet(groups);
 
     for (const worldbody of this.root.querySelectorAll('mujoco > worldbody')) {
       for (const body of worldbody.children) {
@@ -861,7 +866,8 @@ export class MJCFDocument {
    * The effective geom groups used by robot bodies, with the clues that say
    * which one is meant to be looked at. Group numbers are not semantic: most
    * Menagerie models use 2 for meshes and 3 for contact hulls, while
-   * MS-Human-700 uses 0 for bone meshes and 1 for capsule contact shapes.
+   * MS-Human-700 uses 0 for bone meshes, 1 for capsule contact shapes, and 3
+   * for tendon wrapping cylinders that MuJoCo itself hides by default.
    *
    * Includes are already flattened and defaults are already resolved here.
    * `childclass` still has to be carried down the body tree, exactly as it is
@@ -923,22 +929,47 @@ export class MJCFDocument {
    * complete collision mesh" convention. Some models legitimately split the
    * visible robot across groups, though: xArm7 keeps the base and knuckles in
    * group 0 and marks only its finger meshes as the non-contact visual group
-   * 2. Those explicitly non-contact groups must be kept alongside the primary
-   * group or the normal view loses pieces of the robot.
+   * 2. Those extra groups have to carry meshes — a group of only non-contact
+   * primitives is a wrapping surface, not a second drawing of the robot, and
+   * folding it in is what put MS-Human-700's blue wrapping cylinders on the
+   * visual stage.
    */
   visualGeomGroupSet(groups = this.geomGroups()) {
     const visual = new Set([this.primaryVisualGeomGroup(groups)]);
     for (const facts of groups.values()) {
-      if (facts.geoms > 0 && facts.nonContact === facts.geoms) visual.add(facts.group);
+      if (facts.meshes > 0 && facts.nonContact === facts.geoms) visual.add(facts.group);
     }
     return visual;
   }
 
   /**
+   * Geom groups that are neither a render nor a contact hull.
+   *
+   * MuJoCo's default vis flags hide groups 3–5; authors put tendon wrapping
+   * cylinders and similar helpers there, with contact disabled and no mesh.
+   * Dropping them (rather than dumping them into the collision overlay) keeps
+   * both views of a model like MS-Human-700 as the bone mesh and the skin
+   * capsules, instead of a pile of wrapping geometry through the torso.
+   */
+  hiddenGeomGroupSet(groups = this.geomGroups()) {
+    const visual = this.visualGeomGroupSet(groups);
+    const hidden = new Set();
+    for (const facts of groups.values()) {
+      if (visual.has(facts.group)) continue;
+      if (facts.geoms > 0 && facts.meshes === 0 && facts.nonContact === facts.geoms) {
+        hidden.add(facts.group);
+      }
+    }
+    return hidden;
+  }
+
+  /**
    * One `<geom>`, wrapped the way the overlay toggles expect: a `URDFVisual`
    * for one of the model's render groups, a `URDFCollider` for every other
-   * group. Keeping the two views separate prevents alternative render/contact
-   * representations from being baked together in cards and snapshots.
+   * group that is actually a contact hull. Helper groups (see
+   * `hiddenGeomGroupSet`) are dropped. Keeping the two views separate prevents
+   * alternative render/contact representations from being baked together in
+   * cards and snapshots.
    */
   attachGeom(element, link, childClass) {
     const attrs = withDefaults(element, 'geom', this.classes, childClass);
@@ -946,6 +977,7 @@ export class MJCFDocument {
     if (SKIPPED_GEOMS.has(type)) return;
 
     const group = num(attrs.group, 0);
+    if (this.hiddenGeomGroups.has(group)) return;
     const isCollision = !this.visualGeomGroups.has(group);
     const wrapper = isCollision ? new URDFCollider() : new URDFVisual();
     const name = attrs.name || `${link.urdfName}·${type}`;
@@ -1344,6 +1376,7 @@ export async function inspectMJCF(options) {
   }
   const geomGroups = document.geomGroups();
   const visualGeomGroups = document.visualGeomGroupSet(geomGroups);
+  const hiddenGeomGroups = document.hiddenGeomGroupSet(geomGroups);
 
   return {
     name: document.modelName,
@@ -1356,7 +1389,9 @@ export async function inspectMJCF(options) {
       0,
     ),
     mass_kg: mass ? +mass.toFixed(3) : null,
-    has_collision: [...geomGroups.keys()].some((group) => !visualGeomGroups.has(group)),
+    has_collision: [...geomGroups.keys()].some(
+      (group) => !visualGeomGroups.has(group) && !hiddenGeomGroups.has(group),
+    ),
     has_inertia: document.root.querySelector('inertial') !== null,
     xml: [normalize(document.path), ...document.included],
     assets: [...document.meshes.values(), ...document.textures.values()].map(

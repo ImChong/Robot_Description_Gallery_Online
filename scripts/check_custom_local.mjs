@@ -125,6 +125,7 @@ const CASES = [
     pick: 'scene.xml',
     joints: 2,
     visualMeshes: 4,
+    collisionMeshes: 1,
     files: {
       'scene.xml': `<mujoco model="from_mjcf">
   <include file="robot.xml"/>
@@ -147,12 +148,17 @@ const CASES = [
     <!-- xArm7 also has visible meshes in both its primary group and a second,
          explicitly non-contact group. Both belong in the normal view. -->
     <default class="secondary_visual"><geom group="2" contype="0" conaffinity="0" material="grey"/></default>
+    <!-- MS-Human-700's tendon wrapping cylinders: a fully non-contact primitive
+         group. It must not join the visual view (blue cylinders through the
+         torso) or the collision overlay. -->
+    <default class="wrap"><geom group="3" contype="0" conaffinity="0" mass="0" rgba="0.5 0.5 0.9 1"/></default>
   </default>
   <worldbody>
     <body name="base" pos="0 0 0.1">
       <freejoint/>
       <geom class="visual" type="box" size="0.15 0.1 0.05"/>
       <geom class="collision" type="box" size="0.15 0.1 0.05"/>
+      <geom class="wrap" type="cylinder" size="0.04 0.08" pos="0 0 0"/>
       <body name="arm" pos="0 0 0.05">
         <joint name="shoulder" type="hinge" axis="0 1 0" range="-1 1"/>
         <geom class="visual" type="mesh" mesh="wedge"/>
@@ -246,6 +252,7 @@ for (const testCase of CASES) {
     name: document.getElementById('d-name').textContent.trim(),
     height: Number(document.querySelector('.stage').dataset.height),
     meshes: Number(document.querySelector('.stage').dataset.meshes),
+    collision: Number(document.querySelector('.stage').dataset.collision),
     sliders: document.querySelectorAll("#d-tree input[type='range']").length,
     error: document.getElementById('stage-error').hidden
       ? null
@@ -261,6 +268,12 @@ for (const testCase of CASES) {
     throw new Error(
       `${testCase.name}: ${staged.meshes} visual meshes, wanted ${testCase.visualMeshes} ` +
         '(a collision group was probably mixed into the visual view)',
+    );
+  }
+  if (testCase.collisionMeshes && staged.collision !== testCase.collisionMeshes) {
+    throw new Error(
+      `${testCase.name}: ${staged.collision} collision meshes, wanted ${testCase.collisionMeshes} ` +
+        '(a wrapping/helper group was probably mixed into the collision view)',
     );
   }
   if (!(staged.height > 0)) throw new Error(`${testCase.name}: measured no height`);

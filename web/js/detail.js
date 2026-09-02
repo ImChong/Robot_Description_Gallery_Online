@@ -992,6 +992,7 @@ export class Detail {
       // big it measured. A robot with meshes but no measurable size means the
       // scene is broken (NaN transforms, for instance).
       stage.dataset.meshes = String(this.viewer.stats?.visual ?? 0);
+      stage.dataset.collision = String(this.viewer.stats?.collision ?? 0);
       stage.dataset.height = String(this.viewer.measured?.height_m ?? '');
       stage.dataset.loaded = robot.id;
     } catch (err) {
