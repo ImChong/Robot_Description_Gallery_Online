@@ -180,7 +180,7 @@ human readers.
 - [ ] `shadow_dexee` **Shadow DEX-EE Hand** — Shadow Robot Company — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/shadow_dexee)
 - [x] `umi_gripper` **UMI-Gripper** — Universal Manipulation Interface — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/umi_gripper)
 
-## 双足 Biped · 12
+## 双足 Biped · 13
 
 - [x] `cassie` **Cassie** — Agility Robotics — [robot-descriptions/cassie_description · cassie_description](https://github.com/robot-descriptions/cassie_description/tree/81a2d8bbd77201cc974afb127adda4e2857a6dbf)
 - [ ] `upkie` **Upkie** — Upkie Project — [upkie/upkie_description · upkie_description](https://github.com/upkie/upkie_description/tree/19a91ce69cab6742c613cab104986e3f8a18d6a5)
