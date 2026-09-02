@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-09-01T14:36:37Z",
+ "generated": "2026-09-02T10:41:36Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -16034,6 +16034,419 @@
     "mjcf": null
    },
    "links": {}
+  },
+  {
+   "id": "star1",
+   "name": "STAR1",
+   "maker": "RobotEra",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 55,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "RobotEra's full-size humanoid, which the file still calls by its internal name l3: 55 revolute joints on 64 kg — six per leg, seven per arm, twelve per hand, three at the waist and two in the neck — and the only description the repository ships. The hands are the unusual part of the count: 24 of the 55 joints are fingers, each finger a serial chain with the linkage pins fixed, which is what the file name's \"fixedpin\" means. The URDF's zero pose stands with the knees bent; the card renders the upright stance the README gives — hip pitch 30°, knee -60°, ankle pitch 30° — which puts the head at 1.71 m.",
+   "notes_zh": "它人科技的全尺寸人形机器人，文件里仍沿用内部代号 l3：64 kg 上共 55 个转动关节——每条腿 6 个、每条手臂 7 个、每只手 12 个、腰部 3 个、颈部 2 个——也是这个仓库里唯一的描述文件。关节数的大头在手上：55 个里有 24 个是手指，每根手指都是一条串联链，连杆机构的销轴被固定住，这就是文件名里 fixedpin 的含义。URDF 零位下膝盖是弯的，卡片渲染的是 README 给出的直立姿态——髋 pitch 30°、膝 -60°、踝 pitch 30°——站直后头顶在 1.71 m。",
+   "pose": {
+    "left_hip_pitch_joint": 0.5236,
+    "left_knee_joint": -1.0472,
+    "left_ankle_pitch_joint": 0.5236,
+    "right_hip_pitch_joint": 0.5236,
+    "right_knee_joint": -1.0472,
+    "right_ankle_pitch_joint": 0.5236
+   },
+   "loops": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.2999,
+     "y": 1.7058,
+     "z": 0.5897
+    },
+    "height_m": 1.7058
+   },
+   "urdf": {
+    "xml_name": "l3",
+    "links": 79,
+    "joints": {
+     "fixed": 23,
+     "revolute": 55
+    },
+    "moving_joints": 55,
+    "mass_kg": 64.001,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 86634
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/roboterax/models@e8660e664e39e5b80ebb1f252e1b77b0e6929cff/",
+    "urdf": "star1/urdf/l3_with_hand_fixedpin_xml.urdf",
+    "packages": {},
+    "mesh_files": 77,
+    "mesh_bytes": 21394068,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "roboterax/models",
+    "commit": "e8660e664e39e5b80ebb1f252e1b77b0e6929cff",
+    "repo_url": "https://github.com/roboterax/models",
+    "tree_url": "https://github.com/roboterax/models/tree/e8660e664e39e5b80ebb1f252e1b77b0e6929cff/star1",
+    "license_url": "https://github.com/roboterax/models/blob/e8660e664e39e5b80ebb1f252e1b77b0e6929cff/LICENSE",
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.robotera.com/"
+   }
+  },
+  {
+   "id": "noetix_e1",
+   "name": "E1",
+   "maker": "Noetix Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 24,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "Noetix's E1 as its Isaac Lab training repository carries it — the description ships inside the RL project rather than as a repository of its own: 24 revolute joints on 41.6 kg and 1.40 m, six per leg, five per arm and two at the waist. Head and torso are one mesh on the base link, so there is no neck joint, and each arm stops at its elbow yaw link — no wrist, no fingers. The three builds are the same body and the same 25 meshes; what differs is the collision geometry and which joints are left free. The Isaac Lab config in e1.py names a fourth file, e1_23dof.urdf, that the repository does not contain.",
+   "notes_zh": "松延动力 E1，描述文件装在它的 Isaac Lab 训练仓库里，没有单独的模型仓库：41.6 kg、1.40 m，24 个转动关节，每条腿 6 个、每条手臂 5 个、腰部 2 个。头和躯干是根连杆上的同一个网格，所以没有颈关节；手臂到肘部 yaw 连杆为止——没有腕关节，也没有手指。三个版本是同一副身体、同样的 25 个网格，差别在碰撞体和放开哪些关节。e1.py 里的 Isaac Lab 配置还引用了第四个文件 e1_23dof.urdf，但仓库里并没有它。",
+   "pose": null,
+   "loops": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.2965,
+     "y": 1.4026,
+     "z": 0.5647
+    },
+    "height_m": 1.4026
+   },
+   "urdf": {
+    "xml_name": "e1_1028",
+    "links": 25,
+    "joints": {
+     "revolute": 24
+    },
+    "moving_joints": 24,
+    "mass_kg": 41.61,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 35432
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/Noetix-Robotics/noetix_e1_lab@5a1d62d57d26499f10fc840df7b9f9d0331f5c72/",
+    "urdf": "source/NoetixE1/NoetixE1/assets/robots/e1/urdf/e1_24dof.urdf",
+    "packages": {},
+    "mesh_files": 25,
+    "mesh_bytes": 109848200,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "Noetix-Robotics/noetix_e1_lab",
+    "commit": "5a1d62d57d26499f10fc840df7b9f9d0331f5c72",
+    "repo_url": "https://github.com/Noetix-Robotics/noetix_e1_lab",
+    "tree_url": "https://github.com/Noetix-Robotics/noetix_e1_lab/tree/5a1d62d57d26499f10fc840df7b9f9d0331f5c72/source/NoetixE1/NoetixE1/assets/robots/e1",
+    "license_url": "https://github.com/Noetix-Robotics/noetix_e1_lab/blob/5a1d62d57d26499f10fc840df7b9f9d0331f5c72/LICENSE",
+    "mirror": null,
+    "mjcf": "source/NoetixE1/NoetixE1/assets/robots/e1/mjcf/e1_24dof.xml"
+   },
+   "links": {
+    "official": "https://www.noetixrobotics.com/"
+   },
+   "variants": [
+    {
+     "id": "e1_24dof",
+     "name": "e1_24dof",
+     "deprecated": false,
+     "dof": 24,
+     "formats": [
+      "mjcf",
+      "urdf"
+     ],
+     "notes": "The training build: all 24 joints free, and the collision meshes swapped for primitives — three boxes and twelve cylinders — with twelve links, the shoulders and forearms among them, left with no collision geometry at all.",
+     "notes_zh": "训练用版本：24 个关节全部放开，碰撞网格换成基本体——3 个长方体加 12 个圆柱——另有 12 个连杆（包括肩部与前臂）干脆没有碰撞体。",
+     "measured": {
+      "size": {
+       "x": 0.2965,
+       "y": 1.4026,
+       "z": 0.5647
+      },
+      "height_m": 1.4026
+     },
+     "mjcf": "source/NoetixE1/NoetixE1/assets/robots/e1/mjcf/e1_24dof.xml",
+     "urdf": {
+      "xml_name": "e1_1028",
+      "links": 25,
+      "joints": {
+       "revolute": 24
+      },
+      "moving_joints": 24,
+      "mass_kg": 41.61,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 35432
+     },
+     "assets": {
+      "urdf": "source/NoetixE1/NoetixE1/assets/robots/e1/urdf/e1_24dof.urdf",
+      "packages": {},
+      "mesh_files": 25,
+      "mesh_bytes": 109848200,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "e1_origin",
+     "name": "e1_origin",
+     "deprecated": false,
+     "dof": 24,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "The unedited export: the same 24 joints, with every one of the 25 links carrying its visual mesh again as its collision mesh. The primitives in the other two builds are commented out of this file rather than absent from it.",
+     "notes_zh": "未经改动的导出版：同样 24 个关节，25 个连杆全都拿视觉网格当碰撞网格。另外两个版本里的基本体在这个文件里是被注释掉的，而不是没写。",
+     "measured": {
+      "size": {
+       "x": 0.2965,
+       "y": 1.4026,
+       "z": 0.5647
+      },
+      "height_m": 1.4026
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "e1_1028",
+      "links": 25,
+      "joints": {
+       "revolute": 24
+      },
+      "moving_joints": 24,
+      "mass_kg": 41.61,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 32302
+     },
+     "assets": {
+      "urdf": "source/NoetixE1/NoetixE1/assets/robots/e1/urdf/e1_origin.urdf",
+      "packages": {},
+      "mesh_files": 25,
+      "mesh_bytes": 109848200,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "e1_12dof",
+     "name": "e1_12dof",
+     "deprecated": false,
+     "dof": 12,
+     "formats": [
+      "mjcf",
+      "urdf"
+     ],
+     "notes": "The walking build: the waist and both arms welded, leaving the twelve leg joints. The arms are still drawn — links with fixed joints, not deleted geometry — and welded splayed rather than at the free build's zero, the shoulder roll offset changed from ±0.175 rad to ∓0.087, which is why this version measures 0.86 m across the arms where the other two measure 0.56 m.",
+     "notes_zh": "行走用版本：腰部与两条手臂焊死，只留 12 个腿部关节。手臂仍然画着——是接了固定关节的连杆，不是被删掉的几何体——而且焊死的位置不是放开版本的零位：肩 roll 的偏置从 ±0.175 rad 改成了 ∓0.087，所以这一版两臂横向跨度 0.86 m，另外两版是 0.56 m。",
+     "measured": {
+      "size": {
+       "x": 0.2965,
+       "y": 1.4026,
+       "z": 0.8603
+      },
+      "height_m": 1.4026
+     },
+     "mjcf": "source/NoetixE1/NoetixE1/assets/robots/e1/mjcf/e1_12dof.xml",
+     "urdf": {
+      "xml_name": "e1_1028",
+      "links": 25,
+      "joints": {
+       "fixed": 12,
+       "revolute": 12
+      },
+      "moving_joints": 12,
+      "mass_kg": 41.61,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 35400
+     },
+     "assets": {
+      "urdf": "source/NoetixE1/NoetixE1/assets/robots/e1/urdf/e1_12dof.urdf",
+      "packages": {},
+      "mesh_files": 25,
+      "mesh_bytes": 109848200,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "noetix_n2",
+   "name": "N2",
+   "maker": "Noetix Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 18,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "The smaller sibling of the E1, shipped inside Noetix's Isaac Gym training repository: 18 revolute joints on 33.2 kg and 1.14 m. The legs have five joints each rather than six — one ankle joint, pitch only, so the foot cannot roll — and the arms four, ending in a hand link fixed to the elbow. There is no waist joint and no neck: head, torso and pelvis are all the base link.",
+   "notes_zh": "E1 的小一号兄弟，装在松延动力的 Isaac Gym 训练仓库里：33.2 kg、1.14 m，18 个转动关节。腿是每条 5 个而不是 6 个——踝只有一个 pitch 关节，脚掌不能侧翻——手臂每条 4 个，末端的手掌连杆固定在肘部。没有腰关节也没有颈关节：头、躯干和骨盆都属于根连杆。",
+   "pose": null,
+   "loops": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.2803,
+     "y": 1.1392,
+     "z": 0.4686
+    },
+    "height_m": 1.1392
+   },
+   "urdf": {
+    "xml_name": "N2",
+    "links": 21,
+    "joints": {
+     "fixed": 2,
+     "revolute": 18
+    },
+    "moving_joints": 18,
+    "mass_kg": 33.164,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 26493
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/Noetix-Robotics/noetix_n2_gym@153aad12dcc44aeafe378efe2f652873b02e0d89/",
+    "urdf": "resources/robots/N2/urdf/N2.urdf",
+    "packages": {},
+    "mesh_files": 21,
+    "mesh_bytes": 73287814,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "Noetix-Robotics/noetix_n2_gym",
+    "commit": "153aad12dcc44aeafe378efe2f652873b02e0d89",
+    "repo_url": "https://github.com/Noetix-Robotics/noetix_n2_gym",
+    "tree_url": "https://github.com/Noetix-Robotics/noetix_n2_gym/tree/153aad12dcc44aeafe378efe2f652873b02e0d89/resources/robots/N2",
+    "license_url": "https://github.com/Noetix-Robotics/noetix_n2_gym/blob/153aad12dcc44aeafe378efe2f652873b02e0d89/LICENSE",
+    "mirror": null,
+    "mjcf": "resources/robots/N2/mjcf/n2_18dof.xml"
+   },
+   "links": {
+    "official": "https://www.noetixrobotics.com/"
+   },
+   "variants": [
+    {
+     "id": "n2",
+     "name": "N2",
+     "deprecated": false,
+     "dof": 18,
+     "formats": [
+      "mjcf",
+      "urdf"
+     ],
+     "notes": "All 18 joints free, every link with its own collision mesh.",
+     "notes_zh": "18 个关节全部放开，每个连杆都有自己的碰撞网格。",
+     "measured": {
+      "size": {
+       "x": 0.2803,
+       "y": 1.1392,
+       "z": 0.4686
+      },
+      "height_m": 1.1392
+     },
+     "mjcf": "resources/robots/N2/mjcf/n2_18dof.xml",
+     "urdf": {
+      "xml_name": "N2",
+      "links": 21,
+      "joints": {
+       "fixed": 2,
+       "revolute": 18
+      },
+      "moving_joints": 18,
+      "mass_kg": 33.164,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 26493
+     },
+     "assets": {
+      "urdf": "resources/robots/N2/urdf/N2.urdf",
+      "packages": {},
+      "mesh_files": 21,
+      "mesh_bytes": 73287814,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "n2_10dof",
+     "name": "N2_10dof",
+     "deprecated": false,
+     "dof": 10,
+     "formats": [
+      "mjcf",
+      "urdf"
+     ],
+     "notes": "The walking build: both arms welded at the shoulder, leaving the ten leg joints — and welded 0.3 rad further out in roll than the free build's zero, which spreads the arms from 0.47 m across to 0.67 m.",
+     "notes_zh": "行走用版本：两条手臂在肩部焊死，只留 10 个腿部关节——焊死的肩 roll 比放开版本的零位再往外 0.3 rad，两臂横向跨度从 0.47 m 变成 0.67 m。",
+     "measured": {
+      "size": {
+       "x": 0.2803,
+       "y": 1.1392,
+       "z": 0.6698
+      },
+      "height_m": 1.1392
+     },
+     "mjcf": "resources/robots/N2/mjcf/N2_10dof.xml",
+     "urdf": {
+      "xml_name": "N2",
+      "links": 21,
+      "joints": {
+       "fixed": 10,
+       "revolute": 10
+      },
+      "moving_joints": 10,
+      "mass_kg": 33.164,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 26797
+     },
+     "assets": {
+      "urdf": "resources/robots/N2/urdf/N2_10dof.urdf",
+      "packages": {},
+      "mesh_files": 21,
+      "mesh_bytes": 73287814,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    }
+   ]
   },
   {
    "id": "robotis_op3",
