@@ -20,7 +20,7 @@ The gallery fetches this file at startup: rows checked `[x]` are shown, rows lef
 the site matches on; the name, organisation and upstream link after it are for
 human readers.
 
-## 人形 Humanoid · 59
+## 人形 Humanoid · 62
 
 - [x] `g1` **G1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description)
 - [x] `h1` **H1** — UNITREE Robotics — [unitreerobotics/unitree_ros · h1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description)
@@ -76,6 +76,9 @@ human readers.
 - [x] `dobot_atom` **Atom** — Dobot — [Dobot-Arm/dobot_atom_urdf](https://github.com/Dobot-Arm/dobot_atom_urdf/tree/d27e011e490c59002097966ef22492d98d06f6a4/atom-p2)
 - [ ] `sigmaban` **SigmaBan** — Rhoban — [Rhoban/sigmaban_urdf · sigmaban_description](https://github.com/Rhoban/sigmaban_urdf/tree/d5d023fd35800d00d7647000bce8602617a4960d)
 - [ ] `simple_humanoid` **Simple Humanoid** — — — [laas/simple_humanoid_description · simple_humanoid_description](https://github.com/laas/simple_humanoid_description/tree/4e859aed7df3c29954c9cca2a1ecb94069f7cfce)
+- [x] `star1` **STAR1** — RobotEra — [roboterax/models](https://github.com/roboterax/models/tree/e8660e664e39e5b80ebb1f252e1b77b0e6929cff/star1)
+- [x] `noetix_e1` **E1** — Noetix Robotics — [Noetix-Robotics/noetix_e1_lab](https://github.com/Noetix-Robotics/noetix_e1_lab/tree/5a1d62d57d26499f10fc840df7b9f9d0331f5c72/source/NoetixE1/NoetixE1/assets/robots/e1)
+- [x] `noetix_n2` **N2** — Noetix Robotics — [Noetix-Robotics/noetix_n2_gym](https://github.com/Noetix-Robotics/noetix_n2_gym/tree/153aad12dcc44aeafe378efe2f652873b02e0d89/resources/robots/N2)
 - [ ] `robotis_op3` **Robotis OP3** — ROBOTIS — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3)
 - [x] `toddlerbot_2xc` **ToddlerBot 2XC** — Stanford University — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xc)
 - [x] `pndbotics_adam_lite` **PNDbotics Adam_lite** — PNDbotics — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/pndbotics_adam_lite)
