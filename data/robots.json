@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-09-03T09:11:52Z",
+ "generated": "2026-09-03T09:13:32Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -16467,7 +16467,14 @@
    "pose": null,
    "loops": null,
    "preview_frame": null,
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.6538,
+     "y": 1.7923,
+     "z": 0.5552
+    },
+    "height_m": 1.7923
+   },
    "urdf": {
     "xml_name": "DR02-pro",
     "links": 40,
@@ -16516,7 +16523,14 @@
      ],
      "notes": "The Pro body: 31 joints, wrists, a two-joint neck, and the camera, lidar and IMU frames.",
      "notes_zh": "Pro 本体：31 个关节，带腕、两关节颈部，以及相机、激光雷达和 IMU 坐标系。",
-     "measured": null,
+     "measured": {
+      "size": {
+       "x": 0.6538,
+       "y": 1.7923,
+       "z": 0.5552
+      },
+      "height_m": 1.7923
+     },
      "mjcf": "DR02/mjcf/pro/DR02_pro.xml",
      "urdf": {
       "xml_name": "DR02-pro",
@@ -16552,7 +16566,14 @@
      ],
      "notes": "The Standard body: 21 joints, arms ending at the elbow, no neck, only IMU frames on the head and base.",
      "notes_zh": "Standard 本体：21 个关节，手臂到肘为止，没有颈部，头和基座上只留 IMU 坐标系。",
-     "measured": null,
+     "measured": {
+      "size": {
+       "x": 0.5622,
+       "y": 1.794,
+       "z": 0.5552
+      },
+      "height_m": 1.794
+     },
      "mjcf": "DR02/mjcf/standard/DR02_std.xml",
      "urdf": {
       "xml_name": "DR02-B2-S",
@@ -16611,7 +16632,14 @@
    },
    "loops": null,
    "preview_frame": null,
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.6384,
+     "y": 0.3949,
+     "z": 0.3719
+    },
+    "height_m": 0.3949
+   },
    "urdf": {
     "xml_name": "Lite3",
     "links": 17,
@@ -16681,7 +16709,14 @@
    },
    "loops": null,
    "preview_frame": null,
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 1.0628,
+     "y": 0.6222,
+     "z": 0.4539
+    },
+    "height_m": 0.6222
+   },
    "urdf": {
     "xml_name": "X30",
     "links": 21,
@@ -16752,7 +16787,14 @@
    },
    "loops": null,
    "preview_frame": null,
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.9827,
+     "y": 0.5908,
+     "z": 0.5043
+    },
+    "height_m": 0.5908
+   },
    "urdf": {
     "xml_name": "M20",
     "links": 21,
@@ -16824,7 +16866,14 @@
    },
    "loops": null,
    "preview_frame": null,
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.9827,
+     "y": 0.5908,
+     "z": 0.5043
+    },
+    "height_m": 0.5908
+   },
    "urdf": {
     "xml_name": "M20S",
     "links": 21,
@@ -16896,7 +16945,14 @@
    },
    "loops": null,
    "preview_frame": null,
-   "measured": null,
+   "measured": {
+    "size": {
+     "x": 0.9827,
+     "y": 0.8529,
+     "z": 0.5043
+    },
+    "height_m": 0.8529
+   },
    "urdf": {
     "xml_name": "M20_Piper",
     "links": 27,
