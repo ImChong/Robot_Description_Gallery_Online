@@ -161,6 +161,12 @@
 [hidden] { display: none !important; }
 
 html, body { margin: 0; }
+html { background: var(--bg); }
+
+/* Hide translated chrome until js/i18n-boot.js applies the saved language,
+ * so a stored English preference does not flash the Chinese HTML, and vice
+ * versa. html keeps --bg so the wait is not a white flash. */
+html.i18n-pending body { visibility: hidden; }
 
 body {
   min-height: 100vh;

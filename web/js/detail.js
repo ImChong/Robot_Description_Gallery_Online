@@ -9,7 +9,7 @@ import {
   urdfUrl,
   variantView,
 } from './registry.js';
-import { categoryLabel, lang, t } from './i18n.js';
+import { categoryLabel, lang, pageTitle, t } from './i18n.js';
 import { downloadBundle, downloadRos2, downloadUrdf, ros2PackageName } from './download.js';
 import { icon } from './icons.js';
 import { onThemeChange, theme } from './theme.js';
@@ -831,7 +831,9 @@ export class Detail {
       {
         kind: 'bundle',
         main: t('dl.bundle'),
-        sub: `${t(isMjcf ? 'dl.bundleMjcfSub' : 'dl.bundleSub')} · ${meshes} ${meshes === 1 ? 'mesh' : 'meshes'}`,
+        sub: `${t(isMjcf ? 'dl.bundleMjcfSub' : 'dl.bundleSub')} · ${
+          meshes === 1 ? t('dl.meshCount1') : t('dl.meshCount').replace('{n}', meshes)
+        }`,
         size: bundleSize,
       },
       // A ROS 2 package is a URDF thing: nothing in the ROS toolchain reads an
@@ -909,7 +911,7 @@ export class Detail {
     el('stage-title').textContent = custom
       ? robot.name
       : [robot.name, robot.maker].filter(Boolean).join(' · ');
-    document.title = `${robot.name} · Robot Description Gallery Online`;
+    document.title = pageTitle(robot.name);
     el('d-local-badge').hidden = !local;
     el('panel-local').hidden = !local;
     for (const id of ['panel-download', 'panel-resources', 'panel-reuse']) el(id).hidden = local;
@@ -1001,6 +1003,39 @@ export class Detail {
       error.hidden = false;
       error.innerHTML = `<strong>${t('viewer.failed')}</strong><code>${String(err.message || err)}</code>`;
       stage.dataset.failed = robot.id;
+    }
+  }
+
+  /**
+   * Re-paint labels after a language switch without touching the loaded
+   * meshes or the pose. A reload would flash the other language's HTML and
+   * drop a file the visitor had just picked off disk.
+   */
+  applyLang() {
+    if (!this.robot) return;
+    const robot = this.robot;
+    const custom = robot.local === true;
+    const local = custom && robot.source.remote !== true;
+    el('d-sub').textContent = local
+      ? robot.source.fileName
+      : custom
+        ? `${robot.source.github} · GitHub`
+        : [robot.maker, categoryLabel(robot.category, this.data.categories)]
+            .filter(Boolean)
+            .join(' · ');
+    document.title = pageTitle(robot.modelName || robot.name);
+    this.renderSpecs();
+    if (local) this.renderLocalFiles();
+    else {
+      this.renderDownloads();
+      this.renderResources();
+    }
+    this.renderVersionOptions();
+    if (el('d-tree').childElementCount) this.renderTree();
+    this.renderSweepButton();
+    const error = el('stage-error');
+    if (!error.hidden && error.querySelector('strong')) {
+      error.querySelector('strong').textContent = t('viewer.failed');
     }
   }
 

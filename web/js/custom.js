@@ -840,6 +840,13 @@ export function customEntry() {
  * Wire the hero button and its dialog.
  * @param {{ onPreview: (entry: object) => void }} handlers
  */
+let refreshLang = () => renderHeroCurrent();
+
+/** Re-paint the hero “open again” line and an open dialog's report. */
+export function applyCustomLang() {
+  refreshLang();
+}
+
 export function setupCustomPicker({ onPreview }) {
   const dialog = el('custom-dialog');
   const report = el('custom-report');
@@ -888,7 +895,11 @@ export function setupCustomPicker({ onPreview }) {
     }
     pending = entry;
     go.disabled = false;
+    writeLocalReport(entry);
+  }
 
+  function writeLocalReport(entry) {
+    const path = entry.source?.file || select.value;
     const totalBytes = picked.reduce((sum, { file }) => sum + file.size, 0);
     const lines = [
       `<p class="custom-good"><strong>${esc(entry.name)}</strong> · ${esc(basename(path))}` +
@@ -922,6 +933,20 @@ export function setupCustomPicker({ onPreview }) {
     show(lines.join(''));
   }
 
+  function writeGithubReport(entry) {
+    const lines = [
+      `<p class="custom-good"><strong>${esc(entry.name)}</strong> · ${esc(entry.source.fileName)}</p>`,
+      `<p>${fill(t('custom.githubSource'), {
+        repo: entry.source.github,
+        ref: entry.source.commit,
+      })}</p>`,
+      entry.assets.referenced
+        ? `<p>${fill(t('custom.githubMeshes'), { total: entry.assets.referenced })}</p>`
+        : '',
+    ].filter(Boolean);
+    show(lines.join(''));
+  }
+
   /** Fetch and inspect a public GitHub URDF before enabling Preview. */
   async function analyseGithub() {
     if (pending && pending !== current) pending.assets.local?.release();
@@ -933,17 +958,7 @@ export function setupCustomPicker({ onPreview }) {
       const entry = await entryFromGithub(githubInput.value);
       pending = entry;
       go.disabled = false;
-      const lines = [
-        `<p class="custom-good"><strong>${esc(entry.name)}</strong> · ${esc(entry.source.fileName)}</p>`,
-        `<p>${fill(t('custom.githubSource'), {
-          repo: entry.source.github,
-          ref: entry.source.commit,
-        })}</p>`,
-        entry.assets.referenced
-          ? `<p>${fill(t('custom.githubMeshes'), { total: entry.assets.referenced })}</p>`
-          : '',
-      ].filter(Boolean);
-      show(lines.join(''));
+      writeGithubReport(entry);
     } catch (err) {
       fail(err instanceof PickError ? err.text() : `${t('custom.githubReadFailed')} ${err.message || ''}`);
     } finally {
@@ -1026,6 +1041,12 @@ export function setupCustomPicker({ onPreview }) {
 
   el('custom-cancel').addEventListener('click', () => closeDialog(dialog));
   dialog.addEventListener('cancel', () => closeDialog(dialog));
+  refreshLang = () => {
+    renderHeroCurrent();
+    if (!dialog.open || !pending) return;
+    if (pending.source?.remote) writeGithubReport(pending);
+    else writeLocalReport(pending);
+  };
   renderHeroCurrent();
 }
 
