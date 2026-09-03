@@ -1956,8 +1956,10 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
 .cmp-place-foot .link-btn { margin-left: auto; flex: 0 0 auto; }
 
 /* Arrange mode says so with the cursor: over the render a machine is something
- * to be picked up, and the backdrop still orbits. */
+ * to be picked up, over the ring at its feet something to be turned, and the
+ * backdrop still orbits. */
 .cmp-stage.is-arranging .canvas-host { cursor: grab; }
+.cmp-stage.is-arranging .canvas-host.is-over-ring { cursor: ew-resize; }
 .cmp-stage.is-arranging .canvas-host.is-dragging { cursor: grabbing; }
 
 /* The detail page's toolbar stacks on a narrow screen because its overlay

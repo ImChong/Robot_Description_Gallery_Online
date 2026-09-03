@@ -241,7 +241,7 @@ const STRINGS = {
     'compare.stageNote':
       'The tables above are read from the URDFs alone. This is the one part of the page that downloads the meshes — every picked machine on one floor, at true scale, so a hand beside a humanoid is the size it really is.',
     'compare.stageOnNote':
-      'Drag to orbit the group. Click a machine — or its name — to pose it: its joints open in a window over the render, and the sliders in it drive that machine only. The move button under the render lets you drag machines across the floor and turn them, on the grid or off it; heights stay measured either way.',
+      'Drag to orbit the group. Click a machine — or its name — to pose it: its joints open in a window over the render, and the sliders in it drive that machine only. The move button under the render lets you drag machines across the floor, and turn them by the ring at their feet, on the grid or off it; heights stay measured either way.',
     'compare.stageOpen': 'Load the meshes ({n})',
     'compare.stageClose': 'unload',
     'compare.stageLoading': 'Loading meshes… {done} / {total}',
@@ -251,7 +251,7 @@ const STRINGS = {
     'compare.stageJoints': 'Joints of the selected robot',
     // Where each machine stands. Height is never in here: it is the comparison.
     'compare.arrange': 'Arrange',
-    'compare.arrangeHint': 'Drag a robot to slide it across the floor · shift-drag to turn it · drag the backdrop to orbit',
+    'compare.arrangeHint': 'Drag a robot to slide it across the floor · drag the ring at its feet to turn it · drag the backdrop to orbit',
     'compare.snap': 'Snap to the grid',
     'compare.snapHint': 'Land every move and turn on the floor grid, and on 15°',
     'compare.relayout': 'back in a row',
@@ -678,7 +678,7 @@ const STRINGS = {
     'compare.stageNote':
       '上面的表格只读 URDF。这里是全页唯一会下载网格的地方 —— 把选中的机器人按真实尺寸并排放在同一块地面上，一只手放在人形旁边就是它本来的大小。',
     'compare.stageOnNote':
-      '拖动可环绕整组模型。点中某台机器（或它的名字牌）即可摆姿势：它的关节会在画面上以浮窗打开，窗里的滑块只驱动这一台。画面下方的「摆放」按钮打开后，可以把机器人在地面上拖动、旋转，吸不吸附网格随你；高度始终是实测的。',
+      '拖动可环绕整组模型。点中某台机器（或它的名字牌）即可摆姿势：它的关节会在画面上以浮窗打开，窗里的滑块只驱动这一台。画面下方的「摆放」按钮打开后，可以把机器人在地面上拖动，拖它脚下的圆环即可旋转，吸不吸附网格随你；高度始终是实测的。',
     'compare.stageOpen': '加载网格并预览（{n} 台）',
     'compare.stageClose': '收起',
     'compare.stageLoading': '正在加载网格… {done} / {total}',
@@ -687,7 +687,7 @@ const STRINGS = {
     'compare.stageDeselect': '关闭关节浮窗',
     'compare.stageJoints': '所选机器人的关节',
     'compare.arrange': '摆放',
-    'compare.arrangeHint': '拖动机器人可在地面上平移 · 按住 Shift 拖动可绕竖轴旋转 · 拖背景仍是转视角',
+    'compare.arrangeHint': '拖动机器人可在地面上平移 · 拖它脚下的圆环可绕竖轴旋转 · 拖背景仍是转视角',
     'compare.snap': '对齐网格',
     'compare.snapHint': '平移吸附到地面网格，旋转吸附到 15°',
     'compare.relayout': '重新排成一排',

@@ -24,9 +24,9 @@
  *     that it then stands every picked machine on one floor at the size the
  *     registry records for it, that clicking one opens that one's joints and
  *     that a slider in that window moves that machine and no other — and that
- *     a machine can be moved across that floor and turned on it, on the grid's
- *     own lines when snapping is on, without its height changing and without
- *     the row it came from being lost.
+ *     a machine can be moved across that floor and turned on it — by dragging
+ *     the ring at its feet — on the grid's own lines when snapping is on,
+ *     without its height changing and without the row it came from being lost.
  *
  * The URDFs come from the CDN, so this is a network test — and, like the
  * gallery's own smoke test, it catches an upstream that moved a file.
@@ -558,6 +558,39 @@ const placementOf = (page, index) =>
   }, index);
 
 /**
+ * A point on the render that is on the selected machine's ring.
+ *
+ * The ring is a handle rather than a robot, so the page's own answer to "is
+ * the pointer on it" is the hover mark it puts on the canvas — which is worth
+ * checking anyway, since a handle that gives no sign of being one is a handle
+ * nobody finds. The sweep is out to the sides of the machine's name tag and
+ * down, which is where a ring lying on the floor is drawn from.
+ */
+async function ringPoint(page, name) {
+  const host = await page.locator('#cmp-canvas-host').boundingBox();
+  const tag = await page.evaluate((wanted) => {
+    const node = [...document.querySelectorAll('#cmp-stage-tags .cmp-tag')].find(
+      (one) => one.textContent === wanted,
+    );
+    return node ? { left: parseFloat(node.style.left), top: parseFloat(node.style.top) } : null;
+  }, name);
+  if (!tag) return null;
+  for (let down = 40; down < 340; down += 10) {
+    for (const across of [-150, -120, -90, -60, 60, 90, 120, 150, 0]) {
+      const x = host.x + tag.left + across;
+      const y = host.y + tag.top + down;
+      if (x < host.x || x > host.x + host.width || y > host.y + host.height - 4) continue;
+      await page.mouse.move(x, y);
+      const over = await page.evaluate(() =>
+        document.getElementById('cmp-canvas-host').classList.contains('is-over-ring'),
+      );
+      if (over) return { x, y };
+    }
+  }
+  return null;
+}
+
+/**
  * A point on the render that is actually on one machine's geometry.
  *
  * Its name tag hangs over the top of it, so the search starts there and works
@@ -844,6 +877,38 @@ async function grabPoint(page, name) {
             fail(`${label} — dragging ${first} changed its height to ${after.height} m`);
           }
         }
+
+        // And the ring at a machine's feet is what turns it: a handle laid
+        // where the machine stands, which is the only turn gesture a touch
+        // screen can offer, having no shift to hold.
+        const onRing = await ringPoint(page, first);
+        if (!onRing) {
+          fail(`${label} — the ring under ${first} never marked itself as a handle`);
+        } else {
+          const cursor = await page.evaluate(
+            () => getComputedStyle(document.getElementById('cmp-canvas-host')).cursor,
+          );
+          if (cursor === 'auto' || cursor === 'default') {
+            fail(`${label} — the ring gives no cursor to say it can be turned`);
+          }
+          const before = await placementOf(page, 0);
+          await page.mouse.move(onRing.x, onRing.y);
+          await page.mouse.down();
+          await page.mouse.move(onRing.x + 90, onRing.y + 60, { steps: 12 });
+          await page.mouse.up();
+          await page.waitForTimeout(200);
+          const after = await placementOf(page, 0);
+          const turn = (after.yaw * 180) / Math.PI;
+          if (after.yaw === before.yaw) {
+            fail(`${label} — dragging the ring under ${first} turned nothing`);
+          } else if (Math.abs(turn / 15 - Math.round(turn / 15)) > 0.01) {
+            fail(`${label} — a snapped turn landed on ${turn.toFixed(2)}°, off 15°`);
+          }
+          if (Math.abs(after.x - before.x) > 1e-6 || Math.abs(after.y - before.y) > 1e-6) {
+            fail(`${label} — turning ${first} by its ring slid it to ${after.x}, ${after.y}`);
+          }
+        }
+
         await page.click('#cmp-stage-toolbar [data-action="arrange"]');
         await page.click('#cmp-stage-toolbar [data-action="relayout"]');
       }

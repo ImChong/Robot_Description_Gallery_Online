@@ -1953,9 +1953,11 @@ export class RobotViewer {
    *
    * @param {number} clientX
    * @param {number} clientY
-   * @returns {?{robot: object, link: string, point: import('three').Vector3}}
-   *   `point` is where the ray met the geometry, in world space — which is
-   *   what a drag needs to know to work out what plane it is dragging in.
+   * @returns {?{robot: object, link: string, point: import('three').Vector3,
+   *   distance: number}} `point` is where the ray met the geometry, in world
+   *   space — what a drag needs to know what plane it is dragging in — and
+   *   `distance` is how far along the ray that was, which is what decides a
+   *   contest between the geometry and anything else drawn over the same spot.
    */
   pickAt(clientX, clientY) {
     if (!this.cast.length) return null;
@@ -1970,7 +1972,12 @@ export class RobotViewer {
       for (const member of this.cast) {
         const link = pickedLink(hit.object, member.robot);
         if (link) {
-          return { robot: member.robot, link: link.urdfName || link.name, point: hit.point.clone() };
+          return {
+            robot: member.robot,
+            link: link.urdfName || link.name,
+            point: hit.point.clone(),
+            distance: hit.distance,
+          };
         }
       }
     }

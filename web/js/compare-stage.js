@@ -73,6 +73,22 @@ const SPACING = 0.22;
  */
 const ROW_VIEW = { azimuth: Math.PI * 0.07, elevation: 0.17, padding: 1.1 };
 
+/** How solid the selection ring is drawn, before the pointer is over it. */
+const RING_OPACITY = 0.85;
+
+/**
+ * How far either side of the drawn ring a pointer still counts as on it.
+ *
+ * Wider than the line, because a ring lying flat on the floor is an ellipse two
+ * pixels deep at the angle a row is looked from, and a handle nobody can hit is
+ * not a handle. Proportional to the ring for a machine of any size, with a
+ * floor for the small ones — a gripper's ring is a few centimetres across, and
+ * a fraction of that is nothing. The floor is read off the grid, which is the
+ * one thing on the stage already sized to the scene.
+ */
+const RING_GRAB = 0.22;
+const RING_GRAB_FLOOR = 0.12;
+
 /**
  * How far from the middle a machine may be placed, beyond what the row itself
  * takes: a floor, not a fence.
@@ -643,7 +659,10 @@ export class CompareStage {
     member.anchor = new THREE.Vector3(place.x, member.height, -place.y);
     member.radius = Math.max(member.local.width, member.local.depth) * 0.62;
     this.markTagPlace(member);
-    if (member.robot === this.selected) this.paintRing();
+    if (member.robot === this.selected) {
+      if (this.ringFits(member)) this.placeRing();
+      else this.paintRing();
+    }
     this.viewer.invalidate();
   }
 
@@ -716,6 +735,10 @@ export class CompareStage {
 
   setArranging(on) {
     this.arranging = on;
+    // The ring gains a heading pip and a thicker line in arrange mode: it is a
+    // handle there and only a mark otherwise.
+    this.paintRing();
+    if (!on) this.markRingHover(false);
     el('cmp-stage').classList.toggle('is-arranging', on);
     el('cmp-stage-toolbar')
       .querySelector('[data-action="arrange"]')
@@ -730,9 +753,11 @@ export class CompareStage {
    *
    * A press that goes nowhere is a click, and a click picks the machine under
    * it — or, off every machine, puts the joint window down. A press that
-   * travels is a drag, and what it drags depends on the mode: normally the
-   * camera, and in arrange mode the machine it landed on, across the floor, or
-   * — with shift held — round on the spot.
+   * travels is a drag, and what it drags depends on where it started: normally
+   * the camera, and in arrange mode the ring at a machine's feet turns that
+   * machine, while the machine itself slides across the floor. (Shift on the
+   * body turns it too, for a hand already there — but the ring is the gesture,
+   * and the only one a touch screen can offer, having no shift to hold.)
    */
   bindStage() {
     const host = el('cmp-canvas-host');
@@ -751,7 +776,11 @@ export class CompareStage {
         this.renderTags();
         this.renderPlacement();
       }
-      if (started.moved || event.pointerId !== started.id || event.button !== 0) return;
+      // What is left is a click. A press that took hold of something is not
+      // one even if it went nowhere: it was aimed at that machine, which stays
+      // picked rather than being read as a click on the backdrop behind it.
+      if (started.moved || started.grab) return;
+      if (event.pointerId !== started.id || event.button !== 0) return;
       const hit = this.viewer?.pickAt(event.clientX, event.clientY) || null;
       this.select(hit?.robot || null);
       if (hit) this.viewer.highlightLink(hit.link);
@@ -768,21 +797,33 @@ export class CompareStage {
       }
       press = { x: event.clientX, y: event.clientY, id: event.pointerId, moved: false, grab: null };
       if (!this.arranging) return;
+      // The ring and the machines are both in front of the pointer, and which
+      // one it is aimed at is which one is nearer. A ring is drawn as wide as
+      // the machine it belongs to, so on a floor of six the band round one of
+      // them crosses the next one along; letting the ring win regardless would
+      // make the neighbour unpickable. The ring still wins over the machine it
+      // belongs to wherever that machine is not actually in front of it.
+      const onRing = this.ringAt(event.clientX, event.clientY);
       const hit = this.viewer.pickAt(event.clientX, event.clientY);
-      const member = hit && this.memberOf(hit.robot);
-      const height = hit?.point.y ?? 0;
-      const from = member?.place && this.floorAt(event.clientX, event.clientY, height);
+      const turning = !!onRing && (!hit || onRing.distance <= hit.distance);
+      const member = turning ? this.memberOf(this.selected) : hit && this.memberOf(hit.robot);
+      if (!member?.place) return;
+      // Read against a level plane at the height the grab happened, which for
+      // the ring is the floor and for a machine is wherever the ray met it.
+      const height = turning ? onRing.point.y : hit.point.y;
+      const from = this.floorAt(event.clientX, event.clientY, height);
       if (!from) return;
       this.select(member.robot);
       press.grab = {
         member,
+        // Which of the two the drag is: the ring turns, the machine slides.
+        turning,
         // Where the pointer took hold, relative to the mark the machine stands
         // on, so it does not jump under the hand on the first move.
         offset: { x: member.place.x - from.x, y: member.place.y - from.y },
         // A turn is the same grab read as an angle: how far round the mark the
-        // pointer has travelled since it took hold. The mark itself is where
-        // the machine turns about, so it does not move under the gesture.
-        pivot: { x: member.place.x, y: member.place.y },
+        // pointer has travelled since it took hold. The mark itself is what the
+        // machine turns about, so it does not move under the gesture.
         bearing: Math.atan2(from.y - member.place.y, from.x - member.place.x),
         yaw: member.place.yaw,
         height,
@@ -793,7 +834,16 @@ export class CompareStage {
     }, true);
 
     host.addEventListener('pointermove', (event) => {
-      if (!press || event.pointerId !== press.id) return;
+      if (!press || event.pointerId !== press.id) {
+        // Not a drag: say whether the ring is under the pointer, so it lights
+        // up and the cursor changes before anybody presses anything.
+        if (!press && this.arranging) {
+          const over = this.ringAt(event.clientX, event.clientY);
+          const front = over && this.viewer?.pickAt(event.clientX, event.clientY);
+          this.markRingHover(!!over && (!front || over.distance <= front.distance));
+        }
+        return;
+      }
       if (!press.moved && Math.hypot(event.clientX - press.x, event.clientY - press.y) > CLICK_SLOP) {
         press.moved = true;
       }
@@ -802,9 +852,9 @@ export class CompareStage {
       // Above the horizon there is no level plane to read: the machine stays
       // where the last move left it rather than jumping somewhere arbitrary.
       if (!floor) return;
-      const { member, offset, pivot, bearing, yaw } = press.grab;
-      if (event.shiftKey) {
-        const now = Math.atan2(floor.y - pivot.y, floor.x - pivot.x);
+      const { member, offset, turning, bearing, yaw } = press.grab;
+      if (turning || event.shiftKey) {
+        const now = Math.atan2(floor.y - member.place.y, floor.x - member.place.x);
         this.placeAt(member, {
           yaw: snapped(yaw + now - bearing, this.snapping ? YAW_SNAP : 0),
         });
@@ -819,6 +869,7 @@ export class CompareStage {
 
     host.addEventListener('pointerup', release);
     host.addEventListener('pointercancel', release);
+    host.addEventListener('pointerleave', () => this.markRingHover(false));
   }
 
   /**
@@ -872,10 +923,20 @@ export class CompareStage {
   /* ── the marks on the render ───────────────────────────────────────────── */
 
   /**
-   * A ring on the floor under whichever machine the window is about. Tinting
-   * the robot itself would be lying about its colours in a view whose point is
-   * comparing machines as they are, and a box around it would be one more
-   * rectangle in a page already made of them.
+   * The ring on the floor under whichever machine the window is about.
+   *
+   * As a mark it says which machine that is. Tinting the robot itself would be
+   * lying about its colours in a view whose whole point is comparing machines
+   * as they are, and a box round it would be one more rectangle in a page
+   * already made of them; a ring on the floor reads as a spot to stand on.
+   *
+   * In arrange mode it is also the handle that turns the machine. A ring lying
+   * flat on the floor is exactly the shape of the thing it does — a turntable —
+   * and it is already drawn where the reader is looking, so it costs no extra
+   * furniture. It grows a pip at the machine's heading to say which way it is
+   * facing and to make the turn legible, and a grab band wider than the drawn
+   * line, because at the angle a row is looked from the line itself is two
+   * pixels of ellipse.
    */
   paintRing() {
     if (!this.viewer) return;
@@ -883,34 +944,122 @@ export class CompareStage {
     const member = this.memberOf(this.selected);
     if (!member?.place || !member.local) return;
     const radius = Math.max(member.radius || 0.2, 0.05);
-    const ring = new THREE.Mesh(
-      new THREE.RingGeometry(radius * 0.94, radius, 64),
+    const arranging = this.arranging;
+    const colour = this.viewer.theme.highlight;
+    const paint = (opacity) =>
       new THREE.MeshBasicMaterial({
-        color: this.viewer.theme.highlight,
+        color: colour,
         transparent: true,
-        opacity: 0.85,
+        opacity,
         side: THREE.DoubleSide,
         depthWrite: false,
-      }),
+      });
+
+    const group = new THREE.Group();
+    const band = new THREE.Mesh(
+      new THREE.RingGeometry(radius * (arranging ? 0.9 : 0.94), radius, 64),
+      paint(RING_OPACITY),
     );
+    band.renderOrder = 3;
+    group.add(band);
+
+    if (arranging) {
+      // The heading, as a pip just outside the ring at the machine's own
+      // forward: a dial with no mark on it turns without appearing to.
+      const pip = new THREE.Mesh(
+        new THREE.RingGeometry(radius * 1.03, radius * 1.16, 8, 1, -0.13, 0.26),
+        paint(1),
+      );
+      pip.renderOrder = 3;
+      group.add(pip);
+    }
+
+    // What a pointer actually has to hit, which is wider than what is drawn
+    // and never drawn itself.
+    const reach = Math.max(radius * RING_GRAB, this.viewer.gridStep * RING_GRAB_FLOOR);
+    const grab = new THREE.Mesh(
+      new THREE.RingGeometry(Math.max(radius - reach, 0.001), radius + reach, 32),
+      new THREE.MeshBasicMaterial({ visible: false }),
+    );
+    group.add(grab);
+
     // Into the world group rather than the scene, so it turns with the robots
     // when the turntable is running. That group is the Z-up one, which is also
     // the ring's own plane and the one a placement is written in: it needs no
-    // rotation of its own, and the floor the row stands on is z = 0 there. The
-    // hair above it keeps the two from z-fighting along the whole circle.
-    ring.position.set(member.place.x, member.place.y, 0.002);
-    ring.renderOrder = 3;
-    this.viewer.world.add(ring);
-    this._ring = ring;
+    // rotation of its own beyond the machine's heading, and the floor the row
+    // stands on is z = 0 there. The hair above it keeps the two from
+    // z-fighting along the whole circle.
+    this.viewer.world.add(group);
+    this._ring = { group, band, grab, member, radius, arranging };
+    this.placeRing();
     this.viewer.invalidate();
+  }
+
+  /**
+   * Move the ring onto its machine's mark and turn it to its heading. Split
+   * from building it because a drag asks for this on every frame, and a ring
+   * disposed and rebuilt sixty times a second is sixty allocations to no end.
+   */
+  placeRing() {
+    const ring = this._ring;
+    if (!ring?.member.place) return;
+    const { x, y, yaw } = ring.member.place;
+    ring.group.position.set(x, y, 0.002);
+    ring.group.rotation.z = yaw;
+    this.viewer.invalidate();
+  }
+
+  /** Whether the ring is drawn for this machine, in the mode it is drawn for. */
+  ringFits(member) {
+    return (
+      !!this._ring && this._ring.member === member && this._ring.arranging === this.arranging
+    );
   }
 
   clearRing() {
     if (!this._ring) return;
-    this._ring.removeFromParent();
-    this._ring.geometry.dispose();
-    this._ring.material.dispose();
+    this.markRingHover(false);
+    this._ring.group.removeFromParent();
+    this._ring.group.traverse((child) => {
+      child.geometry?.dispose?.();
+      child.material?.dispose?.();
+    });
     this._ring = null;
+  }
+
+  /**
+   * Whether a point on screen is on the ring's grab band — the one thing on
+   * this stage that is picked without being part of a robot.
+   *
+   * @returns {?{point: import('three').Vector3, distance: number}}
+   */
+  ringAt(clientX, clientY) {
+    const grab = this._ring?.grab;
+    const canvas = this.viewer?.renderer.domElement;
+    if (!grab || !canvas) return null;
+    const { left, top, width, height } = canvas.getBoundingClientRect();
+    if (!width || !height) return null;
+    const ray = new THREE.Raycaster();
+    ray.setFromCamera(
+      new THREE.Vector2(
+        ((clientX - left) / width) * 2 - 1,
+        -((clientY - top) / height) * 2 + 1,
+      ),
+      this.viewer.camera,
+    );
+    const hit = ray.intersectObject(grab, false)[0];
+    return hit ? { point: hit.point, distance: hit.distance } : null;
+  }
+
+  /** Light the ring up while the pointer is over it, so it reads as a handle
+   *  before it is taken hold of rather than after. */
+  markRingHover(over) {
+    const on = !!over && !!this._ring;
+    if (this._overRing === on) return;
+    this._overRing = on;
+    if (this._ring) this._ring.band.material.opacity = on ? 1 : RING_OPACITY;
+    el('cmp-canvas-host').classList.toggle('is-over-ring', on);
+    this.viewer?.invalidate();
   }
 
   /** One name tag per machine, so a row of six can be read as well as orbited. */
