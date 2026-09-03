@@ -254,4 +254,4 @@ human readers.
 
 ## 传感器 Sensor · 1
 
-- [ ] `realsense_d435i` **Realsense D435i** — Intel RealSense — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/realsense_d435i)
+- [x] `realsense_d435i` **Realsense D435i** — Intel RealSense — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/realsense_d435i)

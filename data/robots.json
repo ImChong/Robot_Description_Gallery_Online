@@ -17319,7 +17319,7 @@
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": {
     "size": {
-     "x": 0.3218,
+     "x": 0.3273,
      "y": 1.4103,
      "z": 0.5392
     },
@@ -17465,7 +17465,7 @@
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": {
     "size": {
-     "x": 0.3218,
+     "x": 0.3273,
      "y": 1.4103,
      "z": 0.5933
     },
@@ -19092,11 +19092,11 @@
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": {
     "size": {
-     "x": 0.0859,
-     "y": 0.0241,
-     "z": 0.0211
+     "x": 0.0899,
+     "y": 0.0251,
+     "z": 0.025
     },
-    "height_m": 0.0241
+    "height_m": 0.0251
    },
    "mjcf": {
     "xml_name": "d435i",
