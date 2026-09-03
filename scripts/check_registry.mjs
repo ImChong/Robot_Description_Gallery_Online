@@ -53,6 +53,39 @@ const categories = new Set(registry.categories.map((c) => c.id));
 const ids = new Set();
 const variantIds = new Set();
 
+/** Commit pin inside a jsDelivr ``gh/owner/repo@commit/`` base URL. */
+function jsdelivrCommit(base) {
+  const match = String(base || '').match(/@([^/]+)\/?$/);
+  return match ? match[1] : '';
+}
+
+/**
+ * Oversized CDN files go to GitHub raw; Git LFS blobs go to
+ * media.githubusercontent.com. Both have to name the same repository and the
+ * same commit the assets were resolved against — which, for a high-res
+ * snapshot, may not be `source.commit`.
+ */
+function meshAltPinned(url, github, commit) {
+  if (typeof url !== 'string' || !github || !commit) return false;
+  const raw = `https://raw.githubusercontent.com/${github}/${commit}/`;
+  const media = `https://media.githubusercontent.com/media/${github}/${commit}/`;
+  return url.startsWith(raw) || url.startsWith(media);
+}
+
+function checkMeshAlt(id, meshAlt, github, commit) {
+  for (const [path, url] of Object.entries(meshAlt || {})) {
+    if (path.startsWith('/') || path.startsWith('http')) {
+      fail(id, `mesh_alt key is not a host-relative path: ${path}`);
+    }
+    if (!meshAltPinned(url, github, commit)) {
+      fail(
+        id,
+        `mesh_alt must be raw.githubusercontent.com or media.githubusercontent.com for ${github} at ${commit}`,
+      );
+    }
+  }
+}
+
 for (const robot of registry.robots) {
   const id = robot.id || '(missing id)';
   if (!robot.id) fail(id, 'missing id');
@@ -87,10 +120,10 @@ for (const robot of registry.robots) {
   // Two reasons a description may reference geometry this gallery does not
   // serve, and no others: an archive that re-hosts someone else's URDF keeps
   // only the meshes it renders, and an MJCF that names a collision mesh the
-  // host does not have. Oversized files the CDN refuses are remapped to
-  // GitHub raw in `assets.mesh_alt` rather than skipped. A repository entry
-  // whose URDF names a mesh that simply is not there is a broken entry, and
-  // the build refuses it rather than recording it here.
+  // host does not have. Files the CDN cannot serve — a 20 MB jsDelivr cap, or
+  // a Git LFS pointer — are remapped in `assets.mesh_alt` rather than skipped.
+  // A repository entry whose URDF names a mesh that simply is not there is a
+  // broken entry, and the build refuses it rather than recording it here.
   if (assets.skip_meshes?.length && !source.mirror && urdf) {
     fail(id, 'skips meshes but is neither a mirrored entry nor an MJCF description');
   }
@@ -99,20 +132,7 @@ for (const robot of registry.robots) {
       fail(id, `skipped mesh is not a host-relative path: ${path}`);
     }
   }
-  for (const [path, url] of Object.entries(assets.mesh_alt || {})) {
-    if (path.startsWith('/') || path.startsWith('http')) {
-      fail(id, `mesh_alt key is not a host-relative path: ${path}`);
-    }
-    if (!url.startsWith('https://raw.githubusercontent.com/')) {
-      fail(id, `mesh_alt is not a GitHub raw URL: ${url}`);
-    }
-    if (source.github && !url.includes(`/${source.github}/`)) {
-      fail(id, `mesh_alt does not point at ${source.github}`);
-    }
-    if (source.commit && !url.includes(`/${source.commit}/`)) {
-      fail(id, `mesh_alt is not pinned to source.commit`);
-    }
-  }
+  checkMeshAlt(id, assets.mesh_alt, source.github, source.commit);
   for (const rule of assets.mesh_rewrite || []) {
     if (!rule.from || rule.to === undefined) fail(id, 'mesh_rewrite rule needs a from and a to');
   }
@@ -194,6 +214,18 @@ for (const robot of registry.robots) {
       if (!robot.formats.includes(format)) {
         fail(at, `version offers ${format} but the card does not say so`);
       }
+    }
+    const vBase = variant.assets.base || assets.base;
+    if (variant.assets.base) {
+      if (!variant.assets.base.startsWith('https://')) fail(at, 'version assets.base is not https');
+      if (source.github && !variant.assets.base.includes(source.github)) {
+        fail(at, `version assets.base is not ${source.github}`);
+      }
+    }
+    const vCommit = jsdelivrCommit(vBase) || source.commit;
+    checkMeshAlt(at, variant.assets.mesh_alt, source.github, vCommit);
+    if (variant.assets.mesh_bytes > 60e6) {
+      warn(at, `${(variant.assets.mesh_bytes / 1e6).toFixed(0)} MB of meshes — slow to load`);
     }
   }
   // The entry's own file is what the card is rendered from and what the detail

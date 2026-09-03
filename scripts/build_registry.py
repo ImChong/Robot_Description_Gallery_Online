@@ -72,12 +72,22 @@ CDN = "https://cdn.jsdelivr.net/gh"
 # jsDelivr refuses any single GitHub file over 20 MB (HTTP 403, 49 bytes of
 # English). Those files still live on GitHub; raw.githubusercontent.com has no
 # such cap and answers CORS, so the gallery loads them from there instead of
-# punching a hole in the robot. The registry records the remapping in
+# punching a hole in the robot. Git LFS is a third case: jsDelivr and GitHub
+# raw both 200 the pointer file (~130 bytes of text), while the real blob is
+# on media.githubusercontent.com. The registry records every remapping in
 # ``assets.mesh_alt`` (repo-relative path → absolute URL).
 GITHUB_RAW = "https://raw.githubusercontent.com"
+GITHUB_LFS = "https://media.githubusercontent.com/media"
 JSDELIVR_GH_FILE = re.compile(
     r"^https://cdn\.jsdelivr\.net/gh/([^@/]+/[^@/]+)@([^/]+)/(.+)$"
 )
+GITHUB_RAW_FILE = re.compile(
+    r"^https://raw\.githubusercontent\.com/([^/]+/[^/]+)/([^/]+)/(.+)$"
+)
+LFS_POINTER_PREFIX = b"version https://git-lfs.github.com/spec/v1"
+# A Git LFS pointer is a handful of lines; anything this small on jsDelivr or
+# GitHub raw is worth opening to see whether it is one.
+LFS_POINTER_MAX = 512
 UA = {"User-Agent": "robot-urdf-gallery-online-build"}
 # Deliberately no Accept-Encoding header: jsDelivr answers a compression-capable
 # client with the compressed Content-Length (a 10.7 MB Collada file reports
@@ -399,17 +409,84 @@ def base_url(up: Upstream) -> str:
     return f"{CDN}/{up.github}@{up.commit}/"
 
 
+def github_parts(file_url: str) -> tuple[str, str, str] | None:
+    """``(owner/repo, commit, path)`` from a jsDelivr or GitHub raw file URL."""
+    match = JSDELIVR_GH_FILE.match(file_url) or GITHUB_RAW_FILE.match(file_url)
+    if not match:
+        return None
+    return match.group(1), match.group(2), match.group(3)
+
+
 def github_raw_url(cdn_file_url: str) -> str | None:
     """Turn a jsDelivr ``gh/owner/repo@commit/path`` URL into GitHub raw.
 
     Returns ``None`` when the URL is not on that CDN — a mirrored archive has
     no GitHub raw twin, and inventing one would just 404.
     """
-    match = JSDELIVR_GH_FILE.match(cdn_file_url)
-    if not match:
+    parts = github_parts(cdn_file_url)
+    if not parts:
         return None
-    github, commit, path = match.groups()
+    github, commit, path = parts
     return f"{GITHUB_RAW}/{github}/{commit}/{path}"
+
+
+def github_lfs_url(file_url: str) -> str | None:
+    """The Git LFS media URL for a jsDelivr or GitHub raw path."""
+    parts = github_parts(file_url)
+    if not parts:
+        return None
+    github, commit, path = parts
+    return f"{GITHUB_LFS}/{github}/{commit}/{path}"
+
+
+def lfs_pointer_size(body: bytes | None) -> int | None:
+    """Real blob size if ``body`` is a Git LFS pointer, else ``None``."""
+    if not body or not body.lstrip().startswith(LFS_POINTER_PREFIX):
+        return None
+    match = re.search(rb"^size (\d+)\s*$", body, re.MULTILINE)
+    return int(match.group(1)) if match else None
+
+
+def remap_cdn_file(
+    http: Http, cdn_url: str, status: int, size: int
+) -> tuple[int, int, str | None]:
+    """Follow a jsDelivr answer onto GitHub when the CDN cannot serve the file.
+
+    A 403 is the 20 MB cap. A 200 whose body is a Git LFS pointer is the same
+    kind of refusal: the bytes are on GitHub, just not at that URL. Returns
+    ``(status, size, alt_url)``; ``alt_url`` is recorded in ``assets.mesh_alt``.
+    """
+    if status == 200 and 0 < size <= LFS_POINTER_MAX:
+        real = lfs_pointer_size(http.get(cdn_url))
+        if real:
+            media = github_lfs_url(cdn_url)
+            if media:
+                media_status, media_size = http.head(media)
+                if media_status == 200:
+                    return 200, media_size or real, media
+            # The pointer is not the mesh. Accepting it would ship ~130 bytes of
+            # Git LFS text into the viewer, which then fails to parse Collada.
+            return 404, 0, None
+    if status == 200:
+        return 200, size, None
+    if status != 403:
+        return status, size, None
+    raw = github_raw_url(cdn_url)
+    if not raw:
+        return status, size, None
+    raw_status, raw_size = http.head(raw)
+    if raw_status != 200:
+        return status, size, None
+    if 0 < raw_size <= LFS_POINTER_MAX:
+        real = lfs_pointer_size(http.get(raw))
+        if real:
+            media = github_lfs_url(raw)
+            if media:
+                media_status, media_size = http.head(media)
+                if media_status == 200:
+                    return 200, media_size or real, media
+            return 404, 0, None
+    return 200, raw_size, raw
 
 
 def rewrite_mesh_path(path: str, rules: list[tuple[str, str]]) -> str:
@@ -534,19 +611,13 @@ def inspect_urdf(up: Upstream, http: Http, verify_meshes: bool = True) -> UrdfFa
     urdf_dir = posixpath.dirname(up.urdf_path)
 
     def locate(candidate: str, rel: str) -> tuple[str, int, int]:
-        """Host-relative path, status and size. A jsDelivr 403 is retried on GitHub raw."""
+        """Host-relative path, status and size. jsDelivr 403 and Git LFS pointers retry on GitHub."""
         path = posixpath.normpath(posixpath.join(candidate, rel)).lstrip("/")
         path = rewrite_mesh_path(path, up.mesh_rewrite)
-        status, size = exists(base_url(up) + path)
-        if status == 200:
-            return path, status, size
-        if status == 403:
-            raw = github_raw_url(base_url(up) + path)
-            if raw:
-                raw_status, raw_size = http.head(raw)
-                if raw_status == 200:
-                    facts.alt[path] = raw
-                    return path, 200, raw_size
+        cdn = base_url(up) + path
+        status, size, alt = remap_cdn_file(http, cdn, *exists(cdn))
+        if alt:
+            facts.alt[path] = alt
         return path, status, size
 
     kept: list[str] = []
@@ -699,8 +770,11 @@ def variant_for(
     Same keys, same meanings — ``urdf`` is what the file says, ``assets`` is
     where the file and its meshes are — so the viewer, the spec table and the
     three download writers can be handed a version without being taught what a
-    version is. ``assets.base`` is not repeated: every version of a model is
-    read from the one repository at the one pinned commit.
+    version is. ``assets.base`` is written on every version so one that pins a
+    different commit of the same repository — Deep Robotics high-res Collada
+    lives at the revision before those files were dropped from HEAD — loads
+    from the right tree. Same-commit versions overwrite the card's base with
+    the same URL.
     """
     return {
         "id": variant_id(spec),
@@ -724,7 +798,7 @@ def variant_for(
             "has_inertia": facts.has_inertia,
             "bytes": facts.urdf_bytes,
         },
-        "assets": asset_block(up, facts),
+        "assets": {"base": base_url(up), **asset_block(up, facts)},
     }
 
 
@@ -1277,17 +1351,17 @@ def inspect_mjcf(base: str, scene_path: str, http: Http) -> MjcfFacts:
         """
         refused = ""
         for candidate in candidates:
-            status, size = http.head(base + candidate, attempts=5)
+            status, size, alt = remap_cdn_file(
+                http, base + candidate, *http.head(base + candidate, attempts=5)
+            )
             if status == 200:
-                return candidate, size, 200, None
+                return candidate, size, 200, alt
             if status == 403 and not refused:
                 refused = candidate
         if refused:
-            raw = github_raw_url(base + refused)
-            if raw:
-                raw_status, raw_size = http.head(raw, attempts=5)
-                if raw_status == 200:
-                    return refused, raw_size, 200, raw
+            status, size, alt = remap_cdn_file(http, base + refused, 403, 0)
+            if alt:
+                return refused, size, 200, alt
             return refused, 0, 403, None
         return "", 0, 404, None
 
@@ -1662,6 +1736,7 @@ def main() -> int:
                 urdf_path=spec["urdf"],
                 mjcf_path=spec.get("mjcf"),
                 package_path=spec["package"] if "package" in spec else up.package_path,
+                commit=spec["commit"] if spec.get("commit") else up.commit,
                 # Shared rules from the entry, then this version's own — the
                 # default version's extras are already on `up`, so this matches
                 # it and the already-read check below reuses that parse.
@@ -1675,6 +1750,7 @@ def main() -> int:
                 vup.urdf_path == up.urdf_path
                 and vup.package_path == up.package_path
                 and vup.mesh_rewrite == up.mesh_rewrite
+                and vup.commit == up.commit
             )
             vfacts = facts if already_read else inspect_urdf(vup, http)
             if not vfacts.ok:

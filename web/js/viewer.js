@@ -1030,8 +1030,9 @@ export class RobotViewer {
     const local = entry.assets.local || null;
     const path = entry.assets.mjcf_model || entry.assets.mjcf;
     const manager = new THREE.LoadingManager();
-    // Files jsDelivr refuses as too large are remapped to GitHub raw in
-    // `assets.mesh_alt`; everything else stays on the CDN base.
+    // Files jsDelivr refuses as too large, or that Git LFS only serves as a
+    // pointer, are remapped in `assets.mesh_alt`; everything else stays on
+    // the CDN base.
     const alt = entry.assets.mesh_alt || {};
     // A mesh no picked file answers to gets a URL that cannot resolve, which
     // three.js' loaders report as a failed load — the same hole in the robot a
@@ -1153,6 +1154,8 @@ export class RobotViewer {
     // never kept. Skipping the latter is not an optimisation — the archive
     // answers a path it does not have with 200 and an HTML page, so the request
     // would come back as a mesh loader choking on markup.
+    // `mesh_alt` is the other remap: a jsDelivr 403 or a Git LFS pointer is
+    // fetched from GitHub raw / media instead.
     const rewrite = entry.assets.mesh_rewrite || [];
     const skip = new Set((entry.assets.skip_meshes || []).map((path) => base + path));
     const altByUrl = new Map(

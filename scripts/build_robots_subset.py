@@ -58,6 +58,7 @@ def build_item(item: dict, measured: dict) -> tuple[dict | None, str | None]:
             urdf_path=spec["urdf"],
             mjcf_path=spec.get("mjcf"),
             package_path=spec["package"] if "package" in spec else up.package_path,
+            commit=spec["commit"] if spec.get("commit") else up.commit,
             mesh_rewrite=br.mesh_rewrite_rules(
                 item.get("upstream") or item.get("mirror") or {}, spec
             ),
@@ -66,6 +67,7 @@ def build_item(item: dict, measured: dict) -> tuple[dict | None, str | None]:
             vup.urdf_path == up.urdf_path
             and vup.package_path == up.package_path
             and vup.mesh_rewrite == up.mesh_rewrite
+            and vup.commit == up.commit
         )
         vfacts = facts if already_read else br.inspect_urdf(vup, http)
         if not vfacts.ok:

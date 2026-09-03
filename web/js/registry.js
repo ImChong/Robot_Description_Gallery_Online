@@ -103,11 +103,31 @@ export function variantView(robot, variantId) {
     notes_zh: variant.notes_zh ?? robot.notes_zh,
     measured: variant.measured,
     urdf: variant.urdf,
-    // Every version of a model is read from the one repository at the one
-    // pinned commit, so only the paths below the base differ.
+    // Most versions share the card's `assets.base`. A high-res snapshot may
+    // pin an older commit of the same repository, so the version's own base
+    // (and its mesh_alt remaps) win when they are present.
     assets: { ...robot.assets, ...variant.assets },
-    source: { ...robot.source, mjcf: variant.mjcf },
+    source: overlayVariantSource(robot, variant),
   };
+}
+
+/** Point the spec table and GitHub links at the commit this version was read from. */
+function overlayVariantSource(robot, variant) {
+  const source = { ...robot.source, mjcf: variant.mjcf };
+  const base = variant.assets?.base;
+  if (!base || base === robot.assets.base) return source;
+  const match = String(base).match(
+    /^https:\/\/cdn\.jsdelivr\.net\/gh\/([^@/]+\/[^@/]+)@([^/]+)\//,
+  );
+  if (!match) return source;
+  const [, github, commit] = match;
+  source.commit = commit;
+  const dir = String(variant.assets.urdf || '').replace(/\/[^/]+$/, '');
+  source.tree_url = `https://github.com/${github}/tree/${commit}/${dir}`;
+  if (source.license_url && robot.source.commit) {
+    source.license_url = source.license_url.replaceAll(robot.source.commit, commit);
+  }
+  return source;
 }
 
 export function byId(data, id) {
