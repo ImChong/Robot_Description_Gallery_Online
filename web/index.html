@@ -391,11 +391,31 @@
                     data-i18n-title="viewer.fullscreen" title="Fullscreen"
                     data-i18n-aria-label="viewer.fullscreen" aria-label="Fullscreen"></button>
           </div>
+          <!-- Where the machines stand. Two modes rather than actions, so both
+               stay lit while they are on: `arrange` makes a drag on a machine
+               slide it across the floor instead of orbiting the stage, and
+               `snap` puts every such move — and every turn — on the floor
+               grid's own lines. -->
+          <div class="toggle-group">
+            <button class="icon-btn" data-action="arrange" data-icon="move" aria-pressed="false"
+                    data-i18n-title="compare.arrangeHint" title="Drag a robot to move it"
+                    data-i18n-aria-label="compare.arrange" aria-label="Arrange"></button>
+            <button class="icon-btn" data-action="snap" data-icon="magnet" aria-pressed="false"
+                    data-i18n-title="compare.snapHint" title="Snap to the floor grid"
+                    data-i18n-aria-label="compare.snap" aria-label="Snap"></button>
+            <!-- Only on screen once something has been moved: it is the way
+                 back from an arrangement, and there is nothing to go back from
+                 until then. -->
+            <button data-action="relayout" id="cmp-stage-relayout" hidden
+                    data-i18n="compare.relayout">重新排列</button>
+          </div>
           <div class="toggle-group">
             <button data-action="close" data-i18n="compare.stageClose">收起</button>
           </div>
         </div>
-        <p class="stage-hint" data-i18n="compare.stageHint"></p>
+        <!-- Written by js/compare-stage.js as well as by data-i18n: it says
+             something different while the stage is in arrange mode. -->
+        <p class="stage-hint" id="cmp-stage-hint" data-i18n="compare.stageHint"></p>
         <!-- The joints of whichever machine was clicked, floating over the
              render and dragged by its own head. Not a dialog: the render
              behind it stays live and the tags beside it still take a click,

@@ -848,6 +848,18 @@ export class RobotViewer {
   }
 
   /**
+   * How far apart the floor grid's lines are, in metres.
+   *
+   * The grid is sized so a cell is a round number of centimetres, which is
+   * what makes it readable as a scale — and therefore the only step worth
+   * snapping a machine's placement to: a snap that lands somewhere other than
+   * on a line the reader can see is not a snap, it is a rounding error.
+   */
+  get gridStep() {
+    return this._grid.size / this._grid.divisions;
+  }
+
+  /**
    * The floor grid is rebuilt per robot: cells land on a round number of
    * centimetres, so the spacing doubles as a scale reference.
    */
@@ -1941,7 +1953,9 @@ export class RobotViewer {
    *
    * @param {number} clientX
    * @param {number} clientY
-   * @returns {?{robot: object, link: string}}
+   * @returns {?{robot: object, link: string, point: import('three').Vector3}}
+   *   `point` is where the ray met the geometry, in world space — which is
+   *   what a drag needs to know to work out what plane it is dragging in.
    */
   pickAt(clientX, clientY) {
     if (!this.cast.length) return null;
@@ -1955,7 +1969,9 @@ export class RobotViewer {
     for (const hit of this._raycaster.intersectObjects(this.cast.map((m) => m.robot), true)) {
       for (const member of this.cast) {
         const link = pickedLink(hit.object, member.robot);
-        if (link) return { robot: member.robot, link: link.urdfName || link.name };
+        if (link) {
+          return { robot: member.robot, link: link.urdfName || link.name, point: hit.point.clone() };
+        }
       }
     }
     return null;

@@ -23,7 +23,10 @@
  *   - And the shared 3D stage: that it fetches nothing until it is asked to,
  *     that it then stands every picked machine on one floor at the size the
  *     registry records for it, that clicking one opens that one's joints and
- *     that a slider in that window moves that machine and no other.
+ *     that a slider in that window moves that machine and no other — and that
+ *     a machine can be moved across that floor and turned on it, on the grid's
+ *     own lines when snapping is on, without its height changing and without
+ *     the row it came from being lost.
  *
  * The URDFs come from the CDN, so this is a network test — and, like the
  * gallery's own smoke test, it catches an upstream that moved a file.
@@ -542,6 +545,49 @@ async function pickedMeasurement() {
 
 /* ── the shared 3D stage ─────────────────────────────────────────────────── */
 
+/** Where one machine stands, off its name tag. */
+const placementOf = (page, index) =>
+  page.evaluate((i) => {
+    const tag = document.querySelectorAll('#cmp-stage-tags .cmp-tag')[i];
+    return {
+      x: Number(tag.dataset.x),
+      y: Number(tag.dataset.y),
+      yaw: Number(tag.dataset.yaw),
+      height: Number(tag.dataset.height),
+    };
+  }, index);
+
+/**
+ * A point on the render that is actually on one machine's geometry.
+ *
+ * Its name tag hangs over the top of it, so the search starts there and works
+ * down; a click is what asks, since the joint window naming that machine is
+ * the page's own answer to "was that a hit". Null if the whole column below
+ * the tag is backdrop, which would mean the machine is not being drawn.
+ */
+async function grabPoint(page, name) {
+  const host = await page.locator('#cmp-canvas-host').boundingBox();
+  const tag = await page.evaluate((wanted) => {
+    const node = [...document.querySelectorAll('#cmp-stage-tags .cmp-tag')].find(
+      (one) => one.textContent === wanted,
+    );
+    return node ? { left: parseFloat(node.style.left), top: parseFloat(node.style.top) } : null;
+  }, name);
+  if (!tag) return null;
+  for (let down = 10; down < 460; down += 10) {
+    const y = host.y + tag.top + down;
+    if (y > host.y + host.height - 4) break;
+    await page.mouse.click(host.x + tag.left, y);
+    await page.waitForTimeout(70);
+    const about = await page.evaluate(() => {
+      const panel = document.getElementById('cmp-joint-panel');
+      return panel.hidden ? null : panel.querySelector('.cmp-joint-title strong')?.textContent;
+    });
+    if (about === name) return { x: host.x + tag.left, y };
+  }
+  return null;
+}
+
 /**
  * Two machines on one floor, at the size the registry records for each.
  *
@@ -696,6 +742,110 @@ async function pickedMeasurement() {
       const afterSecond = await readWindow();
       if (String(afterSecond.values) !== String(restOfSecond.values)) {
         fail(`${label} — posing ${first} moved ${second}`);
+      }
+
+      /* ---- and where each of them stands ---------------------------------
+       *
+       * A placement is x and y across the floor and a turn about the vertical,
+       * and it is deliberately not a height and not a scale: those two are the
+       * comparison the stage exists to make. So what is checked is that the
+       * two that can move do, that a turn turns the machine where it stands
+       * rather than swinging it round whatever point its description calls the
+       * origin, that the height survives all of it, and that the row is still
+       * there to go back to.
+       */
+      const step = Number(await page.getAttribute('#cmp-stage', 'data-step'));
+      const placed = await page.evaluate(() => {
+        // Queried afresh every time: putting the machines back in a row
+        // rebuilds the row of tags, and a node held across that is a detached
+        // one still carrying the placement it had before.
+        const tag = () => document.querySelector('#cmp-stage-tags .cmp-tag');
+        const relayout = document.querySelector('#cmp-stage-toolbar [data-action="relayout"]');
+        const read = () => ({
+          x: Number(tag().dataset.x),
+          y: Number(tag().dataset.y),
+          yaw: Number(tag().dataset.yaw),
+          height: Number(tag().dataset.height),
+          pinned: tag().dataset.pinned,
+        });
+        tag().click();
+        const field = (key) => document.querySelector(`#cmp-place input[data-place="${key}"]`);
+        if (!field('x') || !field('y') || !field('yaw')) return { fields: false };
+        const type = (key, value) => {
+          const input = field(key);
+          input.value = String(value);
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+        };
+        // The row as it stands right now — the pose has been dragged about
+        // since the stage loaded, and a row is laid out from the geometry as
+        // it is drawn, so the reading has to be taken fresh to be compared to.
+        relayout.click();
+        const row = read();
+        // Off it, by numbers that are not on the grid: a typed placement is
+        // exact, and only a drag is snapped.
+        type('x', -1.37);
+        type('y', 0.82);
+        type('yaw', 90);
+        const moved = read();
+        relayout.click();
+        return { fields: true, row, moved, back: read() };
+      });
+
+      if (!placed.fields) {
+        fail(`${label} — the joint window carries no placement fields`);
+      } else {
+        // Typed exactly, and turned about the machine's own middle: the mark it
+        // stands on is the one it turns about, so x and y do not move with it.
+        if (Math.abs(placed.moved.x - -1.37) > 1e-6 || Math.abs(placed.moved.y - 0.82) > 1e-6) {
+          fail(`${label} — placing ${first} at -1.37, 0.82 left it at ${placed.moved.x}, ${placed.moved.y}`);
+        }
+        if (Math.abs(placed.moved.yaw - Math.PI / 2) > 1e-3) {
+          fail(`${label} — typing 90° gave ${placed.moved.yaw} rad`);
+        }
+        if (Math.abs(placed.moved.height - placed.row.height) > 1e-4) {
+          fail(`${label} — moving ${first} changed its height to ${placed.moved.height} m`);
+        }
+        if (placed.moved.pinned !== 'true') fail(`${label} — a moved machine is not marked placed`);
+        // And back in the row it came from, exactly.
+        if (
+          Math.abs(placed.back.x - placed.row.x) > 1e-6 ||
+          Math.abs(placed.back.y - placed.row.y) > 1e-6 ||
+          placed.back.yaw !== 0 ||
+          placed.back.pinned !== 'false'
+        ) {
+          fail(`${label} — "back in a row" left ${first} at ${JSON.stringify(placed.back)}`);
+        }
+        if (!(step > 0)) fail(`${label} — the stage published no snap step`);
+      }
+
+      // The same placement, dragged. Snapping is on by default, so what a drag
+      // lands on is the floor grid's own lines — which is the whole of what
+      // "snap" claims, and the part no typed number exercises.
+      if (step > 0) {
+        await page.click('#cmp-stage-toolbar [data-action="arrange"]');
+        const grab = await grabPoint(page, first);
+        if (!grab) {
+          fail(`${label} — could not take hold of ${first} on the render`);
+        } else {
+          const before = await placementOf(page, 0);
+          await page.mouse.move(grab.x, grab.y);
+          await page.mouse.down();
+          await page.mouse.move(grab.x + 120, grab.y + 30, { steps: 10 });
+          await page.mouse.up();
+          await page.waitForTimeout(200);
+          const after = await placementOf(page, 0);
+          const onGrid = (value) => Math.abs(value / step - Math.round(value / step)) < 1e-6;
+          if (after.x === before.x && after.y === before.y) {
+            fail(`${label} — dragging ${first} moved nothing`);
+          } else if (!onGrid(after.x) || !onGrid(after.y)) {
+            fail(`${label} — a snapped drag landed at ${after.x}, ${after.y}, off a ${step} m grid`);
+          }
+          if (Math.abs(after.height - before.height) > 1e-4) {
+            fail(`${label} — dragging ${first} changed its height to ${after.height} m`);
+          }
+        }
+        await page.click('#cmp-stage-toolbar [data-action="arrange"]');
+        await page.click('#cmp-stage-toolbar [data-action="relayout"]');
       }
 
       if (failures === wasFailing) {

@@ -48,6 +48,20 @@ const ICONS = {
     '<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>' +
     '<circle cx="12" cy="13" r="3"/>',
 
+  /**
+   * Arrange: the four-way move mark, for the mode in which dragging a machine
+   * slides it across the floor rather than orbiting the stage around it.
+   */
+  move:
+    '<path d="M12 2v20"/><path d="M2 12h20"/>' +
+    '<path d="m9 5 3-3 3 3"/><path d="m9 19 3 3 3-3"/>' +
+    '<path d="m5 9-3 3 3 3"/><path d="m19 9 3 3-3 3"/>',
+
+  /** Snap: a magnet, for placements that land on the floor grid's own lines. */
+  magnet:
+    '<path d="M6 3H3v8a9 9 0 0 0 18 0V3h-3v8a6 6 0 0 1-12 0z"/>' +
+    '<path d="M3 8h3"/><path d="M18 8h3"/>',
+
   /** Download: one mark for all three archives, which differ in payload only. */
   download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>',
 };

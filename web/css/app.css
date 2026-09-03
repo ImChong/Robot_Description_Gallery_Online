@@ -1911,6 +1911,63 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
 }
 .cmp-joint-tools .link-btn { margin-left: auto; }
 
+/* ── Where the machine stands ────────────────────────────
+ *
+ * Three numbers above the joints: two across the floor and one heading. There
+ * is no fourth — the height is the comparison the stage exists to make, and
+ * neither it nor the scale is the reader's to set, so neither has a field.
+ *
+ * Dragging on the render is the gesture most of this is used through; these
+ * are what a drag cannot do — an exact metre, a keyboard, and a turn on a
+ * touch screen, which has no Shift to hold. */
+.cmp-place { padding: 8px 12px; border-bottom: 1px solid var(--stage-chrome-border); }
+.cmp-place:empty { display: none; }
+.cmp-place-row { display: flex; gap: 8px; }
+.cmp-place-field {
+  flex: 1 1 0; min-width: 0;
+  display: flex; align-items: center; gap: 5px;
+  padding: 0 6px; height: 26px;
+  border: 1px solid var(--stage-chrome-border); border-radius: var(--radius-sm);
+  background: var(--stage-chrome-hover);
+}
+.cmp-place-field:focus-within { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.cmp-place-field > span {
+  flex: 0 0 auto;
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--stage-chrome-text);
+}
+.cmp-place-field > i {
+  flex: 0 0 auto; font-style: normal;
+  font-size: 10px; color: var(--text-faint);
+}
+.cmp-place-field input {
+  flex: 1 1 auto; min-width: 0; width: 100%;
+  border: 0; background: none; outline: 0; padding: 0;
+  color: var(--stage-chrome-text-strong);
+  font: inherit; font-family: var(--font-mono); font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  /* The spinners would take a third of a 60px field, and the value is dragged
+   * or typed rather than clicked up one step at a time. */
+  -moz-appearance: textfield; appearance: textfield;
+}
+.cmp-place-field input::-webkit-outer-spin-button,
+.cmp-place-field input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.cmp-place-foot { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 8px; margin-top: 6px; }
+.cmp-place-foot .tree-summary { flex: 1 1 auto; min-width: 0; }
+.cmp-place-foot .link-btn { margin-left: auto; flex: 0 0 auto; }
+
+/* Arrange mode says so with the cursor: over the render a machine is something
+ * to be picked up, and the backdrop still orbits. */
+.cmp-stage.is-arranging .canvas-host { cursor: grab; }
+.cmp-stage.is-arranging .canvas-host.is-dragging { cursor: grabbing; }
+
+/* The detail page's toolbar stacks on a narrow screen because its overlay
+ * legend is a whole line on its own. This one has no legend — four icons, two
+ * mode switches and a word — so its groups wrap across the width instead of
+ * standing three deep over a phone's render. */
+@media (max-width: 720px) {
+  .cmp-stage .stage-toolbar { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+}
+
 /* The list is the only part that scrolls: a humanoid brings sixty rows and the
  * head has to stay where the hand that dragged it left it. */
 .cmp-joint-list {
