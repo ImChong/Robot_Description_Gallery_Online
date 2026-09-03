@@ -1800,9 +1800,15 @@ export class RobotViewer {
    * `setJointMeta` has been handed it; `hasLimits` falls back to what the loader
    * can tell until then.
    *
+   * `child` is the link the joint moves, which is often the only readable
+   * thing about it: nothing obliges a URDF to name its joints after anything,
+   * and several name them after nothing — SO-ARM100's six are `1` to `6`,
+   * whose links are `shoulder`, `upper_arm`, `lower_arm`, `wrist`, `gripper`,
+   * `jaw`.
+   *
    * @returns {Array<{name: string, type: string, lower: number, upper: number,
    *   value: number, effort: ?number, velocity: ?number, hasLimits: boolean,
-   *   mimic: ?object, loop: boolean}>}
+   *   mimic: ?object, loop: boolean, child: ?string}>}
    */
   jointList() {
     if (!this.robot) return [];
@@ -1814,6 +1820,9 @@ export class RobotViewer {
         const declared = meta
           ? meta.lower !== null || meta.upper !== null
           : j.limit?.lower !== 0 || j.limit?.upper !== 0;
+        // Read off the scene graph rather than the XML, so it is the link
+        // that is actually hanging under this joint on the stage.
+        const child = (j.children || []).find((one) => one.isURDFLink);
         return {
           name: j.name,
           type: j.jointType,
@@ -1825,6 +1834,7 @@ export class RobotViewer {
           mimic: meta?.mimic ?? null,
           hasLimits: j.jointType !== 'continuous' && declared,
           loop: this.isLoopDriven(j.urdfName || j.name),
+          child: child ? child.urdfName || child.name : null,
         };
       });
   }

@@ -738,6 +738,9 @@ async function grabPoint(page, name) {
             about: panel.querySelector('.cmp-joint-title strong')?.textContent || null,
             sliders: panel.querySelectorAll('input[type="range"]').length,
             values: [...panel.querySelectorAll('.tree-value')].map((node) => node.textContent),
+            labels: [...panel.querySelectorAll('.cmp-joint-name')].map((node) =>
+              node.textContent.trim(),
+            ),
           };
         });
       const clickTag = async (index) => {
@@ -769,6 +772,15 @@ async function grabPoint(page, name) {
       if (!posed) fail(`${label} — ${first} came up with no sliders`);
       else if (posed.was === posed.now) {
         fail(`${label} — a slider in ${first}'s window moved nothing (${posed.now})`);
+      }
+      // Nothing obliges a URDF to name its joints after anything, and this one
+      // names them `1` to `6`. Six identical sliders labelled with six numbers
+      // is a panel that says nothing, so the link each joint moves comes along
+      // beside the number — which is where the reading `shoulder`, `upper_arm`,
+      // `wrist` is actually written down.
+      const unnamed = window0.labels.filter((one) => !/\p{L}/u.test(one));
+      if (window0.labels.length && unnamed.length) {
+        fail(`${label} — ${unnamed.length} slider(s) in ${first}'s window are labelled with nothing but a number: ${unnamed.join(', ')}`);
       }
 
       await clickTag(1);

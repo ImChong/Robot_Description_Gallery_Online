@@ -149,6 +149,24 @@ function fsExit() {
   return exit ? Promise.resolve(exit.call(document)) : Promise.resolve();
 }
 
+/**
+ * What to call a joint in a list of them.
+ *
+ * Its own name, wherever that name says anything. Nothing obliges a URDF to
+ * name a joint after what it does and several name them after nothing at all —
+ * SO-ARM100's six are `1` to `6` — which in a window of six identical sliders
+ * leaves nothing to read. There the link the joint moves is the name the
+ * description does carry (`shoulder`, `upper_arm`, `wrist`), so it comes along
+ * beside the number. Both are always in the row's title, whichever is shown.
+ *
+ * The test is deliberately narrow: a name with no letter in it names nothing,
+ * and everything else is upstream's to name as it likes.
+ */
+function jointLabel(joint) {
+  if (!joint.child || /\p{L}/u.test(joint.name)) return joint.name;
+  return `${joint.name} · ${joint.child}`;
+}
+
 /** A joint's position, in whichever unit the window is switched to. */
 function readout(joint) {
   if (!Number.isFinite(joint.value)) return '—';
@@ -1271,8 +1289,9 @@ export class CompareStage {
       : `<input type="range" min="${lower}" max="${upper}" step="${sliderStep(joint)}"
            value="${joint.value}" data-joint="${encodeURIComponent(joint.name)}"
            aria-label="${esc(joint.name)}">`;
+    const title = joint.child ? `${joint.name} → ${joint.child}` : joint.name;
     return `<div class="cmp-joint-row${driven ? ' is-driven' : ''}">
-      <span class="cmp-joint-name" title="${esc(joint.name)}">${esc(joint.name)}</span>
+      <span class="cmp-joint-name" title="${esc(title)}">${esc(jointLabel(joint))}</span>
       ${control}
       <span class="tree-value" data-tree-value="${esc(joint.name)}">—</span>
     </div>`;
