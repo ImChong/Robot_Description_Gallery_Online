@@ -14,6 +14,7 @@ import { downloadBundle, downloadRos2, downloadUrdf, ros2PackageName } from './d
 import { icon } from './icons.js';
 import { onThemeChange, theme } from './theme.js';
 import { angleUnit, DEG, formatAngle, setAngleUnit } from './angle-unit.js';
+import { JointSweep, sliderRange, sliderStep } from './joint-sweep.js';
 
 const el = (id) => document.getElementById(id);
 
@@ -153,42 +154,6 @@ function savePanelWidths(widths) {
   } catch {
     /* private mode — the widths just will not persist */
   }
-}
-
-/**
- * The joint tour: how long one joint's turn lasts, start to finish — out to its
- * upper limit, across to its lower one, and back to where it stood. A second is
- * long enough to read what the joint does and short enough that a humanoid's
- * sixty of them are a minute rather than an afternoon.
- */
-const SWEEP_MS = 1000;
-
-/** Under this the whole turn is a joint standing still — a range the URDF
- *  pins shut — and the tour spends its second on the next joint instead. */
-const SWEEP_EPS = 1e-6;
-
-/** Ease in and out across the whole of one joint's turn, so it sets off and
- *  arrives the way a joint driven by a controller would rather than snapping
- *  into motion at full speed. The three legs of the turn share the second in
- *  proportion to how far each one travels, so the speed is one speed. */
-const sweepEase = (u) => (u < 0.5 ? 2 * u * u : 1 - (-2 * u + 2) ** 2 / 2);
-
-/**
- * Where one joint stands part-way through its turn. `legs` is the path — out,
- * across, home — and `spans` how long each of them is; the eased progress is
- * distance along the whole path, so it is walked leg by leg until it runs out.
- */
-function sweepValue(step, u) {
-  let left = sweepEase(u) * step.total;
-  for (let i = 0; i < step.legs.length; i += 1) {
-    const [from, to] = step.legs[i];
-    const span = step.spans[i];
-    if (left <= span || i === step.legs.length - 1) {
-      return span ? from + (to - from) * clamp01(left / span) : to;
-    }
-    left -= span;
-  }
-  return step.from;
 }
 
 const SNIPPETS = {
@@ -1331,156 +1296,42 @@ export class Detail {
   /**
    * The tour: every joint the panel has a slider for, in the order the panel
    * lists them, each one driven out to its upper limit, across to its lower one
-   * and back to where it stood — about a second apiece.
+   * and back to where it stood — about a second apiece. js/joint-sweep.js runs
+   * it; what is here is the panel it runs against.
    *
    * It is what a still render cannot say: which joint on a chain of sixty is
    * the shoulder roll and which the wrist, and how far each of them is allowed
    * to go. Watching a description move through its own limits is the fastest
    * reading of it there is, and it asks nothing of the reader but one press.
-   *
-   * The pose is borrowed, not spent: every joint is handed back the value it
-   * held when its turn began, so the robot the tour finishes on is the robot it
-   * started from — and so is the one it is stopped on part-way.
    */
+  jointSweep() {
+    if (!this._sweep) {
+      this._sweep = new JointSweep({
+        // The panel's own order, which is the tree's: reading down a branch is
+        // reading down the chain, so the tour walks the robot rather than
+        // whatever order the URDF happened to declare its joints in. A folded
+        // branch is not skipped — `markSweepRow` unfolds the one whose turn it
+        // is, where unfolding the whole tree up front would throw away a
+        // reader's own folding to show them rows the tour may not reach for
+        // another minute.
+        order: () => [...(this.treeSliders?.keys() ?? [])],
+        read: () => this.viewer.jointList(),
+        write: (name, value) => this.viewer.setJoint(name, value),
+        pose: (pose) => this.viewer.applyPose(pose),
+        onFrame: () => this.syncTreeValues(),
+        onStep: (name) => this.markSweepRow(name),
+        onStateChange: () => this.renderSweepButton(),
+      });
+    }
+    return this._sweep;
+  }
+
   toggleJointSweep() {
-    if (this._sweep) this.stopJointSweep();
-    else this.startJointSweep();
+    this.jointSweep().toggle();
   }
 
-  startJointSweep() {
-    if (this._sweep) return;
-    // The panel's own order, which is the tree's: reading down a branch is
-    // reading down the chain, so the tour walks the robot rather than whatever
-    // order the URDF happened to declare its joints in.
-    const names = [...(this.treeSliders?.keys() ?? [])];
-    if (!names.length) return;
-    // A folded branch is not skipped — every slider in the panel gets its turn,
-    // and `markSweepRow` unfolds the one whose turn it is. Unfolding the whole
-    // tree up front would throw away a reader's own folding to show them rows
-    // the tour may not reach for another minute.
-    this._sweep = { names, index: -1, frame: 0, step: null };
-    this.renderSweepButton();
-    this.runSweep();
-  }
-
-  /**
-   * Stop, wherever the tour has got to. The joint in flight is put back first:
-   * it was borrowed for the length of its turn, and a tour stopped half-way
-   * through one would otherwise leave the robot in a pose nobody chose.
-   */
   stopJointSweep() {
-    const sweep = this._sweep;
-    if (!sweep) return;
-    this._sweep = null;
-    if (sweep.frame) cancelAnimationFrame(sweep.frame);
-    if (sweep.step) this.restoreSweepStep(sweep.step);
-    this.markSweepRow(null);
-    this.syncTreeValues();
-    this.renderSweepButton();
-  }
-
-  /**
-   * One joint's turn, then the next. Each turn schedules its own frames and
-   * hands over at the end of them, so the tour is a chain of animations rather
-   * than one timer that has to know where every joint is.
-   */
-  runSweep() {
-    const sweep = this._sweep;
-    const step = this.nextSweepStep();
-    if (!step) {
-      this.stopJointSweep();
-      return;
-    }
-    sweep.step = step;
-    this.markSweepRow(step.name);
-    const start = performance.now();
-    const tick = (now) => {
-      // A tour that was stopped, or replaced by a newer one, no longer owns
-      // this frame: the pose has already been handed back by whoever stopped it.
-      if (this._sweep !== sweep) return;
-      const u = Math.min(1, (now - start) / SWEEP_MS);
-      this.viewer.setJoint(step.name, sweepValue(step, u));
-      // The whole panel, not just this row: a joint that mimics this one moves
-      // with it in the model, and its readout is only honest if it says so.
-      this.syncTreeValues();
-      if (u < 1) {
-        sweep.frame = requestAnimationFrame(tick);
-      } else {
-        // The joint is home by now — `sweepValue` ends where it began — but the
-        // loop it belongs to, if any, is not, and that is what this puts back.
-        this.restoreSweepStep(step);
-        this.syncTreeValues();
-        sweep.frame = 0;
-        this.runSweep();
-      }
-    };
-    sweep.frame = requestAnimationFrame(tick);
-  }
-
-  /**
-   * The next joint worth a turn, and the path its turn takes: out to the upper
-   * limit, across to the lower one, home again. The bounds are the slider's own
-   * rather than the URDF's, so the tour goes exactly as far as a hand dragging
-   * that slider could — a continuous joint gets its full turn, and one whose
-   * description declares no limit at all gets the working range the panel
-   * invents for it instead of freezing at zero.
-   *
-   * A joint with nowhere to go is passed over rather than given a second of
-   * stillness: a range pinned shut says all it has to say in the panel.
-   */
-  nextSweepStep() {
-    const sweep = this._sweep;
-    const joints = new Map(this.viewer.jointList().map((joint) => [joint.name, joint]));
-    while ((sweep.index += 1) < sweep.names.length) {
-      const name = sweep.names[sweep.index];
-      const input = this.treeSliders.get(name);
-      const joint = joints.get(name);
-      if (!input || !joint) continue;
-      const lower = Number(input.min);
-      const upper = Number(input.max);
-      if (!Number.isFinite(lower) || !Number.isFinite(upper)) continue;
-      // Where it stands now, held inside its own travel: the loader can park a
-      // joint outside the limits its description declares, and the tour has no
-      // business ending it up somewhere its slider cannot reach.
-      const from = Math.min(Math.max(joint.value, lower), upper);
-      if (!Number.isFinite(from)) continue;
-      const legs = [
-        [from, upper],
-        [upper, lower],
-        [lower, from],
-      ];
-      const spans = legs.map(([a, b]) => Math.abs(b - a));
-      const total = spans.reduce((sum, span) => sum + span, 0);
-      if (total < SWEEP_EPS) continue;
-      // Where the joints a closed loop solves for stand as this turn begins.
-      // They are moved by this one without being driven by it, and a turn that
-      // carries a five-bar leg through the configuration where it is exactly
-      // straight comes back down the other branch of the mechanism — so the
-      // tour hands them back too, or a robot it has finished with is not the
-      // robot it started on.
-      return { name, input, from, legs, spans, total, loop: this.loopPose() };
-    }
-    return null;
-  }
-
-  /**
-   * Where every joint a closed loop solves for stands right now — the half of
-   * the pose no slider writes. Null when the robot has no closed loop, which
-   * is every robot in the gallery but one.
-   */
-  loopPose() {
-    const pose = {};
-    for (const joint of this.viewer.jointList()) {
-      if (joint.loop) pose[joint.name] = joint.value;
-    }
-    return Object.keys(pose).length ? pose : null;
-  }
-
-  /** Put one turn's joint — and the loop it moved on the way — back where the
-   *  turn found them. */
-  restoreSweepStep(step) {
-    this.viewer.setJoint(step.name, step.from);
-    if (step.loop) this.viewer.applyPose(step.loop);
+    this._sweep?.stop();
   }
 
   /**
@@ -1511,7 +1362,7 @@ export class Detail {
    *  runs — the same way the fullscreen button carries its own mode. */
   renderSweepButton() {
     const button = el('joints-play');
-    const running = !!this._sweep;
+    const running = !!this._sweep?.running;
     const key = running ? 'joints.stop' : 'joints.play';
     const hint = running ? 'joints.stopHint' : 'joints.playHint';
     button.setAttribute('aria-pressed', String(running));
@@ -1879,7 +1730,7 @@ function sliderBlock(joint) {
   return (
     '<div class="tree-slider">' +
     '<div class="slider-line">' +
-    `<input type="range" min="${lower}" max="${upper}" step="${sliderStep(isRot)}"` +
+    `<input type="range" min="${lower}" max="${upper}" step="${sliderStep(joint)}"` +
     ` value="${joint.value}" data-joint="${encodeURIComponent(joint.name)}" data-rot="${isRot}"` +
     ` aria-label="${esc(joint.name)}">` +
     `<span class="tree-value" data-tree-value="${esc(joint.name)}">—</span>` +
@@ -1989,28 +1840,6 @@ function massCell(robot) {
     `${mass.toFixed(2)} kg${suspect ? ` <abbr title="${t('mass.suspect')}">?</abbr>` : ''}` +
     `<br><span class="sub">${t(descriptionKind(robot) === 'mjcf' ? 'mass.fromMjcf' : 'mass.fromUrdf')}</span>`
   );
-}
-
-/**
- * How far the slider may travel. A joint with real limits uses them; a
- * continuous one gets a full turn, and one whose URDF declares no `<limit>` at
- * all would otherwise be handed the loader's 0..0 default and freeze — those get
- * a plausible working range instead, wide enough to see the joint move.
- */
-function sliderRange(joint) {
-  const isRot = joint.type !== 'prismatic';
-  if (joint.hasLimits) return [joint.lower, joint.upper];
-  return isRot ? [-Math.PI, Math.PI] : [-0.5, 0.5];
-}
-
-/**
- * The slider still travels in radians — only the readout changes unit — but its
- * step follows what is on screen, so one arrow key is a round 0.1° in degree
- * mode and 0.001 rad in radian mode rather than an odd number in either.
- */
-function sliderStep(isRotational) {
-  if (!isRotational) return 0.001;
-  return angleUnit() === 'rad' ? 0.001 : Math.PI / 1800;
 }
 
 /** How far a finger may wander before it has said which gesture it is: a few

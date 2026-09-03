@@ -1909,7 +1909,19 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
   display: flex; align-items: center; flex-wrap: wrap; gap: 8px 10px;
   padding: 8px 12px; border-bottom: 1px solid var(--stage-chrome-border);
 }
-.cmp-joint-tools .link-btn { margin-left: auto; }
+.cmp-joint-acts { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+
+/* The joint whose turn it is, while the tour is running: sixty rows scroll
+ * past in a minute, and without this the one that is moving is whichever one
+ * the reader happens to be looking at. */
+.cmp-joint-row.is-sweeping .cmp-joint-name,
+.cmp-joint-row.is-sweeping .tree-value { color: var(--warn-ink); }
+.cmp-joint-row.is-sweeping input[type='range']::-webkit-slider-thumb { background: var(--warn-ink); }
+.cmp-joint-row.is-sweeping input[type='range']::-moz-range-thumb { background: var(--warn-ink); }
+
+/* The toolbar's own play button pulses while the floor is touring, the way the
+ * text one in the joint window does. */
+.toggle-group .play-icon[aria-pressed='true'] { animation: play-pulse 1.6s ease-in-out infinite; }
 
 /* ── Where the machine stands ────────────────────────────
  *
@@ -1956,10 +1968,11 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
 .cmp-place-foot .link-btn { margin-left: auto; flex: 0 0 auto; }
 
 /* Arrange mode says so with the cursor: over the render a machine is something
- * to be picked up, over the ring at its feet something to be turned, and the
- * backdrop still orbits. */
+ * to be picked up, over the ring at its feet something to be turned, over an
+ * arrow something to be pulled along one line, and the backdrop still orbits. */
 .cmp-stage.is-arranging .canvas-host { cursor: grab; }
 .cmp-stage.is-arranging .canvas-host.is-over-ring { cursor: ew-resize; }
+.cmp-stage.is-arranging .canvas-host.is-over-axis { cursor: move; }
 .cmp-stage.is-arranging .canvas-host.is-dragging { cursor: grabbing; }
 
 /* The detail page's toolbar stacks on a narrow screen because its overlay
