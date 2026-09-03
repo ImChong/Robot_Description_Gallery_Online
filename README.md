@@ -25,9 +25,11 @@ URDF、网格 zip 或 ROS 2 功能包；纯 MJCF 条目使用 MuJoCo Live 在线
   关节按部位或按运动链顺序对齐。默认只下载 `.urdf`，不下载网格；表格可复制为 Markdown 或
   CSV，地址可分享。表格里还有一个「同一场景预览」，点开才下载网格：把选中的机器人按真实
   尺寸并排站在同一块地面上，可全屏；点中某一台（或它的名字牌）就在画面上弹出这一台的关节
-  滑块浮窗，滑块只驱动它自己。开「摆放」后可以在地面上拖动机器人（世界系 X/Y），拖它
-  脚下的圆环即可绕竖轴旋转（圆环上带一个朝向标记；也可以直接填角度），默认吸附到地面
-  网格与 15°，一键「重新排成一排」还原。高度和缩放不可调 —— 那正是这个画面要比的东西。
+  滑块浮窗，滑块只驱动它自己，也能一键逐个演示这一台的所有关节；画面下方的播放键则让
+  场上所有机器人同时开演。默认沿世界系 Y 轴一字排开、正面朝向镜头。开「摆放」后可以在
+  地面上自由拖动机器人，拖脚下的红/绿箭头沿单个轴移动，拖圆环绕竖轴旋转（圆环上带一个
+  朝向标记；也可以直接填数），默认吸附到地面网格与 15°，一键「重新排成一排」还原。
+  高度和缩放不可调 —— 那正是这个画面要比的东西。
 - **预览我自己的模型**：本地 URDF、xacro、MuJoCo `.xml` 或 USD（`.usda`、`.usdc`、`.usdz`）
   用同一个查看器打开，也能当成对比里的一列。**文件只在浏览器里解析，不会上传** ——
   本站是纯静态页面，没有可以接收文件的后端。
@@ -105,9 +107,11 @@ puts two to six machines of one category side by side as numbers, lining their j
 by anatomy or by position along the kinematic chain, including the mass and rotation-invariant
 inertia trace of the child link each joint moves. Ask it to, and the same machines also
 stand on one floor at true scale in a single 3D stage that goes fullscreen — click one of
-them and its joints open in a window over the render, driving that machine alone, and
-drag them across the floor or turn them by the ring at their feet, snapping to the grid
-and to 15°. Height and scale are not adjustable: they are the comparison. A
+them and its joints open in a window over the render, driving that machine alone — or
+tour every joint of one, or of all of them at once. They line up along the world's Y
+facing the reader, and can be dragged across the floor, pulled along one axis by the
+arrows at their feet or turned by the ring, snapping to the grid and to 15°. Height and
+scale are not adjustable: they are the comparison. A
 mechanism that closes back on
 itself — Minitaur's five-bar legs — is held shut by a point weld the registry states the
 way MJCF does, so dragging a motor bends the whole linkage instead of pulling the leg

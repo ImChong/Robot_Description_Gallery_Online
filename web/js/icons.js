@@ -62,6 +62,13 @@ const ICONS = {
     '<path d="M6 3H3v8a9 9 0 0 0 18 0V3h-3v8a6 6 0 0 1-12 0z"/>' +
     '<path d="M3 8h3"/><path d="M18 8h3"/>',
 
+  /**
+   * Play: the tour of every joint, out to both its limits and back. A mode
+   * rather than an action — the same button stops it — so it stays lit while
+   * it runs, as `rotate` does.
+   */
+  play: '<path d="M7 4.5 19.5 12 7 19.5z"/>',
+
   /** Download: one mark for all three archives, which differ in payload only. */
   download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>',
 };

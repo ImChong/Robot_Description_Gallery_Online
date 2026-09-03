@@ -137,6 +137,10 @@ function solveSmall(A, b, n) {
  * the joint tree. The two have to stay equal or the canvas edge shows as a
  * seam, so change them together.
  *
+ * `handleX` and `handleY` are the compare stage's placement arrows, in the
+ * colours every 3D tool gives those two axes — with the turn ring already on
+ * the highlight blue that the same convention gives the third.
+ *
  * Each studio floor is the same shade as that theme's `--card-stage-bottom`,
  * so a robot on the detail stage sits on the same tone as its homepage card.
  */
@@ -151,6 +155,8 @@ export const THEMES = {
     inertia: 0xff6b9d,
     axis: 0x7ee787,
     highlight: 0x5b9cf6,
+    handleX: 0xff8080,
+    handleY: 0x7ee787,
     exposure: 1.05,
     shadowOpacity: 0.32,
     hemi: { sky: 0xd7e3f4, ground: 0x1b1f27, intensity: 1.15 },
@@ -168,6 +174,8 @@ export const THEMES = {
     inertia: 0xd11b6a,
     axis: 0x18894a,
     highlight: 0x2d74da,
+    handleX: 0xc4342f,
+    handleY: 0x18894a,
     exposure: 0.98,
     shadowOpacity: 0.22,
     hemi: { sky: 0xffffff, ground: 0xbcc4d0, intensity: 1.35 },
@@ -710,6 +718,20 @@ export class RobotViewer {
   /** Whether this robot is one of the ones on the stage. */
   holds(robot) {
     return this.cast.some((member) => member.robot === robot);
+  }
+
+  /**
+   * The record for one of the stage's robots, or for the focused one.
+   *
+   * The single-description API takes an optional robot for the same reason
+   * `resetJoints` does: a stage holding six of them may be driving more than
+   * one at a time — the compare stage tours every machine's joints at once —
+   * and moving the focus per write would make the panel follow whichever
+   * animation frame landed last.
+   */
+  _memberFor(robot) {
+    if (!robot) return this.focused;
+    return this.cast.find((member) => member.robot === robot) || null;
   }
 
   /**
@@ -1806,16 +1828,18 @@ export class RobotViewer {
    * whose links are `shoulder`, `upper_arm`, `lower_arm`, `wrist`, `gripper`,
    * `jaw`.
    *
+   * @param {object} [robot] one of the stage's, rather than the focused one
    * @returns {Array<{name: string, type: string, lower: number, upper: number,
    *   value: number, effort: ?number, velocity: ?number, hasLimits: boolean,
    *   mimic: ?object, loop: boolean, child: ?string}>}
    */
-  jointList() {
-    if (!this.robot) return [];
-    return Object.values(this.robot.joints)
+  jointList(robot = null) {
+    const member = this._memberFor(robot);
+    if (!member) return [];
+    return Object.values(member.robot.joints)
       .filter((j) => j.jointType !== 'fixed' && !(j.jointType in MULTI_DOF))
       .map((j) => {
-        const meta = this._jointMeta?.get(j.name) || null;
+        const meta = member.jointMeta?.get(j.name) || null;
         // Without the XML, a 0..0 range is the loader's "no <limit> here".
         const declared = meta
           ? meta.lower !== null || meta.upper !== null
@@ -1833,7 +1857,7 @@ export class RobotViewer {
           velocity: meta?.velocity ?? null,
           mimic: meta?.mimic ?? null,
           hasLimits: j.jointType !== 'continuous' && declared,
-          loop: this.isLoopDriven(j.urdfName || j.name),
+          loop: member.loopJoints?.has(j.urdfName || j.name) ?? false,
           child: child ? child.urdfName || child.name : null,
         };
       });
@@ -2010,8 +2034,8 @@ export class RobotViewer {
 
   // ------------------------------------------------------------------ joints
 
-  setJoint(name, value) {
-    if (!this._writeJoint(name, value)) return;
+  setJoint(name, value, robot = null) {
+    if (!this._writeJoint(name, value, robot)) return;
     this.closeLoops();
     this.invalidate();
   }
@@ -2022,12 +2046,14 @@ export class RobotViewer {
    * middle of being written whatever this does — the caller closes them once,
    * at the end.
    *
+   * @param {object} [robot] one of the stage's, rather than the focused one
    * @returns {boolean} whether the robot has such a joint to write
    */
-  _writeJoint(name, value) {
-    const joint = this.robot?.joints[name];
+  _writeJoint(name, value, robot = null) {
+    const on = this._memberFor(robot)?.robot;
+    const joint = on?.joints[name];
     if (!joint || joint.jointType in MULTI_DOF || !Number.isFinite(value)) return false;
-    this.robot.setJointValue(name, value);
+    on.setJointValue(name, value);
     return true;
   }
 
@@ -2054,11 +2080,12 @@ export class RobotViewer {
    * quadrupeds, say) define zero as fully extended legs, which reads as a
    * broken robot on a gallery card.
    * @param {Record<string, number>} pose joint name → position
+   * @param {object} [robot] one of the stage's, rather than the focused one
    */
-  applyPose(pose) {
-    if (!this.robot || !pose) return;
+  applyPose(pose, robot = null) {
+    if (!pose || !this._memberFor(robot)) return;
     for (const [name, value] of Object.entries(pose)) {
-      this._writeJoint(name, value);
+      this._writeJoint(name, value, robot);
     }
     // Once, with the whole pose written: a loop whose joints the pose names is
     // closed by the pose itself, and re-closing it after each one in turn would

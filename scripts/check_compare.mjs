@@ -558,15 +558,15 @@ const placementOf = (page, index) =>
   }, index);
 
 /**
- * A point on the render that is on the selected machine's ring.
+ * A point on the render that is on one of the selected machine's handles.
  *
- * The ring is a handle rather than a robot, so the page's own answer to "is
- * the pointer on it" is the hover mark it puts on the canvas — which is worth
+ * They are handles rather than robots, so the page's own answer to "is the
+ * pointer on one" is the hover mark it puts on the canvas — which is worth
  * checking anyway, since a handle that gives no sign of being one is a handle
  * nobody finds. The sweep is out to the sides of the machine's name tag and
- * down, which is where a ring lying on the floor is drawn from.
+ * down, which is where a gizmo lying on the floor is drawn from.
  */
-async function ringPoint(page, name) {
+async function ringPoint(page, name, want = 'is-over-ring') {
   const host = await page.locator('#cmp-canvas-host').boundingBox();
   const tag = await page.evaluate((wanted) => {
     const node = [...document.querySelectorAll('#cmp-stage-tags .cmp-tag')].find(
@@ -581,8 +581,9 @@ async function ringPoint(page, name) {
       const y = host.y + tag.top + down;
       if (x < host.x || x > host.x + host.width || y > host.y + host.height - 4) continue;
       await page.mouse.move(x, y);
-      const over = await page.evaluate(() =>
-        document.getElementById('cmp-canvas-host').classList.contains('is-over-ring'),
+      const over = await page.evaluate(
+        (mark) => document.getElementById('cmp-canvas-host').classList.contains(mark),
+        want,
       );
       if (over) return { x, y };
     }
@@ -693,6 +694,7 @@ async function grabPoint(page, name) {
                 name: tag.textContent,
                 height: Number(tag.dataset.height),
                 x: Number(tag.dataset.x),
+                y: Number(tag.dataset.y),
               })),
             };
           },
@@ -717,11 +719,15 @@ async function grabPoint(page, name) {
           fail(`${label} — ${one.id} stands ${drawn.height} m, the registry records ${one.height} m`);
         }
       }
-      // Side by side, in the order the table reads its columns, and far enough
-      // apart that neither is standing inside the other.
+      // Side by side across the world's Y, in the order the table reads its
+      // columns, and both on the centre line: a row laid out along X would be
+      // a queue read nose to tail, since a URDF faces along its own +X.
       const [left, right] = stood.tags;
-      if (!(left.x < right.x)) {
-        fail(`${label} — the row runs ${left.name} at ${left.x} and ${right.name} at ${right.x}`);
+      if (!(left.y < right.y)) {
+        fail(`${label} — the row runs ${left.name} at y ${left.y} and ${right.name} at y ${right.y}`);
+      }
+      if (left.x !== 0 || right.x !== 0) {
+        fail(`${label} — the row is off its centre line: x ${left.x} and ${right.x}`);
       }
       if (!(stood.span > 0)) fail(`${label} — the row measured no width`);
 
@@ -921,8 +927,110 @@ async function grabPoint(page, name) {
           }
         }
 
+        // An arrow beside the ring is the same drag held to one axis. That is
+        // the whole of what it is for, so what is checked is that the other
+        // coordinate does not move a hair.
+        const onArrow = await ringPoint(page, first, 'is-over-axis');
+        if (!onArrow) {
+          fail(`${label} — neither placement arrow under ${first} marked itself as a handle`);
+        } else {
+          const before = await placementOf(page, 0);
+          await page.mouse.move(onArrow.x, onArrow.y);
+          await page.mouse.down();
+          await page.mouse.move(onArrow.x + 110, onArrow.y + 60, { steps: 12 });
+          await page.mouse.up();
+          await page.waitForTimeout(200);
+          const after = await placementOf(page, 0);
+          const moved = { x: Math.abs(after.x - before.x), y: Math.abs(after.y - before.y) };
+          if ((moved.x > 1e-9) === (moved.y > 1e-9)) {
+            fail(`${label} — an arrow moved ${first} by ${moved.x}, ${moved.y}: not one axis`);
+          }
+          const along = moved.x > moved.y ? after.x : after.y;
+          if (Math.abs(along / step - Math.round(along / step)) > 1e-6) {
+            fail(`${label} — an arrow landed at ${along}, off a ${step} m grid`);
+          }
+          if (after.yaw !== before.yaw) fail(`${label} — an arrow turned ${first}`);
+        }
+
         await page.click('#cmp-stage-toolbar [data-action="arrange"]');
         await page.click('#cmp-stage-toolbar [data-action="relayout"]');
+      }
+
+      /* ---- and the tour ---------------------------------------------------
+       *
+       * Every machine's joints, each in turn, out to both limits and back. It
+       * is the one reading this stage can give that six detail pages cannot —
+       * the same joint's travel on all of them at once — so what is checked is
+       * that the floor button really moves the machine the window is not about,
+       * and that either button hands the pose back exactly when it stops. A
+       * tour that left a robot somewhere nobody chose would be worse than none.
+       */
+      const readOut = () =>
+        page.$$eval('#cmp-joint-panel .tree-value', (cells) =>
+          cells.map((cell) => cell.textContent),
+        );
+      const pressed = (selector) => page.getAttribute(selector, 'aria-pressed');
+      /**
+       * Wait for the window to say something other than what it said.
+       *
+       * Not a fixed pause: a tour moves on animation frames, and this runs on
+       * software rendering with several robots on the floor, where the first
+       * frame after the press can be most of a second coming. A pause long
+       * enough to be safe there would also be long enough to sail past the
+       * moment a joint happens to pass back through where it started.
+       */
+      const stirs = async (from) => {
+        try {
+          await page.waitForFunction(
+            (before) =>
+              JSON.stringify(
+                [...document.querySelectorAll('#cmp-joint-panel .tree-value')].map(
+                  (cell) => cell.textContent,
+                ),
+              ) !== before,
+            JSON.stringify(from),
+            { timeout: 20000, polling: 100 },
+          );
+          return true;
+        } catch {
+          return false;
+        }
+      };
+
+      await clickTag(0);
+      const still = await readOut();
+      await page.click('#cmp-joint-panel [data-panel="play"]');
+      if ((await pressed('#cmp-joint-panel [data-panel="play"]')) !== 'true') {
+        fail(`${label} — the joint window's play button did not light`);
+      }
+      if (!(await page.$('.cmp-joint-row.is-sweeping'))) {
+        fail(`${label} — the tour marked no row as the one whose turn it is`);
+      }
+      if (!(await stirs(still))) fail(`${label} — the tour of ${first} moved nothing`);
+      await page.click('#cmp-joint-panel [data-panel="play"]');
+      await page.waitForTimeout(200);
+      if (String(await readOut()) !== String(still)) {
+        fail(`${label} — stopping the tour left ${first} in a pose nobody chose`);
+      }
+
+      // The whole floor at once, checked on the machine the window is *not*
+      // about: that one is being driven with no panel to drive it through.
+      await clickTag(1);
+      const otherStill = await readOut();
+      await page.click('#cmp-stage-toolbar [data-action="play"]');
+      if ((await pressed('#cmp-stage-toolbar [data-action="play"]')) !== 'true') {
+        fail(`${label} — the floor's play button did not light`);
+      }
+      if (!(await stirs(otherStill))) {
+        fail(`${label} — playing the floor left ${second} standing still`);
+      }
+      await page.click('#cmp-stage-toolbar [data-action="play"]');
+      await page.waitForTimeout(250);
+      if ((await pressed('#cmp-stage-toolbar [data-action="play"]')) !== 'false') {
+        fail(`${label} — the floor's play button stayed lit after stopping`);
+      }
+      if (String(await readOut()) !== String(otherStill)) {
+        fail(`${label} — stopping the floor left ${second} in a pose nobody chose`);
       }
 
       if (failures === wasFailing) {

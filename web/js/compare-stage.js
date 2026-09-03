@@ -25,7 +25,11 @@
  *     brings up that machine's joints in a window floating over the render, and
  *     the sliders in it drive that machine and nothing else. Six sets of
  *     sliders down a page would be unreadable; one, aimed by a click, is the
- *     same gesture the detail page's tree already answers to.
+ *     same gesture the detail page's tree already answers to. Each of them can
+ *     tour its own joints (js/joint-sweep.js), and the whole floor can be set
+ *     touring at once — which is the one thing this stage can show that six
+ *     detail pages cannot: how far the same joint travels on each of them,
+ *     side by side and at the same moment.
  *   - And where each of them stands is the reader's to set. A row is the right
  *     default and the wrong arrangement for half the questions worth asking —
  *     two hands facing each other, an arm reaching over a quadruped, a machine
@@ -41,6 +45,7 @@
 import * as THREE from 'three';
 import { boundingBox, RobotViewer } from './viewer.js';
 import { angleUnit, formatAngle, setAngleUnit } from './angle-unit.js';
+import { JointSweep, sliderRange, sliderStep } from './joint-sweep.js';
 import { t } from './i18n.js';
 import { onThemeChange, theme } from './theme.js';
 
@@ -69,9 +74,14 @@ const SPACING = 0.22;
  * the far end behind the near one and the comparison the row exists to make —
  * this one is a head taller than that one — is the first thing it costs. So
  * the stage sits nearly square on, with just enough turn and rise left to keep
- * the floor reading as a floor.
+ * the floor reading as a floor and to keep neither placement axis pointing
+ * straight at the reader.
+ *
+ * Square on here means down the world's +X, because that is the way a URDF
+ * faces by convention and the row is laid out across it: the machines are
+ * seen from the front, side by side.
  */
-const ROW_VIEW = { azimuth: Math.PI * 0.07, elevation: 0.17, padding: 1.1 };
+const ROW_VIEW = { azimuth: Math.PI * 0.42, elevation: 0.17, padding: 1.1 };
 
 /** How solid the selection ring is drawn, before the pointer is over it. */
 const RING_OPACITY = 0.85;
@@ -88,6 +98,9 @@ const RING_OPACITY = 0.85;
  */
 const RING_GRAB = 0.22;
 const RING_GRAB_FLOOR = 0.12;
+
+/** How solid a placement arrow is drawn, before the pointer is over it. */
+const ARROW_OPACITY = 0.9;
 
 /**
  * How far from the middle a machine may be placed, beyond what the row itself
@@ -173,16 +186,53 @@ function readout(joint) {
   return joint.type === 'prismatic' ? `${joint.value.toFixed(3)} m` : formatAngle(joint.value);
 }
 
-/** What a slider may travel over: the declared limits, or a sensible full turn
- *  where the description declares none. Same reading as the detail page's. */
-function sliderRange(joint) {
-  if (joint.hasLimits) return [joint.lower, joint.upper];
-  return joint.type === 'prismatic' ? [-0.5, 0.5] : [-Math.PI, Math.PI];
+/**
+ * A double-headed arrow lying in the floor plane, pointing both ways along its
+ * own +X, drawn between `inner` and `outer` from the middle it turns about.
+ *
+ * Both ways because the axis it stands for goes both ways, and because at the
+ * angle a row is looked from one of the two heads is always the near one and
+ * therefore the one with pixels to hit. Which end is positive is a question
+ * the placement fields answer; this only says which axis.
+ */
+function axisArrow(inner, outer) {
+  const span = outer - inner;
+  const head = span * 0.42;
+  const shaft = span * 0.085;
+  const barb = span * 0.2;
+  const arm = (way) => {
+    const shape = new THREE.Shape();
+    const from = way * inner;
+    const to = way * outer;
+    const neck = way * (outer - head);
+    shape.moveTo(from, -shaft);
+    shape.lineTo(neck, -shaft);
+    shape.lineTo(neck, -barb);
+    shape.lineTo(to, 0);
+    shape.lineTo(neck, barb);
+    shape.lineTo(neck, shaft);
+    shape.lineTo(from, shaft);
+    shape.closePath();
+    return shape;
+  };
+  return new THREE.ShapeGeometry([arm(1), arm(-1)]);
 }
 
-function sliderStep(joint) {
-  if (joint.type === 'prismatic') return 0.001;
-  return angleUnit() === 'rad' ? 0.001 : Math.PI / 1800;
+/** What a pointer has to hit to take hold of one: the arrow's span at a width
+ *  a finger can land on, and never drawn. */
+function axisPad(inner, outer, halfWidth) {
+  const bar = (way) => {
+    const shape = new THREE.Shape();
+    const from = way * inner;
+    const to = way * outer;
+    shape.moveTo(from, -halfWidth);
+    shape.lineTo(to, -halfWidth);
+    shape.lineTo(to, halfWidth);
+    shape.lineTo(from, halfWidth);
+    shape.closePath();
+    return shape;
+  };
+  return new THREE.ShapeGeometry([bar(1), bar(-1)]);
 }
 
 /** Round to the nearest multiple of `step`, or leave alone when not snapping. */
@@ -234,9 +284,14 @@ export class CompareStage {
       if (!button || !this.viewer) return;
       const { action } = button.dataset;
       if (action === 'reset') {
+        // A pose a tour is half-way through borrowing is not the pose the
+        // reader is asking to be rid of: it hands its joints back first.
+        this.stopAllSweeps();
         this.viewer.resetJoints();
         this.layout();
         this.syncJointValues();
+      } else if (action === 'play') {
+        this.toggleAllSweeps();
       } else if (action === 'rotate') {
         this.viewer.autoRotate = !this.viewer.autoRotate;
         button.setAttribute('aria-pressed', String(!!this.viewer.autoRotate));
@@ -272,6 +327,9 @@ export class CompareStage {
       else if (what === 'reset') {
         this.viewer?.resetJoints(this.selected);
         this.syncJointValues();
+      } else if (what === 'play') {
+        const member = this.memberOf(this.selected);
+        if (member) this.sweepFor(member).toggle();
       } else if (what === 'unit') {
         setAngleUnit(button.dataset.unit);
         this.renderJointPanel();
@@ -427,6 +485,7 @@ export class CompareStage {
     if (this.isFullscreen()) this.exitFullscreen();
     this.open = false;
     this.selected = null;
+    this.stopAllSweeps();
     this.members.clear();
     this.clearRing();
     this.viewer?.dispose();
@@ -469,6 +528,7 @@ export class CompareStage {
     for (const [key, member] of [...this.members]) {
       if (wanted.has(key)) continue;
       this.members.delete(key);
+      member.sweep?.stop();
       if (member.robot) {
         if (this.selected === member.robot) this.select(null);
         this.viewer.removeRobot(member.robot);
@@ -567,13 +627,23 @@ export class CompareStage {
     for (const member of standing) {
       const box = boundingBox(member.robot);
       member.box = box;
+      // Read out of the scene's frame into the world's, which is the one a
+      // placement is written in and the one a URDF means: scene (x, y, z) is
+      // world (x, −z, y).
       member.local = box.isEmpty()
         ? null
         : {
             // The floor-plane centre of the machine, relative to the point its
             // own origin sits at: where the tag hangs and the ring is drawn.
             cx: (box.min.x + box.max.x) / 2,
-            cz: (box.min.z + box.max.z) / 2,
+            cy: -(box.min.z + box.max.z) / 2,
+            // Its footprint along each floor axis, as edges rather than a
+            // width: the row is laid out edge to edge, and nothing says a
+            // machine's origin is anywhere near its middle.
+            minX: box.min.x,
+            maxX: box.max.x,
+            minY: -box.max.z,
+            maxY: -box.min.z,
             // How far its origin has to be lifted for its lowest point to be
             // on the floor. Most URDFs put the origin at the base and this is
             // nearly nothing; some put it at the waist.
@@ -598,8 +668,11 @@ export class CompareStage {
    * has moved keeps where they put it and takes no slot in the row, so adding
    * a seventh column does not sweep an arrangement away.
    *
-   * The world group is Z-up (that is what a URDF means) while the scene is
-   * Y-up, so a machine's own +X is the row, +Y is depth and +Z is up.
+   * It runs along the world's +Y, not its +X, and the stage is looked at from
+   * down the +X. A URDF faces along its own +X by convention, so a row laid
+   * out that way is a queue read nose to tail and seen in profile; laid across
+   * Y and looked at from the front it is a line-up, every machine facing the
+   * reader, which is the arrangement the heights are readable in.
    */
   layout() {
     if (!this.viewer) return;
@@ -608,7 +681,9 @@ export class CompareStage {
     this.measureAll(standing);
 
     const row = standing.filter((member) => member.local && !member.pinned);
-    const widths = row.map((member) => member.local.width).filter((width) => width > 0);
+    const widths = row
+      .map((member) => member.local.maxY - member.local.minY)
+      .filter((width) => width > 0);
     const gap = widths.length
       ? Math.max((widths.reduce((a, b) => a + b, 0) / widths.length) * SPACING, 0.02)
       : 0.1;
@@ -617,15 +692,15 @@ export class CompareStage {
     for (const member of row) {
       // Laid out by their edges, so the gap between two machines is a gap
       // rather than a distance between two origins that may be anywhere.
-      member.slot = cursor - member.box.min.x;
-      cursor = member.slot + member.box.max.x + gap;
+      member.slot = cursor - member.local.minY;
+      cursor = member.slot + member.local.maxY + gap;
     }
     const centre = (cursor - gap) / 2;
     for (const member of row) {
       // Along the row, and on the centre line: a placement names where a
-      // machine's own middle stands, so "on the line" is y = 0 whatever its
+      // machine's own middle stands, so "on the line" is x = 0 whatever its
       // description put its origin at.
-      member.place = { x: member.slot - centre + member.local.cx, y: 0, yaw: 0 };
+      member.place = { x: 0, y: member.slot - centre + member.local.cy, yaw: 0 };
     }
 
     for (const member of standing) this.applyPlacement(member);
@@ -660,7 +735,7 @@ export class CompareStage {
     // (scene +Z is world −Y), turned by the yaw and taken back off: what is
     // left is where the origin has to be for the middle to land on the mark.
     const ox = member.local.cx;
-    const oy = -member.local.cz;
+    const oy = member.local.cy;
     member.robot.position.set(
       place.x - (ox * cos - oy * sin),
       place.y - (ox * sin + oy * cos),
@@ -756,7 +831,7 @@ export class CompareStage {
     // The ring gains a heading pip and a thicker line in arrange mode: it is a
     // handle there and only a mark otherwise.
     this.paintRing();
-    if (!on) this.markRingHover(false);
+    if (!on) this.markHandleHover(null);
     el('cmp-stage').classList.toggle('is-arranging', on);
     el('cmp-stage-toolbar')
       .querySelector('[data-action="arrange"]')
@@ -772,10 +847,10 @@ export class CompareStage {
    * A press that goes nowhere is a click, and a click picks the machine under
    * it — or, off every machine, puts the joint window down. A press that
    * travels is a drag, and what it drags depends on where it started: normally
-   * the camera, and in arrange mode the ring at a machine's feet turns that
-   * machine, while the machine itself slides across the floor. (Shift on the
-   * body turns it too, for a hand already there — but the ring is the gesture,
-   * and the only one a touch screen can offer, having no shift to hold.)
+   * the camera, and in arrange mode one of four things — the ring at a
+   * machine's feet turns it, either arrow slides it along that one axis, and
+   * the machine itself slides freely across the floor. (Shift on the body
+   * turns it too, for a hand already there.)
    */
   bindStage() {
     const host = el('cmp-canvas-host');
@@ -815,27 +890,28 @@ export class CompareStage {
       }
       press = { x: event.clientX, y: event.clientY, id: event.pointerId, moved: false, grab: null };
       if (!this.arranging) return;
-      // The ring and the machines are both in front of the pointer, and which
-      // one it is aimed at is which one is nearer. A ring is drawn as wide as
-      // the machine it belongs to, so on a floor of six the band round one of
-      // them crosses the next one along; letting the ring win regardless would
-      // make the neighbour unpickable. The ring still wins over the machine it
-      // belongs to wherever that machine is not actually in front of it.
-      const onRing = this.ringAt(event.clientX, event.clientY);
+      // The gizmo and the machines are both in front of the pointer, and which
+      // one it is aimed at is which one is nearer. A gizmo is drawn as wide as
+      // the machine it belongs to, so on a floor of six it reaches across the
+      // next one along; letting it win regardless would make the neighbour
+      // unpickable. It still wins over the machine it belongs to wherever that
+      // machine is not actually in front of it.
+      const handle = this.handleAt(event.clientX, event.clientY);
       const hit = this.viewer.pickAt(event.clientX, event.clientY);
-      const turning = !!onRing && (!hit || onRing.distance <= hit.distance);
-      const member = turning ? this.memberOf(this.selected) : hit && this.memberOf(hit.robot);
+      const kind = handle && (!hit || handle.distance <= hit.distance) ? handle.kind : null;
+      const member = kind ? this.memberOf(this.selected) : hit && this.memberOf(hit.robot);
       if (!member?.place) return;
       // Read against a level plane at the height the grab happened, which for
-      // the ring is the floor and for a machine is wherever the ray met it.
-      const height = turning ? onRing.point.y : hit.point.y;
+      // the gizmo is the floor and for a machine is wherever the ray met it.
+      const height = kind ? handle.point.y : hit.point.y;
       const from = this.floorAt(event.clientX, event.clientY, height);
       if (!from) return;
       this.select(member.robot);
       press.grab = {
         member,
-        // Which of the two the drag is: the ring turns, the machine slides.
-        turning,
+        // Which of the four the drag is: null is the machine's own body, which
+        // slides freely; the rest are the gizmo's handles.
+        kind,
         // Where the pointer took hold, relative to the mark the machine stands
         // on, so it does not jump under the hand on the first move.
         offset: { x: member.place.x - from.x, y: member.place.y - from.y },
@@ -853,12 +929,12 @@ export class CompareStage {
 
     host.addEventListener('pointermove', (event) => {
       if (!press || event.pointerId !== press.id) {
-        // Not a drag: say whether the ring is under the pointer, so it lights
-        // up and the cursor changes before anybody presses anything.
+        // Not a drag: say which handle is under the pointer, so it lights up
+        // and the cursor changes before anybody presses anything.
         if (!press && this.arranging) {
-          const over = this.ringAt(event.clientX, event.clientY);
+          const over = this.handleAt(event.clientX, event.clientY);
           const front = over && this.viewer?.pickAt(event.clientX, event.clientY);
-          this.markRingHover(!!over && (!front || over.distance <= front.distance));
+          this.markHandleHover(over && (!front || over.distance <= front.distance) ? over.kind : null);
         }
         return;
       }
@@ -870,8 +946,8 @@ export class CompareStage {
       // Above the horizon there is no level plane to read: the machine stays
       // where the last move left it rather than jumping somewhere arbitrary.
       if (!floor) return;
-      const { member, offset, turning, bearing, yaw } = press.grab;
-      if (turning || event.shiftKey) {
+      const { member, offset, kind, bearing, yaw } = press.grab;
+      if (kind === 'turn' || (!kind && event.shiftKey)) {
         const now = Math.atan2(floor.y - member.place.y, floor.x - member.place.x);
         this.placeAt(member, {
           yaw: snapped(yaw + now - bearing, this.snapping ? YAW_SNAP : 0),
@@ -879,15 +955,19 @@ export class CompareStage {
         return;
       }
       const step = this.moveStep;
-      this.placeAt(member, {
+      const to = {
         x: snapped(floor.x + offset.x, step),
         y: snapped(floor.y + offset.y, step),
-      });
+      };
+      // An arrow is one axis and nothing else: that is the whole of what it is
+      // for, and a machine that crept sideways while being pulled along a line
+      // would be a handle that does not keep its promise.
+      this.placeAt(member, kind === 'x' ? { x: to.x } : kind === 'y' ? { y: to.y } : to);
     });
 
     host.addEventListener('pointerup', release);
     host.addEventListener('pointercancel', release);
-    host.addEventListener('pointerleave', () => this.markRingHover(false));
+    host.addEventListener('pointerleave', () => this.markHandleHover(null));
   }
 
   /**
@@ -941,19 +1021,26 @@ export class CompareStage {
   /* ── the marks on the render ───────────────────────────────────────────── */
 
   /**
-   * The ring on the floor under whichever machine the window is about.
+   * The gizmo on the floor under whichever machine the window is about: a
+   * ring, and in arrange mode an arrow along each floor axis.
    *
-   * As a mark it says which machine that is. Tinting the robot itself would be
-   * lying about its colours in a view whose whole point is comparing machines
-   * as they are, and a box round it would be one more rectangle in a page
-   * already made of them; a ring on the floor reads as a spot to stand on.
+   * As a mark the ring says which machine the window is about. Tinting the
+   * robot itself would be lying about its colours in a view whose whole point
+   * is comparing machines as they are, and a box round it would be one more
+   * rectangle in a page already made of them; a ring on the floor reads as a
+   * spot to stand on.
    *
-   * In arrange mode it is also the handle that turns the machine. A ring lying
-   * flat on the floor is exactly the shape of the thing it does — a turntable —
-   * and it is already drawn where the reader is looking, so it costs no extra
-   * furniture. It grows a pip at the machine's heading to say which way it is
-   * facing and to make the turn legible, and a grab band wider than the drawn
-   * line, because at the angle a row is looked from the line itself is two
+   * In arrange mode it is also what places the machine. The ring turns it —
+   * a ring lying flat is the shape of the thing it does, and it grows a pip at
+   * the machine's heading so a turn is legible — and the two arrows slide it
+   * along one axis at a time, which is the difference between "about a metre
+   * to the left" and "a metre to the left and no closer". They are the axes
+   * the placement fields are in and they keep the colours every 3D tool gives
+   * them, so they do not turn with the machine; the ring, which does, is
+   * already on the blue that same convention gives the third axis.
+   *
+   * Everything a pointer has to hit is a pad wider than what is drawn: at the
+   * angle a row is looked from, a mark lying on the floor is a couple of
    * pixels of ellipse.
    */
   paintRing() {
@@ -963,71 +1050,107 @@ export class CompareStage {
     if (!member?.place || !member.local) return;
     const radius = Math.max(member.radius || 0.2, 0.05);
     const arranging = this.arranging;
-    const colour = this.viewer.theme.highlight;
-    const paint = (opacity) =>
+    const paint = (color, opacity) =>
       new THREE.MeshBasicMaterial({
-        color: colour,
+        color,
         transparent: true,
         opacity,
         side: THREE.DoubleSide,
         depthWrite: false,
       });
+    const pad = () => new THREE.MeshBasicMaterial({ visible: false });
 
     const group = new THREE.Group();
+    // Turns with the machine; the arrows below do not.
+    const dial = new THREE.Group();
+    group.add(dial);
+
     const band = new THREE.Mesh(
       new THREE.RingGeometry(radius * (arranging ? 0.9 : 0.94), radius, 64),
-      paint(RING_OPACITY),
+      paint(this.viewer.theme.highlight, RING_OPACITY),
     );
     band.renderOrder = 3;
-    group.add(band);
+    dial.add(band);
+    const handles = { turn: { mesh: band, base: RING_OPACITY } };
+    const picks = [];
 
     if (arranging) {
-      // The heading, as a pip just outside the ring at the machine's own
-      // forward: a dial with no mark on it turns without appearing to.
+      // The heading, as a bulge in the ring rather than a spike outside it: a
+      // spike at the machine's forward sits on the same line as the X arrow
+      // and reads as part of it, where a thickening of the band reads as what
+      // it is — the mark on a dial.
       const pip = new THREE.Mesh(
-        new THREE.RingGeometry(radius * 1.03, radius * 1.16, 8, 1, -0.13, 0.26),
-        paint(1),
+        new THREE.RingGeometry(radius * 0.84, radius * 1.07, 8, 1, -0.13, 0.26),
+        paint(this.viewer.theme.highlight, 1),
       );
       pip.renderOrder = 3;
-      group.add(pip);
+      dial.add(pip);
+
+      const reach = Math.max(radius * RING_GRAB, this.viewer.gridStep * RING_GRAB_FLOOR);
+      const inner = radius + reach * 0.9;
+      const outer = inner + Math.max(radius * 0.42, reach * 2);
+      for (const [axis, colour, turn] of [
+        ['x', this.viewer.theme.handleX, 0],
+        ['y', this.viewer.theme.handleY, Math.PI / 2],
+      ]) {
+        const arrow = new THREE.Mesh(axisArrow(inner, outer), paint(colour, ARROW_OPACITY));
+        arrow.rotation.z = turn;
+        arrow.position.z = 0.001; // over the ring where the two cross
+        arrow.renderOrder = 4;
+        group.add(arrow);
+        handles[axis] = { mesh: arrow, base: ARROW_OPACITY };
+
+        const grab = new THREE.Mesh(axisPad(inner, outer, reach * 0.9), pad());
+        grab.rotation.z = turn;
+        grab.position.z = 0.002;
+        grab.userData.handle = axis;
+        group.add(grab);
+        picks.push(grab);
+      }
     }
 
-    // What a pointer actually has to hit, which is wider than what is drawn
-    // and never drawn itself.
-    const reach = Math.max(radius * RING_GRAB, this.viewer.gridStep * RING_GRAB_FLOOR);
-    const grab = new THREE.Mesh(
-      new THREE.RingGeometry(Math.max(radius - reach, 0.001), radius + reach, 32),
-      new THREE.MeshBasicMaterial({ visible: false }),
+    // The ring's own pad goes on last so the arrows, which cross it, are the
+    // nearer of the two wherever both are under the pointer.
+    const turnPad = new THREE.Mesh(
+      new THREE.RingGeometry(
+        Math.max(radius - Math.max(radius * RING_GRAB, this.viewer.gridStep * RING_GRAB_FLOOR), 0.001),
+        radius + Math.max(radius * RING_GRAB, this.viewer.gridStep * RING_GRAB_FLOOR),
+        32,
+      ),
+      pad(),
     );
-    group.add(grab);
+    turnPad.userData.handle = 'turn';
+    dial.add(turnPad);
+    picks.push(turnPad);
 
     // Into the world group rather than the scene, so it turns with the robots
     // when the turntable is running. That group is the Z-up one, which is also
-    // the ring's own plane and the one a placement is written in: it needs no
-    // rotation of its own beyond the machine's heading, and the floor the row
-    // stands on is z = 0 there. The hair above it keeps the two from
+    // these marks' own plane and the one a placement is written in, so nothing
+    // here needs a rotation of its own beyond the machine's heading, and the
+    // floor the row stands on is z = 0. The hair above it keeps the two from
     // z-fighting along the whole circle.
     this.viewer.world.add(group);
-    this._ring = { group, band, grab, member, radius, arranging };
+    this._ring = { group, dial, member, radius, arranging, handles, picks };
     this.placeRing();
     this.viewer.invalidate();
   }
 
   /**
-   * Move the ring onto its machine's mark and turn it to its heading. Split
-   * from building it because a drag asks for this on every frame, and a ring
-   * disposed and rebuilt sixty times a second is sixty allocations to no end.
+   * Move the gizmo onto its machine's mark and turn the dial to its heading.
+   * Split from building it because a drag asks for this on every frame, and a
+   * ring disposed and rebuilt sixty times a second is sixty allocations to no
+   * end.
    */
   placeRing() {
     const ring = this._ring;
     if (!ring?.member.place) return;
     const { x, y, yaw } = ring.member.place;
     ring.group.position.set(x, y, 0.002);
-    ring.group.rotation.z = yaw;
+    ring.dial.rotation.z = yaw;
     this.viewer.invalidate();
   }
 
-  /** Whether the ring is drawn for this machine, in the mode it is drawn for. */
+  /** Whether the gizmo is drawn for this machine, in the mode it is drawn for. */
   ringFits(member) {
     return (
       !!this._ring && this._ring.member === member && this._ring.arranging === this.arranging
@@ -1036,7 +1159,7 @@ export class CompareStage {
 
   clearRing() {
     if (!this._ring) return;
-    this.markRingHover(false);
+    this.markHandleHover(null);
     this._ring.group.removeFromParent();
     this._ring.group.traverse((child) => {
       child.geometry?.dispose?.();
@@ -1046,15 +1169,16 @@ export class CompareStage {
   }
 
   /**
-   * Whether a point on screen is on the ring's grab band — the one thing on
-   * this stage that is picked without being part of a robot.
+   * Which of the gizmo's handles a point on screen is over, if any — the one
+   * set of things on this stage that is picked without being part of a robot.
    *
-   * @returns {?{point: import('three').Vector3, distance: number}}
+   * @returns {?{kind: 'turn'|'x'|'y', point: import('three').Vector3,
+   *   distance: number}}
    */
-  ringAt(clientX, clientY) {
-    const grab = this._ring?.grab;
+  handleAt(clientX, clientY) {
+    const picks = this._ring?.picks;
     const canvas = this.viewer?.renderer.domElement;
-    if (!grab || !canvas) return null;
+    if (!picks?.length || !canvas) return null;
     const { left, top, width, height } = canvas.getBoundingClientRect();
     if (!width || !height) return null;
     const ray = new THREE.Raycaster();
@@ -1065,18 +1189,24 @@ export class CompareStage {
       ),
       this.viewer.camera,
     );
-    const hit = ray.intersectObject(grab, false)[0];
-    return hit ? { point: hit.point, distance: hit.distance } : null;
+    const hit = ray.intersectObjects(picks, false)[0];
+    return hit ? { kind: hit.object.userData.handle, point: hit.point, distance: hit.distance } : null;
   }
 
-  /** Light the ring up while the pointer is over it, so it reads as a handle
-   *  before it is taken hold of rather than after. */
-  markRingHover(over) {
-    const on = !!over && !!this._ring;
-    if (this._overRing === on) return;
-    this._overRing = on;
-    if (this._ring) this._ring.band.material.opacity = on ? 1 : RING_OPACITY;
-    el('cmp-canvas-host').classList.toggle('is-over-ring', on);
+  /** Light a handle up while the pointer is over it, so it reads as one before
+   *  it is taken hold of rather than after. */
+  markHandleHover(kind) {
+    const on = this._ring ? kind : null;
+    if (this._overHandle === on) return;
+    const previous = this._overHandle;
+    this._overHandle = on;
+    for (const which of [previous, on]) {
+      const handle = which && this._ring?.handles[which];
+      if (handle) handle.mesh.material.opacity = which === on ? 1 : handle.base;
+    }
+    const host = el('cmp-canvas-host');
+    host.classList.toggle('is-over-ring', on === 'turn');
+    host.classList.toggle('is-over-axis', on === 'x' || on === 'y');
     this.viewer?.invalidate();
   }
 
@@ -1161,9 +1291,11 @@ export class CompareStage {
     const member = this.memberOf(this.selected);
     this._sliders = new Map();
     this._values = new Map();
+    this._rows = new Map();
     if (!member) {
       panel.hidden = true;
       panel.innerHTML = '';
+      this.renderPlayButtons();
       return;
     }
     const joints = this.viewer.jointList();
@@ -1197,7 +1329,13 @@ export class CompareStage {
                 </div>`
              : ''
          }
-         <button type="button" class="link-btn" data-panel="reset">${t('panel.resetAll')}</button>
+         <span class="cmp-joint-acts">
+           <button type="button" class="link-btn play-btn" data-panel="play" aria-pressed="false">
+             <span class="play-mark" aria-hidden="true"></span>
+             <span>${t('joints.play')}</span>
+           </button>
+           <button type="button" class="link-btn" data-panel="reset">${t('panel.resetAll')}</button>
+         </span>
        </div>
        <div class="cmp-place" id="cmp-place"></div>
        <div class="cmp-joint-list">${
@@ -1213,6 +1351,13 @@ export class CompareStage {
     for (const input of panel.querySelectorAll('input[data-joint]')) {
       this._sliders.set(decodeURIComponent(input.dataset.joint), input);
     }
+    this._rows = new Map(
+      [...panel.querySelectorAll('.cmp-joint-row')].map((row) => [row.dataset.row, row]),
+    );
+    this.renderPlayButtons();
+    // A window that opens on a machine already touring shows where that tour
+    // has got to, rather than waiting for the next joint's turn to say.
+    this.markSweepRow(member, member.sweep?.run?.step?.name ?? null);
     this.syncJointValues();
     this.keepPanelInside();
   }
@@ -1290,11 +1435,109 @@ export class CompareStage {
            value="${joint.value}" data-joint="${encodeURIComponent(joint.name)}"
            aria-label="${esc(joint.name)}">`;
     const title = joint.child ? `${joint.name} → ${joint.child}` : joint.name;
-    return `<div class="cmp-joint-row${driven ? ' is-driven' : ''}">
+    return `<div class="cmp-joint-row${driven ? ' is-driven' : ''}" data-row="${esc(joint.name)}">
       <span class="cmp-joint-name" title="${esc(title)}">${esc(jointLabel(joint))}</span>
       ${control}
       <span class="tree-value" data-tree-value="${esc(joint.name)}">—</span>
     </div>`;
+  }
+
+  /* ── the tour ──────────────────────────────────────────────────────────── */
+
+  /**
+   * One machine's joints, each in turn, out to both its limits and back.
+   *
+   * The tour is the fastest reading of a description there is, and on a floor
+   * of six it is the one thing this stage can show that six detail pages
+   * cannot: run them together and the same joint's travel is readable across
+   * all of them at the same moment, at the same scale, on one floor.
+   *
+   * So every machine keeps its own, and they are driven by robot rather than
+   * through the viewer's focus: six animations moving the focus between them
+   * sixty times a second would leave the joint window about whichever one's
+   * frame landed last.
+   */
+  sweepFor(member) {
+    if (!member.sweep) {
+      const drivable = () =>
+        this.viewer
+          .jointList(member.robot)
+          .filter((joint) => !joint.mimic?.joint && !joint.loop);
+      member.sweep = new JointSweep({
+        // The window's own order, and only the joints it gives a slider to: a
+        // joint whose value is written by another is not the tour's to borrow.
+        order: () => drivable().map((joint) => joint.name),
+        read: () => this.viewer.jointList(member.robot),
+        write: (name, value) => this.viewer.setJoint(name, value, member.robot),
+        pose: (pose) => this.viewer.applyPose(pose, member.robot),
+        // Only the machine the window is about has a panel to repaint; the
+        // other five are moving on the render and nowhere else.
+        onFrame: () => {
+          if (member.robot === this.selected) this.syncJointValues();
+        },
+        onStep: (name) => this.markSweepRow(member, name),
+        onStateChange: () => this.renderPlayButtons(),
+      });
+    }
+    return member.sweep;
+  }
+
+  /** Whether anything on the floor is touring. */
+  get touring() {
+    return this.standing().some((member) => member.sweep?.running);
+  }
+
+  /** Every machine at once, or every machine stopped — the toolbar's button. */
+  toggleAllSweeps() {
+    const stop = this.touring;
+    for (const member of this.standing()) {
+      const sweep = this.sweepFor(member);
+      if (stop) sweep.stop();
+      else sweep.start();
+    }
+    this.renderPlayButtons();
+  }
+
+  stopAllSweeps() {
+    for (const member of this.members.values()) member.sweep?.stop();
+  }
+
+  /** Which joint's turn it is, marked in the window — but only while the
+   *  window is about that machine. Five other tours are running somewhere the
+   *  panel cannot show them. */
+  markSweepRow(member, name) {
+    if (member.robot !== this.selected) return;
+    const panel = el('cmp-joint-panel');
+    for (const row of panel.querySelectorAll('.cmp-joint-row.is-sweeping')) {
+      row.classList.remove('is-sweeping');
+    }
+    if (!name) return;
+    const row = this._rows?.get(name);
+    if (!row) return;
+    row.classList.add('is-sweeping');
+    row.scrollIntoView({ block: 'nearest' });
+  }
+
+  /** Both buttons say what the next press will do and stay lit while it runs:
+   *  the window's, for the machine it is about, and the toolbar's, for the
+   *  floor. */
+  renderPlayButtons() {
+    const all = el('cmp-stage-toolbar').querySelector('[data-action="play"]');
+    const touring = this.touring;
+    all?.setAttribute('aria-pressed', String(touring));
+    const key = touring ? 'compare.stopAll' : 'compare.playAll';
+    all?.setAttribute('title', t(key));
+    all?.setAttribute('aria-label', t(key));
+
+    const one = el('cmp-joint-panel').querySelector('[data-panel="play"]');
+    if (!one) return;
+    const member = this.memberOf(this.selected);
+    const running = !!member?.sweep?.running;
+    one.setAttribute('aria-pressed', String(running));
+    one.title = t(running ? 'joints.stopHint' : 'joints.playHint');
+    one.setAttribute('aria-label', one.title);
+    const label = one.querySelector('span:not(.play-mark)');
+    if (label) label.textContent = t(running ? 'joints.stop' : 'joints.play');
   }
 
   /** Repaint the window from the pose the stage is actually in. The slider
@@ -1455,6 +1698,7 @@ export class CompareStage {
     this.renderInvitation();
     this.renderTags();
     this.renderJointPanel();
+    this.renderPlayButtons();
     // Both of these say something the markup's own data-i18n has just
     // overwritten with the other of the two things they say.
     this.setArranging(this.arranging);
