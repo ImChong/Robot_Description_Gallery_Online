@@ -20,6 +20,10 @@
  *     it is read as the kind of machine the comparison is of, it is dropped
  *     rather than fetched when an address names it in a tab that has no file
  *     behind it, and swapping the file swaps the column.
+ *   - And the shared 3D stage: that it fetches nothing until it is asked to,
+ *     that it then stands every picked machine on one floor at the size the
+ *     registry records for it, that clicking one opens that one's joints and
+ *     that a slider in that window moves that machine and no other.
  *
  * The URDFs come from the CDN, so this is a network test — and, like the
  * gallery's own smoke test, it catches an upstream that moved a file.
@@ -531,6 +535,175 @@ async function pickedMeasurement() {
             `  ✓ ${label.padEnd(46)} ${got.height_m} m vs ${model.measured.height_m} m recorded`,
           );
         }
+      }
+    }
+  }
+}
+
+/* ── the shared 3D stage ─────────────────────────────────────────────────── */
+
+/**
+ * Two machines on one floor, at the size the registry records for each.
+ *
+ * The premise of this page is that a comparison costs six URDFs and no meshes,
+ * so the first thing checked is that nothing is fetched until the stage is
+ * asked for. What it then has to get right is scale: the whole reason to draw
+ * six machines rather than tabulate them is that a hand beside a humanoid is
+ * the size it really is, and a stage that quietly normalised each one to fill
+ * its share of the frame would look perfectly plausible and say nothing. The
+ * heights the stage measures off the geometry are therefore checked against the
+ * ones scripts/render_thumbnails.mjs recorded per robot.
+ *
+ * Then the part a picture cannot do on its own: clicking one machine opens that
+ * machine's joints, and a slider in that window moves that machine only.
+ *
+ * Two small arms rather than two humanoids — this is a network test that has
+ * already fetched a dozen descriptions by the time it gets here, and what is
+ * being checked is the stage, not the size of the download.
+ */
+{
+  const label = 'stage: two machines on one floor';
+  const ids = ['so_arm100', 'z1'];
+  const wasFailing = failures;
+  const recorded = await page.evaluate(async (ids) => {
+    const { loadRegistry, byId } = await import('./js/registry.js');
+    const data = await loadRegistry();
+    const found = ids.map((id) => byId(data, id));
+    return found.every(Boolean)
+      ? found.map((robot) => ({ id: robot.id, height: robot.measured?.height_m ?? null }))
+      : null;
+  }, ids);
+
+  if (!recorded || recorded.some((one) => !one.height)) {
+    console.log(`  · ${label.padEnd(46)} skipped — ${ids.join(', ')} not shown or unmeasured`);
+  } else {
+    await page.goto(`${base}/web/#compare=1&cat=arm&ids=${ids.join(',')}`, { waitUntil: 'commit' });
+    await page.waitForFunction(
+      () => {
+        const body = document.getElementById('compare-body');
+        return !!body && !body.hidden && !!document.querySelector('#compare-joints tbody tr');
+      },
+      null,
+      { timeout: 120000, polling: 300 },
+    );
+
+    // Nothing on the floor until it is asked for: the tables are drawn and the
+    // stage is still an invitation.
+    const before = await page.evaluate(() => ({
+      hidden: document.getElementById('cmp-stage').hidden,
+      standing: document.getElementById('cmp-stage').dataset.standing || '0',
+      canvases: document.querySelectorAll('#cmp-canvas-host canvas').length,
+    }));
+    if (!before.hidden || before.standing !== '0' || before.canvases) {
+      fail(`${label} — the stage loaded before it was asked to: ${JSON.stringify(before)}`);
+    }
+
+    await page.click('#cmp-stage-open');
+    let stood;
+    try {
+      stood = await page
+        .waitForFunction(
+          (count) => {
+            if (!document.getElementById('cmp-stage-loading').hidden) return false;
+            const tags = [...document.querySelectorAll('#cmp-stage-tags .cmp-tag')];
+            if (tags.length !== count) return false;
+            return {
+              failed: document.getElementById('cmp-stage-failed').textContent.trim(),
+              span: Number(document.getElementById('cmp-stage').dataset.span),
+              tags: tags.map((tag) => ({
+                name: tag.textContent,
+                height: Number(tag.dataset.height),
+                x: Number(tag.dataset.x),
+              })),
+            };
+          },
+          ids.length,
+          { timeout: 300000, polling: 500 },
+        )
+        .then((handle) => handle.jsonValue());
+    } catch {
+      stood = null;
+    }
+
+    if (!stood) {
+      fail(`${label} — ${ids.length} machines never reached the floor`);
+    } else {
+      if (stood.failed) fail(`${label} — ${stood.failed}`);
+      // At true scale, measured where they are drawn: the same reading the
+      // registry holds, which is the whole claim the picture makes.
+      for (const [index, one] of recorded.entries()) {
+        const drawn = stood.tags[index];
+        const off = Math.abs(drawn.height - one.height) / one.height;
+        if (off > 0.01) {
+          fail(`${label} — ${one.id} stands ${drawn.height} m, the registry records ${one.height} m`);
+        }
+      }
+      // Side by side, in the order the table reads its columns, and far enough
+      // apart that neither is standing inside the other.
+      const [left, right] = stood.tags;
+      if (!(left.x < right.x)) {
+        fail(`${label} — the row runs ${left.name} at ${left.x} and ${right.name} at ${right.x}`);
+      }
+      if (!(stood.span > 0)) fail(`${label} — the row measured no width`);
+
+      // Clicking one machine's name opens that machine's joints, and the
+      // sliders in that window are its own. The pose of the machine that was
+      // not clicked is read before and after, since "the sliders drive one
+      // robot" is the claim, and a window wired to the wrong description
+      // would look exactly as convincing.
+      const [first, second] = stood.tags.map((tag) => tag.name);
+      const readWindow = () =>
+        page.evaluate(() => {
+          const panel = document.getElementById('cmp-joint-panel');
+          return {
+            about: panel.querySelector('.cmp-joint-title strong')?.textContent || null,
+            sliders: panel.querySelectorAll('input[type="range"]').length,
+            values: [...panel.querySelectorAll('.tree-value')].map((node) => node.textContent),
+          };
+        });
+      const clickTag = async (index) => {
+        await page.click(`#cmp-stage-tags .cmp-tag:nth-of-type(${index + 1})`);
+        await page.waitForSelector('#cmp-joint-panel:not([hidden])', { timeout: 30000 });
+      };
+
+      await clickTag(1);
+      const restOfSecond = await readWindow();
+      if (restOfSecond.about !== second) {
+        fail(`${label} — clicking ${second} opened a window about ${restOfSecond.about}`);
+      }
+
+      await clickTag(0);
+      const posed = await page.evaluate(() => {
+        const panel = document.getElementById('cmp-joint-panel');
+        const input = panel.querySelector('input[type="range"][data-joint]');
+        if (!input) return null;
+        const value = panel.querySelector('.tree-value');
+        const was = value.textContent;
+        input.value = String(Number(input.min) + (Number(input.max) - Number(input.min)) * 0.75);
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        return { was, now: value.textContent };
+      });
+      const window0 = await readWindow();
+      if (window0.about !== first) {
+        fail(`${label} — clicking ${first} opened a window about ${window0.about}`);
+      }
+      if (!posed) fail(`${label} — ${first} came up with no sliders`);
+      else if (posed.was === posed.now) {
+        fail(`${label} — a slider in ${first}'s window moved nothing (${posed.now})`);
+      }
+
+      await clickTag(1);
+      const afterSecond = await readWindow();
+      if (String(afterSecond.values) !== String(restOfSecond.values)) {
+        fail(`${label} — posing ${first} moved ${second}`);
+      }
+
+      if (failures === wasFailing) {
+        console.log(
+          `  ✓ ${label.padEnd(46)} ${stood.tags
+            .map((tag) => `${tag.name} ${tag.height.toFixed(2)} m`)
+            .join(' · ')}`,
+        );
       }
     }
   }

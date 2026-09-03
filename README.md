@@ -22,8 +22,10 @@ URDF、网格 zip 或 ROS 2 功能包；纯 MJCF 条目使用 MuJoCo Live 在线
   这里照 MJCF `<equality><connect>` 的写法在 `data/curation.json` 里补一条点约束，
   拖电机时用它反解两个膝关节，腿始终是合拢的。
 - **横向对比**（`#compare=1`）：同一类别下选 2~6 台机器并排读整机、分肢与逐关节数据（含对应连杆质量），
-  关节按部位或按运动链顺序对齐。只下载 `.urdf`，不下载网格；表格可复制为 Markdown 或
-  CSV，地址可分享。
+  关节按部位或按运动链顺序对齐。默认只下载 `.urdf`，不下载网格；表格可复制为 Markdown 或
+  CSV，地址可分享。表格里还有一个「同一场景预览」，点开才下载网格：把选中的机器人按真实
+  尺寸并排站在同一块地面上，可全屏；点中某一台（或它的名字牌）就在画面上弹出这一台的关节
+  滑块浮窗，滑块只驱动它自己。
 - **预览我自己的模型**：本地 URDF、xacro、MuJoCo `.xml` 或 USD（`.usda`、`.usdc`、`.usdz`）
   用同一个查看器打开，也能当成对比里的一列。**文件只在浏览器里解析，不会上传** ——
   本站是纯静态页面，没有可以接收文件的后端。
@@ -99,7 +101,10 @@ joints — or play every joint in turn out to both its limits and back, a second
 and overlays collision geometry, joint axes and inertia. A compare page (`#compare=1`)
 puts two to six machines of one category side by side as numbers, lining their joints up
 by anatomy or by position along the kinematic chain, including the mass and rotation-invariant
-inertia trace of the child link each joint moves. A mechanism that closes back on
+inertia trace of the child link each joint moves. Ask it to, and the same machines also
+stand on one floor at true scale in a single 3D stage that goes fullscreen — click one of
+them and its joints open in a window over the render, driving that machine alone. A
+mechanism that closes back on
 itself — Minitaur's five-bar legs — is held shut by a point weld the registry states the
 way MJCF does, so dragging a motor bends the whole linkage instead of pulling the leg
 apart. You can open a description from your own disk — URDF, xacro, MuJoCo XML or USD —

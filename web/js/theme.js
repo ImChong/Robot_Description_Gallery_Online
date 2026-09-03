@@ -32,7 +32,14 @@ export function toggleTheme() {
   return setTheme(theme() === 'light' ? 'dark' : 'light');
 }
 
-/** @param {(theme: 'dark'|'light') => void} handler */
+/**
+ * @param {(theme: 'dark'|'light') => void} handler
+ * @returns {() => void} unsubscribe — for a listener that outlives what it
+ *   was relighting, such as the compare stage, which is torn down and rebuilt
+ *   while the page it is on stays open
+ */
 export function onThemeChange(handler) {
-  window.addEventListener(EVENT, (event) => handler(event.detail));
+  const listener = (event) => handler(event.detail);
+  window.addEventListener(EVENT, listener);
+  return () => window.removeEventListener(EVENT, listener);
 }
