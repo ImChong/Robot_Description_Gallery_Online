@@ -136,10 +136,13 @@ function solveSmall(A, b, n) {
  * surface is most of the window — the band under the render, the strip behind
  * the joint tree. The two have to stay equal or the canvas edge shows as a
  * seam, so change them together.
+ *
+ * Each studio floor is the same shade as that theme's `--card-stage-bottom`,
+ * so a robot on the detail stage sits on the same tone as its homepage card.
  */
 export const THEMES = {
   dark: {
-    background: 0x0e1116,
+    background: 0x191b1f,
     grid: 0x2a3340,
     gridAccent: 0x3d4a5c,
     visual: 0xb9c2cf,

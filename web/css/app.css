@@ -39,10 +39,13 @@
      THEMES.dark.background in js/viewer.js: a gradient, or any other value,
      would draw a seam along the edge of the canvas.
 
+     The floor is `--card-stage-bottom`, the same shade the homepage cards
+     sit on, so the detail stage and the gallery well keep one contrast.
+
      The card wells are a different problem and keep their own gradient: the
      thumbnails are rendered once against transparency, so the same image has
      to sit on both themes' wells. */
-  --studio: #0e1116;
+  --studio: #191b1f;
   --card-stage-top: #262a30;
   --card-stage-bottom: #191b1f;
   /* The category pill floats over the card well, so it reads against the
@@ -119,8 +122,8 @@
 
   /* Daylight studio. Kept a touch cooler and darker than the page so the stage
      still reads as a separate surface, and so a white robot has something to
-     sit against — and equal to THEMES.light.background in js/viewer.js, for
-     the reason the dark studio above gives. */
+     sit against — equal to THEMES.light.background in js/viewer.js and to
+     `--card-stage-bottom` here, for the reason the dark studio above gives. */
   --studio: #eceef2;
   --stage-chrome-bg: rgba(255, 255, 255, 0.86);
   --stage-chrome-border: #d9d8d3;
