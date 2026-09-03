@@ -20,7 +20,7 @@ The gallery fetches this file at startup: rows checked `[x]` are shown, rows lef
 the site matches on; the name, organisation and upstream link after it are for
 human readers.
 
-## 人形 Humanoid · 62
+## 人形 Humanoid · 63
 
 - [x] `g1` **G1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description)
 - [x] `h1` **H1** — UNITREE Robotics — [unitreerobotics/unitree_ros · h1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description)
@@ -79,13 +79,14 @@ human readers.
 - [x] `star1` **STAR1** — RobotEra — [roboterax/models](https://github.com/roboterax/models/tree/e8660e664e39e5b80ebb1f252e1b77b0e6929cff/star1)
 - [x] `noetix_e1` **E1** — Noetix Robotics — [Noetix-Robotics/noetix_e1_lab](https://github.com/Noetix-Robotics/noetix_e1_lab/tree/5a1d62d57d26499f10fc840df7b9f9d0331f5c72/source/NoetixE1/NoetixE1/assets/robots/e1)
 - [x] `noetix_n2` **N2** — Noetix Robotics — [Noetix-Robotics/noetix_n2_gym](https://github.com/Noetix-Robotics/noetix_n2_gym/tree/153aad12dcc44aeafe378efe2f652873b02e0d89/resources/robots/N2)
+- [x] `dr02` **DR02** — DEEP Robotics — [DeepRoboticsLab/deep_robotics_model](https://github.com/DeepRoboticsLab/deep_robotics_model/tree/e6753d2ef25e1e788d387ae3775fd283c199f1a3/DR02/urdf/pro)
 - [ ] `robotis_op3` **Robotis OP3** — ROBOTIS — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3)
 - [x] `toddlerbot_2xc` **ToddlerBot 2XC** — Stanford University — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xc)
 - [x] `pndbotics_adam_lite` **PNDbotics Adam_lite** — PNDbotics — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/pndbotics_adam_lite)
 - [x] `apptronik_apollo` **Apptronik Apollo** — Apptronik — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/apptronik_apollo)
 - [x] `toddlerbot_2xm` **ToddlerBot 2XM** — Stanford University — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xm)
 
-## 四足 Quadruped · 24
+## 四足 Quadruped · 28
 
 - [x] `go2` **Go2** — UNITREE Robotics — [unitreerobotics/unitree_ros · go2_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/go2_description)
 - [x] `go2w` **Go2-W** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/go2w_description)
@@ -109,6 +110,10 @@ human readers.
 - [x] `barkour_vb` **Barkour vb** — Google DeepMind — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/google_barkour_vb)
 - [x] `minitaur` **Minitaur** — Ghost Robotics — [bulletphysics/bullet3 · minitaur_description](https://github.com/bulletphysics/bullet3/tree/7dee3436e747958e7088dfdcea0e4ae031ce619e/data/quadruped)
 - [x] `mini_cheetah` **Mini Cheetah** — MIT Biomimetics Robotics Lab — [Derek-TH-Wang/mini_cheetah_urdf](https://github.com/Derek-TH-Wang/mini_cheetah_urdf/tree/1988bceb26e81f28594a16e7d5e6abe5cbb27ace)
+- [x] `lite3` **Lite3** — DEEP Robotics — [DeepRoboticsLab/deep_robotics_model](https://github.com/DeepRoboticsLab/deep_robotics_model/tree/e6753d2ef25e1e788d387ae3775fd283c199f1a3/Lite3/urdf)
+- [x] `x30` **X30** — DEEP Robotics — [DeepRoboticsLab/deep_robotics_model](https://github.com/DeepRoboticsLab/deep_robotics_model/tree/e6753d2ef25e1e788d387ae3775fd283c199f1a3/X30/urdf)
+- [x] `m20` **Lynx M20** — DEEP Robotics — [DeepRoboticsLab/deep_robotics_model](https://github.com/DeepRoboticsLab/deep_robotics_model/tree/e6753d2ef25e1e788d387ae3775fd283c199f1a3/M20/urdf)
+- [x] `m20s` **Lynx M20S** — DEEP Robotics — [DeepRoboticsLab/deep_robotics_model](https://github.com/DeepRoboticsLab/deep_robotics_model/tree/e6753d2ef25e1e788d387ae3775fd283c199f1a3/M20S/urdf)
 - [x] `unitree_go1` **Unitree Go1** — UNITREE Robotics — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/unitree_go1)
 - [x] `boston_dynamics_spot` **Boston Dynamics Spot** — Boston Dynamics — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/boston_dynamics_spot)
 
@@ -214,7 +219,7 @@ human readers.
 - [x] `tron2_dach` **TRON 2 DACH** — LimX Dynamics — [limxdynamics/tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description/tree/9939c22e69d27653ec0ba8a505859a2903dd1a71/tron2a/DACH_TRON2A)
 - [x] `aloha` **ALOHA** — Stanford University — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/aloha)
 
-## 移动操作 Mobile manipulator · 20
+## 移动操作 Mobile manipulator · 21
 
 - [x] `g1_d` **G1-D** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_d_description)
 - [x] `dobot_atom_w` **Atom-W** — Dobot — [Dobot-Arm/dobot_atom_urdf](https://github.com/Dobot-Arm/dobot_atom_urdf/tree/d27e011e490c59002097966ef22492d98d06f6a4/atom-w-p2)
@@ -231,6 +236,7 @@ human readers.
 - [x] `tron2_dasf2` **TRON 2 DASF2** — LimX Dynamics — [limxdynamics/tron2-robot-description](https://github.com/limxdynamics/tron2-robot-description/tree/9939c22e69d27653ec0ba8a505859a2903dd1a71/tron2a/DASF2_TRON2A)
 - [x] `galaxea_r1` **R1** — Galaxea AI — [userguide-galaxea/URDF](https://github.com/userguide-galaxea/URDF/tree/2e5d31e1784481a34d178006c0d0e18e0a84a82a/R1)
 - [x] `galaxea_r1_pro` **R1 Pro** — Galaxea AI — [userguide-galaxea/URDF](https://github.com/userguide-galaxea/URDF/tree/2e5d31e1784481a34d178006c0d0e18e0a84a82a/R1Pro/urdf_r1pro_g1z_2026)
+- [x] `m20_piper` **Lynx M20 Piper** — DEEP Robotics — [DeepRoboticsLab/deep_robotics_model](https://github.com/DeepRoboticsLab/deep_robotics_model/tree/e6753d2ef25e1e788d387ae3775fd283c199f1a3/M20_Piper/urdf)
 - [x] `google_robot` **Google Robot** — Google — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/google_robot)
 - [x] `stretch_2` **Hello Robot Stretch 2** — Hello Robot — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch)
 - [x] `stanford_tidybot` **Stanford TidyBot** — Stanford University — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/stanford_tidybot)

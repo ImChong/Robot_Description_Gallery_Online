@@ -4,12 +4,12 @@
 [![Verify](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml/badge.svg)](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-收录 **203 个**开源机器人描述：164 个 URDF 可在站内拖关节、查看碰撞体与惯量，并下载
+收录 **209 个**开源机器人描述：170 个 URDF 可在站内拖关节、查看碰撞体与惯量，并下载
 URDF、网格 zip 或 ROS 2 功能包；纯 MJCF 条目使用 MuJoCo Live 在线预览。
 
 在线访问：<https://imchong.github.io/Robot_Description_Gallery_Online/web/>
 
-人形 62 · 四足 24 · 机械臂 36 · 灵巧手 / 夹爪 29 · 移动操作 20 · 双臂 12 · 双足 13
+人形 63 · 四足 28 · 机械臂 36 · 灵巧手 / 夹爪 29 · 移动操作 21 · 双臂 12 · 双足 13
 生物力学 3 · 无人机 2 · 移动底盘 1 · 传感器 1
 
 ## 功能
@@ -98,7 +98,7 @@ npm run check:custom-url             # 校验自定义 URL 路由
 
 ---
 
-**English** — A browsable gallery of 203 open robot descriptions: 164 URDF entries
+**English** — A browsable gallery of 209 open robot descriptions: 170 URDF entries
 load in the built-in viewer, while MJCF-only entries open as pinned MuJoCo Live scenes.
 The gallery groups robots by category and then by maker. The URDF viewer lets you drag
 joints — or play every joint in turn out to both its limits and back, a second each —
