@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="zh">
+<html lang="zh" class="i18n-pending">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>html.i18n-pending body{visibility:hidden}</style>
 <title>Robot Description Gallery Online · 机器人3D模型在线合集</title>
 <meta name="description" content="Browse, preview and compare open-source robot descriptions and 3D models in URDF, MJCF, USD and more, loaded directly from pinned upstream repositories.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🖼️</text></svg>">
@@ -25,7 +26,7 @@
 
 <header class="site-header">
   <div class="header-inner">
-    <a href="#" class="site-title" aria-label="Home - Robot Description Gallery Online">🖼️ Robot Description Gallery Online | 机器人3D模型在线合集</a>
+    <a href="#" class="site-title" data-i18n-aria-label="site.home">🖼️ <span data-i18n="site.title">机器人3D模型在线合集</span></a>
     <div class="header-right">
       <!-- Two labels, one link: the word on wide screens, the mark on phones,
            where the row has no room for it as text (see css/app.css). -->
@@ -431,6 +432,8 @@
   <p class="custom-hint" data-i18n="custom.hint"></p>
 </dialog>
 
+<noscript><style>html.i18n-pending body { visibility: visible !important; }</style></noscript>
+<script type="module" src="./js/i18n-boot.js"></script>
 <script type="module" src="./js/main.js"></script>
 </body>
 </html>

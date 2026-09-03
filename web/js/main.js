@@ -2,10 +2,10 @@
 import { loadRegistry, byId } from './registry.js';
 import { Gallery } from './gallery.js';
 import { Detail } from './detail.js';
-import { applyStatic, detectLang, setLang, lang, t, LANGS } from './i18n.js';
+import { applyChrome, detectLang, setLang, lang, t, pageTitle, LANGS } from './i18n.js';
 import { paintIcons } from './icons.js';
 import { theme, toggleTheme } from './theme.js';
-import { customEntry, setupCustomPicker } from './custom.js';
+import { applyCustomLang, customEntry, setupCustomPicker } from './custom.js';
 import { Compare } from './compare.js';
 
 const views = {
@@ -91,24 +91,47 @@ function setupTheme() {
 
 /**
  * One button that names the language you would switch *to*, as on
- * Humanoid_Robot_Learning_Paper_Notebooks.
+ * Humanoid_Robot_Learning_Paper_Notebooks. Switching applies in place —
+ * a reload would paint the other language's HTML for a frame, and would
+ * drop a model the visitor had just picked off disk.
  */
-function setupLang() {
+function setupLang(onChange) {
   const button = document.getElementById('lang-toggle');
-  const label = button.querySelector('.lang-label');
-  label.textContent = lang() === 'zh' ? 'English' : '中文';
   button.addEventListener('click', () => {
     setLang(lang() === 'zh' ? 'en' : 'zh');
-    location.reload(); // simplest way to re-render every rendered string
+    applyChrome();
+    onChange();
   });
+}
+
+function syncDocumentTitle() {
+  const at = parseHash();
+  if (at.compare) document.title = pageTitle(t('compare.title'));
+  else if (at.robot || at.custom) {
+    const name = document.getElementById('d-name')?.textContent;
+    document.title = name && name !== '—' ? pageTitle(name) : pageTitle();
+  } else document.title = pageTitle();
 }
 
 async function main() {
   setupTheme();
-  setLang(detectLang());
-  applyStatic();
+  // Language is already on the static nodes: js/i18n-boot.js ran first.
+  if (document.documentElement.classList.contains('i18n-pending')) {
+    setLang(detectLang());
+    applyChrome();
+    document.documentElement.classList.remove('i18n-pending');
+  }
   paintIcons();
-  setupLang();
+  let gallery = null;
+  let detail = null;
+  let compare = null;
+  setupLang(() => {
+    gallery?.render();
+    applyCustomLang();
+    detail?.applyLang();
+    compare?.applyLang();
+    syncDocumentTitle();
+  });
   for (const el of document.querySelectorAll('[data-year]')) {
     el.textContent = String(new Date().getFullYear());
   }
@@ -122,11 +145,9 @@ async function main() {
     return;
   }
 
-  const gallery = new Gallery(data, (id) => {
+  gallery = new Gallery(data, (id) => {
     location.hash = `robot=${id}`;
   });
-  let detail = null;
-  let compare = null;
 
   /** The compare view, built the first time it is asked for. */
   function comparison() {
@@ -168,7 +189,7 @@ async function main() {
       views.gallery.hidden = true;
       views.detail.hidden = true;
       views.compare.hidden = false;
-      document.title = `${t('compare.title')} · Robot Description Gallery Online`;
+      document.title = pageTitle(t('compare.title'));
       if (arriving) window.scrollTo({ top: 0 });
       await comparison().show({ category: at.compareCategory, ids: at.compareIds });
       return;
@@ -192,7 +213,7 @@ async function main() {
       // a search run from a stage re-renders the gallery behind it, so the way
       // back is where those spans are worked out.
       gallery.relayout();
-      document.title = 'Robot Description Gallery Online · 机器人3D模型在线合集';
+      document.title = pageTitle();
       // `#category=quadruped` is a link to a section of the page: honour it on
       // the first load and whenever the address bar names a section other than
       // the one being read. Coming back from a robot it names that same

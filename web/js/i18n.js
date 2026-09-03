@@ -2,6 +2,12 @@
 
 const STRINGS = {
   en: {
+    'site.title': 'Robot Description Gallery Online',
+    'site.home': 'Home',
+    'lang.toEn': 'English',
+    'lang.toZh': '中文',
+    'lang.switchToEn': 'Switch to English',
+    'lang.switchToZh': '切换到中文',
     'hero.title': 'Robot Description Gallery Online',
     'hero.lede':
       'Browse, preview and compare open-source robot descriptions and 3D models in URDF, MJCF, USD and more. Everything loads directly from pinned upstream repositories, keeping sources traceable without re-hosting.',
@@ -114,6 +120,8 @@ const STRINGS = {
     'dl.mjcf': 'MJCF only',
     'dl.mjcfSub': 'the scene .xml alone',
     'dl.bundleMjcfSub': 'zip with every included file',
+    'dl.meshCount': '{n} meshes',
+    'dl.meshCount1': '1 mesh',
     'dl.working': 'Preparing…',
     'dl.failed': 'Download failed',
     'theme.toggle': 'Switch theme',
@@ -418,6 +426,12 @@ const STRINGS = {
     'cmp.axis.tz': 'along Z',
   },
   zh: {
+    'site.title': '机器人3D模型在线合集',
+    'site.home': '首页',
+    'lang.toEn': 'English',
+    'lang.toZh': '中文',
+    'lang.switchToEn': 'Switch to English',
+    'lang.switchToZh': '切换到中文',
     'hero.title': '机器人3D模型在线合集',
     'hero.lede':
       '浏览、预览和对比 URDF、MJCF、USD 等开源机器人描述文件与 3D 模型。所有资源均从固定版本的上游仓库直接加载，来源清晰，本站不重复托管。',
@@ -525,6 +539,8 @@ const STRINGS = {
     'dl.mjcf': '仅 MJCF',
     'dl.mjcfSub': '只有场景 .xml 文件',
     'dl.bundleMjcfSub': 'zip，含全部被 include 的文件',
+    'dl.meshCount': '{n} 个网格',
+    'dl.meshCount1': '1 个网格',
     'dl.working': '正在准备…',
     'dl.failed': '下载失败',
     'theme.toggle': '切换主题',
@@ -841,18 +857,32 @@ const CATEGORY_LABELS = {
 
 export const LANGS = ['zh', 'en'];
 
-let current = 'zh';
+/** Prefer the <html lang> js/theme-init.js stamped before first paint. */
+function langFromDocument() {
+  const raw = document.documentElement.getAttribute('lang') || '';
+  return raw.toLowerCase().startsWith('zh') ? 'zh' : 'en';
+}
+
+let current = langFromDocument();
 
 export function detectLang() {
-  const stored = localStorage.getItem('cl-lang');
-  if (stored && LANGS.includes(stored)) return stored;
+  try {
+    const stored = localStorage.getItem('cl-lang');
+    if (stored && LANGS.includes(stored)) return stored;
+  } catch {
+    /* private mode */
+  }
   const nav = (navigator.languages || [navigator.language || 'en']).join(',');
   return /\bzh\b|zh-/i.test(nav) ? 'zh' : 'en';
 }
 
 export function setLang(lang) {
   current = LANGS.includes(lang) ? lang : 'en';
-  localStorage.setItem('cl-lang', current);
+  try {
+    localStorage.setItem('cl-lang', current);
+  } catch {
+    /* private mode — the choice just will not persist */
+  }
   document.documentElement.lang = current === 'zh' ? 'zh-CN' : 'en';
   return current;
 }
@@ -891,4 +921,29 @@ export function applyStatic(root = document) {
   for (const el of root.querySelectorAll('[data-i18n-aria-label]')) {
     el.setAttribute('aria-label', t(el.dataset.i18nAriaLabel));
   }
+}
+
+/** Tab title: one language, matching the page. */
+export function pageTitle(prefix) {
+  return prefix ? `${prefix} · ${t('site.title')}` : t('site.title');
+}
+
+/**
+ * Static chrome that must match `current` without waiting for a view to
+ * re-render: marked nodes, the language button (it names the language you
+ * would switch *to*), and the document title on the gallery.
+ */
+export function applyChrome() {
+  applyStatic();
+  const button = document.getElementById('lang-toggle');
+  if (button) {
+    const label = button.querySelector('.lang-label');
+    if (label) label.textContent = current === 'zh' ? t('lang.toEn') : t('lang.toZh');
+    button.setAttribute('aria-label', current === 'zh' ? t('lang.switchToEn') : t('lang.switchToZh'));
+  }
+}
+
+/** Show the page once the active language is on the static nodes. */
+export function revealLang() {
+  document.documentElement.classList.remove('i18n-pending');
 }

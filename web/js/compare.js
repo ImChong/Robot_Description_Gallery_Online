@@ -694,10 +694,7 @@ export class Compare {
     await this.render();
   }
 
-  setup() {
-    if (this.bound) return;
-    this.bound = true;
-
+  fillCategories() {
     const category = el('compare-category');
     category.innerHTML = this.data.categories
       .map((c) => {
@@ -709,6 +706,29 @@ export class Compare {
           : '';
       })
       .join('');
+    if (this.category) category.value = this.category;
+  }
+
+  /**
+   * Re-paint picker and tables after a language switch. Parsed URDFs stay.
+   */
+  applyLang() {
+    if (!this.bound) return;
+    this.fillCategories();
+    this.renderPicker();
+    if (!el('compare-body').hidden) this.renderTables();
+    const status = el('compare-status');
+    if (!status.hidden && this.loading) {
+      status.textContent = t('compare.loading').replace('{n}', String(this.loading));
+    }
+  }
+
+  setup() {
+    if (this.bound) return;
+    this.bound = true;
+
+    const category = el('compare-category');
+    this.fillCategories();
     category.addEventListener('change', () => {
       this.category = category.value;
       // Changing the kind of machine starts a new comparison — except for the
