@@ -725,12 +725,15 @@ export class RobotViewer {
     const local = entry.assets.local || null;
     const path = entry.assets.mjcf_model || entry.assets.mjcf;
     const manager = new THREE.LoadingManager();
+    // Files jsDelivr refuses as too large are remapped to GitHub raw in
+    // `assets.mesh_alt`; everything else stays on the CDN base.
+    const alt = entry.assets.mesh_alt || {};
     // A mesh no picked file answers to gets a URL that cannot resolve, which
     // three.js' loaders report as a failed load — the same hole in the robot a
     // missing mesh leaves on the URDF path, rather than a request to nowhere.
     const resolve = local
       ? (rel) => local.urlOf(rel) || `${LOCAL_URL_PREFIX}missing/${rel}`
-      : (rel) => base + rel;
+      : (rel) => alt[rel] || base + rel;
     const readXml = local
       ? (rel) => local.readText(rel)
       : async (rel) => {
@@ -843,6 +846,9 @@ export class RobotViewer {
     // would come back as a mesh loader choking on markup.
     const rewrite = entry.assets.mesh_rewrite || [];
     const skip = new Set((entry.assets.skip_meshes || []).map((path) => base + path));
+    const altByUrl = new Map(
+      Object.entries(entry.assets.mesh_alt || {}).map(([rel, url]) => [base + rel, url]),
+    );
     // Every request either loader makes goes through this manager, which is
     // what lets `outstanding` below see the loads the mesh counter cannot —
     // and, for a local model, what puts the blob in front of the scheme.
@@ -947,17 +953,18 @@ export class RobotViewer {
         finish(null, new Error(`mesh not among the picked files: ${path}`));
         return;
       }
+      const fetchPath = altByUrl.get(path) || path;
       const lower = path.toLowerCase();
       if (lower.endsWith('.obj')) {
-        objLoader.load(path, (obj) => finish(obj), undefined, (err) => finish(null, err));
+        objLoader.load(fetchPath, (obj) => finish(obj), undefined, (err) => finish(null, err));
       } else if (lower.endsWith('.glb') || lower.endsWith('.gltf')) {
         // No Y-up correction here: a glTF written as a URDF mesh carries the
         // link frame the URDF expects, and rotating it would lay the robot on
         // its side. GLTFLoader resolves its textures before calling back, so a
         // finished .glb is a finished mesh.
-        gltfLoader.load(path, (gltf) => finish(gltf.scene), undefined, (err) => finish(null, err));
+        gltfLoader.load(fetchPath, (gltf) => finish(gltf.scene), undefined, (err) => finish(null, err));
       } else {
-        defaultLoad(path, manager, (obj, err) => finish(obj, err));
+        defaultLoad(fetchPath, manager, (obj, err) => finish(obj, err));
       }
     };
 

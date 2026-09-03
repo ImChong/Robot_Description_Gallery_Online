@@ -68,12 +68,13 @@ jobs:
           STRUCTURAL_URDF = [
               ('assets', 'urdf'), ('assets', 'packages'),
               ('assets', 'mesh_files'), ('assets', 'mesh_formats'),
+              ('assets', 'skip_meshes'), ('assets', 'mesh_alt'),
               ('urdf', 'links'), ('urdf', 'joints'), ('urdf', 'moving_joints'),
           ]
           STRUCTURAL_MJCF = [
               ('assets', 'mjcf'), ('assets', 'mjcf_model'),
               ('assets', 'mesh_files'), ('assets', 'mesh_formats'),
-              ('assets', 'skip_meshes'),
+              ('assets', 'skip_meshes'), ('assets', 'mesh_alt'),
               ('mjcf', 'links'), ('mjcf', 'joints'), ('mjcf', 'moving_joints'),
               ('source', 'mjcf_external'),
           ]

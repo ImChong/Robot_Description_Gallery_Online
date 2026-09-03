@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-09-02T10:41:36Z",
+ "generated": "2026-09-03T01:24:35Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -16987,15 +16987,15 @@
     "mjcf": "flybody/scene.xml",
     "mjcf_model": "flybody/fruitfly.xml",
     "packages": {},
-    "mesh_files": 84,
-    "mesh_bytes": 109114179,
+    "mesh_files": 85,
+    "mesh_bytes": 140210018,
     "mesh_formats": [
      ".obj"
     ],
-    "skip_meshes": [
-     "flybody/assets/head_red.obj"
-    ],
-    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/flybody-fruitfly.png"
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/flybody-fruitfly.png",
+    "mesh_alt": {
+     "flybody/assets/head_red.obj": "https://raw.githubusercontent.com/google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/flybody/assets/head_red.obj"
+    }
    },
    "source": {
     "description": null,
@@ -17319,7 +17319,7 @@
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": {
     "size": {
-     "x": 0.3218,
+     "x": 0.3273,
      "y": 1.4103,
      "z": 0.5392
     },
@@ -17344,16 +17344,16 @@
     "mjcf": "hello_robot_stretch/scene.xml",
     "mjcf_model": "hello_robot_stretch/stretch.xml",
     "packages": {},
-    "mesh_files": 74,
-    "mesh_bytes": 51396998,
+    "mesh_files": 75,
+    "mesh_bytes": 73506372,
     "mesh_formats": [
      ".obj",
      ".stl"
     ],
-    "skip_meshes": [
-     "hello_robot_stretch/assets/base_link_8.obj"
-    ],
-    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/hello_robot_stretch-stretch.png"
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/hello_robot_stretch-stretch.png",
+    "mesh_alt": {
+     "hello_robot_stretch/assets/base_link_8.obj": "https://raw.githubusercontent.com/google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch/assets/base_link_8.obj"
+    }
    },
    "source": {
     "description": null,
@@ -17465,7 +17465,7 @@
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": {
     "size": {
-     "x": 0.3218,
+     "x": 0.3273,
      "y": 1.4103,
      "z": 0.5933
     },
@@ -17490,16 +17490,16 @@
     "mjcf": "hello_robot_stretch_3/scene.xml",
     "mjcf_model": "hello_robot_stretch_3/stretch.xml",
     "packages": {},
-    "mesh_files": 95,
-    "mesh_bytes": 54177796,
+    "mesh_files": 96,
+    "mesh_bytes": 76287170,
     "mesh_formats": [
      ".obj",
      ".stl"
     ],
-    "skip_meshes": [
-     "hello_robot_stretch_3/assets/base_link_8.obj"
-    ],
-    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/hello_robot_stretch_3-stretch.png"
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/hello_robot_stretch_3-stretch.png",
+    "mesh_alt": {
+     "hello_robot_stretch_3/assets/base_link_8.obj": "https://raw.githubusercontent.com/google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch_3/assets/base_link_8.obj"
+    }
    },
    "source": {
     "description": null,
@@ -19092,11 +19092,11 @@
    "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
    "measured": {
     "size": {
-     "x": 0.0859,
-     "y": 0.0241,
-     "z": 0.0211
+     "x": 0.0899,
+     "y": 0.0251,
+     "z": 0.025
     },
-    "height_m": 0.0241
+    "height_m": 0.0251
    },
    "mjcf": {
     "xml_name": "d435i",
@@ -19114,15 +19114,15 @@
     "mjcf": "realsense_d435i/d435i.xml",
     "mjcf_model": "realsense_d435i/d435i.xml",
     "packages": {},
-    "mesh_files": 8,
-    "mesh_bytes": 15122021,
+    "mesh_files": 9,
+    "mesh_bytes": 45993447,
     "mesh_formats": [
      ".obj"
     ],
-    "skip_meshes": [
-     "realsense_d435i/assets/d435i_8.obj"
-    ],
-    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/realsense_d435i-d435i.png"
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/realsense_d435i-d435i.png",
+    "mesh_alt": {
+     "realsense_d435i/assets/d435i_8.obj": "https://raw.githubusercontent.com/google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/realsense_d435i/assets/d435i_8.obj"
+    }
    },
    "source": {
     "description": null,

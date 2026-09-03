@@ -167,6 +167,7 @@ function resolveMeshes(robot, urdfText) {
   const doc = new DOMParser().parseFromString(urdfText, 'text/xml');
   const seen = new Map();
   const skip = new Set(robot.assets.skip_meshes || []);
+  const alt = robot.assets.mesh_alt || {};
   const skipped = new Set();
 
   for (const mesh of doc.querySelectorAll('mesh')) {
@@ -187,7 +188,7 @@ function resolveMeshes(robot, urdfText) {
       skipped.add(filename);
       continue;
     }
-    seen.set(filename, { ref: filename, url: base + path, path });
+    seen.set(filename, { ref: filename, url: alt[path] || base + path, path });
   }
   return { targets: [...seen.values()], skipped: [...skipped] };
 }
@@ -295,16 +296,17 @@ async function mjcfBundle(robot, sceneText, onProgress) {
   const xml = await Promise.all(
     inventory.xml.slice(1).map(async (path) => ({ path, text: await read(path) })),
   );
-  // Files the CDN refuses — anything over its 20 MB per-file limit — are left
-  // out rather than requested: the reply is a sentence of English, not a mesh.
+  // Files the host does not have are left out. Oversized meshes the CDN
+  // refuses are fetched from the GitHub raw URL in `assets.mesh_alt`.
   const skip = new Set(robot.assets.skip_meshes || []);
+  const alt = robot.assets.mesh_alt || {};
   const assets = await fetchMeshes(
     inventory.assets
       .filter((candidates) => !candidates.every((path) => skip.has(path)))
       .map((candidates) => ({
         candidates,
         path: candidates[0],
-        urls: candidates.map((path) => base + path),
+        urls: candidates.map((path) => alt[path] || base + path),
       })),
     (target) => target.path,
     onProgress,

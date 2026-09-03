@@ -86,15 +86,31 @@ for (const robot of registry.robots) {
   }
   // Two reasons a description may reference geometry this gallery does not
   // serve, and no others: an archive that re-hosts someone else's URDF keeps
-  // only the meshes it renders, and jsDelivr refuses any single file over
-  // 20 MB. A repository entry whose URDF names a mesh that simply is not there
-  // is a broken entry, and the build refuses it rather than recording it here.
+  // only the meshes it renders, and an MJCF that names a collision mesh the
+  // host does not have. Oversized files the CDN refuses are remapped to
+  // GitHub raw in `assets.mesh_alt` rather than skipped. A repository entry
+  // whose URDF names a mesh that simply is not there is a broken entry, and
+  // the build refuses it rather than recording it here.
   if (assets.skip_meshes?.length && !source.mirror && urdf) {
     fail(id, 'skips meshes but is neither a mirrored entry nor an MJCF description');
   }
   for (const path of assets.skip_meshes || []) {
     if (path.startsWith('/') || path.startsWith('http')) {
       fail(id, `skipped mesh is not a host-relative path: ${path}`);
+    }
+  }
+  for (const [path, url] of Object.entries(assets.mesh_alt || {})) {
+    if (path.startsWith('/') || path.startsWith('http')) {
+      fail(id, `mesh_alt key is not a host-relative path: ${path}`);
+    }
+    if (!url.startsWith('https://raw.githubusercontent.com/')) {
+      fail(id, `mesh_alt is not a GitHub raw URL: ${url}`);
+    }
+    if (source.github && !url.includes(`/${source.github}/`)) {
+      fail(id, `mesh_alt does not point at ${source.github}`);
+    }
+    if (source.commit && !url.includes(`/${source.commit}/`)) {
+      fail(id, `mesh_alt is not pinned to source.commit`);
     }
   }
   for (const rule of assets.mesh_rewrite || []) {

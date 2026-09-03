@@ -69,6 +69,15 @@ ROOT = Path(__file__).resolve().parent.parent
 CACHE = ROOT / ".cache"
 MENAGERIE = ROOT / "data" / "menagerie.json"
 CDN = "https://cdn.jsdelivr.net/gh"
+# jsDelivr refuses any single GitHub file over 20 MB (HTTP 403, 49 bytes of
+# English). Those files still live on GitHub; raw.githubusercontent.com has no
+# such cap and answers CORS, so the gallery loads them from there instead of
+# punching a hole in the robot. The registry records the remapping in
+# ``assets.mesh_alt`` (repo-relative path → absolute URL).
+GITHUB_RAW = "https://raw.githubusercontent.com"
+JSDELIVR_GH_FILE = re.compile(
+    r"^https://cdn\.jsdelivr\.net/gh/([^@/]+/[^@/]+)@([^/]+)/(.+)$"
+)
 UA = {"User-Agent": "robot-urdf-gallery-online-build"}
 # Deliberately no Accept-Encoding header: jsDelivr answers a compression-capable
 # client with the compressed Content-Length (a 10.7 MB Collada file reports
@@ -246,11 +255,18 @@ class Http:
         self._dirty = 0
 
     # A HEAD answers one question: does this path exist at this commit? 200 and
-    # 404 answer it for good; a 429, a 5xx or a timeout is the CDN having a
-    # moment. Those are retried and never cached, because one cached flake makes
-    # a mesh "unresolved" and silently drops the whole robot from the registry on
-    # this run and every later one.
+    # 404 answer it for good; jsDelivr's 403 for a file over 20 MB is the same
+    # kind of answer (the file is there and that CDN will not serve it). A 429,
+    # a 5xx or a timeout is the CDN having a moment. Those are retried and never
+    # cached, because one cached flake makes a mesh "unresolved" and silently
+    # drops the whole robot from the registry on this run and every later one.
     CONCLUSIVE = (200, 404)
+
+    @staticmethod
+    def _conclusive(url: str, status: int) -> bool:
+        if status in Http.CONCLUSIVE:
+            return True
+        return status == 403 and "cdn.jsdelivr.net" in url
 
     def head(self, url: str, attempts: int = 3) -> tuple[int, int]:
         """Return ``(status, content_length)``; conclusive answers are cached."""
@@ -276,11 +292,11 @@ class Http:
             return 0, 0
         for attempt in range(attempts):
             result = once(url)
-            if result[0] in self.CONCLUSIVE:
+            if self._conclusive(url, result[0]):
                 break
             if attempt + 1 < attempts:
                 time.sleep(2**attempt)
-        if result[0] not in self.CONCLUSIVE:
+        if not self._conclusive(url, result[0]):
             return result
         self.heads[url] = list(result)
         self._dirty += 1
@@ -371,12 +387,29 @@ class UrdfFacts:
     # The same meshes as host-relative paths, which is the form the viewer and
     # the download writers see and can therefore skip.
     skip_paths: list[str] = field(default_factory=list)
+    # Host-relative path → GitHub raw URL, for files jsDelivr refuses as too
+    # large. Counted in mesh_files / mesh_bytes; the viewer fetches the remapped
+    # URL instead of punching a hole in the robot.
+    alt: dict[str, str] = field(default_factory=dict)
 
 
 def base_url(up: Upstream) -> str:
     if up.mirror:
         return up.mirror.base
     return f"{CDN}/{up.github}@{up.commit}/"
+
+
+def github_raw_url(cdn_file_url: str) -> str | None:
+    """Turn a jsDelivr ``gh/owner/repo@commit/path`` URL into GitHub raw.
+
+    Returns ``None`` when the URL is not on that CDN — a mirrored archive has
+    no GitHub raw twin, and inventing one would just 404.
+    """
+    match = JSDELIVR_GH_FILE.match(cdn_file_url)
+    if not match:
+        return None
+    github, commit, path = match.groups()
+    return f"{GITHUB_RAW}/{github}/{commit}/{path}"
 
 
 def rewrite_mesh_path(path: str, rules: list[tuple[str, str]]) -> str:
@@ -500,10 +533,20 @@ def inspect_urdf(up: Upstream, http: Http, verify_meshes: bool = True) -> UrdfFa
     exists = http.probe if up.mirror else http.head
     urdf_dir = posixpath.dirname(up.urdf_path)
 
-    def resolve(candidate: str, rel: str) -> tuple[str, int, int]:
+    def locate(candidate: str, rel: str) -> tuple[str, int, int]:
+        """Host-relative path, status and size. A jsDelivr 403 is retried on GitHub raw."""
         path = posixpath.normpath(posixpath.join(candidate, rel)).lstrip("/")
         path = rewrite_mesh_path(path, up.mesh_rewrite)
         status, size = exists(base_url(up) + path)
+        if status == 200:
+            return path, status, size
+        if status == 403:
+            raw = github_raw_url(base_url(up) + path)
+            if raw:
+                raw_status, raw_size = http.head(raw)
+                if raw_status == 200:
+                    facts.alt[path] = raw
+                    return path, 200, raw_size
         return path, status, size
 
     kept: list[str] = []
@@ -517,7 +560,7 @@ def inspect_urdf(up: Upstream, http: Http, verify_meshes: bool = True) -> UrdfFa
             candidates = [known] if known is not None else package_candidates(up, package)
             hit = None
             for candidate in candidates:
-                path, status, size = resolve(candidate, rel)
+                path, status, size = locate(candidate, rel)
                 if status == 200:
                     hit = (candidate, path, size)
                     break
@@ -526,14 +569,14 @@ def inspect_urdf(up: Upstream, http: Http, verify_meshes: bool = True) -> UrdfFa
                 if tolerate_missing:
                     # Record the path it would have had, so the browser skips the
                     # same request rather than parsing the fallback page.
-                    facts.skip_paths.append(resolve(known if known is not None else "", rel)[0])
+                    facts.skip_paths.append(locate(known if known is not None else "", rel)[0])
                 continue
             facts.packages[package] = hit[0]
             facts.mesh_files += 1
             facts.mesh_bytes += hit[2]
             kept.append(mesh)
         else:
-            path, status, size = resolve(urdf_dir, mesh)
+            path, status, size = locate(urdf_dir, mesh)
             if status == 200:
                 facts.mesh_files += 1
                 facts.mesh_bytes += size
@@ -543,6 +586,8 @@ def inspect_urdf(up: Upstream, http: Http, verify_meshes: bool = True) -> UrdfFa
                 if tolerate_missing:
                     facts.skip_paths.append(path)
 
+    if facts.alt:
+        facts.alt = dict(sorted(facts.alt.items()))
     if facts.skipped:
         # What the entry claims is what survived: the formats still referenced,
         # and collision geometry only if some of it is still there.
@@ -791,9 +836,9 @@ def mirror_from_curation(item: dict[str, Any]) -> Upstream:
 def asset_block(up: Upstream, facts: UrdfFacts) -> dict[str, Any]:
     """Where an entry's files are, and which of them to leave alone.
 
-    ``skip_meshes`` and ``mesh_rewrite`` are only written when they have
-    something in them, so the hundred-odd entries read from a repository at a
-    pinned commit carry neither.
+    ``skip_meshes``, ``mesh_alt`` and ``mesh_rewrite`` are only written when
+    they have something in them, so the hundred-odd entries read from a
+    repository at a pinned commit carry none of them.
     """
     block: dict[str, Any] = {
         "urdf": up.urdf_path,
@@ -806,6 +851,8 @@ def asset_block(up: Upstream, facts: UrdfFacts) -> dict[str, Any]:
         block["mesh_rewrite"] = [{"from": old, "to": new} for old, new in up.mesh_rewrite]
     if facts.skip_paths:
         block["skip_meshes"] = facts.skip_paths
+    if facts.alt:
+        block["mesh_alt"] = facts.alt
     return block
 
 
@@ -948,6 +995,7 @@ def entry_for_mjcf(
             "mesh_bytes": facts.mesh_bytes,
             "mesh_formats": facts.mesh_formats,
             **({"skip_meshes": facts.skipped} if facts.skipped else {}),
+            **({"mesh_alt": facts.alt} if facts.alt else {}),
         },
         "source": {
             "description": None,
@@ -1001,11 +1049,13 @@ class MjcfFacts:
     # Assets the document names that the repository does not have. A pinned
     # Menagerie commit should never produce any, so these fail the build.
     missing: list[str] = field(default_factory=list)
-    # Assets the repository has and the CDN will not serve: jsDelivr refuses any
-    # single file over 20 MB, and four Menagerie models carry one visual mesh
-    # past it. Recorded so the viewer and the download writers skip the same
-    # files rather than requesting a page that says "File size exceeded".
+    # Assets the document names that the repository does not have and that are
+    # not a broken entry — currently collision STLs a host dropped. The viewer
+    # and the download writers skip the same files.
     skipped: list[str] = field(default_factory=list)
+    # Host-relative path → GitHub raw URL, for files jsDelivr refuses as too
+    # large (HTTP 403, "File size exceeded"). Counted in mesh_files / mesh_bytes.
+    alt: dict[str, str] = field(default_factory=dict)
 
 
 # One MJCF joint is worth this many sliders in the viewer: a hinge or a slide is
@@ -1217,27 +1267,37 @@ def inspect_mjcf(base: str, scene_path: str, http: Http) -> MjcfFacts:
         has_inertia=has_inertia,
     )
 
-    def resolve(candidates: list[str]) -> tuple[str, int, int]:
-        """The first candidate the CDN answers for, its size, and its status.
+    def resolve(candidates: list[str]) -> tuple[str, int, int, str | None]:
+        """The first candidate that answers, its size, status, and optional raw URL.
 
-        A 403 is jsDelivr's way of saying the file is there and over its 20 MB
-        per-file limit, which is a different problem from a path that names
-        nothing: the first is a mesh to skip, the second a broken entry.
+        A 403 is jsDelivr saying the file is there and over 20 MB. Those files
+        still live on GitHub, so the next hop is raw.githubusercontent.com.
+        A path that names nothing is a broken entry; a 403 whose raw twin also
+        fails is recorded in ``skipped`` so the viewer does not fetch English.
         """
         refused = ""
         for candidate in candidates:
             status, size = http.head(base + candidate, attempts=5)
             if status == 200:
-                return candidate, size, 200
+                return candidate, size, 200, None
             if status == 403 and not refused:
                 refused = candidate
-        return (refused, 0, 403) if refused else ("", 0, 404)
+        if refused:
+            raw = github_raw_url(base + refused)
+            if raw:
+                raw_status, raw_size = http.head(raw, attempts=5)
+                if raw_status == 200:
+                    return refused, raw_size, 200, raw
+            return refused, 0, 403, None
+        return "", 0, 404, None
 
     seen: set[str] = set()
     formats: set[str] = set()
     with ThreadPoolExecutor(max_workers=4) as pool:
         results = list(pool.map(resolve, [candidates for _, candidates in assets]))
-    for (kind, candidates), (path, size, status) in zip(assets, results):
+    for (kind, candidates), (path, size, status, alt) in zip(assets, results):
+        if alt:
+            facts.alt[path] = alt
         if status == 403:
             facts.skipped.append(path)
             continue
@@ -1255,6 +1315,8 @@ def inspect_mjcf(base: str, scene_path: str, http: Http) -> MjcfFacts:
             formats.add(posixpath.splitext(path)[1].lower())
     facts.mesh_formats = sorted(formats)
     facts.skipped.sort()
+    if facts.alt:
+        facts.alt = dict(sorted(facts.alt.items()))
     return facts
 
 
@@ -1412,6 +1474,7 @@ def add_menagerie(
                 "mesh_bytes": facts.mesh_bytes,
                 "mesh_formats": facts.mesh_formats,
                 **({"skip_meshes": facts.skipped} if facts.skipped else {}),
+                **({"mesh_alt": facts.alt} if facts.alt else {}),
                 # Menagerie's own preview image, kept as a fallback for a card
                 # whose thumbnail has not been rendered yet.
                 "upstream_thumbnail": base + thumb_path,
@@ -1662,6 +1725,11 @@ def main() -> int:
             if skipped and not entry["urdf"]["has_collision"]:
                 note += ", no collision geometry left"
             print(f"    {entry['id']:22s} {entry['source']['mirror']['host']}{note}")
+    remapped = [e for e in entries if e["assets"].get("mesh_alt")]
+    if remapped:
+        print(f"  {len(remapped)} entries remap oversized meshes to GitHub raw:")
+        for entry in remapped:
+            print(f"    {entry['id']:22s} {len(entry['assets']['mesh_alt'])} file(s)")
     for problem in problems:
         print(f"  PROBLEM {problem}", file=sys.stderr)
     return 1 if problems else 0
