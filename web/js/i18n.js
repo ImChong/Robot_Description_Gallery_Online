@@ -924,7 +924,7 @@ export function applyStatic(root = document) {
 }
 
 /** Tab title: bilingual site name, unchanged by language. */
-const SITE_TITLE = 'Robot Description Gallery Online · 机器人3D模型在线合集';
+const SITE_TITLE = 'Robot Description Gallery Online | 机器人3D模型在线合集';
 
 export function pageTitle(prefix) {
   return prefix ? `${prefix} · ${SITE_TITLE}` : SITE_TITLE;
