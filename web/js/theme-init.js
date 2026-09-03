@@ -19,7 +19,7 @@
         : 'en';
     }
     root.setAttribute('lang', lang === 'zh' ? 'zh-CN' : 'en');
-    document.title = lang === 'zh' ? '机器人3D模型在线合集' : 'Robot Description Gallery Online';
+    // The tab title stays bilingual; language only swaps the page body.
   } catch (err) {
     root.setAttribute('data-theme', 'dark');
   }

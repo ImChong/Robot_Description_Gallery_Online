@@ -923,15 +923,17 @@ export function applyStatic(root = document) {
   }
 }
 
-/** Tab title: one language, matching the page. */
+/** Tab title: bilingual site name, unchanged by language. */
+const SITE_TITLE = 'Robot Description Gallery Online · 机器人3D模型在线合集';
+
 export function pageTitle(prefix) {
-  return prefix ? `${prefix} · ${t('site.title')}` : t('site.title');
+  return prefix ? `${prefix} · ${SITE_TITLE}` : SITE_TITLE;
 }
 
 /**
  * Static chrome that must match `current` without waiting for a view to
- * re-render: marked nodes, the language button (it names the language you
- * would switch *to*), and the document title on the gallery.
+ * re-render: marked nodes, and the language button (it names the language
+ * you would switch *to*). The site-header title and tab title stay bilingual.
  */
 export function applyChrome() {
   applyStatic();
