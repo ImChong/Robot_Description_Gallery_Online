@@ -1821,7 +1821,7 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
    * layer anyway, and where it is refused this is what keeps the header from
    * sitting on the render. */
   position: fixed; inset: 0; z-index: 1400;
-  margin: 0; height: auto; max-height: none; border: 0; border-radius: 0;
+  margin: 0; height: auto; min-height: 0; max-height: none; border: 0; border-radius: 0;
   box-shadow: none;
 }
 .cmp-stage:fullscreen, .cmp-stage:-webkit-full-screen { border: 0; border-radius: 0; }
@@ -2063,8 +2063,12 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
   /* Taller than the detail page's stage at this width, which holds one robot:
    * this one holds up to six and gives nearly half of itself to the joint
    * window the moment one of them is picked. Qualified so it outranks the
-   * `.stage` height the responsive block sets further down the file. */
-  .cmp-3d .cmp-stage { height: min(72vh, 560px); }
+   * `.stage` height the responsive block sets further down the file — and
+   * held off the fullscreen mode, which is the whole viewport and nothing
+   * else. Where the browser grants element fullscreen its own `!important`
+   * rules already sized the stage; an iPhone grants none, so without this the
+   * mode would leave the stage 560px tall with the tables still under it. */
+  .cmp-3d .cmp-stage:not(.is-fullscreen) { height: min(72vh, 560px); }
 }
 
 .leftovers code { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-faint); }
