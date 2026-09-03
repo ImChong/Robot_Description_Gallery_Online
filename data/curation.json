@@ -4142,6 +4142,259 @@
           "notes_zh": "行走用版本：两条手臂在肩部焊死，只留 10 个腿部关节——焊死的肩 roll 比放开版本的零位再往外 0.3 rad，两臂横向跨度从 0.47 m 变成 0.67 m。"
         }
       ]
+    },
+    {
+      "id": "dr02",
+      "name": "DR02",
+      "maker": "DEEP Robotics",
+      "category": "humanoid",
+      "upstream": {
+        "github": "DeepRoboticsLab/deep_robotics_model",
+        "commit": "e6753d2ef25e1e788d387ae3775fd283c199f1a3",
+        "package": "DR02/urdf/pro",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE.txt",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://www.deeprobotics.cn/en/index/dr02.html"
+      },
+      "notes": "DEEP Robotics' industrial humanoid, from the repository that also ships its quadrupeds. The version picker swaps between the Pro and Standard bodies. Pro publishes 31 revolute joints on 78 kg — three at the waist, seven per arm (the hands themselves are fixed links), two in the neck and six per leg — plus fixed frames for three RealSense cameras, a lidar and two IMUs. Standard drops the wrists, the neck and those sensor frames, leaving 21 joints on 68 kg: one waist yaw, four per arm and six per leg. Each version has an MJCF beside the URDF.",
+      "notes_zh": "云深处的工业级人形机器人，和它的四足机型放在同一个仓库。版本选择器可在 Pro 与 Standard 之间切换。Pro 在 78 kg 上有 31 个转动关节——腰 3 个、每条手臂 7 个（手掌本身是固定连杆）、颈 2 个、每条腿 6 个——另外挂了三个 RealSense、一个激光雷达和两个 IMU 的固定坐标系。Standard 去掉了腕、颈和这些传感器坐标系，68 kg 上剩 21 个关节：腰 yaw 1 个、每条手臂 4 个、每条腿 6 个。每个版本旁边都有一份 MJCF。",
+      "variants": [
+        {
+          "id": "dr02_pro",
+          "name": "DR02 Pro",
+          "urdf": "DR02/urdf/pro/DR02-pro.urdf",
+          "mjcf": "DR02/mjcf/pro/DR02_pro.xml",
+          "package": "DR02/urdf/pro",
+          "notes": "The Pro body: 31 joints, wrists, a two-joint neck, and the camera, lidar and IMU frames.",
+          "notes_zh": "Pro 本体：31 个关节，带腕、两关节颈部，以及相机、激光雷达和 IMU 坐标系。"
+        },
+        {
+          "id": "dr02_std",
+          "name": "DR02 Standard",
+          "urdf": "DR02/urdf/standard/DR02-std.urdf",
+          "mjcf": "DR02/mjcf/standard/DR02_std.xml",
+          "package": "DR02/urdf/standard",
+          "notes": "The Standard body: 21 joints, arms ending at the elbow, no neck, only IMU frames on the head and base.",
+          "notes_zh": "Standard 本体：21 个关节，手臂到肘为止，没有颈部，头和基座上只留 IMU 坐标系。"
+        }
+      ]
+    },
+    {
+      "id": "lite3",
+      "name": "Lite3",
+      "maker": "DEEP Robotics",
+      "category": "quadruped",
+      "upstream": {
+        "github": "DeepRoboticsLab/deep_robotics_model",
+        "commit": "e6753d2ef25e1e788d387ae3775fd283c199f1a3",
+        "package": "Lite3/urdf",
+        "urdf": "Lite3/urdf/Lite3.urdf",
+        "mjcf": "Lite3/mjcf/Lite3.xml",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE.txt",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "quadruped"
+        ]
+      },
+      "links": {
+        "official": "https://www.deeprobotics.cn/en/index/product1.html"
+      },
+      "notes": "Jueying Lite3, the educational quadruped: three joints per leg, 12 in all, on 12 kg. Four visual meshes cover the whole body — hip, thigh, shank and torso — with the other legs mirrored by scale. The knee limits start at 0.52 rad, so the shanks stay bent whatever you do with the sliders.",
+      "notes_zh": "绝影 Lite3，面向教学的四足：每条腿 3 个关节，共 12 个，整机 12 kg。全身外观只有髋、大腿、小腿和躯干四份网格，另外三条腿靠缩放镜像。膝关节下限是 0.52 rad，所以无论怎么拖滑块，小腿都是弯的。",
+      "pose": {
+        "FL_HipX_joint": 0.0,
+        "FL_HipY_joint": -0.8,
+        "FL_Knee_joint": 1.57,
+        "FR_HipX_joint": 0.0,
+        "FR_HipY_joint": -0.8,
+        "FR_Knee_joint": 1.57,
+        "HL_HipX_joint": 0.0,
+        "HL_HipY_joint": -0.8,
+        "HL_Knee_joint": 1.57,
+        "HR_HipX_joint": 0.0,
+        "HR_HipY_joint": -0.8,
+        "HR_Knee_joint": 1.57
+      }
+    },
+    {
+      "id": "x30",
+      "name": "X30",
+      "maker": "DEEP Robotics",
+      "category": "quadruped",
+      "upstream": {
+        "github": "DeepRoboticsLab/deep_robotics_model",
+        "commit": "e6753d2ef25e1e788d387ae3775fd283c199f1a3",
+        "package": "X30/urdf",
+        "urdf": "X30/urdf/X30.urdf",
+        "mjcf": "X30/mjcf/X30.xml",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE.txt",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "quadruped"
+        ]
+      },
+      "links": {
+        "official": "https://www.deeprobotics.cn/en/index/product3.html"
+      },
+      "notes": "The industrial quadruped: the same 12-joint layout as Lite3, 56 kg in this description, plus four fixed lidar frames — front and rear, each with an upper and a lower site. Knee limits start at 0.35 rad.",
+      "notes_zh": "工业级四足：关节布局与 Lite3 一样是 12 个，这份描述里整机 56 kg，另外挂了四个固定的激光雷达坐标系——前后各上下一组。膝关节下限是 0.35 rad。",
+      "pose": {
+        "FL_HipX_joint": 0.0,
+        "FL_HipY_joint": -0.8,
+        "FL_Knee_joint": 1.57,
+        "FR_HipX_joint": 0.0,
+        "FR_HipY_joint": -0.8,
+        "FR_Knee_joint": 1.57,
+        "HL_HipX_joint": 0.0,
+        "HL_HipY_joint": -0.8,
+        "HL_Knee_joint": 1.57,
+        "HR_HipX_joint": 0.0,
+        "HR_HipY_joint": -0.8,
+        "HR_Knee_joint": 1.57
+      }
+    },
+    {
+      "id": "m20",
+      "name": "Lynx M20",
+      "maker": "DEEP Robotics",
+      "category": "quadruped",
+      "upstream": {
+        "github": "DeepRoboticsLab/deep_robotics_model",
+        "commit": "e6753d2ef25e1e788d387ae3775fd283c199f1a3",
+        "package": "M20/urdf",
+        "urdf": "M20/urdf/M20.urdf",
+        "mjcf": "M20/mjcf/M20.xml",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE.txt",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "quadruped",
+          "wheeled"
+        ]
+      },
+      "links": {
+        "official": "https://www.deeprobotics.cn/en/index/lynx.html"
+      },
+      "notes": "Lynx M20, the wheel-legged industrial machine: three joints per leg plus a continuous wheel at each foot, 16 in all, 34 kg. Fixed frames hang off the base for front and rear cameras and lidars.",
+      "notes_zh": "Lynx M20，轮足工业机：每条腿 3 个关节，脚下再加一个连续转动的轮，共 16 个，整机 34 kg。基座上挂了前后相机和激光雷达的固定坐标系。",
+      "pose": {
+        "fl_hipx_joint": 0.0,
+        "fl_hipy_joint": -0.8,
+        "fl_knee_joint": 1.4,
+        "fr_hipx_joint": 0.0,
+        "fr_hipy_joint": -0.8,
+        "fr_knee_joint": 1.4,
+        "hl_hipx_joint": 0.0,
+        "hl_hipy_joint": -0.8,
+        "hl_knee_joint": 1.4,
+        "hr_hipx_joint": 0.0,
+        "hr_hipy_joint": -0.8,
+        "hr_knee_joint": 1.4
+      }
+    },
+    {
+      "id": "m20s",
+      "name": "Lynx M20S",
+      "maker": "DEEP Robotics",
+      "category": "quadruped",
+      "upstream": {
+        "github": "DeepRoboticsLab/deep_robotics_model",
+        "commit": "e6753d2ef25e1e788d387ae3775fd283c199f1a3",
+        "package": "M20S/urdf",
+        "urdf": "M20S/urdf/M20S.urdf",
+        "mjcf": "M20S/mjcf/M20S.xml",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE.txt",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "quadruped",
+          "wheeled"
+        ]
+      },
+      "links": {
+        "official": "https://www.deeprobotics.cn/en/index/lynx.html"
+      },
+      "notes": "The higher-torque Lynx M20S: the same 16-joint wheel-legged layout and 34 kg body as M20, with actuator effort raised from 76.4 N·m to 140 N·m on the legs and from 21.6 N·m to 28.5 N·m on the wheels.",
+      "notes_zh": "力矩更大的 Lynx M20S：轮足布局和 34 kg 本体与 M20 相同，共 16 个关节，腿部力矩从 76.4 N·m 提到 140 N·m，轮从 21.6 N·m 提到 28.5 N·m。",
+      "pose": {
+        "fl_hipx_joint": 0.0,
+        "fl_hipy_joint": -0.8,
+        "fl_knee_joint": 1.4,
+        "fr_hipx_joint": 0.0,
+        "fr_hipy_joint": -0.8,
+        "fr_knee_joint": 1.4,
+        "hl_hipx_joint": 0.0,
+        "hl_hipy_joint": -0.8,
+        "hl_knee_joint": 1.4,
+        "hr_hipx_joint": 0.0,
+        "hr_hipy_joint": -0.8,
+        "hr_knee_joint": 1.4
+      }
+    },
+    {
+      "id": "m20_piper",
+      "name": "Lynx M20 Piper",
+      "maker": "DEEP Robotics",
+      "category": "mobile",
+      "upstream": {
+        "github": "DeepRoboticsLab/deep_robotics_model",
+        "commit": "e6753d2ef25e1e788d387ae3775fd283c199f1a3",
+        "package": "M20_Piper/urdf",
+        "urdf": "M20_Piper/urdf/M20_Piper.urdf",
+        "mjcf": "M20_Piper/mjcf/M20_Piper.xml",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE.txt",
+        "formats": [
+          "urdf",
+          "mjcf"
+        ],
+        "tags": [
+          "mobile_manipulator",
+          "wheeled"
+        ]
+      },
+      "links": {
+        "official": "https://www.deeprobotics.cn/en/index/lynx.html"
+      },
+      "notes": "Lynx M20 with an AgileX Piper arm bolted on: the 16 wheel-legged joints plus a 6-DOF arm and two prismatic gripper fingers, 24 moving joints on 39 kg.",
+      "notes_zh": "Lynx M20 上加了一条 AgileX Piper 机械臂：16 个轮足关节之外再加 6 自由度手臂和两个移动夹爪手指，39 kg 上共 24 个可动关节。",
+      "pose": {
+        "fl_hipx_joint": 0.0,
+        "fl_hipy_joint": -0.8,
+        "fl_knee_joint": 1.4,
+        "fr_hipx_joint": 0.0,
+        "fr_hipy_joint": -0.8,
+        "fr_knee_joint": 1.4,
+        "hl_hipx_joint": 0.0,
+        "hl_hipy_joint": -0.8,
+        "hl_knee_joint": 1.4,
+        "hr_hipx_joint": 0.0,
+        "hr_hipy_joint": -0.8,
+        "hr_knee_joint": 1.4
+      }
     }
   ]
 }
