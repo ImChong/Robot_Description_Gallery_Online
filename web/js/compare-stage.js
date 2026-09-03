@@ -746,10 +746,13 @@ export class CompareStage {
     member.robot.quaternion.setFromAxisAngle(UP, place.yaw).multiply(member.upright);
 
     // Where the tag hangs and the ring is drawn: straight over the mark, at
-    // the machine's full height. No re-measuring — a drag asks for this on
-    // every frame — and no matrix update either, since three.js does one per
-    // render anyway.
-    member.anchor = new THREE.Vector3(place.x, member.height, -place.y);
+    // the machine's full height. Written in the world group's own frame — the
+    // one a placement is written in, x and y across the floor and z up —
+    // rather than the scene's, because the turntable turns that group and a
+    // tag has to travel with the machine it names; `placeTags` puts the point
+    // through the group's matrix on its way to the camera. No re-measuring
+    // here, since a drag asks for this on every frame.
+    member.anchor = new THREE.Vector3(place.x, place.y, member.height);
     member.radius = Math.max(member.local.width, member.local.depth) * 0.62;
     this.markTagPlace(member);
     if (member.robot === this.selected) {
@@ -1250,13 +1253,20 @@ export class CompareStage {
 
   /**
    * Put each tag where its machine is, once per rendered frame. The projection
-   * is the camera's own, so a tag tracks its robot through every orbit and
-   * zoom rather than being parked at a guess.
+   * is the camera's own and it starts inside the world group, so a tag tracks
+   * its robot through every orbit, every zoom and every turn of the turntable
+   * rather than being parked at a guess.
    */
   placeTags() {
     if (!this.viewer || !this.tags.size) return;
     const { clientWidth: w, clientHeight: h } = el('cmp-canvas-host');
     if (!w || !h) return;
+    // The one matrix these need. A render updates it, and most of these calls
+    // follow one — but the first row of tags is written before any frame has
+    // been drawn, and this asks for the group's own chain rather than the
+    // whole scene's, so it costs a matrix rather than a traversal.
+    const world = this.viewer.world;
+    world.updateWorldMatrix(true, false);
     const point = new THREE.Vector3();
     for (const [key, tag] of this.tags) {
       const { node } = tag;
@@ -1265,7 +1275,10 @@ export class CompareStage {
         node.hidden = true;
         continue;
       }
-      point.copy(member.anchor).project(this.viewer.camera);
+      // Through the world group first: the anchor is in that group's frame, so
+      // the turntable's spin — and the Z-up-to-Y-up turn under it — reach the
+      // tag the same way they reach the robot.
+      point.copy(member.anchor).applyMatrix4(world.matrixWorld).project(this.viewer.camera);
       // Behind the camera, which projects to a point in front of it.
       if (point.z > 1) {
         node.hidden = true;
