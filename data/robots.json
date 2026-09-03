@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-09-03T09:24:29Z",
+ "generated": "2026-09-03T09:29:43Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -16690,7 +16690,14 @@
      ],
      "notes": "The meshes the repository keeps: four STL files, a few megabytes. Collision is primitive boxes and cylinders. An MJCF sits beside the URDF.",
      "notes_zh": "仓库里现在还留着的网格：四份 STL，一共几兆。碰撞是原始的盒子和圆柱。URDF 旁边有一份 MJCF。",
-     "measured": null,
+     "measured": {
+      "size": {
+       "x": 0.6384,
+       "y": 0.3949,
+       "z": 0.3719
+      },
+      "height_m": 0.3949
+     },
      "mjcf": "Lite3/mjcf/Lite3.xml",
      "urdf": {
       "xml_name": "Lite3",
@@ -16726,7 +16733,14 @@
      ],
      "notes": "The Collada meshes Git LFS held until they were deleted from the tree. Each file is loaded from GitHub's LFS media host — jsDelivr and GitHub raw only serve the pointer. Collision stays primitive. No MJCF at this revision.",
      "notes_zh": "删库前 Git LFS 里的 Collada 网格。每个文件从 GitHub 的 LFS 媒体地址加载——jsDelivr 和 GitHub raw 只返回指针文件。碰撞仍然是原始几何。这个版本没有 MJCF。",
-     "measured": null,
+     "measured": {
+      "size": {
+       "x": 0.6385,
+       "y": 0.3949,
+       "z": 0.3727
+      },
+      "height_m": 0.3949
+     },
      "mjcf": null,
      "urdf": {
       "xml_name": "Lite3",
@@ -16848,7 +16862,14 @@
      ],
      "notes": "The meshes the repository keeps, plus the four lidar frames. An MJCF sits beside the URDF.",
      "notes_zh": "仓库里现在还留着的网格，以及四个激光雷达坐标系。URDF 旁边有一份 MJCF。",
-     "measured": null,
+     "measured": {
+      "size": {
+       "x": 1.0628,
+       "y": 0.6222,
+       "z": 0.4539
+      },
+      "height_m": 0.6222
+     },
      "mjcf": "X30/mjcf/X30.xml",
      "urdf": {
       "xml_name": "X30",
@@ -16884,7 +16905,14 @@
      ],
      "notes": "The Collada meshes Git LFS held until they were deleted from the tree, loaded from GitHub's LFS media host. This snapshot has no lidar frames and no MJCF. The shank mesh alone is over 40 MB.",
      "notes_zh": "删库前 Git LFS 里的 Collada 网格，从 GitHub 的 LFS 媒体地址加载。这个快照没有激光雷达坐标系，也没有 MJCF。光小腿网格就超过 40 MB。",
-     "measured": null,
+     "measured": {
+      "size": {
+       "x": 1.0626,
+       "y": 0.6221,
+       "z": 0.4539
+      },
+      "height_m": 0.6221
+     },
      "mjcf": null,
      "urdf": {
       "xml_name": "X30",
@@ -17008,7 +17036,14 @@
      ],
      "notes": "The meshes the repository keeps, plus the camera and lidar frames. An MJCF sits beside the URDF.",
      "notes_zh": "仓库里现在还留着的网格，以及相机和激光雷达坐标系。URDF 旁边有一份 MJCF。",
-     "measured": null,
+     "measured": {
+      "size": {
+       "x": 0.9827,
+       "y": 0.5908,
+       "z": 0.5043
+      },
+      "height_m": 0.5908
+     },
      "mjcf": "M20/mjcf/M20.xml",
      "urdf": {
       "xml_name": "M20",
@@ -17045,7 +17080,14 @@
      ],
      "notes": "The Collada meshes Git LFS held until they were deleted from the tree, loaded from GitHub's LFS media host. This snapshot has no camera or lidar frames and no MJCF.",
      "notes_zh": "删库前 Git LFS 里的 Collada 网格，从 GitHub 的 LFS 媒体地址加载。这个快照没有相机或激光雷达坐标系，也没有 MJCF。",
-     "measured": null,
+     "measured": {
+      "size": {
+       "x": 0.9834,
+       "y": 0.5904,
+       "z": 0.5059
+      },
+      "height_m": 0.5904
+     },
      "mjcf": null,
      "urdf": {
       "xml_name": "M20",
