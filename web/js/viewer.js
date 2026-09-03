@@ -11,7 +11,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import URDFLoader from 'urdf-loader';
-import { applyMeshRewrite } from './registry.js';
+import { applyMeshRewrite, canonicalAssetUrl } from './registry.js';
 import { loadMJCF } from './mjcf.js';
 import { URDFRobot, URDFVisual } from '../vendor/urdf-loader/URDFClasses.js';
 
@@ -1157,9 +1157,14 @@ export class RobotViewer {
     // `mesh_alt` is the other remap: a jsDelivr 403 or a Git LFS pointer is
     // fetched from GitHub raw / media instead.
     const rewrite = entry.assets.mesh_rewrite || [];
-    const skip = new Set((entry.assets.skip_meshes || []).map((path) => base + path));
+    const skip = new Set(
+      (entry.assets.skip_meshes || []).map((path) => canonicalAssetUrl(base + path)),
+    );
     const altByUrl = new Map(
-      Object.entries(entry.assets.mesh_alt || {}).map(([rel, url]) => [base + rel, url]),
+      Object.entries(entry.assets.mesh_alt || {}).map(([rel, url]) => [
+        canonicalAssetUrl(base + rel),
+        url,
+      ]),
     );
     // Every request either loader makes goes through this manager, which is
     // what lets `outstanding` below see the loads the mesh counter cannot —
@@ -1186,6 +1191,9 @@ export class RobotViewer {
       // Meshes referenced without a package:// prefix are relative to the URDF
       // file, which is not where this page lives.
       loader.workingPath = base + entry.assets.urdf.replace(/[^/]+$/, '');
+      // Collada (and glTF) files ask for further URLs of their own. Resolve
+      // those against mesh_alt too, after collapsing `../` the same way.
+      manager.setURLModifier((url) => altByUrl.get(canonicalAssetUrl(url)) || url);
     }
 
     // urdf-loader handles STL and DAE; OBJ and glTF need to be plugged in.
@@ -1234,7 +1242,7 @@ export class RobotViewer {
     const tick = () => onProgress && onProgress(done, total);
 
     loader.loadMeshCb = (rawPath, manager, onComplete) => {
-      const path = applyMeshRewrite(rawPath, rewrite);
+      const path = canonicalAssetUrl(applyMeshRewrite(rawPath, rewrite));
       // Not counted, because it is not a load: `total` stays the number of
       // requests this robot makes, which is what the progress bar is about and
       // what `assets.mesh_files` records. Answered without an error, too — the

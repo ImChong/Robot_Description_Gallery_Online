@@ -229,6 +229,24 @@ export function descriptionKind(robot) {
 }
 
 /**
+ * Collapse `.` / `..` in an asset URL.
+ *
+ * urdf-loader joins `workingPath` to a relative mesh with string concat, so a
+ * file written `../meshes/torso.dae` arrives as `…/urdf/../meshes/torso.dae`.
+ * `assets.mesh_alt` is keyed on the normalised repo-relative path the build
+ * recorded, and the two only match after the dots are resolved.
+ *
+ * @param {string} url
+ */
+export function canonicalAssetUrl(url) {
+  try {
+    return new URL(url).href;
+  } catch {
+    return url;
+  }
+}
+
+/**
  * Apply an entry's `assets.mesh_rewrite` substitutions to a resolved mesh path.
  *
  * Only mirrored entries have any. An archive that re-hosts someone else's URDF
