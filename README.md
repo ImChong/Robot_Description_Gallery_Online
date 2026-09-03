@@ -76,8 +76,9 @@ npm run check:custom-url             # 校验自定义 URL 路由
   URDF 时收录后者——UR 三台走的就是 example-robot-data 这条路。
 - 网格是 Y-up 的 glTF（`obj2gltf` 的默认输出）时每个连杆都会摆错方向，这类模型同样
   暂不收录，Drake 的双臂 iiwa 就是。
-- jsDelivr 单文件上限 20 MB，个别含超大网格的模型无法收录（Go1、B1、B2-W）。PM01 Edu
-  的躯干 Collada 超过该上限，卡片改用仓库里同名的 OBJ。
+- jsDelivr 单文件上限 20 MB；超限网格改走 GitHub raw（`assets.mesh_alt`）。个别模型因
+  其他原因未收录（Go1、B1、B2-W）。PM01 Edu 的躯干 Collada 超过该上限，卡片改用仓库里
+  同名的 OBJ。
 - USD 预览支持 `.usda`、`.usdc`、`.usdz`；二进制 `.usd` crate 格式暂不支持。
 
 ## 许可

@@ -353,9 +353,9 @@ export class MJCFDocument {
    * @param {(path: string) => string} options.resolve path → URL
    * @param {(path: string) => Promise<?string>} options.readXml for `<include>`
    * @param {THREE.LoadingManager} [options.manager]
-   * @param {string[]} [options.skip] asset paths not to request — jsDelivr
-   *   refuses any single file over 20 MB, and asking for one of those comes
-   *   back as a mesh loader choking on the words "File size exceeded"
+   * @param {string[]} [options.skip] asset paths not to request — files the
+   *   host does not have. Oversized meshes the CDN refuses are remapped by
+   *   the viewer via `assets.mesh_alt` rather than listed here.
    */
   constructor({ text, path, resolve, readXml, manager, skip }) {
     this.text = text;
@@ -1102,8 +1102,8 @@ export class MJCFDocument {
       return false;
     }
     // Not counted and not warned about: the build step already knows this file
-    // is out of the CDN's reach and said so in the registry, so the geom is a
-    // hole in the robot rather than a load that failed.
+    // is not on the host and said so in the registry, so the geom is a hole in
+    // the robot rather than a load that failed.
     if (asset.candidates.every((path) => this.skip.has(path))) return false;
     let job = this.meshJobs.get(asset.name);
     if (!job) {
