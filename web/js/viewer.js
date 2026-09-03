@@ -366,8 +366,11 @@ function pickedLink(mesh, robot) {
  * collision geometry is hidden by switching off its URDFCollider parent, and
  * counting it here would both mis-measure the robot and hide the case where the
  * visual meshes failed to load.
+ *
+ * Exported because the compare stage lines its robots up by their own widths,
+ * and what a robot is wide is what is drawn of it.
  */
-function boundingBox(root) {
+export function boundingBox(root) {
   const box = new THREE.Box3();
   const scratch = new THREE.Box3();
   root.traverse((child) => {
@@ -387,6 +390,59 @@ function boundingBox(root) {
     }
   });
   return box;
+}
+
+/**
+ * Put one robot's joints at their neutral positions: zero where the limits
+ * allow it, otherwise the middle of the range, so a joint whose range excludes
+ * zero does not sit against a hard stop. Loops are left for the caller to
+ * close, once, over whatever it has just reset.
+ */
+function restRobot(robot) {
+  for (const joint of Object.values(robot.joints)) {
+    const arity = MULTI_DOF[joint.jointType];
+    if (arity) {
+      robot.setJointValue(joint.name, ...new Array(arity).fill(0));
+      continue;
+    }
+    if (joint.jointType === 'fixed') continue;
+    // A joint that mimics another has no rest position of its own: the joint
+    // it follows writes its value, and does so below in this same pass.
+    // Giving it one here would only hold until that joint next moves.
+    const source = joint.mimicJoint ? robot.joints[joint.mimicJoint] : null;
+    if (source && source.jointType !== 'fixed') continue;
+    const lower = Number.isFinite(joint.limit?.lower) ? joint.limit.lower : null;
+    const upper = Number.isFinite(joint.limit?.upper) ? joint.limit.upper : null;
+    let rest = 0;
+    if (joint.jointType !== 'continuous' && lower !== null && upper !== null) {
+      rest = lower <= 0 && upper >= 0 ? 0 : (lower + upper) / 2;
+    }
+    robot.setJointValue(joint.name, rest);
+  }
+}
+
+/** Every material hanging off one robot, however many each mesh carries. */
+function materialsOf(robot) {
+  const found = new Set();
+  robot.traverse((child) => {
+    for (const material of Array.isArray(child.material) ? child.material : [child.material]) {
+      if (material) found.add(material);
+    }
+  });
+  return found;
+}
+
+/** Take one robot off the stage and free the geometry and materials it owns. */
+function disposeRobot(robot) {
+  robot.removeFromParent();
+  robot.traverse((child) => {
+    child.geometry?.dispose?.();
+    const materials = Array.isArray(child.material) ? child.material : [child.material];
+    for (const m of materials) {
+      m?.map?.dispose?.();
+      m?.dispose?.();
+    }
+  });
 }
 
 /**
@@ -440,6 +496,55 @@ function previewRotation(frame) {
   return new THREE.Quaternion().setFromRotationMatrix(target.multiply(model.transpose()));
 }
 
+/**
+ * Thrown by a load whose stage was cleared while it was still fetching.
+ *
+ * A visitor clicks through robots faster than 20 MB of meshes arrive, and the
+ * page they left goes on loading: its URDF lands after the next one's, and a
+ * loader that only knows how to finish would put it on a stage that is now
+ * about a different machine — a G1 standing behind a Robotiq gripper, and a
+ * joint panel listing the G1's legs. `clear()` is what says the stage has
+ * moved on, so it is what invalidates the loads in flight for it.
+ */
+export class StaleLoad extends Error {
+  constructor(id) {
+    super(`load of ${id} was superseded`);
+    this.name = 'StaleLoad';
+  }
+}
+
+/**
+ * One description on the stage, and everything about it the object graph
+ * urdf-loader hands back does not carry: the joint limits read off the raw
+ * XML, the closed loops the registry states, the inertias, the pose the entry
+ * curates.
+ *
+ * A viewer was a viewer of one robot for as long as there was one place to
+ * stand — the detail page shows a machine, the thumbnail renderer renders it.
+ * The compare stage stands two to six of them on one floor, and every one of
+ * those readings is per description rather than per stage: six machines have
+ * six sets of joint limits and six poses, not the last one loaded.
+ *
+ * So the viewer holds a cast of these with one of them focused, and the
+ * single-description half of its API — `robot`, `jointList`, `kinematicTree`,
+ * `setJoint`, `highlightLink` — is about the focused one. `focus()` is what a
+ * click on one robot of six goes through to make the panel about that one.
+ */
+class StageMember {
+  constructor(entry, robot) {
+    this.entry = entry;
+    this.robot = robot;
+    this.jointMeta = undefined;
+    this.inertials = undefined;
+    this.loops = [];
+    this.loopJoints = undefined;
+    this.homePose = null;
+    this.mjcf = null;
+    this.loadedMeshes = null;
+    this.stripped = 0;
+  }
+}
+
 export class RobotViewer {
   /**
    * @param {HTMLElement} container
@@ -457,7 +562,12 @@ export class RobotViewer {
       loadTimeout: 120000,
       ...options,
     };
-    this.robot = null;
+    /** Every description on the stage, in the order they were mounted. */
+    this.cast = [];
+    /** Bumped by `clear()`; see StaleLoad. */
+    this._epoch = 0;
+    /** Which of them the single-description API is about; see StageMember. */
+    this.focused = null;
     this.overlays = { collision: false, visual: true, frames: false, axes: false, com: false, inertia: false };
     this._helpers = { frames: [], axes: [], com: [], inertia: [] };
     this._disposables = [];
@@ -505,6 +615,123 @@ export class RobotViewer {
     this._buildEnvironment();
     this._observeResize();
     this._loop();
+  }
+
+  /* ------------------------------------------------------------- the cast */
+
+  /**
+   * The focused description's robot: what the single-description API reads and
+   * writes. On a stage holding one — the detail page, the thumbnail renderer —
+   * it is simply the robot, which is why nothing outside had to learn the word
+   * "focus".
+   */
+  get robot() {
+    return this.focused?.robot || null;
+  }
+
+  /** The registry entry the focused robot was loaded from. */
+  get entry() {
+    return this.focused?.entry || null;
+  }
+
+  get homePose() {
+    return this.focused?.homePose || null;
+  }
+  set homePose(value) {
+    if (this.focused) this.focused.homePose = value;
+  }
+
+  get mjcf() {
+    return this.focused?.mjcf || null;
+  }
+  set mjcf(value) {
+    if (this.focused) this.focused.mjcf = value;
+  }
+
+  get loadedMeshes() {
+    return this.focused?.loadedMeshes || null;
+  }
+  set loadedMeshes(value) {
+    if (this.focused) this.focused.loadedMeshes = value;
+  }
+
+  get _jointMeta() {
+    return this.focused?.jointMeta;
+  }
+  set _jointMeta(value) {
+    if (this.focused) this.focused.jointMeta = value;
+  }
+
+  get _inertials() {
+    return this.focused?.inertials;
+  }
+  set _inertials(value) {
+    if (this.focused) this.focused.inertials = value;
+  }
+
+  get _loops() {
+    return this.focused?.loops || [];
+  }
+  set _loops(value) {
+    if (this.focused) this.focused.loops = value;
+  }
+
+  get _loopJoints() {
+    return this.focused?.loopJoints;
+  }
+  set _loopJoints(value) {
+    if (this.focused) this.focused.loopJoints = value;
+  }
+
+  get _stripped() {
+    return this.focused?.stripped || 0;
+  }
+  set _stripped(value) {
+    if (this.focused) this.focused.stripped = value;
+  }
+
+  /**
+   * Point the single-description API at one of the robots on the stage.
+   *
+   * @param {?import('../vendor/urdf-loader/URDFClasses.js').URDFRobot} robot
+   *   one the stage is holding, or null for none of them
+   * @returns {boolean} whether the focus moved
+   */
+  focus(robot) {
+    const next = robot ? this.cast.find((member) => member.robot === robot) || null : null;
+    if (next === this.focused) return false;
+    // The highlight is the focused description's — tinted copies of its own
+    // materials — so it is put back before the focus moves off it.
+    this.highlightLink(null);
+    this.focused = next;
+    return true;
+  }
+
+  /** Whether this robot is one of the ones on the stage. */
+  holds(robot) {
+    return this.cast.some((member) => member.robot === robot);
+  }
+
+  /**
+   * Take one description off the stage and free what it brought with it,
+   * leaving the rest of the cast where it stands. Dropping a column from a
+   * comparison should not cost the other five their meshes.
+   */
+  removeRobot(robot) {
+    const index = this.cast.findIndex((member) => member.robot === robot);
+    if (index === -1) return;
+    if (this.focused === this.cast[index]) this.focus(null);
+    this.cast.splice(index, 1);
+    // The studio materials this robot was given are the stage's, not the
+    // model's: they are held so a theme switch can recolour them in place, and
+    // a robot that has left has to take its own out of those lists or the next
+    // switch would write colours into materials nothing is drawing.
+    const mine = materialsOf(robot);
+    this._disposables = this._disposables.filter((one) => !mine.has(one));
+    this._themed.visual = this._themed.visual.filter((one) => !mine.has(one));
+    this._themed.collision = this._themed.collision.filter((one) => !mine.has(one));
+    disposeRobot(robot);
+    this.invalidate();
   }
 
   _buildEnvironment() {
@@ -621,6 +848,18 @@ export class RobotViewer {
   }
 
   /**
+   * How far apart the floor grid's lines are, in metres.
+   *
+   * The grid is sized so a cell is a round number of centimetres, which is
+   * what makes it readable as a scale — and therefore the only step worth
+   * snapping a machine's placement to: a snap that lands somewhere other than
+   * on a line the reader can see is not a snap, it is a rounding error.
+   */
+  get gridStep() {
+    return this._grid.size / this._grid.divisions;
+  }
+
+  /**
    * The floor grid is rebuilt per robot: cells land on a round number of
    * centimetres, so the spacing doubles as a scale reference.
    */
@@ -647,6 +886,9 @@ export class RobotViewer {
       this.camera.aspect = w / h;
       this.camera.updateProjectionMatrix();
       this.invalidate();
+      // After the aspect, so a listener that wants to re-fit is fitting to the
+      // frame that now exists rather than to the one that just went.
+      this.onResize?.(w, h);
     };
     this._resizeObserver = new ResizeObserver(resize);
     this._resizeObserver.observe(this.container);
@@ -667,6 +909,9 @@ export class RobotViewer {
     if (this._needsRender || damping) {
       this.renderer.render(this.scene, this.camera);
       this._needsRender = false;
+      // Anything pinned to where the robots land on screen — the compare
+      // stage's name tags — follows the frames rather than polling for them.
+      this.onRender?.();
     }
   }
 
@@ -684,6 +929,22 @@ export class RobotViewer {
    */
   async load(entry, onProgress) {
     this.clear();
+    const robot = await this.addRobot(entry, onProgress);
+    this.frameCamera();
+    return robot;
+  }
+
+  /**
+   * Load one more description onto the stage without clearing it, and focus it.
+   *
+   * The camera is deliberately left where it is: a stage filling up one robot
+   * at a time would otherwise re-frame on every arrival, and what it should
+   * end up framing is all of them. The caller says when, with `frameCamera`.
+   *
+   * @param {object} entry registry entry (see data/robots.json)
+   * @param {(loaded: number, total: number) => void} [onProgress]
+   */
+  async addRobot(entry, onProgress) {
     const robot = entry.assets.urdf
       ? await this._loadUrdf(entry, onProgress)
       : entry.assets.mjcf
@@ -691,9 +952,23 @@ export class RobotViewer {
         : await this._loadUsd(entry, onProgress);
     this._styleAll();
     this._applyOverlays();
-    this.stats = { ...this.meshStats(), stripped: this._stripped || 0 };
-    this.frameCamera();
+    this.stats = this.meshStats();
     return robot;
+  }
+
+  /**
+   * Stop a load the stage has moved on from, at the two points where it comes
+   * back from the network: before anything of the robot's has reached the
+   * scene, where there is nothing to take back, and after its meshes, where
+   * `clear()` will already have disposed of what was mounted — `removeRobot`
+   * is there for the robot that somehow outlived it.
+   *
+   * @param {number} epoch what `this._epoch` was when the load began
+   */
+  _abandonIfStale(epoch, entry, robot = null) {
+    if (epoch === this._epoch) return;
+    if (robot) this.removeRobot(robot);
+    throw new StaleLoad(entry.id);
   }
 
   /**
@@ -704,13 +979,17 @@ export class RobotViewer {
    * load, the bounding box the card image is cropped to, and the height the
    * detail page quotes. Joint moves never touch the root, so the card and the
    * detail page agree on which way the hand faces.
+   *
+   * @returns {StageMember} the record the rest of the load writes into
    */
   _mount(entry, robot) {
-    this.robot = robot;
+    const member = new StageMember(entry, robot);
+    this.cast.push(member);
+    this.focused = member;
     this.world.add(robot);
     const upright = previewRotation(entry.preview_frame);
     if (upright) robot.quaternion.copy(upright);
-    this.entry = entry;
+    return member;
   }
 
   /**
@@ -722,6 +1001,7 @@ export class RobotViewer {
    * its own studio; the room would only be measured as part of the model.
    */
   async _loadMjcf(entry, onProgress) {
+    const epoch = this._epoch;
     const base = entry.assets.base;
     // A model the visitor picked off their own disk answers paths out of the
     // files they handed over rather than out of a CDN. See js/custom.js.
@@ -755,6 +1035,7 @@ export class RobotViewer {
       onProgress,
       skip: entry.assets.skip_meshes,
     });
+    this._abandonIfStale(epoch, entry);
     this._mount(entry, result.robot);
     // Both of these come out of the parse rather than a second read of the
     // file: MJCF states a joint's travel and a body's inertia in the same
@@ -787,6 +1068,7 @@ export class RobotViewer {
    * js/custom.js reads `upAxis` out of an ASCII stage and says so.
    */
   async _loadUsd(entry, onProgress) {
+    const epoch = this._epoch;
     const local = entry.assets.local || null;
     const path = entry.assets.usd;
     const url = local ? local.urlOf(path) : entry.assets.base + path;
@@ -827,6 +1109,7 @@ export class RobotViewer {
     robot.visual.stage = visual;
     robot.frames = { ...robot.visual, ...robot.links };
 
+    this._abandonIfStale(epoch, entry);
     this._mount(entry, robot);
     this._jointMeta = new Map();
     this._inertials = new Map();
@@ -837,6 +1120,7 @@ export class RobotViewer {
   }
 
   async _loadUrdf(entry, onProgress) {
+    const epoch = this._epoch;
     const base = entry.assets.base;
     // A model the visitor picked off their own disk carries a file set instead
     // of a base URL: it resolves the paths the URDF writes against the files
@@ -977,11 +1261,12 @@ export class RobotViewer {
       return r.text();
     });
 
+    this._abandonIfStale(epoch, entry);
     const robot = loader.parse(
       dropJointsWithoutChildLink(dropAxesWithoutXyz(urdfColorsToLinear(text))),
     );
     parsed = true;
-    this._mount(entry, robot);
+    const member = this._mount(entry, robot);
     // Two things urdf-loader cannot tell on its own, both read off the XML it
     // has just been handed: which joints were given no travel to work with, and
     // which of them a closed loop drives rather than a slider.
@@ -1000,39 +1285,48 @@ export class RobotViewer {
     // A single unreachable mesh should degrade to a partial robot, not a page
     // that never finishes loading.
     await Promise.race([settled, new Promise((r) => setTimeout(r, this.options.loadTimeout))]);
-    this.loadedMeshes = { done, total };
-    this._stripped = stripped;
+    this._abandonIfStale(epoch, entry, robot);
+    // Written to the member rather than through the focused-description
+    // accessors: on a stage holding several, the focus may have moved on to
+    // whichever one arrived while this one's meshes were still coming.
+    member.loadedMeshes = { done, total };
+    member.stripped = stripped;
     return robot;
   }
 
   /** Apply the studio look to every mesh that has not been styled yet. */
   _styleAll() {
-    this.robot?.traverse((child) => {
-      if (!child.isMesh || child.userData.styled) return;
-      child.userData.styled = true;
-      child.castShadow = true;
-      child.receiveShadow = true;
-      this._styleMesh(child, this._isCollision(child));
-    });
+    for (const member of this.cast) {
+      member.robot.traverse((child) => {
+        if (!child.isMesh || child.userData.styled) return;
+        child.userData.styled = true;
+        child.castShadow = true;
+        child.receiveShadow = true;
+        this._styleMesh(child, this._isCollision(child));
+      });
+    }
   }
 
   /** Collision geometry can sit several groups below its URDFCollider. */
   _isCollision(object) {
-    for (let node = object; node && node !== this.robot?.parent; node = node.parent) {
+    for (let node = object; node && node !== this.world; node = node.parent) {
       if (node.type === 'URDFCollider') return true;
     }
     return false;
   }
 
-  /** Count the meshes that arrived, split by visual vs collision geometry. */
+  /** Count the meshes on the stage, split by visual vs collision geometry. */
   meshStats() {
-    const stats = { visual: 0, collision: 0, textured: 0 };
-    this.robot?.traverse((child) => {
-      if (!child.isMesh) return;
-      stats[this._isCollision(child) ? 'collision' : 'visual'] += 1;
-      const material = Array.isArray(child.material) ? child.material[0] : child.material;
-      if (material?.map) stats.textured += 1;
-    });
+    const stats = { visual: 0, collision: 0, textured: 0, stripped: 0 };
+    for (const member of this.cast) {
+      stats.stripped += member.stripped || 0;
+      member.robot.traverse((child) => {
+        if (!child.isMesh) return;
+        stats[this._isCollision(child) ? 'collision' : 'visual'] += 1;
+        const material = Array.isArray(child.material) ? child.material[0] : child.material;
+        if (material?.map) stats.textured += 1;
+      });
+    }
     return stats;
   }
 
@@ -1099,7 +1393,7 @@ export class RobotViewer {
    * @param {number} padding 1 = geometry exactly touches the frame edges
    */
   frameCamera(azimuth = Math.PI * 0.22, elevation = 0.28, padding = 1.16) {
-    if (!this.robot) return;
+    if (!this.cast.length) return;
     // Fitting the view restores the pose the robot arrived in, so the turntable
     // spin unwinds with the camera: a model left facing away would otherwise
     // stay facing away, and the fit would measure the silhouette the spin
@@ -1204,7 +1498,7 @@ export class RobotViewer {
    * @returns {?{size: {x: number, y: number, z: number}, height_m: number}}
    */
   measure() {
-    if (!this.robot) return null;
+    if (!this.cast.length) return null;
     const spin = this.world.rotation.z;
     this.world.rotation.z = 0;
     this.world.updateWorldMatrix(true, true);
@@ -1226,7 +1520,7 @@ export class RobotViewer {
    * quadruped both fill their card instead of floating in dead space.
    */
   screenBounds(margin = 0.03) {
-    if (!this.robot) return null;
+    if (!this.cast.length) return null;
     this.world.updateWorldMatrix(true, true);
     const box = boundingBox(this.world);
     if (box.isEmpty()) return null;
@@ -1267,12 +1561,14 @@ export class RobotViewer {
   }
 
   _applyOverlays() {
-    if (!this.robot) return;
+    if (!this.cast.length) return;
     const { visual, collision } = this.overlays;
-    this.robot.traverse((child) => {
-      if (child.type === 'URDFVisual') child.visible = visual;
-      if (child.type === 'URDFCollider') child.visible = collision;
-    });
+    for (const member of this.cast) {
+      member.robot.traverse((child) => {
+        if (child.type === 'URDFVisual') child.visible = visual;
+        if (child.type === 'URDFCollider') child.visible = collision;
+      });
+    }
     this._rebuildHelpers();
     this.invalidate();
   }
@@ -1294,11 +1590,24 @@ export class RobotViewer {
 
   _rebuildHelpers() {
     this._clearHelpers();
-    if (!this.robot) return;
+    if (!this.cast.length) return;
     const scale = this._helperScale();
 
+    for (const member of this.cast) this._helpersFor(member, scale);
+
+    // Helpers live inside the links and joints they annotate, so anything that
+    // walks the robot looking for the model's own geometry needs to be able to
+    // tell them apart from it.
+    for (const group of Object.values(this._helpers)) {
+      for (const helper of group) helper.userData.helper = true;
+    }
+  }
+
+  /** The overlays one description carries, at the scale the stage sets. */
+  _helpersFor(member, scale) {
+    const robot = member.robot;
     if (this.overlays.frames) {
-      for (const link of Object.values(this.robot.links)) {
+      for (const link of Object.values(robot.links)) {
         const axes = new THREE.AxesHelper(scale);
         axes.material.depthTest = false;
         axes.renderOrder = 10;
@@ -1308,7 +1617,7 @@ export class RobotViewer {
     }
 
     if (this.overlays.axes) {
-      for (const joint of Object.values(this.robot.joints)) {
+      for (const joint of Object.values(robot.joints)) {
         if (joint.jointType === 'fixed') continue;
         const dir = joint.axis.clone().normalize();
         const arrow = new THREE.ArrowHelper(dir, new THREE.Vector3(), scale * 2.2, this.theme.axis, scale * 0.5, scale * 0.28);
@@ -1321,8 +1630,8 @@ export class RobotViewer {
     }
 
     if (this.overlays.com || this.overlays.inertia) {
-      for (const link of Object.values(this.robot.links)) {
-        const inertial = this._inertialOf(link.name);
+      for (const link of Object.values(robot.links)) {
+        const inertial = member.inertials?.get(link.name) || null;
         if (!inertial) continue;
         if (this.overlays.com) {
           const radius = Math.max(scale * 0.22 * Math.cbrt(Math.max(inertial.mass, 1e-3)), scale * 0.12);
@@ -1357,13 +1666,6 @@ export class RobotViewer {
           this._helpers.inertia.push(box);
         }
       }
-    }
-
-    // Helpers live inside the links and joints they annotate, so anything that
-    // walks the robot looking for the model's own geometry needs to be able to
-    // tell them apart from it.
-    for (const group of Object.values(this._helpers)) {
-      for (const helper of group) helper.userData.helper = true;
     }
   }
 
@@ -1498,9 +1800,15 @@ export class RobotViewer {
    * `setJointMeta` has been handed it; `hasLimits` falls back to what the loader
    * can tell until then.
    *
+   * `child` is the link the joint moves, which is often the only readable
+   * thing about it: nothing obliges a URDF to name its joints after anything,
+   * and several name them after nothing — SO-ARM100's six are `1` to `6`,
+   * whose links are `shoulder`, `upper_arm`, `lower_arm`, `wrist`, `gripper`,
+   * `jaw`.
+   *
    * @returns {Array<{name: string, type: string, lower: number, upper: number,
    *   value: number, effort: ?number, velocity: ?number, hasLimits: boolean,
-   *   mimic: ?object, loop: boolean}>}
+   *   mimic: ?object, loop: boolean, child: ?string}>}
    */
   jointList() {
     if (!this.robot) return [];
@@ -1512,6 +1820,9 @@ export class RobotViewer {
         const declared = meta
           ? meta.lower !== null || meta.upper !== null
           : j.limit?.lower !== 0 || j.limit?.upper !== 0;
+        // Read off the scene graph rather than the XML, so it is the link
+        // that is actually hanging under this joint on the stage.
+        const child = (j.children || []).find((one) => one.isURDFLink);
         return {
           name: j.name,
           type: j.jointType,
@@ -1523,6 +1834,7 @@ export class RobotViewer {
           mimic: meta?.mimic ?? null,
           hasLimits: j.jointType !== 'continuous' && declared,
           loop: this.isLoopDriven(j.urdfName || j.name),
+          child: child ? child.urdfName || child.name : null,
         };
       });
   }
@@ -1640,15 +1952,44 @@ export class RobotViewer {
    * @returns {?string} link name
    */
   linkAt(clientX, clientY) {
-    if (!this.robot) return null;
+    return this.pickAt(clientX, clientY)?.link || null;
+  }
+
+  /**
+   * The same pick, said in full: which description was hit as well as which of
+   * its links. A stage holding one robot has only ever had one answer to the
+   * first half; a stage holding six is where the question starts to matter —
+   * clicking one of them is how the compare page's joint window is aimed.
+   *
+   * @param {number} clientX
+   * @param {number} clientY
+   * @returns {?{robot: object, link: string, point: import('three').Vector3,
+   *   distance: number}} `point` is where the ray met the geometry, in world
+   *   space — what a drag needs to know what plane it is dragging in — and
+   *   `distance` is how far along the ray that was, which is what decides a
+   *   contest between the geometry and anything else drawn over the same spot.
+   */
+  pickAt(clientX, clientY) {
+    if (!this.cast.length) return null;
     const { left, top, width, height } = this.renderer.domElement.getBoundingClientRect();
     if (!width || !height) return null;
     this._pointer.set(((clientX - left) / width) * 2 - 1, -((clientY - top) / height) * 2 + 1);
     this._raycaster.setFromCamera(this._pointer, this.camera);
-    // Hits arrive nearest first, and the nearest that belongs to the model wins.
-    for (const hit of this._raycaster.intersectObject(this.robot, true)) {
-      const link = pickedLink(hit.object, this.robot);
-      if (link) return link.urdfName || link.name;
+    // Hits arrive nearest first, and the nearest that belongs to a model wins —
+    // whichever model that is, so a robot standing in front of another takes
+    // the click rather than the one the panel happens to be about.
+    for (const hit of this._raycaster.intersectObjects(this.cast.map((m) => m.robot), true)) {
+      for (const member of this.cast) {
+        const link = pickedLink(hit.object, member.robot);
+        if (link) {
+          return {
+            robot: member.robot,
+            link: link.urdfName || link.name,
+            point: hit.point.clone(),
+            distance: hit.distance,
+          };
+        }
+      }
     }
     return null;
   }
@@ -1691,31 +2032,17 @@ export class RobotViewer {
   }
 
   /**
-   * Put every joint at its neutral position: zero when the limits allow it,
+   * Put joints at their neutral positions: zero when the limits allow it,
    * otherwise the middle of the range, so a joint whose range excludes zero does
    * not sit against a hard stop.
+   *
+   * @param {object} [robot] just this one of the stage's; every one of them by
+   *   default, which on a stage holding one is the same thing
    */
-  resetJoints() {
-    if (!this.robot) return;
-    for (const joint of Object.values(this.robot.joints)) {
-      const arity = MULTI_DOF[joint.jointType];
-      if (arity) {
-        this.robot.setJointValue(joint.name, ...new Array(arity).fill(0));
-        continue;
-      }
-      if (joint.jointType === 'fixed') continue;
-      // A joint that mimics another has no rest position of its own: the joint
-      // it follows writes its value, and does so below in this same pass.
-      // Giving it one here would only hold until that joint next moves.
-      const source = joint.mimicJoint ? this.robot.joints[joint.mimicJoint] : null;
-      if (source && source.jointType !== 'fixed') continue;
-      const lower = Number.isFinite(joint.limit?.lower) ? joint.limit.lower : null;
-      const upper = Number.isFinite(joint.limit?.upper) ? joint.limit.upper : null;
-      let rest = 0;
-      if (joint.jointType !== 'continuous' && lower !== null && upper !== null) {
-        rest = lower <= 0 && upper >= 0 ? 0 : (lower + upper) / 2;
-      }
-      this.robot.setJointValue(joint.name, rest);
+  resetJoints(robot = null) {
+    for (const member of this.cast) {
+      if (robot && member.robot !== robot) continue;
+      restRobot(member.robot);
     }
     this.closeLoops();
     this.invalidate();
@@ -1746,7 +2073,10 @@ export class RobotViewer {
    * `<key name="home">` — and failing both, the zero pose.
    */
   poseForPortrait(pose) {
-    this.resetJoints();
+    // The focused description only: on a stage holding several, posing the one
+    // that has just arrived is not a reason to straighten out the five beside
+    // it that a reader may already have moved.
+    this.resetJoints(this.robot);
     this.applyPose(pose || this.homePose);
   }
 
@@ -1820,11 +2150,14 @@ export class RobotViewer {
    * rather than flipping to the mirror solution halfway across a slider.
    */
   closeLoops() {
-    if (!this.robot || !this._loops?.length) return;
+    const held = this.cast.filter((member) => member.loops.length);
+    if (!held.length) return;
     for (let pass = 0; pass < LOOP_PASSES; pass += 1) {
-      this.robot.updateMatrixWorld(true);
       let step = 0;
-      for (const loop of this._loops) step = Math.max(step, this._stepLoop(loop));
+      for (const member of held) {
+        member.robot.updateMatrixWorld(true);
+        for (const loop of member.loops) step = Math.max(step, this._stepLoop(loop));
+      }
       if (step < LOOP_SETTLED) break;
     }
   }
@@ -1886,33 +2219,20 @@ export class RobotViewer {
   }
 
   clear() {
+    // Anything still being fetched for the stage this empties is no longer
+    // wanted: it belongs to a page the visitor has left.
+    this._epoch += 1;
     this._clearHelpers();
-    // Before the robot's materials are disposed of, so the tinted copies go and
+    // Before the robots' materials are disposed of, so the tinted copies go and
     // the originals — which is what the meshes still own — are what is freed.
     this.highlightLink(null);
-    if (this.robot) {
-      this.robot.removeFromParent();
-      this.robot.traverse((child) => {
-        child.geometry?.dispose?.();
-        const materials = Array.isArray(child.material) ? child.material : [child.material];
-        for (const m of materials) {
-          m?.map?.dispose?.();
-          m?.dispose?.();
-        }
-      });
-      this.robot = null;
-    }
+    for (const member of this.cast) disposeRobot(member.robot);
+    this.cast.length = 0;
+    this.focused = null;
     for (const d of this._disposables) d.dispose?.();
     this._disposables.length = 0;
     this._themed.visual.length = 0;
     this._themed.collision.length = 0;
-    this._inertials = undefined;
-    this._jointMeta = undefined;
-    this._loops = [];
-    this._loopJoints = undefined;
-    this.homePose = null;
-    this.mjcf = null;
-    this._stripped = 0;
     this.invalidate();
   }
 

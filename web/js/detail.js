@@ -13,6 +13,7 @@ import { categoryLabel, lang, pageTitle, t } from './i18n.js';
 import { downloadBundle, downloadRos2, downloadUrdf, ros2PackageName } from './download.js';
 import { icon } from './icons.js';
 import { onThemeChange, theme } from './theme.js';
+import { angleUnit, DEG, formatAngle, setAngleUnit } from './angle-unit.js';
 
 const el = (id) => document.getElementById(id);
 
@@ -188,35 +189,6 @@ function sweepValue(step, u) {
     left -= span;
   }
   return step.from;
-}
-
-/**
- * Angles are radians everywhere below the UI — that is what the URDF declares
- * and what the viewer is driven with. Degrees are only ever a rendering of
- * them, so switching units re-labels the panel and never touches the pose.
- * The choice is remembered, next to the theme and the language.
- */
-const ANGLE_UNITS = ['deg', 'rad'];
-const DEG = 180 / Math.PI;
-let angleUnit = storedAngleUnit();
-
-function storedAngleUnit() {
-  try {
-    const stored = localStorage.getItem('cl-angle-unit');
-    if (ANGLE_UNITS.includes(stored)) return stored;
-  } catch {
-    /* private mode — fall through to the default */
-  }
-  return 'deg';
-}
-
-function setAngleUnit(unit) {
-  angleUnit = ANGLE_UNITS.includes(unit) ? unit : 'deg';
-  try {
-    localStorage.setItem('cl-angle-unit', angleUnit);
-  } catch {
-    /* private mode — the choice just will not persist */
-  }
 }
 
 const SNIPPETS = {
@@ -410,7 +382,7 @@ export class Detail {
     this.renderUnitToggle();
     el('joint-unit').addEventListener('click', (event) => {
       const button = event.target.closest('button[data-unit]');
-      if (!button || button.dataset.unit === angleUnit) return;
+      if (!button || button.dataset.unit === angleUnit()) return;
       setAngleUnit(button.dataset.unit);
       this.renderUnitToggle();
       this.renderTree();
@@ -1262,7 +1234,7 @@ export class Detail {
   /** Which of the two units is in force, on the segmented control. */
   renderUnitToggle() {
     for (const button of el('joint-unit').querySelectorAll('button[data-unit]')) {
-      button.setAttribute('aria-pressed', String(button.dataset.unit === angleUnit));
+      button.setAttribute('aria-pressed', String(button.dataset.unit === angleUnit()));
     }
   }
 
@@ -2038,7 +2010,7 @@ function sliderRange(joint) {
  */
 function sliderStep(isRotational) {
   if (!isRotational) return 0.001;
-  return angleUnit === 'rad' ? 0.001 : Math.PI / 1800;
+  return angleUnit() === 'rad' ? 0.001 : Math.PI / 1800;
 }
 
 /** How far a finger may wander before it has said which gesture it is: a few
@@ -2137,7 +2109,7 @@ function rangeText(joint) {
   if (joint.type === 'continuous') return t('limit.continuous');
   if (!joint.hasLimits) return '—';
   if (joint.type === 'prismatic') return `[${num(joint.lower)}, ${num(joint.upper)}] m`;
-  return angleUnit === 'rad'
+  return angleUnit() === 'rad'
     ? `[${num(joint.lower)}, ${num(joint.upper)}] rad`
     : `[${num(joint.lower * DEG, 1)}, ${num(joint.upper * DEG, 1)}]°`;
 }
@@ -2149,7 +2121,7 @@ function rangeTitle(joint) {
   if (joint.type === 'prismatic') {
     return `${t('limit.rangeFull')}: [${num(joint.lower)}, ${num(joint.upper)}] m`;
   }
-  return angleUnit === 'rad'
+  return angleUnit() === 'rad'
     ? `${t('limit.rangeFull')}: [${num(joint.lower * DEG, 1)}, ${num(joint.upper * DEG, 1)}]°`
     : `${t('limit.rangeFull')}: [${num(joint.lower)}, ${num(joint.upper)}] rad`;
 }
@@ -2163,7 +2135,7 @@ function rangeTitle(joint) {
 function velocityText(joint) {
   if (joint.velocity === null) return '—';
   if (joint.type === 'prismatic') return `${num(joint.velocity)} m/s`;
-  return angleUnit === 'rad'
+  return angleUnit() === 'rad'
     ? `${num(joint.velocity)} rad/s`
     : `${num(joint.velocity * DEG, 1)}°/s`;
 }
@@ -2172,7 +2144,7 @@ function velocityText(joint) {
 function velocityTitle(joint) {
   const full = t('limit.velocityFull');
   if (joint.velocity === null || joint.type === 'prismatic') return full;
-  return angleUnit === 'rad'
+  return angleUnit() === 'rad'
     ? `${full}: ${num(joint.velocity * DEG, 1)}°/s`
     : `${full}: ${num(joint.velocity)} rad/s`;
 }
@@ -2189,7 +2161,7 @@ function num(value, digits = 3) {
 function fmt(value, isRotational) {
   if (value === undefined || value === null || Number.isNaN(value)) return '—';
   if (!isRotational) return `${value.toFixed(3)} m`;
-  return angleUnit === 'rad' ? `${value.toFixed(3)} rad` : `${(value * DEG).toFixed(1)}°`;
+  return formatAngle(value);
 }
 
 function host(url) {

@@ -27,14 +27,21 @@
  * names it opens for whoever wrote it and for nobody else.
  *
  * Nothing is precomputed into data/robots.json: a URDF is a few tens of
- * kilobytes and the meshes — the twenty megabytes — are never asked for, so six
+ * kilobytes and the meshes — the twenty megabytes — are not asked for, so six
  * machines cost less than opening one of them on its detail page.
+ *
+ * The exception is the shared 3D stage (js/compare-stage.js), which stands the
+ * same machines on one floor at true scale and is the one thing here that does
+ * fetch meshes. That is why it opens on a button rather than on a render: the
+ * bargain above is the page's premise, and a reader who wants the other one
+ * should be the one to say so.
  */
 import { categoryLabel, t } from './i18n.js';
 import { CUSTOM_ID, customEntry } from './custom.js';
 import { formatBytes, urdfUrl, variantView } from './registry.js';
 import { loadUrdfSpec } from './urdf-spec.js';
 import { align, defaultMode, fingerOrder, limbs, REGION_ORDER, SIDE_ORDER } from './joint-align.js';
+import { CompareStage } from './compare-stage.js';
 
 const el = (id) => document.getElementById(id);
 const comparable = (robot) => robot?.formats?.includes('urdf');
@@ -548,6 +555,13 @@ export class Compare {
     /** How many fetches are in flight, so the last one to land clears the line. */
     this.loading = 0;
     this.bound = false;
+    /**
+     * The one part of this page that fetches meshes: every picked machine on
+     * one floor, at true scale. Built with the page but empty until the reader
+     * asks for it, since a comparison costing six URDFs is the premise here
+     * and six sets of meshes is a different bargain.
+     */
+    this.stage = new CompareStage();
   }
 
   /* -- addressing ------------------------------------------------------- */
@@ -716,6 +730,7 @@ export class Compare {
     if (!this.bound) return;
     this.fillCategories();
     this.renderPicker();
+    this.stage.applyLang();
     if (!el('compare-body').hidden) this.renderTables();
     const status = el('compare-status');
     if (!status.hidden && this.loading) {
@@ -794,10 +809,19 @@ export class Compare {
     el('compare-body').hidden = entries.length < 2;
     if (entries.length < 2) {
       el('compare-status').hidden = true;
+      // Under two columns there is no comparison and nothing to stand on the
+      // floor; anything already loaded goes rather than lingering out of sight.
+      this.stage.close();
       return;
     }
     await this.loadAll(entries);
     this.renderTables();
+    // Not awaited: the tables are the page and they are ready now, while the
+    // meshes — if the reader has asked for any — take as long as they take.
+    // A description that will not load is reported on the stage itself; this
+    // is for the case where the stage as a whole gives up, which must not take
+    // the tables down with it.
+    this.stage.sync(entries).catch((err) => console.warn('compare stage:', err));
   }
 
   /**

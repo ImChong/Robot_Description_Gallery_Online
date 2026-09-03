@@ -214,7 +214,7 @@ const STRINGS = {
     'compare.heroNote': 'Two to six of one kind, joint by joint — limits, mass, inertia, torque.',
     'compare.title': 'Side-by-side comparison',
     'compare.lede':
-      'Two to six descriptions of one category, read as numbers. The URDFs are parsed in your browser and the meshes are never fetched, so a comparison costs less than opening one robot.',
+      'Two to six descriptions of one category, read as numbers. The URDFs are parsed in your browser and no meshes are fetched, so a comparison costs less than opening one robot — until you ask for the shared 3D stage under the tables, which stands them all on one floor.',
     'compare.add': 'Compare',
     'compare.addTitle': 'Add this robot to a comparison with others of its kind',
     'compare.pick': 'Robots',
@@ -233,6 +233,30 @@ const STRINGS = {
       'Pick at least two robots. Only one category at a time: a row reading "left knee" across a humanoid and a gripper is a row about nothing.',
     'compare.loading': 'Reading {n} description(s)…',
     'compare.failed': 'could not be read:',
+
+    // ---- the shared 3D stage -------------------------------------------
+    // The one part of this page that downloads meshes, which is why its
+    // button says how many descriptions it is about to fetch.
+    'compare.stage': 'All of them on one stage',
+    'compare.stageNote':
+      'The tables above are read from the URDFs alone. This is the one part of the page that downloads the meshes — every picked machine on one floor, at true scale, so a hand beside a humanoid is the size it really is.',
+    'compare.stageOnNote':
+      'Drag to orbit the group. Click a machine — or its name — to pose it: its joints open in a window over the render, and the sliders in it drive that machine only. The move button under the render lets you drag machines across the floor, and turn them by the ring at their feet, on the grid or off it; heights stay measured either way.',
+    'compare.stageOpen': 'Load the meshes ({n})',
+    'compare.stageClose': 'unload',
+    'compare.stageLoading': 'Loading meshes… {done} / {total}',
+    'compare.stageStanding': '{n} on the floor',
+    'compare.stageHint': 'Drag to orbit · scroll to zoom · click a robot to pose it',
+    'compare.stageDeselect': 'Close this joint window',
+    'compare.stageJoints': 'Joints of the selected robot',
+    // Where each machine stands. Height is never in here: it is the comparison.
+    'compare.arrange': 'Arrange',
+    'compare.arrangeHint': 'Drag a robot to slide it across the floor · drag the ring at its feet to turn it · drag the backdrop to orbit',
+    'compare.snap': 'Snap to the grid',
+    'compare.snapHint': 'Land every move and turn on the floor grid, and on 15°',
+    'compare.relayout': 'back in a row',
+    'compare.placeNote': 'metres from the middle',
+    'compare.placeReset': 'back in the row',
     'compare.overview': 'The whole machine',
     'compare.overviewSub': 'from the URDF — except height and bounding box, measured from the meshes',
     'compare.metric': 'Metric',
@@ -630,7 +654,7 @@ const STRINGS = {
     'compare.heroNote': '同类 2~6 台，逐关节对比限位、质量、惯量与力矩。',
     'compare.title': '横向对比',
     'compare.lede':
-      '选择同一类别下的 2~6 个模型，把它们当作数据来读。URDF 在浏览器里解析，全程不下载网格文件，所以一次对比比打开一台机器还轻。',
+      '选择同一类别下的 2~6 个模型，把它们当作数据来读。URDF 在浏览器里解析，默认不下载网格文件，所以一次对比比打开一台机器还轻 —— 除非你点开表格里的「同一场景预览」，把它们按真实尺寸并排放在同一块地面上。',
     'compare.add': '加入对比',
     'compare.addTitle': '把这台机器加入同类型对比',
     'compare.pick': '选择机器人',
@@ -648,6 +672,27 @@ const STRINGS = {
       '请至少选择两台机器人。一次只对比一个类别：把人形和夹爪放进同一张「左膝」表格，这一行就没有意义了。',
     'compare.loading': '正在读取 {n} 个模型…',
     'compare.failed': '读取失败：',
+
+    // ---- 同一场景 3D 预览 -----------------------------------------------
+    'compare.stage': '同一场景预览',
+    'compare.stageNote':
+      '上面的表格只读 URDF。这里是全页唯一会下载网格的地方 —— 把选中的机器人按真实尺寸并排放在同一块地面上，一只手放在人形旁边就是它本来的大小。',
+    'compare.stageOnNote':
+      '拖动可环绕整组模型。点中某台机器（或它的名字牌）即可摆姿势：它的关节会在画面上以浮窗打开，窗里的滑块只驱动这一台。画面下方的「摆放」按钮打开后，可以把机器人在地面上拖动，拖它脚下的圆环即可旋转，吸不吸附网格随你；高度始终是实测的。',
+    'compare.stageOpen': '加载网格并预览（{n} 台）',
+    'compare.stageClose': '收起',
+    'compare.stageLoading': '正在加载网格… {done} / {total}',
+    'compare.stageStanding': '场上 {n} 台',
+    'compare.stageHint': '拖动旋转 · 滚轮缩放 · 点中机器人调关节',
+    'compare.stageDeselect': '关闭关节浮窗',
+    'compare.stageJoints': '所选机器人的关节',
+    'compare.arrange': '摆放',
+    'compare.arrangeHint': '拖动机器人可在地面上平移 · 拖它脚下的圆环可绕竖轴旋转 · 拖背景仍是转视角',
+    'compare.snap': '对齐网格',
+    'compare.snapHint': '平移吸附到地面网格，旋转吸附到 15°',
+    'compare.relayout': '重新排成一排',
+    'compare.placeNote': '米，以地面中心为原点',
+    'compare.placeReset': '放回队列',
     'compare.overview': '整机对比',
     'compare.overviewSub': '除高度与包围盒由网格实测外，其余均来自 URDF',
     'compare.metric': '指标',

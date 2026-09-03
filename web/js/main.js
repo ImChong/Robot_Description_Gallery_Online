@@ -194,6 +194,10 @@ async function main() {
       await comparison().show({ category: at.compareCategory, ids: at.compareIds });
       return;
     }
+    // Its 3D stage stays loaded — coming back from a robot's detail page and
+    // waiting for six sets of meshes again would be its own punishment — but
+    // it cannot be left covering the screen.
+    if (compare?.stage.isFullscreen()) compare.stage.exitFullscreen();
     views.compare.hidden = true;
     // Nothing is stored for a picked model: a reload, or this address opened on
     // another machine, has no files behind it and belongs back at the gallery.
@@ -315,6 +319,12 @@ async function main() {
       detail.exitFullscreen();
       return;
     }
+    // The compare page's shared stage goes fullscreen the same way, and leaves
+    // it the same way — before Escape is read as "leave this comparison".
+    if (event.key === 'Escape' && compare?.stage.isFullscreen()) {
+      compare.stage.exitFullscreen();
+      return;
+    }
     if (event.target.matches('input, textarea')) return;
     if (event.key === 'Escape' && (onStage() || parseHash().compare)) toGallery();
     // Prev/next walk the gallery, so they are for a gallery robot: the picked
@@ -325,8 +335,9 @@ async function main() {
     }
     // `f` for the stage, as every video player has it — bare, so the browser
     // keeps Ctrl/⌘-F for its own find bar.
-    if (event.key === 'f' && !event.ctrlKey && !event.metaKey && !event.altKey && onStage()) {
-      detail?.toggleFullscreen();
+    if (event.key === 'f' && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      if (onStage()) detail?.toggleFullscreen();
+      else if (parseHash().compare && compare?.stage.open) compare.stage.toggleFullscreen();
     }
     if (event.key === '/') {
       event.preventDefault();

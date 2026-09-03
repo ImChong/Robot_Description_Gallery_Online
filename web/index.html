@@ -295,9 +295,10 @@
 
 <!-- ------------------------------- compare ------------------------------- -->
 <!-- Two to six descriptions of one category, read as numbers rather than as
-     geometry: js/compare.js fetches the URDFs (never the meshes), js/urdf-spec.js
-     parses them and js/joint-align.js decides which joint of one machine is the
-     same joint of another. -->
+     geometry: js/compare.js fetches the URDFs, js/urdf-spec.js parses them and
+     js/joint-align.js decides which joint of one machine is the same joint of
+     another. The meshes stay unfetched unless the reader opens the shared 3D
+     stage inside the tables, which js/compare-stage.js drives. -->
 <main id="view-compare" class="view" hidden>
   <div class="detail-head">
     <button class="back-btn" id="compare-back"><span aria-hidden="true">←</span> <span data-i18n="detail.back">Gallery</span></button>
@@ -344,6 +345,87 @@
 
   <div class="compare-body" id="compare-body" hidden>
     <div id="compare-failed"></div>
+
+    <!-- Every picked machine on one floor, at true scale.
+         The tables under it are read from the URDFs alone — a few tens of
+         kilobytes each — and this is the one part of the page that fetches the
+         meshes, so it is asked for rather than assumed: the button says how
+         many descriptions it is about to download. js/compare-stage.js. -->
+    <section class="panel-block span-full cmp-3d">
+      <div class="panel-block-head">
+        <h3 data-i18n="compare.stage">同一场景预览</h3>
+        <div class="head-actions">
+          <span class="tree-summary" id="cmp-stage-status"></span>
+          <!-- Its label counts the descriptions it is about to fetch, so
+               js/compare-stage.js writes it rather than data-i18n. -->
+          <button class="ghost-btn" id="cmp-stage-open">在同一场景中预览</button>
+        </div>
+      </div>
+      <p class="cmp-note" id="cmp-stage-note"></p>
+      <div id="cmp-stage-failed"></div>
+
+      <!-- Fullscreen is requested on this element, so the render, the name
+           tags, the toolbar and the joint window all go up together and the
+           page's own chrome stays out of it. -->
+      <div class="stage cmp-stage" id="cmp-stage" hidden>
+        <div class="canvas-host" id="cmp-canvas-host"></div>
+        <!-- One name tag per machine, projected onto the render each frame. -->
+        <div class="cmp-stage-tags" id="cmp-stage-tags"></div>
+        <div class="stage-loading" id="cmp-stage-loading" hidden>
+          <div class="spinner"></div>
+          <p id="cmp-stage-loading-text"></p>
+          <div class="progress"><i id="cmp-stage-bar"></i></div>
+        </div>
+        <div class="stage-toolbar" id="cmp-stage-toolbar">
+          <div class="toggle-group">
+            <button class="icon-btn" data-action="reset" data-icon="reset"
+                    data-i18n-title="viewer.resetPose" title="Reset pose"
+                    data-i18n-aria-label="viewer.resetPose" aria-label="Reset pose"></button>
+            <button class="icon-btn" data-action="rotate" data-icon="rotate" aria-pressed="false"
+                    data-i18n-title="viewer.autoRotate" title="Auto rotate"
+                    data-i18n-aria-label="viewer.autoRotate" aria-label="Auto rotate"></button>
+            <button class="icon-btn" data-action="frame" data-icon="fit"
+                    data-i18n-title="viewer.fitView" title="Fit view"
+                    data-i18n-aria-label="viewer.fitView" aria-label="Fit view"></button>
+            <button class="icon-btn" data-action="fullscreen" data-icon="expand" aria-pressed="false"
+                    data-i18n-title="viewer.fullscreen" title="Fullscreen"
+                    data-i18n-aria-label="viewer.fullscreen" aria-label="Fullscreen"></button>
+          </div>
+          <!-- Where the machines stand. Two modes rather than actions, so both
+               stay lit while they are on: `arrange` makes a drag on a machine
+               slide it across the floor instead of orbiting the stage, and
+               `snap` puts every such move — and every turn — on the floor
+               grid's own lines. -->
+          <div class="toggle-group">
+            <button class="icon-btn" data-action="arrange" data-icon="move" aria-pressed="false"
+                    data-i18n-title="compare.arrangeHint" title="Drag a robot to move it"
+                    data-i18n-aria-label="compare.arrange" aria-label="Arrange"></button>
+            <button class="icon-btn" data-action="snap" data-icon="magnet" aria-pressed="false"
+                    data-i18n-title="compare.snapHint" title="Snap to the floor grid"
+                    data-i18n-aria-label="compare.snap" aria-label="Snap"></button>
+            <!-- Only on screen once something has been moved: it is the way
+                 back from an arrangement, and there is nothing to go back from
+                 until then. -->
+            <button data-action="relayout" id="cmp-stage-relayout" hidden
+                    data-i18n="compare.relayout">重新排列</button>
+          </div>
+          <div class="toggle-group">
+            <button data-action="close" data-i18n="compare.stageClose">收起</button>
+          </div>
+        </div>
+        <!-- Written by js/compare-stage.js as well as by data-i18n: it says
+             something different while the stage is in arrange mode. -->
+        <p class="stage-hint" id="cmp-stage-hint" data-i18n="compare.stageHint"></p>
+        <!-- The joints of whichever machine was clicked, floating over the
+             render and dragged by its own head. Not a dialog: the render
+             behind it stays live and the tags beside it still take a click,
+             so it is a region rather than something to be trapped inside. -->
+        <div class="cmp-joint-panel" id="cmp-joint-panel" role="group" hidden
+             data-i18n-aria-label="compare.stageJoints"
+             aria-label="Joints of the selected robot"></div>
+      </div>
+    </section>
+
     <div class="cmp-export">
       <button class="link-btn" id="compare-copy" data-i18n="compare.copyMd">复制 Markdown</button>
       <button class="link-btn" id="compare-csv" data-i18n="compare.csv">下载 CSV</button>

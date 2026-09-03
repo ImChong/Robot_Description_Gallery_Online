@@ -1790,6 +1790,270 @@ body.stage-fullscreen-open { overflow: hidden; background: var(--studio); }
 .leftovers p { display: flex; flex-wrap: wrap; gap: 4px 8px; margin: 8px 0 0; }
 .leftover-name { font-weight: 600; }
 .leftover-list { display: flex; flex-wrap: wrap; gap: 4px; }
+/* ── The shared 3D stage on the compare page ─────────────
+ *
+ * The one part of that page that fetches meshes, so it opens on an invitation
+ * rather than on a render: the button above the stage counts the descriptions
+ * it is about to download, and the note under it says the rest of the page
+ * costs none of that.
+ *
+ * The stage itself borrows `.stage` from the detail page — same studio, same
+ * border, same height — and adds three things a floor of six robots needs that
+ * a floor of one does not: a name tag over each of them, a ring under whichever
+ * one is selected, and that one's joints in a window floating over the render.
+ */
+
+.cmp-3d .cmp-note { margin-top: 4px; }
+/* The hint changes corners: on the detail stage the top right is empty, and
+ * here it is where the joint window opens. */
+.cmp-stage .stage-hint { right: auto; left: 14px; }
+.cmp-3d .warn-line { margin: 8px 0 0; }
+.cmp-stage { margin-top: 12px; }
+
+/* Fullscreen is requested on the stage itself, so everything inside it — tags,
+ * toolbar, joint window — comes up with the render and nothing has to move in
+ * the DOM. The class is what makes the mode work where the request is refused
+ * (an iPhone has no element fullscreen at all), so it covers the viewport on
+ * its own rather than relying on `:fullscreen`. */
+.cmp-stage.is-fullscreen {
+  /* Over the fixed site header, as the detail page's fullscreen stage is:
+   * where native fullscreen is granted the element is in the browser's top
+   * layer anyway, and where it is refused this is what keeps the header from
+   * sitting on the render. */
+  position: fixed; inset: 0; z-index: 1400;
+  margin: 0; height: auto; max-height: none; border: 0; border-radius: 0;
+  box-shadow: none;
+}
+.cmp-stage:fullscreen, .cmp-stage:-webkit-full-screen { border: 0; border-radius: 0; }
+.cmp-stage::backdrop { background: var(--studio); }
+
+/* ── Name tags ───────────────────────────────────────────
+ *
+ * A row of six machines is only readable if each of them says which it is, and
+ * on a stage the name has to travel with the robot: js/compare-stage.js projects
+ * the top of each one every frame and puts its tag there. The layer is
+ * transparent to the pointer so that orbiting still works between the tags. */
+/* Exactly over the render, never over more of the stage than the render
+ * covers: the tags are placed by projecting through the camera, so the layer
+ * and the canvas have to be the same box. */
+.cmp-stage-tags {
+  position: absolute; inset: 0 0 var(--cmp-render-bottom, 0px) 0;
+  pointer-events: none; overflow: hidden;
+}
+.cmp-stage .canvas-host { bottom: var(--cmp-render-bottom, 0px); }
+.cmp-tag {
+  position: absolute; transform: translate(-50%, -120%);
+  max-width: 24ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  padding: 3px 9px; border-radius: 999px;
+  border: 1px solid var(--stage-chrome-border); background: var(--stage-chrome-bg);
+  backdrop-filter: blur(10px);
+  color: var(--stage-chrome-text); font: inherit; font-size: 11.5px; line-height: 1.5;
+  cursor: pointer; pointer-events: auto;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+.cmp-tag:hover { color: var(--stage-chrome-text-strong); background: var(--stage-chrome-hover); }
+.cmp-tag[aria-pressed='true'] { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+.cmp-tag:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.cmp-tag[hidden] { display: none; }
+
+/* ── The joint window ────────────────────────────────────
+ *
+ * One machine's joints, floating over the render rather than laid under it:
+ * the pose being dragged and the robot it moves have to be on screen at once,
+ * and in fullscreen there is nowhere else for the sliders to be. It opens in
+ * the top corner and is dragged by its head from there — bounded to the stage,
+ * because a window pushed off the edge of a fullscreen render has nothing left
+ * to bring it back. */
+.cmp-joint-panel {
+  position: absolute; top: 12px; right: 12px;
+  z-index: 4;
+  display: flex; flex-direction: column;
+  width: min(340px, calc(100% - 24px));
+  /* Clear of the bar of controls, whose height js/compare-stage.js measures:
+   * two rows of it on a phone, one on a desktop, and more in either language
+   * than the other. */
+  max-height: calc(100% - var(--cmp-bar-h, 40px) - 36px);
+  border: 1px solid var(--stage-chrome-border); border-radius: var(--radius);
+  background: var(--stage-chrome-bg); backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-lg);
+  color: var(--stage-chrome-text);
+  overflow: hidden;
+}
+.cmp-joint-panel.is-dragging { user-select: none; }
+
+.cmp-joint-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px 9px 12px;
+  border-bottom: 1px solid var(--stage-chrome-border);
+  cursor: grab;
+}
+.cmp-joint-panel.is-dragging .cmp-joint-head { cursor: grabbing; }
+.cmp-joint-title { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.cmp-joint-title strong {
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-size: 12.5px; color: var(--stage-chrome-text-strong);
+}
+.cmp-joint-title span {
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--stage-chrome-text);
+}
+.cmp-joint-head .icon-btn {
+  flex: 0 0 auto; margin-left: auto;
+  width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center;
+  border: 0; border-radius: var(--radius-sm); background: none;
+  color: var(--stage-chrome-text); font: inherit; font-size: 13px; cursor: pointer;
+}
+.cmp-joint-head .icon-btn:hover { background: var(--stage-chrome-hover); color: var(--stage-chrome-text-strong); }
+
+.cmp-joint-tools {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px 10px;
+  padding: 8px 12px; border-bottom: 1px solid var(--stage-chrome-border);
+}
+.cmp-joint-tools .link-btn { margin-left: auto; }
+
+/* ── Where the machine stands ────────────────────────────
+ *
+ * Three numbers above the joints: two across the floor and one heading. There
+ * is no fourth — the height is the comparison the stage exists to make, and
+ * neither it nor the scale is the reader's to set, so neither has a field.
+ *
+ * Dragging on the render is the gesture most of this is used through; these
+ * are what a drag cannot do — an exact metre, a keyboard, and a turn on a
+ * touch screen, which has no Shift to hold. */
+.cmp-place { padding: 8px 12px; border-bottom: 1px solid var(--stage-chrome-border); }
+.cmp-place:empty { display: none; }
+.cmp-place-row { display: flex; gap: 8px; }
+.cmp-place-field {
+  flex: 1 1 0; min-width: 0;
+  display: flex; align-items: center; gap: 5px;
+  padding: 0 6px; height: 26px;
+  border: 1px solid var(--stage-chrome-border); border-radius: var(--radius-sm);
+  background: var(--stage-chrome-hover);
+}
+.cmp-place-field:focus-within { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.cmp-place-field > span {
+  flex: 0 0 auto;
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--stage-chrome-text);
+}
+.cmp-place-field > i {
+  flex: 0 0 auto; font-style: normal;
+  font-size: 10px; color: var(--text-faint);
+}
+.cmp-place-field input {
+  flex: 1 1 auto; min-width: 0; width: 100%;
+  border: 0; background: none; outline: 0; padding: 0;
+  color: var(--stage-chrome-text-strong);
+  font: inherit; font-family: var(--font-mono); font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  /* The spinners would take a third of a 60px field, and the value is dragged
+   * or typed rather than clicked up one step at a time. */
+  -moz-appearance: textfield; appearance: textfield;
+}
+.cmp-place-field input::-webkit-outer-spin-button,
+.cmp-place-field input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.cmp-place-foot { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 8px; margin-top: 6px; }
+.cmp-place-foot .tree-summary { flex: 1 1 auto; min-width: 0; }
+.cmp-place-foot .link-btn { margin-left: auto; flex: 0 0 auto; }
+
+/* Arrange mode says so with the cursor: over the render a machine is something
+ * to be picked up, over the ring at its feet something to be turned, and the
+ * backdrop still orbits. */
+.cmp-stage.is-arranging .canvas-host { cursor: grab; }
+.cmp-stage.is-arranging .canvas-host.is-over-ring { cursor: ew-resize; }
+.cmp-stage.is-arranging .canvas-host.is-dragging { cursor: grabbing; }
+
+/* The detail page's toolbar stacks on a narrow screen because its overlay
+ * legend is a whole line on its own. This one has no legend — four icons, two
+ * mode switches and a word — so its groups wrap across the width instead of
+ * standing three deep over a phone's render. */
+@media (max-width: 720px) {
+  .cmp-stage .stage-toolbar { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+}
+
+/* The list is the only part that scrolls: a humanoid brings sixty rows and the
+ * head has to stay where the hand that dragged it left it. */
+.cmp-joint-list {
+  flex: 1 1 auto; min-height: 0; overflow-y: auto;
+  padding: 8px 12px 10px;
+  /* The readouts are flush right, so the bar needs a lane of its own rather
+   * than one borrowed from the numbers. */
+  scrollbar-gutter: stable;
+}
+.cmp-joint-list::-webkit-scrollbar { width: 8px; }
+.cmp-joint-list::-webkit-scrollbar-thumb { background: var(--stage-chrome-border); border-radius: 4px; }
+
+/* One joint: its name, the slider that moves it, and where it stands. The name
+ * takes a fixed share rather than its natural width, so sixty sliders start on
+ * one line down the panel instead of stepping in and out with the names. */
+.cmp-joint-row { display: flex; align-items: center; gap: 8px; min-height: 26px; }
+.cmp-joint-name {
+  flex: 0 0 38%; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--stage-chrome-text);
+}
+.cmp-joint-row input[type='range'] {
+  --tree-track: 3px;
+  --tree-thumb: 14px;
+  -webkit-appearance: none; appearance: none;
+  flex: 1 1 auto; min-width: 0; height: 22px; margin: 0;
+  background: transparent; outline: none; touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+.cmp-joint-row input[type='range']::-webkit-slider-runnable-track {
+  height: var(--tree-track); border-radius: 20px; background: var(--stage-chrome-border);
+}
+.cmp-joint-row input[type='range']::-moz-range-track {
+  height: var(--tree-track); border-radius: 20px; background: var(--stage-chrome-border);
+}
+.cmp-joint-row input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none; width: var(--tree-thumb); height: var(--tree-thumb); border-radius: 50%;
+  background: var(--accent); cursor: pointer; border: 2px solid var(--studio);
+  margin-top: calc((var(--tree-track) - var(--tree-thumb)) / 2);
+}
+.cmp-joint-row input[type='range']::-moz-range-thumb {
+  width: var(--tree-thumb); height: var(--tree-thumb); border-radius: 50%;
+  background: var(--accent); cursor: pointer; border: 2px solid var(--studio);
+}
+.cmp-joint-row input[type='range']:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* A joint whose value is not its own to set — one that mimics another, one a
+ * closed loop solves for — keeps the readout and loses the control. */
+.cmp-joint-row.is-driven .tree-value { color: var(--stage-chrome-text); }
+.cmp-joint-driven {
+  flex: 1 1 auto; min-width: 0; cursor: help;
+  font-family: var(--font-sans); font-size: 9.5px; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--warn);
+}
+
+/* A fingertip's target, as in the detail page's tree. */
+@media (pointer: coarse) {
+  .cmp-joint-row { min-height: 34px; }
+  .cmp-joint-row input[type='range'] { --tree-thumb: 22px; height: 34px; }
+}
+
+/* On a phone the window is the stage: a 340px panel floating over a 320px
+ * render leaves neither one readable, so it takes the foot of the stage and
+ * the render keeps the top of it. */
+@media (max-width: 620px) {
+  .cmp-joint-panel {
+    top: auto; right: 8px; left: 8px;
+    bottom: calc(var(--cmp-bar-h, 40px) + 20px);
+    width: auto; max-height: 44%;
+  }
+  /* And the render stops above it rather than behind it — both heights are
+   * measured by js/compare-stage.js, since neither is a number a stylesheet
+   * can know. The strip left over is the studio colour the canvas paints
+   * anyway, so the seam does not show. */
+  .cmp-stage {
+    --cmp-render-bottom: calc(var(--cmp-panel-h, 0px) + var(--cmp-bar-h, 40px) + 28px);
+  }
+  .cmp-tag { max-width: 14ch; font-size: 10.5px; }
+  /* Taller than the detail page's stage at this width, which holds one robot:
+   * this one holds up to six and gives nearly half of itself to the joint
+   * window the moment one of them is picked. Qualified so it outranks the
+   * `.stage` height the responsive block sets further down the file. */
+  .cmp-3d .cmp-stage { height: min(72vh, 560px); }
+}
+
 .leftovers code { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-faint); }
 
 /* ── Responsive ─────────────────────────────────────────── */
