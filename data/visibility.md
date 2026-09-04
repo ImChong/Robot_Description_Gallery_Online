@@ -20,7 +20,7 @@ The gallery fetches this file at startup: rows checked `[x]` are shown, rows lef
 the site matches on; the name, organisation and upstream link after it are for
 human readers.
 
-## 人形 Humanoid · 63
+## 人形 Humanoid · 62
 
 - [x] `g1` **G1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description)
 - [x] `h1` **H1** — UNITREE Robotics — [unitreerobotics/unitree_ros · h1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description)
@@ -45,7 +45,6 @@ human readers.
 - [x] `booster_t2_31dof` **Booster T2 (31 DoF)** — Booster Robotics — [BoosterRobotics/booster_assets](https://github.com/BoosterRobotics/booster_assets/tree/38a0ae84b17743a8aa21511f69ed38e7d22d1664/robots/T2/T2_31dof)
 - [ ] `elf2` **Elf2** — BXI Robotics — [bxirobotics/robot_models · elf2_description](https://github.com/bxirobotics/robot_models/tree/eabe24ce937f8e633077a163b883e92e8996c36e/elf2_dof25/urdf)
 - [ ] `gene01` **GENE.01** — Generative Bionics — [gbionics/gb-robot-models · gene01_description](https://github.com/gbionics/gb-robot-models/tree/ae990f38968c2ae29caee88851f9153168630b8f/share/gb_robot_models)
-- [x] `berkeley_humanoid` **Berkeley Humanoid** — Hybrid Robotics — [HybridRobotics/berkeley_humanoid_description · berkeley_humanoid_description](https://github.com/HybridRobotics/berkeley_humanoid_description/tree/d0d13d3f81d795480e25ed1910eaf83d5f0a1d0b)
 - [ ] `toddlerbot` **ToddlerBot** — Stanford University — [hshi74/toddlerbot · toddlerbot_description](https://github.com/hshi74/toddlerbot/tree/067f9dc4f50143e36334877b9395b9c5c29ee30c/toddlerbot/descriptions/toddlerbot_2xc)
 - [ ] `talos` **TALOS** — PAL Robotics — [stack-of-tasks/talos-data · talos_description](https://github.com/stack-of-tasks/talos-data/tree/77169405d6a48a5d3f3f75eb014209f375ff23b6)
 - [ ] `valkyrie` **Valkyrie** — NASA JSC Robotics — [gkjohnson/nasa-urdf-robots · valkyrie_description](https://github.com/gkjohnson/nasa-urdf-robots/tree/54cdeb1dbfb529b79ae3185a53e24fce26e1b74b/val_description)
@@ -188,8 +187,9 @@ human readers.
 - [ ] `shadow_dexee` **Shadow DEX-EE Hand** — Shadow Robot Company — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/shadow_dexee)
 - [x] `umi_gripper` **UMI-Gripper** — Universal Manipulation Interface — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/umi_gripper)
 
-## 双足 Biped · 13
+## 双足 Biped · 14
 
+- [x] `berkeley_humanoid` **Berkeley Humanoid** — Hybrid Robotics — [HybridRobotics/berkeley_humanoid_description · berkeley_humanoid_description](https://github.com/HybridRobotics/berkeley_humanoid_description/tree/d0d13d3f81d795480e25ed1910eaf83d5f0a1d0b)
 - [x] `cassie` **Cassie** — Agility Robotics — [robot-descriptions/cassie_description · cassie_description](https://github.com/robot-descriptions/cassie_description/tree/81a2d8bbd77201cc974afb127adda4e2857a6dbf)
 - [ ] `upkie` **Upkie** — Upkie Project — [upkie/upkie_description · upkie_description](https://github.com/upkie/upkie_description/tree/19a91ce69cab6742c613cab104986e3f8a18d6a5)
 - [x] `bolt` **Bolt** — ODRI — [Gepetto/example-robot-data · bolt_description](https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/bolt_description)

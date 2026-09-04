@@ -9,7 +9,7 @@ URDF、网格 zip 或 ROS 2 功能包；纯 MJCF 条目使用 MuJoCo Live 在线
 
 在线访问：<https://imchong.github.io/Robot_Description_Gallery_Online/web/>
 
-人形 63 · 四足 28 · 机械臂 36 · 灵巧手 / 夹爪 29 · 移动操作 21 · 双臂 12 · 双足 13
+人形 62 · 四足 28 · 机械臂 36 · 灵巧手 / 夹爪 29 · 移动操作 21 · 双臂 12 · 双足 14
 生物力学 3 · 无人机 2 · 移动底盘 1 · 传感器 1
 
 ## 功能

@@ -2633,7 +2633,7 @@
    "id": "berkeley_humanoid",
    "name": "Berkeley Humanoid",
    "maker": "Hybrid Robotics",
-   "category": "humanoid",
+   "category": "biped",
    "tags": [
     "humanoid"
    ],

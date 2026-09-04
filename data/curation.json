@@ -716,7 +716,7 @@
     },
     {
       "description": "berkeley_humanoid_description",
-      "category": "humanoid",
+      "category": "biped",
       "links": {
         "official": "https://berkeley-humanoid.com/"
       }
