@@ -12,6 +12,14 @@ URDF、网格 zip 或 ROS 2 功能包；纯 MJCF 条目使用 MuJoCo Live 在线
 人形 62 · 四足 28 · 机械臂 36 · 灵巧手 / 夹爪 29 · 移动操作 21 · 双臂 12 · 双足 14
 生物力学 3 · 无人机 2 · 移动底盘 1 · 传感器 1
 
+## 在线演示
+
+[![在线演示：浏览人形、四足与机械臂分类，搜索 Booster 机器人，再对比 G1 与 H1 的整机、分肢和逐关节参数](media/site-demo.gif)](https://imchong.github.io/Robot_Description_Gallery_Online/web/)
+
+↑ 点击动图进入[在线站点](https://imchong.github.io/Robot_Description_Gallery_Online/web/)：
+按**类别浏览**或**搜索机器人 / 厂商**，再用**横向对比**查看整机、分肢与逐关节参数，
+并切换关节范围、最大力矩等指标。
+
 ## 功能
 
 - **浏览**：按类别分区，同一类别内再按厂商分组；支持搜索机器人、厂商与类别。
