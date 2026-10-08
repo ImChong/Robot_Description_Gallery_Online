@@ -190,7 +190,7 @@ human readers.
 ## 双足 Biped · 14
 
 - [x] `berkeley_humanoid` **Berkeley Humanoid** — Hybrid Robotics — [HybridRobotics/berkeley_humanoid_description · berkeley_humanoid_description](https://github.com/HybridRobotics/berkeley_humanoid_description/tree/d0d13d3f81d795480e25ed1910eaf83d5f0a1d0b)
-- [x] `cassie` **Cassie** — Agility Robotics — [robot-descriptions/cassie_description · cassie_description](https://github.com/robot-descriptions/cassie_description/tree/81a2d8bbd77201cc974afb127adda4e2857a6dbf)
+- [x] `cassie` **Cassie** — Agility Robotics — [UMich-BipedLab/cassie_description](https://github.com/UMich-BipedLab/cassie_description/tree/96323f3d0cc2cb7101cb92d7fcf4650abdcb2e81)
 - [ ] `upkie` **Upkie** — Upkie Project — [upkie/upkie_description · upkie_description](https://github.com/upkie/upkie_description/tree/19a91ce69cab6742c613cab104986e3f8a18d6a5)
 - [x] `bolt` **Bolt** — ODRI — [Gepetto/example-robot-data · bolt_description](https://github.com/Gepetto/example-robot-data/tree/d0d9098d752014aec3725b07766962acf06c5418/robots/bolt_description)
 - [x] `rhea` **Rhea** — Gabrael Levine — [G-Levine/rhea_description · rhea_description](https://github.com/G-Levine/rhea_description/tree/1dc0f1abcf51b5d8a8f7ff8a548399ff0df1414f)

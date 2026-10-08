@@ -2960,20 +2960,36 @@
       ]
     },
     {
-      "description": "cassie_description",
+      "id": "cassie",
+      "name": "Cassie",
+      "maker": "Agility Robotics",
       "category": "biped",
+      "upstream": {
+        "github": "UMich-BipedLab/cassie_description",
+        "commit": "96323f3d0cc2cb7101cb92d7fcf4650abdcb2e81",
+        "package": "",
+        "urdf": "urdf/cassie.urdf",
+        "packages": {
+          "cassie_description": ""
+        },
+        "tags": [
+          "biped"
+        ]
+      },
       "links": {
         "official": "https://agilityrobotics.com/"
       },
+      "notes": "University of Michigan BipedLab's RViz display model, with the upstream grey and light-grey materials. The URDF has fourteen moving joints (including passive joints), inertial parameters and no collision geometry. Upstream does not declare a licence (package.xml says TODO).",
+      "notes_zh": "密歇根大学 BipedLab 的 RViz 展示模型，保留上游深灰与浅灰材质。URDF 含 14 个可动关节（含被动关节）和惯性参数，无碰撞几何。上游未声明许可证（package.xml 标为 TODO）。",
       "pose": {
-        "LeftHipPitch": 0.3,
-        "LeftKneePitch": -1.1,
-        "LeftTarsusPitch": 1.3,
-        "LeftFootPitch": -1.6,
-        "RightHipPitch": 0.3,
-        "RightKneePitch": -1.1,
-        "RightTarsusPitch": 1.3,
-        "RightFootPitch": -1.6
+        "hip_flexion_left": 0.3,
+        "knee_joint_left": -1.1,
+        "ankle_joint_left": 1.326893,
+        "toe_joint_left": -1.6,
+        "hip_flexion_right": 0.3,
+        "knee_joint_right": -1.1,
+        "ankle_joint_right": 1.326893,
+        "toe_joint_right": -1.6
       }
     },
     {
