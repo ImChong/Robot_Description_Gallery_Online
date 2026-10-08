@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-09-03T09:29:43Z",
+ "generated": "2026-10-08T18:10:49Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -11313,65 +11313,66 @@
    "tags": [
     "biped"
    ],
-   "dof": 16,
-   "license": "MIT",
+   "dof": 14,
+   "license": null,
    "formats": [
     "mjcf",
     "urdf"
    ],
-   "notes": null,
-   "notes_zh": null,
+   "notes": "University of Michigan BipedLab's RViz display model, with the upstream grey and light-grey materials. The URDF has fourteen moving joints (including passive joints), inertial parameters and no collision geometry. Upstream does not declare a licence (package.xml says TODO).",
+   "notes_zh": "密歇根大学 BipedLab 的 RViz 展示模型，保留上游深灰与浅灰材质。URDF 含 14 个可动关节（含被动关节）和惯性参数，无碰撞几何。上游未声明许可证（package.xml 标为 TODO）。",
    "pose": {
-    "LeftHipPitch": 0.3,
-    "LeftKneePitch": -1.1,
-    "LeftTarsusPitch": 1.3,
-    "LeftFootPitch": -1.6,
-    "RightHipPitch": 0.3,
-    "RightKneePitch": -1.1,
-    "RightTarsusPitch": 1.3,
-    "RightFootPitch": -1.6
+    "hip_flexion_left": 0.3,
+    "knee_joint_left": -1.1,
+    "ankle_joint_left": 1.326893,
+    "toe_joint_left": -1.6,
+    "hip_flexion_right": 0.3,
+    "knee_joint_right": -1.1,
+    "ankle_joint_right": 1.326893,
+    "toe_joint_right": -1.6
    },
    "loops": null,
    "preview_frame": null,
    "measured": {
     "size": {
-     "x": 0.5536,
-     "y": 1.2768,
+     "x": 0.6062,
+     "y": 1.2732,
      "z": 0.4825
     },
-    "height_m": 1.2768
+    "height_m": 1.2732
    },
    "urdf": {
-    "xml_name": "cassie_v4",
-    "links": 17,
+    "xml_name": "cassie",
+    "links": 18,
     "joints": {
-     "revolute": 16
+     "continuous": 14,
+     "fixed": 3
     },
-    "moving_joints": 16,
-    "mass_kg": 34.677,
-    "has_collision": true,
+    "moving_joints": 14,
+    "mass_kg": 31.884,
+    "has_collision": false,
     "has_inertia": true,
-    "bytes": 18369
+    "bytes": 17079
    },
    "assets": {
-    "base": "https://cdn.jsdelivr.net/gh/robot-descriptions/cassie_description@81a2d8bbd77201cc974afb127adda4e2857a6dbf/",
-    "urdf": "urdf/cassie_v4.urdf",
+    "base": "https://cdn.jsdelivr.net/gh/UMich-BipedLab/cassie_description@96323f3d0cc2cb7101cb92d7fcf4650abdcb2e81/",
+    "urdf": "urdf/cassie.urdf",
     "packages": {
      "cassie_description": ""
     },
-    "mesh_files": 16,
-    "mesh_bytes": 43116294,
+    "mesh_files": 17,
+    "mesh_bytes": 75900728,
     "mesh_formats": [
      ".stl"
     ]
    },
    "source": {
-    "description": "cassie_description",
-    "github": "robot-descriptions/cassie_description",
-    "commit": "81a2d8bbd77201cc974afb127adda4e2857a6dbf",
-    "repo_url": "https://github.com/robot-descriptions/cassie_description",
-    "tree_url": "https://github.com/robot-descriptions/cassie_description/tree/81a2d8bbd77201cc974afb127adda4e2857a6dbf",
-    "license_url": "https://github.com/robot-descriptions/cassie_description/blob/81a2d8bbd77201cc974afb127adda4e2857a6dbf/LICENSE",
+    "description": null,
+    "github": "UMich-BipedLab/cassie_description",
+    "commit": "96323f3d0cc2cb7101cb92d7fcf4650abdcb2e81",
+    "repo_url": "https://github.com/UMich-BipedLab/cassie_description",
+    "tree_url": "https://github.com/UMich-BipedLab/cassie_description/tree/96323f3d0cc2cb7101cb92d7fcf4650abdcb2e81",
+    "license_url": null,
     "mirror": null,
     "mjcf": null,
     "mjcf_external": {
