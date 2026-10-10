@@ -20,7 +20,7 @@ The gallery fetches this file at startup: rows checked `[x]` are shown, rows lef
 the site matches on; the name, organisation and upstream link after it are for
 human readers.
 
-## 人形 Humanoid · 62
+## 人形 Humanoid · 60
 
 - [x] `g1` **G1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description)
 - [x] `h1` **H1** — UNITREE Robotics — [unitreerobotics/unitree_ros · h1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description)
@@ -45,7 +45,7 @@ human readers.
 - [x] `booster_t2_31dof` **Booster T2 (31 DoF)** — Booster Robotics — [BoosterRobotics/booster_assets](https://github.com/BoosterRobotics/booster_assets/tree/38a0ae84b17743a8aa21511f69ed38e7d22d1664/robots/T2/T2_31dof)
 - [ ] `elf2` **Elf2** — BXI Robotics — [bxirobotics/robot_models · elf2_description](https://github.com/bxirobotics/robot_models/tree/eabe24ce937f8e633077a163b883e92e8996c36e/elf2_dof25/urdf)
 - [ ] `gene01` **GENE.01** — Generative Bionics — [gbionics/gb-robot-models · gene01_description](https://github.com/gbionics/gb-robot-models/tree/ae990f38968c2ae29caee88851f9153168630b8f/share/gb_robot_models)
-- [ ] `toddlerbot` **ToddlerBot** — Stanford University — [hshi74/toddlerbot · toddlerbot_description](https://github.com/hshi74/toddlerbot/tree/067f9dc4f50143e36334877b9395b9c5c29ee30c/toddlerbot/descriptions/toddlerbot_2xc)
+- [x] `toddlerbot` **ToddlerBot** — Stanford University — [hshi74/toddlerbot](https://github.com/hshi74/toddlerbot/tree/067f9dc4f50143e36334877b9395b9c5c29ee30c/toddlerbot/descriptions/toddlerbot_2xc)
 - [ ] `talos` **TALOS** — PAL Robotics — [stack-of-tasks/talos-data · talos_description](https://github.com/stack-of-tasks/talos-data/tree/77169405d6a48a5d3f3f75eb014209f375ff23b6)
 - [ ] `valkyrie` **Valkyrie** — NASA JSC Robotics — [gkjohnson/nasa-urdf-robots · valkyrie_description](https://github.com/gkjohnson/nasa-urdf-robots/tree/54cdeb1dbfb529b79ae3185a53e24fce26e1b74b/val_description)
 - [ ] `r2` **Robonaut 2** — NASA JSC Robotics — [gkjohnson/nasa-urdf-robots · r2_description](https://github.com/gkjohnson/nasa-urdf-robots/tree/54cdeb1dbfb529b79ae3185a53e24fce26e1b74b/r2_description)
@@ -80,10 +80,8 @@ human readers.
 - [x] `noetix_n2` **N2** — Noetix Robotics — [Noetix-Robotics/noetix_n2_gym](https://github.com/Noetix-Robotics/noetix_n2_gym/tree/153aad12dcc44aeafe378efe2f652873b02e0d89/resources/robots/N2)
 - [x] `dr02` **DR02** — DEEP Robotics — [DeepRoboticsLab/deep_robotics_model](https://github.com/DeepRoboticsLab/deep_robotics_model/tree/e6753d2ef25e1e788d387ae3775fd283c199f1a3/DR02/urdf/pro)
 - [ ] `robotis_op3` **Robotis OP3** — ROBOTIS — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3)
-- [x] `toddlerbot_2xc` **ToddlerBot 2XC** — Stanford University — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xc)
 - [x] `pndbotics_adam_lite` **PNDbotics Adam_lite** — PNDbotics — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/pndbotics_adam_lite)
 - [x] `apptronik_apollo` **Apptronik Apollo** — Apptronik — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/apptronik_apollo)
-- [x] `toddlerbot_2xm` **ToddlerBot 2XM** — Stanford University — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xm)
 
 ## 四足 Quadruped · 28
 

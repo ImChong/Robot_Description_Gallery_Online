@@ -6,6 +6,7 @@
     "categories, deduplication, maker names, and optional preview_frame overrides",
     "for MJCF-only cards. Keys are <directory>/<scene>.",
     "Entries in merge_into enrich an existing URDF card with Menagerie MJCF;",
+    "entries in exclude are skipped because a curated card ships its own MJCF;",
     "every other table row becomes an MJCF-only card opening MuJoCo's web viewer."
   ],
   "github": "google-deepmind/mujoco_menagerie",
@@ -51,6 +52,10 @@
     "leap_hand/scene_left.xml": "leap_hand_v1",
     "sharpa_wave/scene_left.xml": "sharpa_wave"
   },
+  "exclude": [
+    "toddlerbot_2xc/scene.xml",
+    "toddlerbot_2xm/scene.xml"
+  ],
   "id_overrides": {
     "hello_robot_stretch/scene.xml": "stretch_2",
     "bitcraze_crazyflie_2/scene.xml": "crazyflie_2",
