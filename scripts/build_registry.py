@@ -1457,11 +1457,14 @@ def add_menagerie(
     makers = config.get("maker_by_directory") or {}
     categories = config.get("section_categories") or {}
     preview_frames = config.get("preview_frame") or {}
+    exclude = set(config.get("exclude") or [])
     seen_keys: set[str] = set()
 
     for model in models:
         key = f"{model['directory']}/{model['scene']}"
         seen_keys.add(key)
+        if key in exclude:
+            continue
         category = categories.get(model["section"])
         if not category:
             problems.append(f"MuJoCo Menagerie · {key}: unknown section {model['section']!r}")
@@ -1576,7 +1579,7 @@ def add_menagerie(
         entries.append(entry)
         by_id[robot_id] = entry
 
-    stale = sorted((set(merge_into) | set(id_overrides)) - seen_keys)
+    stale = sorted((set(merge_into) | set(id_overrides) | exclude) - seen_keys)
     for key in stale:
         problems.append(f"MuJoCo Menagerie: configured key {key!r} is not in the pinned README")
     print(

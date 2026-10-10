@@ -722,11 +722,47 @@
       }
     },
     {
-      "description": "toddlerbot_description",
+      "id": "toddlerbot",
+      "name": "ToddlerBot",
+      "maker": "Stanford University",
       "category": "humanoid",
+      "upstream": {
+        "github": "hshi74/toddlerbot",
+        "commit": "067f9dc4f50143e36334877b9395b9c5c29ee30c",
+        "package": "toddlerbot/descriptions/toddlerbot_2xc",
+        "urdf": "toddlerbot/descriptions/toddlerbot_2xc/toddlerbot_2xc.urdf",
+        "mjcf": "toddlerbot/descriptions/toddlerbot_2xc/scene.xml",
+        "license": "MIT",
+        "license_file": "LICENSE",
+        "formats": [
+          "mjcf",
+          "urdf"
+        ],
+        "tags": [
+          "humanoid"
+        ]
+      },
       "links": {
         "official": "https://toddlerbot.github.io/"
-      }
+      },
+      "notes": "Both the URDF and the MJCF come from the hshi74/toddlerbot repository, not MuJoCo Menagerie. The version picker swaps between the 2XC and 2XM builds.",
+      "notes_zh": "URDF 与 MJCF 均取自 hshi74/toddlerbot 仓库，而非 MuJoCo Menagerie。用版本选择器在 2XC 与 2XM 之间切换。",
+      "variants": [
+        {
+          "id": "toddlerbot_2xc",
+          "name": "2XC",
+          "urdf": "toddlerbot/descriptions/toddlerbot_2xc/toddlerbot_2xc.urdf",
+          "mjcf": "toddlerbot/descriptions/toddlerbot_2xc/scene.xml",
+          "package": "toddlerbot/descriptions/toddlerbot_2xc"
+        },
+        {
+          "id": "toddlerbot_2xm",
+          "name": "2XM",
+          "urdf": "toddlerbot/descriptions/toddlerbot_2xm/toddlerbot_2xm.urdf",
+          "mjcf": "toddlerbot/descriptions/toddlerbot_2xm/scene.xml",
+          "package": "toddlerbot/descriptions/toddlerbot_2xm"
+        }
+      ]
     },
     {
       "description": "talos_description",

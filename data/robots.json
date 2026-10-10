@@ -2715,10 +2715,11 @@
    "dof": 31,
    "license": "MIT",
    "formats": [
+    "mjcf",
     "urdf"
    ],
-   "notes": null,
-   "notes_zh": null,
+   "notes": "Both the URDF and the MJCF come from the hshi74/toddlerbot repository, not MuJoCo Menagerie. The version picker swaps between the 2XC and 2XM builds.",
+   "notes_zh": "URDF 与 MJCF 均取自 hshi74/toddlerbot 仓库，而非 MuJoCo Menagerie。用版本选择器在 2XC 与 2XM 之间切换。",
    "pose": null,
    "loops": null,
    "preview_frame": null,
@@ -2755,18 +2756,110 @@
     ]
    },
    "source": {
-    "description": "toddlerbot_description",
+    "description": null,
     "github": "hshi74/toddlerbot",
     "commit": "067f9dc4f50143e36334877b9395b9c5c29ee30c",
     "repo_url": "https://github.com/hshi74/toddlerbot",
     "tree_url": "https://github.com/hshi74/toddlerbot/tree/067f9dc4f50143e36334877b9395b9c5c29ee30c/toddlerbot/descriptions/toddlerbot_2xc",
-    "license_url": "https://github.com/hshi74/toddlerbot/blob/067f9dc4f50143e36334877b9395b9c5c29ee30c/toddlerbot/descriptions/toddlerbot_2xc/LICENSE",
+    "license_url": "https://github.com/hshi74/toddlerbot/blob/067f9dc4f50143e36334877b9395b9c5c29ee30c/LICENSE",
     "mirror": null,
-    "mjcf": null
+    "mjcf": "toddlerbot/descriptions/toddlerbot_2xc/scene.xml"
    },
    "links": {
     "official": "https://toddlerbot.github.io/"
-   }
+   },
+   "variants": [
+    {
+     "id": "toddlerbot_2xc",
+     "name": "2XC",
+     "deprecated": false,
+     "dof": 31,
+     "formats": [
+      "mjcf",
+      "urdf"
+     ],
+     "notes": null,
+     "notes_zh": null,
+     "measured": {
+      "size": {
+       "x": 0.2198,
+       "y": 0.5375,
+       "z": 0.262
+      },
+      "height_m": 0.5375
+     },
+     "mjcf": "toddlerbot/descriptions/toddlerbot_2xc/scene.xml",
+     "urdf": {
+      "xml_name": "toddlerbot_2xc",
+      "links": 91,
+      "joints": {
+       "fixed": 59,
+       "floating": 1,
+       "revolute": 30
+      },
+      "moving_joints": 31,
+      "mass_kg": 3.499,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 71535
+     },
+     "assets": {
+      "base": "https://cdn.jsdelivr.net/gh/hshi74/toddlerbot@067f9dc4f50143e36334877b9395b9c5c29ee30c/",
+      "urdf": "toddlerbot/descriptions/toddlerbot_2xc/toddlerbot_2xc.urdf",
+      "packages": {},
+      "mesh_files": 47,
+      "mesh_bytes": 67610348,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "toddlerbot_2xm",
+     "name": "2XM",
+     "deprecated": false,
+     "dof": 31,
+     "formats": [
+      "mjcf",
+      "urdf"
+     ],
+     "notes": null,
+     "notes_zh": null,
+     "measured": {
+      "size": {
+       "x": 0.1705,
+       "y": 0.5375,
+       "z": 0.262
+      },
+      "height_m": 0.5375
+     },
+     "mjcf": "toddlerbot/descriptions/toddlerbot_2xm/scene.xml",
+     "urdf": {
+      "xml_name": "toddlerbot_2xm",
+      "links": 91,
+      "joints": {
+       "fixed": 59,
+       "floating": 1,
+       "revolute": 30
+      },
+      "moving_joints": 31,
+      "mass_kg": 3.814,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 71490
+     },
+     "assets": {
+      "base": "https://cdn.jsdelivr.net/gh/hshi74/toddlerbot@067f9dc4f50143e36334877b9395b9c5c29ee30c/",
+      "urdf": "toddlerbot/descriptions/toddlerbot_2xm/toddlerbot_2xm.urdf",
+      "packages": {},
+      "mesh_files": 47,
+      "mesh_bytes": 67635548,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    }
+   ]
   },
   {
    "id": "talos",
@@ -17366,77 +17459,6 @@
    }
   },
   {
-   "id": "toddlerbot_2xc",
-   "name": "ToddlerBot 2XC",
-   "maker": "Stanford University",
-   "category": "humanoid",
-   "tags": [
-    "mjcf"
-   ],
-   "dof": 44,
-   "license": "MIT",
-   "formats": [
-    "mjcf"
-   ],
-   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": {
-    "size": {
-     "x": 0.1676,
-     "y": 0.5325,
-     "z": 0.2828
-    },
-    "height_m": 0.5325
-   },
-   "mjcf": {
-    "xml_name": "toddlerbot_2xc",
-    "links": 46,
-    "joints": {
-     "free": 1,
-     "hinge": 44
-    },
-    "moving_joints": 44,
-    "mass_kg": 3.454,
-    "has_collision": true,
-    "has_inertia": true,
-    "bytes": 2846,
-    "model_bytes": 50292
-   },
-   "assets": {
-    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
-    "mjcf": "toddlerbot_2xc/scene.xml",
-    "mjcf_model": "toddlerbot_2xc/toddlerbot_2xc.xml",
-    "packages": {},
-    "mesh_files": 47,
-    "mesh_bytes": 67610348,
-    "mesh_formats": [
-     ".stl"
-    ],
-    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/toddlerbot_2xc-toddlerbot_2xc.png"
-   },
-   "source": {
-    "description": null,
-    "github": "google-deepmind/mujoco_menagerie",
-    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
-    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
-    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xc",
-    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xc/LICENSE",
-    "mirror": null,
-    "mjcf": "toddlerbot_2xc/scene.xml",
-    "mjcf_external": {
-     "github": "google-deepmind/mujoco_menagerie",
-     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
-     "path": "toddlerbot_2xc/scene.xml",
-     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xc/scene.xml",
-     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xc/scene.xml",
-     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xc"
-    }
-   },
-   "links": {
-    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xc"
-   }
-  },
-  {
    "id": "pndbotics_adam_lite",
    "name": "PNDbotics Adam_lite",
    "maker": "PNDbotics",
@@ -17576,77 +17598,6 @@
    },
    "links": {
     "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/apptronik_apollo"
-   }
-  },
-  {
-   "id": "toddlerbot_2xm",
-   "name": "ToddlerBot 2XM",
-   "maker": "Stanford University",
-   "category": "humanoid",
-   "tags": [
-    "mjcf"
-   ],
-   "dof": 44,
-   "license": "MIT",
-   "formats": [
-    "mjcf"
-   ],
-   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": {
-    "size": {
-     "x": 0.1676,
-     "y": 0.5325,
-     "z": 0.2828
-    },
-    "height_m": 0.5325
-   },
-   "mjcf": {
-    "xml_name": "toddlerbot_2xm",
-    "links": 46,
-    "joints": {
-     "free": 1,
-     "hinge": 44
-    },
-    "moving_joints": 44,
-    "mass_kg": 3.769,
-    "has_collision": true,
-    "has_inertia": true,
-    "bytes": 2846,
-    "model_bytes": 50317
-   },
-   "assets": {
-    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
-    "mjcf": "toddlerbot_2xm/scene.xml",
-    "mjcf_model": "toddlerbot_2xm/toddlerbot_2xm.xml",
-    "packages": {},
-    "mesh_files": 47,
-    "mesh_bytes": 67635548,
-    "mesh_formats": [
-     ".stl"
-    ],
-    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/toddlerbot_2xm-toddlerbot_2xm.png"
-   },
-   "source": {
-    "description": null,
-    "github": "google-deepmind/mujoco_menagerie",
-    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
-    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
-    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xm",
-    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xm/LICENSE",
-    "mirror": null,
-    "mjcf": "toddlerbot_2xm/scene.xml",
-    "mjcf_external": {
-     "github": "google-deepmind/mujoco_menagerie",
-     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
-     "path": "toddlerbot_2xm/scene.xml",
-     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xm/scene.xml",
-     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xm/scene.xml",
-     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xm"
-    }
-   },
-   "links": {
-    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/toddlerbot_2xm"
    }
   },
   {
