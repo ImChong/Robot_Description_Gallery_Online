@@ -267,7 +267,12 @@ for (const robot of targets) {
   // An MJCF-only entry has two buttons rather than three: nothing in the ROS
   // toolchain reads a MuJoCo XML, so a package built around one would only look
   // as though it worked.
-  const descriptionPath = robot.assets.urdf || robot.assets.mjcf;
+  // An entry upstream publishes as xacro is saved as the URDF it expands to,
+  // under the name without the .xacro.
+  const isXacro = /\.xacro$/i.test(robot.assets.urdf || '');
+  const descriptionPath = isXacro
+    ? robot.assets.urdf.replace(/\.xacro$/i, '').replace(/(?<!\.urdf)$/i, '.urdf')
+    : robot.assets.urdf || robot.assets.mjcf;
   const isMjcf = !robot.assets.urdf;
   try {
     await page.goto(`${base}/web/${robot.url}`, { waitUntil: 'commit' });
@@ -281,7 +286,21 @@ for (const robot of targets) {
     const urdfPath = join(workDir, `${robot.id}.${isMjcf ? 'xml' : 'urdf'}`);
     await urdfDownload.saveAs(urdfPath);
 
-    const upstream = await fetchText(robot.assets.base + descriptionPath);
+    // For a xacro the reference is the page's own expansion — there is no file
+    // upstream to compare with — checked against the counts the registry
+    // recorded from the build's expansion.
+    const upstream = isXacro
+      ? await page.evaluate(async (entry) => {
+          const { fetchDescriptionText } = await import('/web/js/xacro.js');
+          return fetchDescriptionText(entry);
+        }, robot)
+      : await fetchText(robot.assets.base + descriptionPath);
+    if (isXacro) {
+      const links = (withoutComments(upstream).match(/<link\b/g) || []).length;
+      if (links !== robot.urdf.links) {
+        throw new Error(`expansion has ${links} links, registry says ${robot.urdf.links}`);
+      }
+    }
     const saved = readFileSync(urdfPath, 'utf8');
     if (saved !== upstream) throw new Error('saved description differs from upstream');
 

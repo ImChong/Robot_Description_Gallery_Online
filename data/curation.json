@@ -1440,6 +1440,29 @@
       "notes_zh": "LAAS 的教学用人形机器人：131 kg 的机身、29 个关节，全部由长方体和圆柱体画成。它存在的意义就是「除了 URDF 本身没有别的东西要下载的人形机器人」——测试算法而不是测试机器人时大家会拿它。"
     },
     {
+      "id": "op3",
+      "name": "OP3",
+      "maker": "ROBOTIS",
+      "category": "humanoid",
+      "upstream": {
+        "github": "ROBOTIS-GIT/ROBOTIS-OP3-Common",
+        "commit": "0780e54c2064a42089b0cf970d716ae44fec9233",
+        "package": "op3_description",
+        "urdf": "op3_description/urdf/robotis_op3.urdf.xacro",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "tags": [
+          "humanoid"
+        ]
+      },
+      "links": {
+        "official": "https://emanual.robotis.com/docs/en/platform/op3/introduction/",
+        "docs": "https://github.com/ROBOTIS-GIT/ROBOTIS-OP3-Common/tree/master/op3_description"
+      },
+      "notes": "ROBOTIS' open-platform miniature humanoid: 20 Dynamixel joints, 3.1 kg, 51 cm tall. Upstream publishes the description as xacro only (robotis_op3.urdf.xacro and its included files), so the gallery expands it in the browser and the registry build expands the same way; the download is the expanded URDF. Gazebo and transmission blocks are dropped on expansion.",
+      "notes_zh": "ROBOTIS 的开放平台小型人形机器人：20 个 Dynamixel 关节，3.1 kg，高 51 cm。上游只发布 xacro（robotis_op3.urdf.xacro 及其 include 文件），所以本站在浏览器里展开它，registry 构建时用同一套代码展开；下载得到的是展开后的 URDF。展开时会丢掉 Gazebo 与 transmission 块。"
+    },
+    {
       "description": "go2_description",
       "category": "quadruped",
       "links": {

@@ -40,6 +40,7 @@ import { categoryLabel, t } from './i18n.js';
 import { CUSTOM_ID, customEntry } from './custom.js';
 import { formatBytes, urdfUrl, variantView } from './registry.js';
 import { loadUrdfSpec } from './urdf-spec.js';
+import { fetchDescriptionText } from './xacro.js';
 import { align, defaultMode, fingerOrder, limbs, REGION_ORDER, SIDE_ORDER } from './joint-align.js';
 import { CompareStage } from './compare-stage.js';
 
@@ -848,7 +849,7 @@ export class Compare {
     await Promise.all(
       missing.map(async (entry) => {
         try {
-          const spec = await loadUrdfSpec(urdfUrl(entry.robot));
+          const spec = await loadUrdfSpec(urdfUrl(entry.robot), () => fetchDescriptionText(entry.robot));
           this.loaded.set(entry.key, { spec });
         } catch (err) {
           this.loaded.set(entry.key, { error: String(err.message || err) });

@@ -4,7 +4,7 @@
 [![Verify](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml/badge.svg)](https://github.com/ImChong/Robot_URDF_Gallery_Online/actions/workflows/verify.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-收录 **207 个**开源机器人描述：170 个 URDF 可在站内拖关节、查看碰撞体与惯量，并下载
+收录 **207 个**开源机器人描述：171 个 URDF 可在站内拖关节、查看碰撞体与惯量，并下载
 URDF、网格 zip 或 ROS 2 功能包；纯 MJCF 条目使用 MuJoCo Live 在线预览。
 
 在线访问：<https://imchong.github.io/Robot_Description_Gallery_Online/web/>
@@ -85,7 +85,10 @@ npm run check:custom-url             # 校验自定义 URL 路由
 
 ## 已知限制
 
-- 暂不支持只提供 xacro 的模型（如 Fetch）；自己上传时请先
+- 上游只发布 xacro 的模型，满足「`xacro:include` 只用相对路径或 `$(find pkg)`、
+  `<xacro:arg>` 都有默认值」时可以收录：站内用 xacro-parser 展开（OP3 就是这样收录的，
+  下载得到的是展开后的 URDF），registry 构建时由 `scripts/expand_xacro.mjs` 用同一份代码展开。
+  需要 ROS 工具链才能展开的模型（如 Fetch）仍暂不收录；自己上传时请先
   `xacro robot.urdf.xacro > robot.urdf`。厂商只发布 xacro、但有第三方公开了展开后的
   URDF 时收录后者——UR 三台走的就是 example-robot-data 这条路。
 - 网格是 Y-up 的 glTF（`obj2gltf` 的默认输出）时每个连杆都会摆错方向，这类模型同样
@@ -106,7 +109,7 @@ npm run check:custom-url             # 校验自定义 URL 路由
 
 ---
 
-**English** — A browsable gallery of 207 open robot descriptions: 170 URDF entries
+**English** — A browsable gallery of 207 open robot descriptions: 171 URDF entries
 load in the built-in viewer, while MJCF-only entries open as pinned MuJoCo Live scenes.
 The gallery groups robots by category and then by maker. The URDF viewer lets you drag
 joints — or play every joint in turn out to both its limits and back, a second each —
