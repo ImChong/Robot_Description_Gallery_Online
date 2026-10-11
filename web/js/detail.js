@@ -12,6 +12,7 @@ import {
 import { categoryLabel, lang, pageTitle, t } from './i18n.js';
 import { downloadBundle, downloadRos2, downloadUrdf, ros2PackageName } from './download.js';
 import { icon } from './icons.js';
+import { fetchDescriptionText, isXacroPath, urdfFileName } from './xacro.js';
 import { onThemeChange, theme } from './theme.js';
 import { angleUnit, DEG, formatAngle, setAngleUnit } from './angle-unit.js';
 import { JointSweep, sliderRange, sliderStep } from './joint-sweep.js';
@@ -164,6 +165,18 @@ const SNIPPETS = {
     descriptionKind(r) === 'mjcf'
       ? `# A model with no URDF: pinocchio has nothing to read here.
 # The mujoco tab is the one that loads ${r.name}.`
+      : isXacroPath(r.assets.urdf)
+      ? `# pip install pin xacro
+# ${r.name} is published as xacro only: expand it first (the gallery's URDF
+# download is the same expansion), then load the result from the checkout the
+# git tab makes.
+#   xacro ${repoDir(r)}/${r.assets.urdf} -o ${urdfFileName(r.assets.urdf).split('/').pop()}
+import pinocchio
+
+robot = pinocchio.RobotWrapper.BuildFromURDF(
+    "${urdfFileName(r.assets.urdf).split('/').pop()}",${packageDirs(r).length ? `\n    [${packageDirs(r).map((d) => `"${d}"`).join(', ')}],` : ''}
+)
+print(robot.model.nq, "DOF")`
       : r.source.description
       ? `# pip install robot_descriptions
 from robot_descriptions.loaders.pinocchio import load_robot_description
@@ -220,7 +233,7 @@ model = mujoco.MjModel.from_xml_path("mujoco_menagerie/${r.source.mjcf_external.
 data = mujoco.MjData(model)`
         : `# ${r.name} has no MJCF${r.source.description ? ' in robot_descriptions' : ' upstream'}.
 # Convert the URDF with MuJoCo's compiler:
-#   python -m mujoco.urdf2mjcf ${r.assets.urdf.split('/').pop()}`,
+#   python -m mujoco.urdf2mjcf ${urdfFileName(r.assets.urdf).split('/').pop()}`,
   // Nothing to clone for a mirrored entry: the archive it comes from serves
   // files over HTTP and publishes no repository. Fetching the URDF and the
   // meshes it still has is the equivalent, and it is what the gallery does.
@@ -893,9 +906,7 @@ export class Detail {
     const xmlText =
       descriptionKind(robot) === 'mjcf'
         ? Promise.resolve(null)
-        : fetch(urdfUrl(robot))
-            .then((response) => (response.ok ? response.text() : null))
-            .catch(() => null);
+        : fetchDescriptionText(robot).catch(() => null);
 
     try {
       await this.viewer.load(robot, (done, total) => {

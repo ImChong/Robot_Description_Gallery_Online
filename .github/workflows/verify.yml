@@ -43,6 +43,11 @@ jobs:
       - run: pip install -r scripts/requirements.txt
       - run: npm ci
 
+      # build_registry.py expands xacro-only entries (OP3) in headless Chromium
+      # through scripts/expand_xacro.mjs, so the browser has to be there first.
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
       # Regenerating in CI is the actual check: build_registry.py HEAD-probes
       # every mesh, so an upstream that moved files fails here.
       - name: Rebuild registry
@@ -131,9 +136,6 @@ jobs:
           # Keep the pull-request check aligned with the Pages preflight so a
           # missing card image is caught before the change reaches main.
           node scripts/check_registry.mjs --thumbs
-
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
 
       # The compare page reads the same descriptions a second time — without
       # the meshes — and lines their joints up against each other. This asserts

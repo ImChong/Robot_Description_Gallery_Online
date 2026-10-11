@@ -32,6 +32,7 @@
     "booster_t1/scene.xml": "booster_t1",
     "berkeley_humanoid/scene.xml": "berkeley_humanoid",
     "fourier_n1/scene.xml": "n1",
+    "robotis_op3/scene.xml": "op3",
     "unitree_a1/scene.xml": "a1",
     "google_barkour_v0/scene.xml": "barkour_v0",
     "anybotics_anymal_b/scene.xml": "anymal_b",

@@ -53,6 +53,7 @@ import json
 import os
 import posixpath
 import re
+import subprocess
 import sys
 import time
 import urllib.error
@@ -538,11 +539,86 @@ def package_candidates(up: Upstream, package: str) -> list[str]:
     return seen
 
 
+XACRO_INCLUDE = re.compile(r"""<xacro:include\b[^>]*?\bfilename\s*=\s*["']([^"']+)["']""")
+XACRO_FIND = re.compile(r"^\$\(find\s+([^)\s]+)\)/?(.*)$")
+XML_COMMENT = re.compile(r"<!--.*?-->", re.DOTALL)
+
+
+def expand_xacro(up: Upstream, http: Http) -> tuple[bytes | None, dict[str, str], str | None]:
+    """Expand an upstream xacro to URDF; ``(urdf, package roots, error)``.
+
+    The include tree is fetched here, through the build's own cache, and handed
+    to scripts/expand_xacro.mjs, which runs web/js/xacro.js — the code the
+    viewer uses — so the facts recorded for the entry describe the model the
+    stage will show. ``$(find pkg)`` includes are looked for under the same
+    package roots mesh references are; relative includes against the including
+    file. A commented-out include is not one.
+    """
+    base = base_url(up)
+    files: dict[str, str] = {}
+    packages: dict[str, str] = dict(up.packages or {})
+
+    def fetch(path: str) -> str | None:
+        body = http.get(base + path)
+        return body.decode("utf-8") if body is not None else None
+
+    root_text = fetch(up.urdf_path)
+    if root_text is None:
+        return None, packages, "xacro fetch failed"
+    files[up.urdf_path] = root_text
+    queue = [up.urdf_path]
+    while queue:
+        current = queue.pop()
+        for name in XACRO_INCLUDE.findall(XML_COMMENT.sub("", files[current])):
+            found = XACRO_FIND.match(name)
+            if found:
+                package, rel = found.groups()
+                roots = [packages[package]] if package in packages else package_candidates(up, package)
+                options = [(root, posixpath.normpath(posixpath.join(root, rel))) for root in roots]
+            elif "$(" in name:
+                return None, packages, f"xacro include {name!r} needs a substitution this build does not do"
+            else:
+                options = [(None, posixpath.normpath(posixpath.join(posixpath.dirname(current), name)))]
+            for root, path in options:
+                path = path.lstrip("/")
+                if path in files:
+                    break
+                text = fetch(path)
+                if text is not None:
+                    files[path] = text
+                    queue.append(path)
+                    break
+            else:
+                return None, packages, f"xacro include {name!r} not found from {current}"
+            if root is not None:
+                packages.setdefault(found.group(1), root)
+    job = json.dumps({"urdf": up.urdf_path, "packages": packages, "files": files})
+    try:
+        done = subprocess.run(
+            ["node", str(ROOT / "scripts" / "expand_xacro.mjs")],
+            input=job.encode(),
+            capture_output=True,
+            timeout=180,
+            check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        return None, packages, f"xacro expansion could not run: {exc}"
+    if done.returncode != 0:
+        return None, packages, f"xacro expansion failed: {done.stderr.decode(errors='replace').strip()[:300]}"
+    return done.stdout, packages, None
+
+
 def inspect_urdf(up: Upstream, http: Http, verify_meshes: bool = True) -> UrdfFacts:
     """Download the URDF, parse it, and check that its meshes are reachable."""
     if not up.urdf_path or not (up.mirror or (up.github and up.commit)):
         return UrdfFacts(ok=False, error="no urdf path")
-    raw = http.get(base_url(up) + up.urdf_path)
+    xacro_packages: dict[str, str] = {}
+    if up.urdf_path.endswith(".xacro"):
+        raw, xacro_packages, error = expand_xacro(up, http)
+        if raw is None:
+            return UrdfFacts(ok=False, error=error)
+    else:
+        raw = http.get(base_url(up) + up.urdf_path)
     if raw is None:
         return UrdfFacts(ok=False, error="urdf fetch failed")
     try:
@@ -597,6 +673,9 @@ def inspect_urdf(up: Upstream, http: Http, verify_meshes: bool = True) -> UrdfFa
         link_names=[link.get("name") for link in root.iter("link") if link.get("name")],
     )
 
+    # The packages the xacro's includes were found in belong to the entry too:
+    # the viewer needs them to expand it.
+    facts.packages.update(xacro_packages)
     meshes = sorted({m.get("filename", "") for m in root.iter("mesh") if m.get("filename")})
     facts.mesh_formats = sorted({posixpath.splitext(m)[1].lower() for m in meshes if m})
     if not verify_meshes:

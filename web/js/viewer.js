@@ -13,6 +13,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import URDFLoader from 'urdf-loader';
 import { applyMeshRewrite, canonicalAssetUrl } from './registry.js';
 import { loadMJCF } from './mjcf.js';
+import { fetchDescriptionText } from './xacro.js';
 import { URDFRobot, URDFVisual } from '../vendor/urdf-loader/URDFClasses.js';
 
 const UP_Z = -Math.PI / 2; // URDF is Z-up, three.js is Y-up.
@@ -1288,11 +1289,14 @@ export class RobotViewer {
       }
     };
 
-    const url = base + entry.assets.urdf;
-    const text = await fetch(url).then((r) => {
-      if (!r.ok) throw new Error(`URDF ${r.status} ${url}`);
-      return r.text();
-    });
+    // A model picked off disk was expanded when it was picked; a registry entry
+    // upstream publishes as xacro is expanded here (see js/xacro.js).
+    const text = local
+      ? await fetch(base + entry.assets.urdf).then((r) => {
+          if (!r.ok) throw new Error(`URDF ${r.status} ${base + entry.assets.urdf}`);
+          return r.text();
+        })
+      : await fetchDescriptionText(entry);
 
     this._abandonIfStale(epoch, entry);
     const robot = loader.parse(

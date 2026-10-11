@@ -386,17 +386,21 @@ const specCache = new Map();
  * add to a comparison.
  *
  * @param {string} url
+ * @param {() => Promise<string>} [readText] how to get the URDF text, for a
+ *   description that is not a plain file at `url` (a xacro, see js/xacro.js)
  * @returns {Promise<object>} spec
  */
-export function loadUrdfSpec(url) {
+export function loadUrdfSpec(url, readText) {
   if (!specCache.has(url)) {
     specCache.set(
       url,
-      fetch(url)
-        .then((response) => {
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          return response.text();
-        })
+      (readText
+        ? readText()
+        : fetch(url).then((response) => {
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return response.text();
+          })
+      )
         .then((text) => {
           const spec = parseUrdfSpec(text);
           spec.bytes = text.length;

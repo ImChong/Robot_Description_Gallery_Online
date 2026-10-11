@@ -5806,6 +5806,82 @@
    "links": {}
   },
   {
+   "id": "op3",
+   "name": "OP3",
+   "maker": "ROBOTIS",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 20,
+   "license": "Apache-2.0",
+   "formats": [
+    "mjcf",
+    "urdf"
+   ],
+   "notes": "ROBOTIS' open-platform miniature humanoid: 20 Dynamixel joints, 3.1 kg, 51 cm tall. Upstream publishes the description as xacro only (robotis_op3.urdf.xacro and its included files), so the gallery expands it in the browser and the registry build expands the same way; the download is the expanded URDF. Gazebo and transmission blocks are dropped on expansion.",
+   "notes_zh": "ROBOTIS 的开放平台小型人形机器人：20 个 Dynamixel 关节，3.1 kg，高 51 cm。上游只发布 xacro（robotis_op3.urdf.xacro 及其 include 文件），所以本站在浏览器里展开它，registry 构建时用同一套代码展开；下载得到的是展开后的 URDF。展开时会丢掉 Gazebo 与 transmission 块。",
+   "pose": null,
+   "loops": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.1745,
+     "y": 0.5109,
+     "z": 0.6508
+    },
+    "height_m": 0.5109
+   },
+   "urdf": {
+    "xml_name": "robotis_op3",
+    "links": 23,
+    "joints": {
+     "fixed": 2,
+     "revolute": 20
+    },
+    "moving_joints": 20,
+    "mass_kg": 3.147,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 29607
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/ROBOTIS-GIT/ROBOTIS-OP3-Common@0780e54c2064a42089b0cf970d716ae44fec9233/",
+    "urdf": "op3_description/urdf/robotis_op3.urdf.xacro",
+    "packages": {
+     "op3_description": "op3_description"
+    },
+    "mesh_files": 21,
+    "mesh_bytes": 46460064,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "ROBOTIS-GIT/ROBOTIS-OP3-Common",
+    "commit": "0780e54c2064a42089b0cf970d716ae44fec9233",
+    "repo_url": "https://github.com/ROBOTIS-GIT/ROBOTIS-OP3-Common",
+    "tree_url": "https://github.com/ROBOTIS-GIT/ROBOTIS-OP3-Common/tree/0780e54c2064a42089b0cf970d716ae44fec9233/op3_description",
+    "license_url": "https://github.com/ROBOTIS-GIT/ROBOTIS-OP3-Common/blob/0780e54c2064a42089b0cf970d716ae44fec9233/LICENSE",
+    "mirror": null,
+    "mjcf": null,
+    "mjcf_external": {
+     "github": "google-deepmind/mujoco_menagerie",
+     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
+     "path": "robotis_op3/scene.xml",
+     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/robotis_op3/scene.xml",
+     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3/scene.xml",
+     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3"
+    }
+   },
+   "links": {
+    "official": "https://emanual.robotis.com/docs/en/platform/op3/introduction/",
+    "docs": "https://github.com/ROBOTIS-GIT/ROBOTIS-OP3-Common/tree/master/op3_description",
+    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3"
+   }
+  },
+  {
    "id": "go2",
    "name": "Go2",
    "maker": "UNITREE Robotics",
@@ -17385,77 +17461,6 @@
    },
    "links": {
     "official": "https://www.deeprobotics.cn/en/index/lynx.html"
-   }
-  },
-  {
-   "id": "robotis_op3",
-   "name": "Robotis OP3",
-   "maker": "ROBOTIS",
-   "category": "humanoid",
-   "tags": [
-    "mjcf"
-   ],
-   "dof": 20,
-   "license": "Apache-2.0",
-   "formats": [
-    "mjcf"
-   ],
-   "notes": "MJCF-only model from MuJoCo Menagerie, rendered here from its MuJoCo XML. The detail page links to the pinned scene in MuJoCo Live.",
-   "notes_zh": "来自 MuJoCo Menagerie 的纯 MJCF 模型，直接由 MuJoCo XML 在站内渲染；详情页可跳转到 MuJoCo Live 打开固定版本的场景。",
-   "measured": {
-    "size": {
-     "x": 0.1745,
-     "y": 0.5109,
-     "z": 0.6508
-    },
-    "height_m": 0.5109
-   },
-   "mjcf": {
-    "xml_name": "robotis_op3",
-    "links": 22,
-    "joints": {
-     "free": 1,
-     "hinge": 20
-    },
-    "moving_joints": 20,
-    "mass_kg": 3.147,
-    "has_collision": true,
-    "has_inertia": true,
-    "bytes": 815,
-    "model_bytes": 13230
-   },
-   "assets": {
-    "base": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/",
-    "mjcf": "robotis_op3/scene.xml",
-    "mjcf_model": "robotis_op3/op3.xml",
-    "packages": {},
-    "mesh_files": 48,
-    "mesh_bytes": 46806532,
-    "mesh_formats": [
-     ".stl"
-    ],
-    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/robotis_op3-op3.png"
-   },
-   "source": {
-    "description": null,
-    "github": "google-deepmind/mujoco_menagerie",
-    "commit": "da76818e269b82289eba39808e2fb91d679d6994",
-    "repo_url": "https://github.com/google-deepmind/mujoco_menagerie",
-    "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3",
-    "license_url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/robotis_op3/LICENSE",
-    "mirror": null,
-    "mjcf": "robotis_op3/scene.xml",
-    "mjcf_external": {
-     "github": "google-deepmind/mujoco_menagerie",
-     "commit": "da76818e269b82289eba39808e2fb91d679d6994",
-     "path": "robotis_op3/scene.xml",
-     "url": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/robotis_op3/scene.xml",
-     "live_url": "https://live.mujoco.org/?model=github:google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3/scene.xml",
-     "tree_url": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3"
-    }
-   },
-   "links": {
-    "menagerie": "https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robotis_op3"
    }
   },
   {

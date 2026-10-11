@@ -27,6 +27,7 @@
 
 import { applyMeshRewrite, descriptionKind, descriptionPath } from './registry.js';
 import { inspectMJCF } from './mjcf.js';
+import { fetchDescriptionText, urdfFileName } from './xacro.js';
 
 const textEncoder = new TextEncoder();
 
@@ -232,6 +233,8 @@ function normalise(path) {
 /* ── public API ──────────────────────────────────────────── */
 
 export async function fetchUrdfText(robot) {
+  // A xacro-only upstream is saved as the URDF it expands to.
+  if (descriptionKind(robot) === 'urdf') return fetchDescriptionText(robot);
   const url = robot.assets.base + descriptionPath(robot);
   const response = await fetch(url);
   if (!response.ok) throw new Error(`${descriptionKind(robot).toUpperCase()} ${response.status}`);
@@ -241,7 +244,7 @@ export async function fetchUrdfText(robot) {
 /** Save the description file — a `.urdf` or a `.xml` — on its own. */
 export async function downloadUrdf(robot) {
   const text = await fetchUrdfText(robot);
-  const name = descriptionPath(robot).split('/').pop();
+  const name = urdfFileName(descriptionPath(robot)).split('/').pop();
   saveBlob(new Blob([text], { type: 'application/xml' }), name);
   return { files: 1, bytes: textEncoder.encode(text).length };
 }
@@ -265,7 +268,7 @@ export async function downloadBundle(robot, onProgress) {
 async function urdfBundle(robot, urdfText, onProgress) {
   const targets = meshTargets(robot, urdfText);
   return [
-    { name: robot.assets.urdf, bytes: textEncoder.encode(urdfText) },
+    { name: urdfFileName(robot.assets.urdf), bytes: textEncoder.encode(urdfText) },
     { name: 'NOTICE.txt', bytes: textEncoder.encode(notice(robot, targets.length)) },
     ...(await fetchMeshes(targets, (target) => target.path, onProgress)),
   ];
@@ -398,7 +401,7 @@ export function ros2PackageName(robot) {
 export function ros2Layout(robot, urdfText) {
   const pkg = ros2PackageName(robot);
   const { targets, skipped } = resolveMeshes(robot, urdfText);
-  const prefix = commonDir([robot.assets.urdf, ...targets.map((t) => t.path)]);
+  const prefix = commonDir([urdfFileName(robot.assets.urdf), ...targets.map((t) => t.path)]);
   const inPackage = (path) => (path.startsWith(prefix) ? path.slice(prefix.length) : path);
   const refs = new Map(targets.map((t) => [t.ref, `package://${pkg}/${inPackage(t.path)}`]));
   return {
@@ -408,7 +411,7 @@ export function ros2Layout(robot, urdfText) {
     // Geometry the host does not have, dropped from this URDF so the package
     // loads. Named here so the README can say what came out.
     skipped,
-    urdfPath: inPackage(robot.assets.urdf),
+    urdfPath: inPackage(urdfFileName(robot.assets.urdf)),
     urdf: rewriteMeshRefs(dropGeometry(urdfText, skipped), refs),
     // References the registry could not map to a file in the upstream repository
     // — usually a package:// pointing at some package this description does not
