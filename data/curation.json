@@ -120,6 +120,11 @@
       "label_zh": "移动底盘"
     },
     {
+      "id": "vehicle",
+      "label": "Vehicle",
+      "label_zh": "车辆"
+    },
+    {
       "id": "sensor",
       "label": "Sensor",
       "label_zh": "传感器"
@@ -4778,6 +4783,29 @@
       },
       "notes": "Maker's Pet Mini, the 124 mm Kaia.ai-compatible educational robot: two drive wheels, a caster and a LiDAR puck on a round body. Upstream publishes xacro only, expanded in the browser. The repository is named oomwoo_urdf but its model is the Mini, not the OOMWOO One vacuum.",
       "notes_zh": "Maker's Pet Mini：直径 124 mm、兼容 Kaia.ai 的教育机器人，圆形机身上有两个驱动轮、一个万向轮和一个激光雷达圆盘。上游只发布 xacro，在浏览器里展开。仓库名叫 oomwoo_urdf，但里面的模型是 Mini，不是 OOMWOO One 扫地机。"
+    },
+    {
+      "id": "prius",
+      "name": "Prius (car_demo)",
+      "maker": "Toyota",
+      "category": "vehicle",
+      "upstream": {
+        "github": "osrf/car_demo",
+        "commit": "38a4686dd573739dcd237187030efba3ce4913b0",
+        "package": "prius_description",
+        "urdf": "prius_description/urdf/prius.urdf",
+        "license": "Apache-2.0",
+        "license_file": "prius_description/package.xml",
+        "tags": [
+          "vehicle",
+          "ackermann"
+        ]
+      },
+      "links": {
+        "docs": "https://github.com/osrf/car_demo/tree/38a4686dd573739dcd237187030efba3ce4913b0/prius_description"
+      },
+      "notes": "The Toyota Prius from Open Robotics' car_demo, the ROS Kinetic and Gazebo 8 simulation of a Prius driving through Mcity. Steering wheel, two steered front hubs and four wheels are continuous joints; the camera and lidar mounts are fixed frames. The repository has no LICENSE file: the licence recorded here is the Apache 2.0 that prius_description/package.xml declares. Meshes are OBJ, shown without their MTL textures.",
+      "notes_zh": "Open Robotics 的 car_demo 里的丰田普锐斯——Prius 在 Mcity 里行驶的 ROS Kinetic + Gazebo 8 仿真。方向盘、两个可转向的前轮毂和四个车轮都是连续关节；相机与激光雷达支架是固定坐标系。仓库没有 LICENSE 文件，这里记的许可证是 prius_description/package.xml 声明的 Apache 2.0。网格是 OBJ，显示时不带 MTL 贴图。"
     }
   ]
 }

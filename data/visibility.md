@@ -265,6 +265,10 @@ human readers.
 - [x] `irobot_create` **iRobot Create 1 / 2** — iRobot — [AutonomyLab/create_robot](https://github.com/AutonomyLab/create_robot/tree/51f9b651fd9b58c612eafc24bb2d6eea7dbb555c/create_description)
 - [x] `makerspet_mini` **Maker's Pet Mini** — Maker's Pet — [makerspet/oomwoo_urdf](https://github.com/makerspet/oomwoo_urdf/tree/6ededc2f28fd1a86ecf26da2dd3a58d6fcfc2004)
 
+## 车辆 Vehicle · 1
+
+- [x] `prius` **Prius (car_demo)** — Toyota — [osrf/car_demo](https://github.com/osrf/car_demo/tree/38a4686dd573739dcd237187030efba3ce4913b0/prius_description)
+
 ## 传感器 Sensor · 1
 
 - [x] `realsense_d435i` **Realsense D435i** — Intel RealSense — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/realsense_d435i)

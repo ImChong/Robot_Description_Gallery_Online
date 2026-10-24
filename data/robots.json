@@ -54,6 +54,11 @@
    "label_zh": "移动底盘"
   },
   {
+   "id": "vehicle",
+   "label": "Vehicle",
+   "label_zh": "车辆"
+  },
+  {
    "id": "sensor",
    "label": "Sensor",
    "label_zh": "传感器"
@@ -20651,6 +20656,72 @@
    },
    "links": {
     "docs": "https://github.com/makerspet/oomwoo_urdf"
+   }
+  },
+  {
+   "id": "prius",
+   "name": "Prius (car_demo)",
+   "maker": "Toyota",
+   "category": "vehicle",
+   "tags": [
+    "ackermann",
+    "vehicle"
+   ],
+   "dof": 7,
+   "license": "Apache-2.0",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "The Toyota Prius from Open Robotics' car_demo, the ROS Kinetic and Gazebo 8 simulation of a Prius driving through Mcity. Steering wheel, two steered front hubs and four wheels are continuous joints; the camera and lidar mounts are fixed frames. The repository has no LICENSE file: the licence recorded here is the Apache 2.0 that prius_description/package.xml declares. Meshes are OBJ, shown without their MTL textures.",
+   "notes_zh": "Open Robotics 的 car_demo 里的丰田普锐斯——Prius 在 Mcity 里行驶的 ROS Kinetic + Gazebo 8 仿真。方向盘、两个可转向的前轮毂和四个车轮都是连续关节；相机与激光雷达支架是固定坐标系。仓库没有 LICENSE 文件，这里记的许可证是 prius_description/package.xml 声明的 Apache 2.0。网格是 OBJ，显示时不带 MTL 贴图。",
+   "pose": null,
+   "loops": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 4.6199,
+     "y": 1.5351,
+     "z": 2.016
+    },
+    "height_m": 1.5351
+   },
+   "urdf": {
+    "xml_name": "prius",
+    "links": 28,
+    "joints": {
+     "continuous": 7,
+     "fixed": 20
+    },
+    "moving_joints": 7,
+    "mass_kg": 1423.0,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 33446
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/osrf/car_demo@38a4686dd573739dcd237187030efba3ce4913b0/",
+    "urdf": "prius_description/urdf/prius.urdf",
+    "packages": {
+     "prius_description": "prius_description"
+    },
+    "mesh_files": 3,
+    "mesh_bytes": 162280,
+    "mesh_formats": [
+     ".obj"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "osrf/car_demo",
+    "commit": "38a4686dd573739dcd237187030efba3ce4913b0",
+    "repo_url": "https://github.com/osrf/car_demo",
+    "tree_url": "https://github.com/osrf/car_demo/tree/38a4686dd573739dcd237187030efba3ce4913b0/prius_description",
+    "license_url": "https://github.com/osrf/car_demo/blob/38a4686dd573739dcd237187030efba3ce4913b0/prius_description/package.xml",
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "docs": "https://github.com/osrf/car_demo/tree/38a4686dd573739dcd237187030efba3ce4913b0/prius_description"
    }
   }
  ]
