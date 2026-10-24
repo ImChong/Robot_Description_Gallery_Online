@@ -149,6 +149,9 @@ class Upstream:
     # by probing, which works because the paths are the ones the URDF was
     # written against; an archive rearranges them, so it has to be told.
     packages: dict[str, str] | None = None
+    # ROS packages a xacro includes that the repository does not carry; their
+    # includes expand to nothing (see web/js/xacro.js).
+    xacro_stubs: list[str] | None = None
     # Substring substitutions applied to a resolved mesh path, for an archive
     # that flattened the tree the URDF still refers to.
     mesh_rewrite: list[tuple[str, str]] = field(default_factory=list)
@@ -541,6 +544,9 @@ def package_candidates(up: Upstream, package: str) -> list[str]:
 
 XACRO_INCLUDE = re.compile(r"""<xacro:include\b[^>]*?\bfilename\s*=\s*["']([^"']+)["']""")
 XACRO_FIND = re.compile(r"^\$\(find\s+([^)\s]+)\)/?(.*)$")
+XACRO_OPTENV = re.compile(r"^\$\(optenv\s+\S+\s+([^)\s]+)\)$")
+XACRO_COND_OPEN = re.compile(r"<xacro:(?:if|unless)\b[^>]*[^/]>")
+XACRO_COND_CLOSE = re.compile(r"</xacro:(?:if|unless)>")
 XML_COMMENT = re.compile(r"<!--.*?-->", re.DOTALL)
 
 
@@ -567,10 +573,27 @@ def expand_xacro(up: Upstream, http: Http) -> tuple[bytes | None, dict[str, str]
         return None, packages, "xacro fetch failed"
     files[up.urdf_path] = root_text
     queue = [up.urdf_path]
+    optional_files: set[str] = set()  # reached only through an <xacro:if>
     while queue:
         current = queue.pop()
-        for name in XACRO_INCLUDE.findall(XML_COMMENT.sub("", files[current])):
+        source = XML_COMMENT.sub("", files[current])
+        for match in XACRO_INCLUDE.finditer(source):
+            name = match.group(1)
+            # An include inside <xacro:if>/<xacro:unless> may sit in a branch the
+            # default arguments never take (Clearpath's OutdoorNav package is not
+            # in the repository); if it cannot be found it is skipped here and
+            # the expansion fails loudly if the branch is taken after all.
+            before = source[: match.start()]
+            conditional = current in optional_files or (
+                len(XACRO_COND_OPEN.findall(before)) > len(XACRO_COND_CLOSE.findall(before))
+            )
+            # $(optenv NAME default) is the default: the environment is empty here.
+            fallback = XACRO_OPTENV.match(name)
+            if fallback:
+                name = fallback.group(1)
             found = XACRO_FIND.match(name)
+            if found and found.group(1) in (up.xacro_stubs or []):
+                continue
             if found:
                 package, rel = found.groups()
                 roots = [packages[package]] if package in packages else package_candidates(up, package)
@@ -587,12 +610,18 @@ def expand_xacro(up: Upstream, http: Http) -> tuple[bytes | None, dict[str, str]
                 if text is not None:
                     files[path] = text
                     queue.append(path)
+                    if conditional:
+                        optional_files.add(path)
                     break
             else:
+                if conditional:
+                    continue
                 return None, packages, f"xacro include {name!r} not found from {current}"
             if root is not None:
                 packages.setdefault(found.group(1), root)
-    job = json.dumps({"urdf": up.urdf_path, "packages": packages, "files": files})
+    job = json.dumps(
+        {"urdf": up.urdf_path, "packages": packages, "files": files, "stubs": up.xacro_stubs or []}
+    )
     try:
         done = subprocess.run(
             ["node", str(ROOT / "scripts" / "expand_xacro.mjs")],
@@ -938,6 +967,7 @@ def upstream_from_curation(item: dict[str, Any]) -> Upstream:
         # Then the entry says where the files really are, the same way a mirror
         # does — see mirror_from_curation.
         packages=spec.get("packages") or {},
+        xacro_stubs=spec.get("xacro_stubs") or None,
         mesh_rewrite=mesh_rewrite_rules(spec, first),
     )
 
@@ -1000,6 +1030,8 @@ def asset_block(up: Upstream, facts: UrdfFacts) -> dict[str, Any]:
         "mesh_bytes": facts.mesh_bytes,
         "mesh_formats": facts.mesh_formats,
     }
+    if up.xacro_stubs:
+        block["xacro_stubs"] = up.xacro_stubs
     if up.mesh_rewrite:
         block["mesh_rewrite"] = [{"from": old, "to": new} for old, new in up.mesh_rewrite]
     if facts.skip_paths:

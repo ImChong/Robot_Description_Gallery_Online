@@ -4540,6 +4540,251 @@
       }
     },
     {
+      "id": "husky",
+      "name": "Husky A200",
+      "maker": "Clearpath Robotics",
+      "category": "mobile_base",
+      "upstream": {
+        "github": "bulletphysics/bullet3",
+        "commit": "d3afe76132fc76b0f9b2359cbaef47a3766e7fbb",
+        "package": "data/husky",
+        "urdf": "data/husky/husky.urdf",
+        "license": "Zlib",
+        "license_file": "LICENSE.txt",
+        "tags": [
+          "mobile base",
+          "wheeled"
+        ]
+      },
+      "links": {
+        "official": "https://clearpathrobotics.com/husky-unmanned-ground-vehicle-robot/",
+        "docs": "https://github.com/bulletphysics/bullet3/blob/master/data/husky/husky.urdf"
+      },
+      "notes": "Clearpath's four-wheel skid-steer outdoor UGV. This is the Husky URDF that Bullet ships for its examples: base, four wheels, top plate, user rail and bumpers, with the wheels as continuous joints. Clearpath's own husky_description is xacro-only, so Bullet's flattened copy is what the gallery pins.",
+      "notes_zh": "Clearpath 的四轮滑移转向户外 UGV。这里收录的是 Bullet 示例自带的 Husky URDF：底盘、四个轮子、顶板、用户导轨与保险杠，轮子为 continuous 关节。Clearpath 官方的 husky_description 只有 xacro，所以本站固定的是 Bullet 里已展开的版本。"
+    },
+    {
+      "id": "turtlebot3_burger",
+      "name": "TurtleBot3 Burger",
+      "maker": "ROBOTIS",
+      "category": "mobile_base",
+      "upstream": {
+        "github": "ROBOTIS-GIT/turtlebot3",
+        "commit": "fc817ce3073af1d6032397c64504134882af5e9a",
+        "package": "turtlebot3_description",
+        "urdf": "turtlebot3_description/urdf/turtlebot3_burger.urdf",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "tags": [
+          "mobile base",
+          "wheeled"
+        ]
+      },
+      "links": {
+        "official": "https://emanual.robotis.com/docs/en/platform/turtlebot3/overview/",
+        "docs": "https://github.com/ROBOTIS-GIT/turtlebot3/tree/main/turtlebot3_description"
+      },
+      "notes": "ROBOTIS' smallest TurtleBot3: a two-wheel differential base with a rear ball caster, a LiDAR and a Raspberry Pi stack.",
+      "notes_zh": "ROBOTIS 最小的 TurtleBot3：双轮差速底盘，带后部万向球，上面是激光雷达与树莓派层板。"
+    },
+    {
+      "id": "jackal",
+      "name": "Jackal",
+      "maker": "Clearpath Robotics",
+      "category": "mobile_base",
+      "upstream": {
+        "github": "jackal/jackal",
+        "commit": "4ddf9b578bb7abce1115c8dc59d8b7f86aa9268c",
+        "package": "jackal_description",
+        "urdf": "jackal_description/urdf/jackal.urdf.xacro",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "mobile base",
+          "wheeled"
+        ],
+        "xacro_stubs": [
+          "sick_tim",
+          "lms1xx",
+          "pointgrey_camera_description",
+          "flir_camera_description",
+          "velodyne_description"
+        ]
+      },
+      "links": {
+        "official": "https://clearpathrobotics.com/jackal-small-unmanned-ground-vehicle/",
+        "docs": "https://github.com/jackal/jackal/tree/noetic-devel/jackal_description"
+      },
+      "notes": "Clearpath's small four-wheel skid-steer outdoor UGV, the compact companion to Husky. Upstream publishes xacro only, so the gallery expands it in the browser with its default configuration (no accessories).",
+      "notes_zh": "Clearpath 的小型四轮滑移转向户外 UGV，是 Husky 的小号搭档。上游只发布 xacro，本站在浏览器里按默认配置（不带附件）展开。"
+    },
+    {
+      "id": "ridgeback",
+      "name": "Ridgeback",
+      "maker": "Clearpath Robotics",
+      "category": "mobile_base",
+      "upstream": {
+        "github": "ridgeback/ridgeback",
+        "commit": "7f2489993f1369906e808402e8f45e4c2aebf5b3",
+        "package": "ridgeback_description",
+        "urdf": "ridgeback_description/urdf/ridgeback.urdf.xacro",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "mobile base",
+          "wheeled"
+        ],
+        "xacro_stubs": [
+          "lms1xx"
+        ]
+      },
+      "links": {
+        "official": "https://clearpathrobotics.com/ridgeback-indoor-robot-platform/",
+        "docs": "https://github.com/ridgeback/ridgeback/tree/melodic-devel/ridgeback_description"
+      },
+      "notes": "Clearpath's indoor omnidirectional platform: four mecanum wheels on rocker suspension. Upstream publishes xacro only, expanded here with the default configuration. The noetic-devel branch does not exist upstream; melodic-devel is the newest branch with this package.",
+      "notes_zh": "Clearpath 的室内全向平台：四个麦克纳姆轮加摇臂悬架。上游只发布 xacro，这里按默认配置展开。上游没有 noetic-devel 分支，melodic-devel 是带此包的最新分支。"
+    },
+    {
+      "id": "warthog",
+      "name": "Warthog",
+      "maker": "Clearpath Robotics",
+      "category": "mobile_base",
+      "upstream": {
+        "github": "warthog-cpr/warthog",
+        "commit": "55555b6db5fc7aa7b710b5652f7cb5bf0589ec6a",
+        "package": "warthog_description",
+        "urdf": "warthog_description/urdf/warthog.urdf.xacro",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "mobile base",
+          "wheeled"
+        ]
+      },
+      "links": {
+        "official": "https://clearpathrobotics.com/warthog-unmanned-ground-vehicle-robot/",
+        "docs": "https://github.com/warthog-cpr/warthog/tree/kinetic-devel/warthog_description"
+      },
+      "notes": "Clearpath's large amphibious off-road UGV: a four-wheel skid-steer chassis on rocker suspension. Upstream publishes xacro only, expanded here with the default configuration. The noetic-devel branch does not exist upstream; kinetic-devel is the newest.",
+      "notes_zh": "Clearpath 的大型两栖越野 UGV：带摇臂悬架的四轮滑移转向底盘。上游只发布 xacro，这里按默认配置展开。上游没有 noetic-devel 分支，kinetic-devel 是最新的。"
+    },
+    {
+      "id": "oomwoo_one",
+      "name": "OOMWOO One",
+      "maker": "Maker's Pet",
+      "category": "mobile_base",
+      "upstream": {
+        "github": "makerspet/oomwoo-one",
+        "commit": "a630d1c77255072d280a2a41a7a2bd1a1c98cadd",
+        "package": "",
+        "urdf": "urdf/robot.urdf.xacro",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "tags": [
+          "mobile base",
+          "wheeled"
+        ]
+      },
+      "links": {
+        "docs": "https://github.com/makerspet/oomwoo-one"
+      },
+      "notes": "An open-source robot vacuum: a 349 mm round body with two drive wheels, a front caster, a faceted bumper and a LiDAR turret on top, drawn entirely in primitives (no meshes). Forked from a Proscenic M6 Pro model with the LiDAR centred. Upstream publishes xacro only, expanded in the browser.",
+      "notes_zh": "开源扫地机器人：直径 349 mm 的圆形机身，两个驱动轮、前部万向轮、分面保险杠和顶部激光雷达塔，全部由基本几何体画成（没有网格）。由 Proscenic M6 Pro 模型改来，雷达居中。上游只发布 xacro，在浏览器里展开。"
+    },
+    {
+      "id": "irobot_create3",
+      "name": "iRobot Create 3",
+      "maker": "iRobot",
+      "category": "mobile_base",
+      "upstream": {
+        "github": "iRobotEducation/create3_sim",
+        "commit": "6c305843afcfe094bf8eb2a0c6997f531e526b9d",
+        "package": "irobot_create_common/irobot_create_description",
+        "urdf": "irobot_create_common/irobot_create_description/urdf/create3.urdf.xacro",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "mobile base",
+          "wheeled"
+        ]
+      },
+      "links": {
+        "official": "https://edu.irobot.com/create3",
+        "docs": "https://github.com/iRobotEducation/create3_sim"
+      },
+      "notes": "iRobot's Create 3 educational platform, the Roomba-derived base used by the TurtleBot 4: two drive wheels with wheel-drop, a front caster, a bumper, cliff and IR sensors. Upstream publishes xacro only, expanded in the browser.",
+      "notes_zh": "iRobot 的 Create 3 教育平台，源自 Roomba、也是 TurtleBot 4 的底盘：两个带落轮检测的驱动轮、前万向轮、保险杠，以及悬崖与红外传感器。上游只发布 xacro，在浏览器里展开。"
+    },
+    {
+      "id": "irobot_create",
+      "name": "iRobot Create 1 / 2",
+      "maker": "iRobot",
+      "category": "mobile_base",
+      "upstream": {
+        "github": "AutonomyLab/create_robot",
+        "commit": "51f9b651fd9b58c612eafc24bb2d6eea7dbb555c",
+        "package": "create_description",
+        "urdf": "create_description/urdf/create_2.urdf.xacro",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "mobile base",
+          "wheeled"
+        ]
+      },
+      "links": {
+        "docs": "https://github.com/AutonomyLab/create_robot"
+      },
+      "notes": "The Roomba-based iRobot Create 1 and Create 2 from the AutonomyLab driver: a round two-wheel differential base with front and rear casters. The version picker swaps between them. Upstream publishes xacro only, expanded in the browser.",
+      "notes_zh": "AutonomyLab 驱动里的 Roomba 系 iRobot Create 1 与 Create 2：圆形双轮差速底盘，前后各一个万向轮。用版本选择器切换。上游只发布 xacro，在浏览器里展开。",
+      "variants": [
+        {
+          "urdf": "create_description/urdf/create_2.urdf.xacro",
+          "name": "Create 2",
+          "id": "irobot_create_2",
+          "notes": "Create 2 (Roomba 600 series), 348.5 mm body, 235 mm wheel separation.",
+          "notes_zh": "Create 2（Roomba 600 系列），机身 348.5 mm，轮距 235 mm。"
+        },
+        {
+          "urdf": "create_description/urdf/create_1.urdf.xacro",
+          "name": "Create 1",
+          "id": "irobot_create_1",
+          "notes": "Create 1 (Roomba 400 series base), 330.2 mm body, 260 mm wheel separation.",
+          "notes_zh": "Create 1（Roomba 400 系列底盘），机身 330.2 mm，轮距 260 mm。"
+        }
+      ]
+    },
+    {
+      "id": "makerspet_mini",
+      "name": "Maker's Pet Mini",
+      "maker": "Maker's Pet",
+      "category": "mobile_base",
+      "upstream": {
+        "github": "makerspet/oomwoo_urdf",
+        "commit": "6ededc2f28fd1a86ecf26da2dd3a58d6fcfc2004",
+        "package": "",
+        "urdf": "urdf/robot.urdf.xacro",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "tags": [
+          "mobile base",
+          "wheeled"
+        ],
+        "mesh_rewrite": [
+          {
+            "from": "mesh/hemisphere.stl",
+            "to": "sdf/makerspet_mini/mesh/hemisphere.stl"
+          }
+        ]
+      },
+      "links": {
+        "docs": "https://github.com/makerspet/oomwoo_urdf"
+      },
+      "notes": "Maker's Pet Mini, the 124 mm Kaia.ai-compatible educational robot: two drive wheels, a caster and a LiDAR puck on a round body. Upstream publishes xacro only, expanded in the browser. The repository is named oomwoo_urdf but its model is the Mini, not the OOMWOO One vacuum.",
+      "notes_zh": "Maker's Pet Mini：直径 124 mm、兼容 Kaia.ai 的教育机器人，圆形机身上有两个驱动轮、一个万向轮和一个激光雷达圆盘。上游只发布 xacro，在浏览器里展开。仓库名叫 oomwoo_urdf，但里面的模型是 Mini，不是 OOMWOO One 扫地机。"
+    },
+    {
       "id": "prius",
       "name": "Prius (car_demo)",
       "maker": "Toyota",

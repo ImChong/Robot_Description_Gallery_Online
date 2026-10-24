@@ -22,6 +22,9 @@ export class ExpressionParser extends Parser {
             acos: Math.acos,
             atan: Math.atan,
             log: Math.log,
+            // Local addition: xacro evaluates in Python, where sqrt and abs exist.
+            sqrt: Math.sqrt,
+            abs: Math.abs,
             atan2: Math.atan2,
             pow: Math.pow,
             radians: (degrees) => { return degrees * (Math.PI / 180); },
