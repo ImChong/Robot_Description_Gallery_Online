@@ -2829,10 +2829,10 @@
         "host": "All Hands Up",
         "site": "https://allhandsup.org/zh/#gallery",
         "base": "https://allhandsup.org/hands_urdf/",
-        "urdf": "xHand-1/XHAND1_URDF_ver 1.3/xhand1_right/urdf/xhand_right.urdf",
-        "package": "xHand-1/XHAND1_URDF_ver 1.3/xhand1_right",
+        "urdf": "robotera_xhand1/XHAND1_URDF_ver 1.3/xhand1_right/urdf/xhand_right.urdf",
+        "package": "robotera_xhand1/XHAND1_URDF_ver 1.3/xhand1_right",
         "packages": {
-          "xhand_right": "xHand-1/XHAND1_URDF_ver 1.3/xhand1_right"
+          "xhand_right": "robotera_xhand1/XHAND1_URDF_ver 1.3/xhand1_right"
         },
         "license": "BSD-3-Clause",
         "tags": [
@@ -2858,10 +2858,10 @@
         "host": "All Hands Up",
         "site": "https://allhandsup.org/zh/#gallery",
         "base": "https://allhandsup.org/hands_urdf/",
-        "urdf": "Robotis-HX5-D20/urdf/hx5_d20_rev2/hx5_d20_right.urdf",
-        "package": "Robotis-HX5-D20",
+        "urdf": "robotis_hx5d20/urdf/hx5_d20_rev2/hx5_d20_right.urdf",
+        "package": "robotis_hx5d20",
         "packages": {
-          "robotis_hand_description": "Robotis-HX5-D20"
+          "robotis_hand_description": "robotis_hx5d20"
         },
         "license": "Apache-2.0",
         "tags": [
@@ -2889,10 +2889,10 @@
         "host": "All Hands Up",
         "site": "https://allhandsup.org/zh/#gallery",
         "base": "https://allhandsup.org/hands_urdf/",
-        "urdf": "Inspire-F1/urdf/RH56F1_R.urdf",
-        "package": "Inspire-F1",
+        "urdf": "inspire_rh56f1/urdf/RH56F1_R.urdf",
+        "package": "inspire_rh56f1",
         "packages": {
-          "inspire_hand_description": "Inspire-F1"
+          "inspire_hand_description": "inspire_rh56f1"
         },
         "mesh_rewrite": [
           {
@@ -2925,10 +2925,10 @@
         "host": "All Hands Up",
         "site": "https://allhandsup.org/zh/#gallery",
         "base": "https://allhandsup.org/hands_urdf/",
-        "urdf": "Agibot-Omnihand-Pro/assets/urdf_mesh_col/omnihand_pro_right.urdf",
-        "package": "Agibot-Omnihand-Pro/assets",
+        "urdf": "agibot_omnihandpro/assets/urdf_mesh_col/omnihand_pro_right.urdf",
+        "package": "agibot_omnihandpro/assets",
         "packages": {
-          "omnihand_pro_description": "Agibot-Omnihand-Pro/assets"
+          "omnihand_pro_description": "agibot_omnihandpro/assets"
         },
         "license": "MulanPSL-2.0",
         "tags": [

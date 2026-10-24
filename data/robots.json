@@ -10882,9 +10882,9 @@
    },
    "assets": {
     "base": "https://allhandsup.org/hands_urdf/",
-    "urdf": "xHand-1/XHAND1_URDF_ver 1.3/xhand1_right/urdf/xhand_right.urdf",
+    "urdf": "robotera_xhand1/XHAND1_URDF_ver 1.3/xhand1_right/urdf/xhand_right.urdf",
     "packages": {
-     "xhand_right": "xHand-1/XHAND1_URDF_ver 1.3/xhand1_right"
+     "xhand_right": "robotera_xhand1/XHAND1_URDF_ver 1.3/xhand1_right"
     },
     "mesh_files": 30,
     "mesh_bytes": 8429820,
@@ -10953,9 +10953,9 @@
    },
    "assets": {
     "base": "https://allhandsup.org/hands_urdf/",
-    "urdf": "Robotis-HX5-D20/urdf/hx5_d20_rev2/hx5_d20_right.urdf",
+    "urdf": "robotis_hx5d20/urdf/hx5_d20_rev2/hx5_d20_right.urdf",
     "packages": {
-     "robotis_hand_description": "Robotis-HX5-D20"
+     "robotis_hand_description": "robotis_hx5d20"
     },
     "mesh_files": 9,
     "mesh_bytes": 6907756,
@@ -11025,9 +11025,9 @@
    },
    "assets": {
     "base": "https://allhandsup.org/hands_urdf/",
-    "urdf": "Inspire-F1/urdf/RH56F1_R.urdf",
+    "urdf": "inspire_rh56f1/urdf/RH56F1_R.urdf",
     "packages": {
-     "inspire_hand_description": "Inspire-F1"
+     "inspire_hand_description": "inspire_rh56f1"
     },
     "mesh_files": 27,
     "mesh_bytes": 22382768,
@@ -11102,9 +11102,9 @@
    },
    "assets": {
     "base": "https://allhandsup.org/hands_urdf/",
-    "urdf": "Agibot-Omnihand-Pro/assets/urdf_mesh_col/omnihand_pro_right.urdf",
+    "urdf": "agibot_omnihandpro/assets/urdf_mesh_col/omnihand_pro_right.urdf",
     "packages": {
-     "omnihand_pro_description": "Agibot-Omnihand-Pro/assets"
+     "omnihand_pro_description": "agibot_omnihandpro/assets"
     },
     "mesh_files": 15,
     "mesh_bytes": 10218910,
@@ -11112,19 +11112,19 @@
      ".stl"
     ],
     "skip_meshes": [
-     "Agibot-Omnihand-Pro/assets/meshes/collision/finger_dip_col.STL",
-     "Agibot-Omnihand-Pro/assets/meshes/collision/index_mcp_col.STL",
-     "Agibot-Omnihand-Pro/assets/meshes/collision/index_pip_col.STL",
-     "Agibot-Omnihand-Pro/assets/meshes/collision/middle_mcp_col.STL",
-     "Agibot-Omnihand-Pro/assets/meshes/collision/middle_pip_col.STL",
-     "Agibot-Omnihand-Pro/assets/meshes/collision/r_palm_col.STL",
-     "Agibot-Omnihand-Pro/assets/meshes/collision/r_thumb_abad_col.STL",
-     "Agibot-Omnihand-Pro/assets/meshes/collision/r_thumb_roll_col.STL",
-     "Agibot-Omnihand-Pro/assets/meshes/collision/ring_mcp_col.STL",
-     "Agibot-Omnihand-Pro/assets/meshes/collision/ring_pip_col.STL",
-     "Agibot-Omnihand-Pro/assets/meshes/collision/thumb_dip_col.STL",
-     "Agibot-Omnihand-Pro/assets/meshes/collision/thumb_mcp_col.STL",
-     "Agibot-Omnihand-Pro/assets/meshes/collision/thumb_pip_col.STL"
+     "agibot_omnihandpro/assets/meshes/collision/finger_dip_col.STL",
+     "agibot_omnihandpro/assets/meshes/collision/index_mcp_col.STL",
+     "agibot_omnihandpro/assets/meshes/collision/index_pip_col.STL",
+     "agibot_omnihandpro/assets/meshes/collision/middle_mcp_col.STL",
+     "agibot_omnihandpro/assets/meshes/collision/middle_pip_col.STL",
+     "agibot_omnihandpro/assets/meshes/collision/r_palm_col.STL",
+     "agibot_omnihandpro/assets/meshes/collision/r_thumb_abad_col.STL",
+     "agibot_omnihandpro/assets/meshes/collision/r_thumb_roll_col.STL",
+     "agibot_omnihandpro/assets/meshes/collision/ring_mcp_col.STL",
+     "agibot_omnihandpro/assets/meshes/collision/ring_pip_col.STL",
+     "agibot_omnihandpro/assets/meshes/collision/thumb_dip_col.STL",
+     "agibot_omnihandpro/assets/meshes/collision/thumb_mcp_col.STL",
+     "agibot_omnihandpro/assets/meshes/collision/thumb_pip_col.STL"
     ]
    },
    "source": {
@@ -17506,7 +17506,7 @@
     "mjcf_model": "pndbotics_adam_lite/adam_lite.xml",
     "packages": {},
     "mesh_files": 74,
-    "mesh_bytes": 171627872,
+    "mesh_bytes": 54879780,
     "mesh_formats": [
      ".obj"
     ],
@@ -17577,7 +17577,7 @@
     "mjcf_model": "apptronik_apollo/apptronik_apollo.xml",
     "packages": {},
     "mesh_files": 44,
-    "mesh_bytes": 71212146,
+    "mesh_bytes": 13561192,
     "mesh_formats": [
      ".stl"
     ],
@@ -17648,7 +17648,7 @@
     "mjcf_model": "unitree_go1/go1.xml",
     "packages": {},
     "mesh_files": 5,
-    "mesh_bytes": 10316970,
+    "mesh_bytes": 1744418,
     "mesh_formats": [
      ".stl"
     ],
@@ -17719,7 +17719,7 @@
     "mjcf_model": "boston_dynamics_spot/spot.xml",
     "packages": {},
     "mesh_files": 23,
-    "mesh_bytes": 44339290,
+    "mesh_bytes": 5762085,
     "mesh_formats": [
      ".obj"
     ],
@@ -17790,14 +17790,14 @@
     "mjcf_model": "flybody/fruitfly.xml",
     "packages": {},
     "mesh_files": 85,
-    "mesh_bytes": 140210018,
+    "mesh_bytes": 73356961,
     "mesh_formats": [
      ".obj"
     ],
-    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/flybody-fruitfly.png",
     "mesh_alt": {
      "flybody/assets/head_red.obj": "https://raw.githubusercontent.com/google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/flybody/assets/head_red.obj"
-    }
+    },
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/flybody-fruitfly.png"
    },
    "source": {
     "description": null,
@@ -17863,7 +17863,7 @@
     "mjcf_model": "iit_softfoot/softfoot.xml",
     "packages": {},
     "mesh_files": 10,
-    "mesh_bytes": 3178740,
+    "mesh_bytes": 1411620,
     "mesh_formats": [
      ".stl"
     ],
@@ -17934,7 +17934,7 @@
     "mjcf_model": "ms_human_700/MS-Human-700.xml",
     "packages": {},
     "mesh_files": 190,
-    "mesh_bytes": 23766548,
+    "mesh_bytes": 13158400,
     "mesh_formats": [
      ".obj",
      ".stl"
@@ -18005,7 +18005,7 @@
     "mjcf_model": "aloha/aloha.xml",
     "packages": {},
     "mesh_files": 12,
-    "mesh_bytes": 8285808,
+    "mesh_bytes": 1061020,
     "mesh_formats": [
      ".stl"
     ],
@@ -18075,7 +18075,7 @@
     "mjcf_model": "google_robot/robot.xml",
     "packages": {},
     "mesh_files": 50,
-    "mesh_bytes": 4457874,
+    "mesh_bytes": 3472636,
     "mesh_formats": [
      ".obj",
      ".stl"
@@ -18147,15 +18147,15 @@
     "mjcf_model": "hello_robot_stretch/stretch.xml",
     "packages": {},
     "mesh_files": 75,
-    "mesh_bytes": 73506372,
+    "mesh_bytes": 45373635,
     "mesh_formats": [
      ".obj",
      ".stl"
     ],
-    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/hello_robot_stretch-stretch.png",
     "mesh_alt": {
      "hello_robot_stretch/assets/base_link_8.obj": "https://raw.githubusercontent.com/google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch/assets/base_link_8.obj"
-    }
+    },
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/hello_robot_stretch-stretch.png"
    },
    "source": {
     "description": null,
@@ -18222,7 +18222,7 @@
     "mjcf_model": "stanford_tidybot/tidybot.xml",
     "packages": {},
     "mesh_files": 20,
-    "mesh_bytes": 6646880,
+    "mesh_bytes": 2372072,
     "mesh_formats": [
      ".stl"
     ],
@@ -18293,15 +18293,15 @@
     "mjcf_model": "hello_robot_stretch_3/stretch.xml",
     "packages": {},
     "mesh_files": 96,
-    "mesh_bytes": 76287170,
+    "mesh_bytes": 36249017,
     "mesh_formats": [
      ".obj",
      ".stl"
     ],
-    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/hello_robot_stretch_3-stretch.png",
     "mesh_alt": {
      "hello_robot_stretch_3/assets/base_link_8.obj": "https://raw.githubusercontent.com/google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/hello_robot_stretch_3/assets/base_link_8.obj"
-    }
+    },
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/hello_robot_stretch_3-stretch.png"
    },
    "source": {
     "description": null,
@@ -18369,7 +18369,7 @@
     "mjcf_model": "pal_tiago_dual/tiago_dual_position.xml",
     "packages": {},
     "mesh_files": 17,
-    "mesh_bytes": 6872878,
+    "mesh_bytes": 4292426,
     "mesh_formats": [
      ".stl"
     ],
@@ -18439,7 +18439,7 @@
     "mjcf_model": "skydio_x2/x2.xml",
     "packages": {},
     "mesh_files": 2,
-    "mesh_bytes": 839367,
+    "mesh_bytes": 298668,
     "mesh_formats": [
      ".obj"
     ],
@@ -18509,7 +18509,7 @@
     "mjcf_model": "bitcraze_crazyflie_2/cf2.xml",
     "packages": {},
     "mesh_files": 39,
-    "mesh_bytes": 1089464,
+    "mesh_bytes": 530387,
     "mesh_formats": [
      ".obj"
     ],
@@ -18579,7 +18579,7 @@
     "mjcf_model": "franka_fr3/fr3.xml",
     "packages": {},
     "mesh_files": 36,
-    "mesh_bytes": 33728811,
+    "mesh_bytes": 9348227,
     "mesh_formats": [
      ".obj",
      ".stl"
@@ -18650,7 +18650,7 @@
     "mjcf_model": "ufactory_lite6/lite6.xml",
     "packages": {},
     "mesh_files": 14,
-    "mesh_bytes": 3733976,
+    "mesh_bytes": 1638556,
     "mesh_formats": [
      ".stl"
     ],
@@ -18720,7 +18720,7 @@
     "mjcf_model": "universal_robots_ur5e/ur5e.xml",
     "packages": {},
     "mesh_files": 20,
-    "mesh_bytes": 30983304,
+    "mesh_bytes": 11718049,
     "mesh_formats": [
      ".obj"
     ],
@@ -18790,7 +18790,7 @@
     "mjcf_model": "rethink_robotics_sawyer/sawyer.xml",
     "packages": {},
     "mesh_files": 49,
-    "mesh_bytes": 29788816,
+    "mesh_bytes": 8191717,
     "mesh_formats": [
      ".obj"
     ],
@@ -18860,7 +18860,7 @@
     "mjcf_model": "universal_robots_ur10e/ur10e.xml",
     "packages": {},
     "mesh_files": 20,
-    "mesh_bytes": 33294601,
+    "mesh_bytes": 10592036,
     "mesh_formats": [
      ".obj"
     ],
@@ -18930,7 +18930,7 @@
     "mjcf_model": "trossen_vx300s/vx300s.xml",
     "packages": {},
     "mesh_files": 11,
-    "mesh_bytes": 1393234,
+    "mesh_bytes": 661314,
     "mesh_formats": [
      ".stl"
     ],
@@ -19000,7 +19000,7 @@
     "mjcf_model": "ufactory_xarm7/xarm7.xml",
     "packages": {},
     "mesh_files": 16,
-    "mesh_bytes": 4542494,
+    "mesh_bytes": 2180956,
     "mesh_formats": [
      ".stl"
     ],
@@ -19070,7 +19070,7 @@
     "mjcf_model": "kinova_gen3/gen3.xml",
     "packages": {},
     "mesh_files": 8,
-    "mesh_bytes": 4348072,
+    "mesh_bytes": 2180620,
     "mesh_formats": [
      ".stl"
     ],
@@ -19140,7 +19140,7 @@
     "mjcf_model": "flexiv_rizon4/flexiv_rizon4.xml",
     "packages": {},
     "mesh_files": 14,
-    "mesh_bytes": 4010858,
+    "mesh_bytes": 2230561,
     "mesh_formats": [
      ".obj"
     ],
@@ -19210,7 +19210,7 @@
     "mjcf_model": "arx_l5/arx_l5.xml",
     "packages": {},
     "mesh_files": 10,
-    "mesh_bytes": 11342120,
+    "mesh_bytes": 3851671,
     "mesh_formats": [
      ".obj"
     ],
@@ -19280,7 +19280,7 @@
     "mjcf_model": "flexiv_rizon4s/flexiv_rizon4s.xml",
     "packages": {},
     "mesh_files": 14,
-    "mesh_bytes": 4077075,
+    "mesh_bytes": 2544838,
     "mesh_formats": [
      ".obj"
     ],
@@ -19351,7 +19351,7 @@
     "mjcf_model": "trossen_wx250s/wx250s.xml",
     "packages": {},
     "mesh_files": 11,
-    "mesh_bytes": 546134,
+    "mesh_bytes": 368798,
     "mesh_formats": [
      ".stl"
     ],
@@ -19421,7 +19421,7 @@
     "mjcf_model": "low_cost_robot_arm/low_cost_robot_arm.xml",
     "packages": {},
     "mesh_files": 22,
-    "mesh_bytes": 6525298,
+    "mesh_bytes": 3747142,
     "mesh_formats": [
      ".stl"
     ],
@@ -19492,7 +19492,7 @@
     "mjcf_model": "seeed_rebot_devarm/seeed_rebot_devarm.xml",
     "packages": {},
     "mesh_files": 115,
-    "mesh_bytes": 14941610,
+    "mesh_bytes": 4120554,
     "mesh_formats": [
      ".stl"
     ],
@@ -19562,7 +19562,7 @@
     "mjcf_model": "franka_emika_panda/hand.xml",
     "packages": {},
     "mesh_files": 8,
-    "mesh_bytes": 1943695,
+    "mesh_bytes": 436458,
     "mesh_formats": [
      ".obj",
      ".stl"
@@ -19633,7 +19633,7 @@
     "mjcf_model": "ufactory_xarm7/hand.xml",
     "packages": {},
     "mesh_files": 7,
-    "mesh_bytes": 2473938,
+    "mesh_bytes": 997536,
     "mesh_formats": [
      ".stl"
     ],
@@ -19703,7 +19703,7 @@
     "mjcf_model": "shadow_dexee/shadow_dexee.xml",
     "packages": {},
     "mesh_files": 21,
-    "mesh_bytes": 5510964,
+    "mesh_bytes": 3004776,
     "mesh_formats": [
      ".stl"
     ],
@@ -19777,7 +19777,7 @@
     "mjcf_model": "umi_gripper/umi_gripper.xml",
     "packages": {},
     "mesh_files": 8,
-    "mesh_bytes": 1678931,
+    "mesh_bytes": 945429,
     "mesh_formats": [
      ".stl"
     ],
@@ -19849,7 +19849,7 @@
     "mjcf_model": "robot_soccer_kit/robot_soccer_kit.xml",
     "packages": {},
     "mesh_files": 29,
-    "mesh_bytes": 6027836,
+    "mesh_bytes": 3259564,
     "mesh_formats": [
      ".stl"
     ],
@@ -19917,14 +19917,14 @@
     "mjcf_model": "realsense_d435i/d435i.xml",
     "packages": {},
     "mesh_files": 9,
-    "mesh_bytes": 45993447,
+    "mesh_bytes": 31092889,
     "mesh_formats": [
      ".obj"
     ],
-    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/realsense_d435i-d435i.png",
     "mesh_alt": {
      "realsense_d435i/assets/d435i_8.obj": "https://raw.githubusercontent.com/google-deepmind/mujoco_menagerie/da76818e269b82289eba39808e2fb91d679d6994/realsense_d435i/assets/d435i_8.obj"
-    }
+    },
+    "upstream_thumbnail": "https://cdn.jsdelivr.net/gh/google-deepmind/mujoco_menagerie@da76818e269b82289eba39808e2fb91d679d6994/assets/realsense_d435i-d435i.png"
    },
    "source": {
     "description": null,
