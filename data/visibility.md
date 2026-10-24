@@ -252,9 +252,15 @@ human readers.
 - [x] `skydio_x2` **Skydio X2** — Skydio — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/skydio_x2)
 - [x] `crazyflie_2` **Bitcraze Crazyflie 2** — Bitcraze — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/bitcraze_crazyflie_2)
 
-## 移动底盘 Mobile base · 1
+## 移动底盘 Mobile base · 3
 
+- [x] `irobot_create` **Create** — iRobot — [AutonomyLab/create_robot](https://github.com/AutonomyLab/create_robot/tree/5e2215bda34b15e2d5d5ea4ede8bb9d2cf9003f0/create_description)
+- [x] `turtlebot3` **TurtleBot3** — ROBOTIS — [ROBOTIS-GIT/turtlebot3](https://github.com/ROBOTIS-GIT/turtlebot3/tree/4ae959ea6a52415c90bf752d2b76e3e28f8a87e2/turtlebot3_description)
 - [x] `robot_soccer_kit` **Robot soccer kit omnidirectional** — Robot Soccer Kit — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robot_soccer_kit)
+
+## 车辆 Vehicle · 1
+
+- [x] `prius` **Prius (car_demo)** — Toyota — [osrf/car_demo](https://github.com/osrf/car_demo/tree/38a4686dd573739dcd237187030efba3ce4913b0/prius_description)
 
 ## 传感器 Sensor · 1
 

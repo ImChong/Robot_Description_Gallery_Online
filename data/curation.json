@@ -120,6 +120,11 @@
       "label_zh": "移动底盘"
     },
     {
+      "id": "vehicle",
+      "label": "Vehicle",
+      "label_zh": "车辆"
+    },
+    {
       "id": "sensor",
       "label": "Sensor",
       "label_zh": "传感器"
@@ -4533,6 +4538,113 @@
         "hr_hipy_joint": -0.8,
         "hr_knee_joint": 1.4
       }
+    },
+    {
+      "id": "irobot_create",
+      "name": "Create",
+      "maker": "iRobot",
+      "category": "mobile_base",
+      "upstream": {
+        "github": "AutonomyLab/create_robot",
+        "commit": "5e2215bda34b15e2d5d5ea4ede8bb9d2cf9003f0",
+        "package": "create_description",
+        "license": "BSD-3-Clause",
+        "license_file": "LICENSE",
+        "tags": [
+          "mobile_base",
+          "differential_drive"
+        ]
+      },
+      "links": {
+        "docs": "https://github.com/AutonomyLab/create_robot/tree/5e2215bda34b15e2d5d5ea4ede8bb9d2cf9003f0/create_description"
+      },
+      "notes": "iRobot's programmable Roomba: the Create 2 is built on the Roomba 600 series, so this is the body a robot vacuum has — a round shell on two drive wheels with front and rear casters, plus the bumper and cliff-sensor frames. The description comes from Autonomy Lab's create_robot ROS driver, which publishes xacro only; the gallery expands it and drops the Gazebo blocks. The version picker also opens the original Create.",
+      "notes_zh": "iRobot 的可编程 Roomba：Create 2 以 Roomba 600 系列为基础，所以这就是扫地机器人的身子——圆壳、两个驱动轮、前后两个万向轮，外加保险杠与防跌落传感器的坐标系。描述来自 Autonomy Lab 的 create_robot ROS 驱动，上游只发布 xacro，本站展开后使用，展开时丢掉 Gazebo 块。版本选择器里还有初代 Create。",
+      "variants": [
+        {
+          "id": "create_2",
+          "name": "Create 2",
+          "urdf": "create_description/urdf/create_2.urdf.xacro",
+          "notes": "Create 2, on the Roomba 600-series body.",
+          "notes_zh": "Create 2，Roomba 600 系列的机身。"
+        },
+        {
+          "id": "create_1",
+          "name": "Create 1",
+          "urdf": "create_description/urdf/create_1.urdf.xacro",
+          "notes": "The original Create, with its own mesh and wheel spacing.",
+          "notes_zh": "初代 Create，网格与轮距不同。"
+        }
+      ]
+    },
+    {
+      "id": "turtlebot3",
+      "name": "TurtleBot3",
+      "maker": "ROBOTIS",
+      "category": "mobile_base",
+      "upstream": {
+        "github": "ROBOTIS-GIT/turtlebot3",
+        "commit": "4ae959ea6a52415c90bf752d2b76e3e28f8a87e2",
+        "package": "turtlebot3_description",
+        "license": "Apache-2.0",
+        "license_file": "LICENSE",
+        "tags": [
+          "mobile_base",
+          "differential_drive"
+        ]
+      },
+      "links": {
+        "official": "https://emanual.robotis.com/docs/en/platform/turtlebot3/overview/",
+        "docs": "https://github.com/ROBOTIS-GIT/turtlebot3/tree/4ae959ea6a52415c90bf752d2b76e3e28f8a87e2/turtlebot3_description"
+      },
+      "notes": "ROBOTIS' small ROS teaching robot: two Dynamixel-driven wheels and a caster under stacked plates, with the LDS lidar on top. Pinned to the noetic branch, whose descriptions are xacro with includes that the gallery expands; the ROS 2 branches ship .urdf files that still carry xacro arguments in their link and joint names. The version picker switches between Burger, Waffle and Waffle Pi.",
+      "notes_zh": "ROBOTIS 的小型 ROS 教学机器人：叠层底板下两个 Dynamixel 驱动轮加一个万向轮，顶上是 LDS 激光雷达。固定在 noetic 分支：那里的描述是带 include 的 xacro，本站可以展开；ROS 2 分支的 .urdf 文件连杆、关节名里还留着 xacro 参数。版本选择器可切换 Burger、Waffle、Waffle Pi。",
+      "variants": [
+        {
+          "id": "turtlebot3_burger",
+          "name": "Burger",
+          "urdf": "turtlebot3_description/urdf/turtlebot3_burger.urdf.xacro",
+          "notes": "Burger: the round two-deck base with the lidar on top.",
+          "notes_zh": "Burger：圆形双层底板，顶上装激光雷达。"
+        },
+        {
+          "id": "turtlebot3_waffle",
+          "name": "Waffle",
+          "urdf": "turtlebot3_description/urdf/turtlebot3_waffle.urdf.xacro",
+          "notes": "Waffle: the wider square base with an Intel RealSense R200 camera.",
+          "notes_zh": "Waffle：更宽的方形底板，带 Intel RealSense R200 相机。"
+        },
+        {
+          "id": "turtlebot3_waffle_pi",
+          "name": "Waffle Pi",
+          "urdf": "turtlebot3_description/urdf/turtlebot3_waffle_pi.urdf.xacro",
+          "notes": "Waffle Pi: the square base with a Raspberry Pi camera.",
+          "notes_zh": "Waffle Pi：方形底板，带树莓派相机。"
+        }
+      ]
+    },
+    {
+      "id": "prius",
+      "name": "Prius (car_demo)",
+      "maker": "Toyota",
+      "category": "vehicle",
+      "upstream": {
+        "github": "osrf/car_demo",
+        "commit": "38a4686dd573739dcd237187030efba3ce4913b0",
+        "package": "prius_description",
+        "urdf": "prius_description/urdf/prius.urdf",
+        "license": "Apache-2.0",
+        "license_file": "prius_description/package.xml",
+        "tags": [
+          "vehicle",
+          "ackermann"
+        ]
+      },
+      "links": {
+        "docs": "https://github.com/osrf/car_demo/tree/38a4686dd573739dcd237187030efba3ce4913b0/prius_description"
+      },
+      "notes": "The Toyota Prius from Open Robotics' car_demo, the ROS Kinetic and Gazebo 8 simulation of a Prius driving through Mcity. Steering wheel, two steered front hubs and four wheels are continuous joints; the camera and lidar mounts are fixed frames. The repository has no LICENSE file: the licence recorded here is the Apache 2.0 that prius_description/package.xml declares. Meshes are OBJ, shown without their MTL textures.",
+      "notes_zh": "Open Robotics 的 car_demo 里的丰田普锐斯——Prius 在 Mcity 里行驶的 ROS Kinetic + Gazebo 8 仿真。方向盘、两个可转向的前轮毂和四个车轮都是连续关节；相机与激光雷达支架是固定坐标系。仓库没有 LICENSE 文件，这里记的许可证是 prius_description/package.xml 声明的 Apache 2.0。网格是 OBJ，显示时不带 MTL 贴图。"
     }
   ]
 }
