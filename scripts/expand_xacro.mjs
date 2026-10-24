@@ -53,14 +53,14 @@ let code = 0;
 try {
   const page = await browser.newPage();
   await page.goto(`http://127.0.0.1:${server.address().port}/expand.html`);
-  const text = await page.evaluate(async ({ urdf, packages, files }) => {
+  const text = await page.evaluate(async ({ urdf, packages, files, stubs }) => {
     const { expandXacroText, resolveXacroPath } = await import('/js/xacro.js');
     const readText = async (path) => {
       const key = resolveXacroPath(path, packages);
       if (!(key in files)) throw new Error(`xacro include not supplied: ${key}`);
       return files[key];
     };
-    return expandXacroText(files[urdf], { workingPath: urdf.replace(/[^/]+$/, ''), readText });
+    return expandXacroText(files[urdf], { workingPath: urdf.replace(/[^/]+$/, ''), readText, stubs });
   }, job);
   process.stdout.write(text);
 } catch (err) {

@@ -252,9 +252,18 @@ human readers.
 - [x] `skydio_x2` **Skydio X2** — Skydio — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/skydio_x2)
 - [x] `crazyflie_2` **Bitcraze Crazyflie 2** — Bitcraze — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/bitcraze_crazyflie_2)
 
-## 移动底盘 Mobile base · 1
+## 移动底盘 Mobile base · 10
 
 - [x] `robot_soccer_kit` **Robot soccer kit omnidirectional** — Robot Soccer Kit — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/robot_soccer_kit)
+- [x] `husky` **Husky A200** — Clearpath Robotics — [bulletphysics/bullet3](https://github.com/bulletphysics/bullet3/tree/d3afe76132fc76b0f9b2359cbaef47a3766e7fbb/data/husky)
+- [x] `turtlebot3_burger` **TurtleBot3 Burger** — ROBOTIS — [ROBOTIS-GIT/turtlebot3](https://github.com/ROBOTIS-GIT/turtlebot3/tree/fc817ce3073af1d6032397c64504134882af5e9a/turtlebot3_description)
+- [x] `jackal` **Jackal** — Clearpath Robotics — [jackal/jackal](https://github.com/jackal/jackal/tree/4ddf9b578bb7abce1115c8dc59d8b7f86aa9268c/jackal_description)
+- [x] `ridgeback` **Ridgeback** — Clearpath Robotics — [ridgeback/ridgeback](https://github.com/ridgeback/ridgeback/tree/7f2489993f1369906e808402e8f45e4c2aebf5b3/ridgeback_description)
+- [x] `warthog` **Warthog** — Clearpath Robotics — [warthog-cpr/warthog](https://github.com/warthog-cpr/warthog/tree/55555b6db5fc7aa7b710b5652f7cb5bf0589ec6a/warthog_description)
+- [x] `oomwoo_one` **OOMWOO One** — Maker's Pet — [makerspet/oomwoo-one](https://github.com/makerspet/oomwoo-one/tree/a630d1c77255072d280a2a41a7a2bd1a1c98cadd)
+- [x] `irobot_create3` **iRobot Create 3** — iRobot — [iRobotEducation/create3_sim](https://github.com/iRobotEducation/create3_sim/tree/6c305843afcfe094bf8eb2a0c6997f531e526b9d/irobot_create_common/irobot_create_description)
+- [x] `irobot_create` **iRobot Create 1 / 2** — iRobot — [AutonomyLab/create_robot](https://github.com/AutonomyLab/create_robot/tree/51f9b651fd9b58c612eafc24bb2d6eea7dbb555c/create_description)
+- [x] `makerspet_mini` **Maker's Pet Mini** — Maker's Pet — [makerspet/oomwoo_urdf](https://github.com/makerspet/oomwoo_urdf/tree/6ededc2f28fd1a86ecf26da2dd3a58d6fcfc2004)
 
 ## 传感器 Sensor · 1
 
