@@ -66,8 +66,11 @@ export function resolveXacroPath(path, packages) {
  * @param {string} options.workingPath repository-relative directory of the template
  * @param {(path: string) => Promise<string>} options.readText answers includes,
  *   given a path `resolveXacroPath` would accept
+ * @param {string[]} [options.stubs] packages whose includes are answered with an
+ *   empty `<robot/>`: ROS packages the repository does not carry (Clearpath's
+ *   lidar drivers), included for macros the default configuration never calls
  */
-export async function expandXacroText(text, { workingPath, readText }) {
+export async function expandXacroText(text, { workingPath, readText, stubs = [] }) {
   const { XacroParser } = await import('xacro-parser');
   const parser = new XacroParser();
   parser.inOrder = true;
@@ -75,9 +78,17 @@ export async function expandXacroText(text, { workingPath, readText }) {
   parser.localProperties = true;
   parser.workingPath = workingPath;
   parser.arguments = xacroArguments(text);
-  parser.rospackCommands = { find: (pkg) => `package://${pkg}` };
-  parser.getFileContents = readText;
-  const doc = await parser.parse(text);
+  // `$(optenv NAME default)`: the environment is empty here, so it is the default.
+  parser.rospackCommands = {
+    find: (pkg) => `package://${pkg}`,
+    optenv: (_name, ...fallback) => fallback.join(' '),
+  };
+  // expr-eval spells a power `^`; Python-flavoured xacro writes `**`.
+  const pythonPower = (source) => source.replace(/\$\{[^}]*\}/g, (expr) => expr.replace(/\*\*/g, '^'));
+  const stubbed = (path) => stubs.some((pkg) => path.startsWith(`package://${pkg}/`));
+  parser.getFileContents = async (path) =>
+    stubbed(path) ? '<robot/>' : pythonPower(await readText(path));
+  const doc = await parser.parse(pythonPower(text));
   for (const node of doc.querySelectorAll('gazebo, transmission')) node.remove();
   for (const geometry of doc.querySelectorAll('geometry')) {
     if (geometry.children.length) continue;
@@ -92,7 +103,8 @@ function xacroArguments(text) {
   for (const [, name, value] of text.matchAll(
     /<(?:xacro:)?arg\s+name=["']([^"']+)["'](?:\s+default=["']([^"']*)["'])?/g,
   )) {
-    args[name] = value ?? '';
+    // `$(optenv NAME default)` is the default: the environment is empty here.
+    args[name] = (value ?? '').replace(/^\$\(optenv\s+\S+\s*([^)]*)\)$/, '$1');
   }
   return args;
 }
@@ -108,7 +120,7 @@ const expansions = new Map();
  * @returns {Promise<string>}
  */
 export async function fetchDescriptionText(robot) {
-  const { base, urdf, packages } = robot.assets;
+  const { base, urdf, packages, xacro_stubs: stubs } = robot.assets;
   const url = base + urdf;
   if (!isXacroPath(urdf)) {
     const response = await fetch(url);
@@ -128,6 +140,7 @@ export async function fetchDescriptionText(robot) {
       return expandXacroText(await response.text(), {
         workingPath: urdf.replace(/[^/]+$/, ''),
         readText,
+        stubs,
       });
     })();
     expansions.set(url, job);
