@@ -153,7 +153,7 @@ human readers.
 - [x] `low_cost_robot_arm` **Low-Cost Robot Arm** — Alexander Koch / Hugging Face — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/low_cost_robot_arm)
 - [x] `seeed_rebot_devarm` **Seeed Studio reBot DevArm** — Seeed Studio — [google-deepmind/mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/da76818e269b82289eba39808e2fb91d679d6994/seeed_rebot_devarm)
 
-## 灵巧手 / 夹爪 Hand / Gripper · 29
+## 灵巧手 / 夹爪 Hand / Gripper · 32
 
 - [x] `dex1_1` **Dex1-1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex1_1)
 - [x] `dex2_5` **Dex2-5** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/dexterous_hand_description/dex2_5)
@@ -175,6 +175,9 @@ human readers.
 - [x] `dg5f` **DG-5F** — Tesollo — [tesollodelto/tesollo_model](https://github.com/tesollodelto/tesollo_model/tree/6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2/dg5f)
 - [x] `dg5fs` **DG-5F-S** — Tesollo — [tesollodelto/tesollo_model](https://github.com/tesollodelto/tesollo_model/tree/6dbceb5b7fbbd7ca3cbcada8725bbaf4c73ffff2/dg5fs)
 - [x] `xhand1` **XHAND 1** — Robotera — [All Hands Up (mirror)](https://allhandsup.org/zh/#gallery)
+- [x] `hx1_d03` **HX1-D03** — ROBOTIS — [ROBOTIS-GIT/docs](https://github.com/ROBOTIS-GIT/docs/tree/c88527af0888baea6f7ef3305bbbbb911b960759/docusaurus/static/assets/hx/hx1)
+- [x] `hx3_d11` **HX3-D11** — ROBOTIS — [ROBOTIS-GIT/docs](https://github.com/ROBOTIS-GIT/docs/tree/c88527af0888baea6f7ef3305bbbbb911b960759/docusaurus/static/assets/hx/hx3_d11)
+- [x] `hx4_d12` **HX4-D12** — ROBOTIS — [ROBOTIS-GIT/docs](https://github.com/ROBOTIS-GIT/docs/tree/c88527af0888baea6f7ef3305bbbbb911b960759/docusaurus/static/assets/hx/hx4_d12)
 - [x] `hx5_d20` **HX5-D20** — ROBOTIS — [All Hands Up (mirror)](https://allhandsup.org/zh/#gallery)
 - [x] `rh56f1` **RH56F1** — Inspire Robots — [All Hands Up (mirror)](https://allhandsup.org/zh/#gallery)
 - [x] `omnihand_pro` **Omnihand Pro** — Agibot — [All Hands Up (mirror)](https://allhandsup.org/zh/#gallery)

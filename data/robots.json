@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-10-08T18:10:49Z",
+ "generated": "2026-10-25T08:00:00Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -10912,6 +10912,211 @@
    },
    "links": {
     "official": "https://www.robotera.com/"
+   }
+  },
+  {
+   "id": "hx1_d03",
+   "name": "HX1-D03",
+   "maker": "ROBOTIS",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 3,
+   "license": null,
+   "formats": [
+    "urdf"
+   ],
+   "notes": "A single-finger module with three all-pitch joints, derived from the HX5-D20 index finger. The official gallery describes it as a building block for testing joint stacking and finger motion. The official documentation describes the designs as open source but does not state a model-specific SPDX license.",
+   "notes_zh": "三自由度全俯仰单指模块，基于 HX5-D20 食指设计；适合作为测试关节堆叠与手指运动的基础单元。 官方资料称其为开源设计，但未注明该模型专属的 SPDX 许可。",
+   "pose": null,
+   "loops": null,
+   "preview_frame": {
+    "palm": "+y",
+    "fingers": "+z"
+   },
+   "measured": {
+    "size": {
+     "x": 0.022,
+     "y": 0.023,
+     "z": 0.1345
+    },
+    "height_m": 0.022
+   },
+   "urdf": {
+    "xml_name": "hx1",
+    "links": 4,
+    "joints": {
+     "revolute": 3
+    },
+    "moving_joints": 3,
+    "mass_kg": null,
+    "has_collision": false,
+    "has_inertia": false,
+    "bytes": 2391
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/ROBOTIS-GIT/docs@c88527af0888baea6f7ef3305bbbbb911b960759/",
+    "urdf": "docusaurus/static/assets/hx/hx1/urdf/hx1.urdf",
+    "packages": {
+     "hx1": "docusaurus/static/assets/hx/hx1"
+    },
+    "mesh_files": 4,
+    "mesh_bytes": 1534736,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "ROBOTIS-GIT/docs",
+    "commit": "c88527af0888baea6f7ef3305bbbbb911b960759",
+    "repo_url": "https://github.com/ROBOTIS-GIT/docs",
+    "tree_url": "https://github.com/ROBOTIS-GIT/docs/tree/c88527af0888baea6f7ef3305bbbbb911b960759/docusaurus/static/assets/hx/hx1",
+    "license_url": null,
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://docs.robotis.com/docs/systems/hx_friends/",
+    "docs": "https://github.com/ROBOTIS-GIT/docs/tree/main/docusaurus/static/assets/hx"
+   }
+  },
+  {
+   "id": "hx3_d11",
+   "name": "HX3-D11",
+   "maker": "ROBOTIS",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 11,
+   "license": null,
+   "formats": [
+    "urdf"
+   ],
+   "notes": "An 11-DOF, three-finger hand built around DYNAMIXEL XM335 actuators. The official documentation describes the designs as open source but does not state a model-specific SPDX license.",
+   "notes_zh": "三指 11 自由度灵巧手，使用 DYNAMIXEL XM335 执行器。 官方资料称其为开源设计，但未注明该模型专属的 SPDX 许可。",
+   "pose": null,
+   "loops": null,
+   "preview_frame": {
+    "palm": "+x",
+    "fingers": "+z"
+   },
+   "measured": {
+    "size": {
+     "x": 0.0806,
+     "y": 0.079,
+     "z": 0.1875
+    },
+    "height_m": 0.079
+   },
+   "urdf": {
+    "xml_name": "hx3_d11_right",
+    "links": 13,
+    "joints": {
+     "fixed": 1,
+     "revolute": 11
+    },
+    "moving_joints": 11,
+    "mass_kg": null,
+    "has_collision": false,
+    "has_inertia": false,
+    "bytes": 8552
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/ROBOTIS-GIT/docs@c88527af0888baea6f7ef3305bbbbb911b960759/",
+    "urdf": "docusaurus/static/assets/hx/hx3_d11/urdf/hx3_d11_right.urdf",
+    "packages": {
+     "hx3_d11": "docusaurus/static/assets/hx/hx3_d11"
+    },
+    "mesh_files": 5,
+    "mesh_bytes": 3718720,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "ROBOTIS-GIT/docs",
+    "commit": "c88527af0888baea6f7ef3305bbbbb911b960759",
+    "repo_url": "https://github.com/ROBOTIS-GIT/docs",
+    "tree_url": "https://github.com/ROBOTIS-GIT/docs/tree/c88527af0888baea6f7ef3305bbbbb911b960759/docusaurus/static/assets/hx/hx3_d11",
+    "license_url": null,
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://docs.robotis.com/docs/systems/hx_friends/",
+    "docs": "https://github.com/ROBOTIS-GIT/docs/tree/main/docusaurus/static/assets/hx"
+   }
+  },
+  {
+   "id": "hx4_d12",
+   "name": "HX4-D12",
+   "maker": "ROBOTIS",
+   "category": "hand",
+   "tags": [
+    "end_effector"
+   ],
+   "dof": 12,
+   "license": null,
+   "formats": [
+    "urdf"
+   ],
+   "notes": "A 12-DOF hand with a thumb and three fingers, balancing dexterity with mechanical simplicity. The official documentation describes the designs as open source but does not state a model-specific SPDX license.",
+   "notes_zh": "拇指加三指、共 12 自由度，在灵巧度与机械简洁性之间折中。 官方资料称其为开源设计，但未注明该模型专属的 SPDX 许可。",
+   "pose": null,
+   "loops": null,
+   "preview_frame": {
+    "palm": "+x",
+    "fingers": "+z"
+   },
+   "measured": {
+    "size": {
+     "x": 0.063,
+     "y": 0.148,
+     "z": 0.181
+    },
+    "height_m": 0.148
+   },
+   "urdf": {
+    "xml_name": "hx4_d12_right",
+    "links": 13,
+    "joints": {
+     "revolute": 12
+    },
+    "moving_joints": 12,
+    "mass_kg": null,
+    "has_collision": false,
+    "has_inertia": false,
+    "bytes": 8701
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/ROBOTIS-GIT/docs@c88527af0888baea6f7ef3305bbbbb911b960759/",
+    "urdf": "docusaurus/static/assets/hx/hx4_d12/urdf/hx4_d12_right.urdf",
+    "packages": {
+     "hx4_d12": "docusaurus/static/assets/hx/hx4_d12"
+    },
+    "mesh_files": 7,
+    "mesh_bytes": 4954188,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "ROBOTIS-GIT/docs",
+    "commit": "c88527af0888baea6f7ef3305bbbbb911b960759",
+    "repo_url": "https://github.com/ROBOTIS-GIT/docs",
+    "tree_url": "https://github.com/ROBOTIS-GIT/docs/tree/c88527af0888baea6f7ef3305bbbbb911b960759/docusaurus/static/assets/hx/hx4_d12",
+    "license_url": null,
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://docs.robotis.com/docs/systems/hx_friends/",
+    "docs": "https://github.com/ROBOTIS-GIT/docs/tree/main/docusaurus/static/assets/hx"
    }
   },
   {
