@@ -306,6 +306,26 @@ async function main() {
   document.getElementById('back-btn').addEventListener('click', toGallery);
   document.getElementById('compare-back').addEventListener('click', toGallery);
 
+  // The title is the way home, which is not the gallery as it was left: every
+  // robot, from the top, with no search still in the box. A bare `#` used to do
+  // this, and kept the search and the remembered scroll it was meant to drop.
+  document.querySelector('.site-title').addEventListener('click', (event) => {
+    // A middle or modified click still opens the page in a new tab.
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    // Its own history entry, so Back returns to the robot or section left.
+    const home = location.pathname + location.search;
+    if (location.href !== location.origin + home) history.pushState(null, '', home);
+    document.getElementById('search').value = '';
+    // Reset before the gallery writes its address, which would otherwise name
+    // the section a robot was opened from and send `route` back to it.
+    gallery.state.category = 'all';
+    gallery.setState({ query: '' });
+    galleryScroll = 0;
+    // pushState fires no `hashchange`.
+    route();
+  });
+
   // From a robot to a comparison it is part of. The version on the stage is the
   // one that goes in: on the G1 that is a choice between twenty-one files, and
   // the one being looked at is the one meant.
