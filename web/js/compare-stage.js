@@ -47,6 +47,7 @@ import { boundingBox, RobotViewer } from './viewer.js';
 import { angleUnit, formatAngle, setAngleUnit } from './angle-unit.js';
 import { JointSweep, sliderRange, sliderStep } from './joint-sweep.js';
 import { t } from './i18n.js';
+import { icon } from './icons.js';
 import { onThemeChange, theme } from './theme.js';
 
 const el = (id) => document.getElementById(id);
@@ -1326,7 +1327,7 @@ export class CompareStage {
          </div>
          <button type="button" class="icon-btn" data-panel="close"
                  title="${esc(t('compare.stageDeselect'))}"
-                 aria-label="${esc(t('compare.stageDeselect'))}">✕</button>
+                 aria-label="${esc(t('compare.stageDeselect'))}">${icon('close')}</button>
        </div>
        <div class="cmp-joint-tools">
          <span class="tree-summary">${t('tree.summary')
@@ -1652,7 +1653,7 @@ export class CompareStage {
     el('cmp-stage-loading-text').textContent = t('compare.stageLoading')
       .replace('{done}', String(Math.min(Math.floor(done) + 1, total)))
       .replace('{total}', String(total));
-    el('cmp-stage-bar').style.width = `${total ? Math.max(4, Math.round((done / total) * 100)) : 8}%`;
+    el('cmp-stage-bar').style.setProperty('--progress', String(total ? Math.max(0.04, done / total) : 0.08));
   }
 
   /* ── fullscreen ────────────────────────────────────────────────────────── */

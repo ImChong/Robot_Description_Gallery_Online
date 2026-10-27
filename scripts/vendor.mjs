@@ -71,9 +71,19 @@ expr-eval-fork (index.mjs)
   MIT License — see expr-eval-fork/LICENSE.txt
   https://github.com/silentmatt/expr-eval
 
+Geist and Geist Mono (geist/Geist-Variable.woff2, geist/GeistMono-Variable.woff2)
+  SIL Open Font License 1.1 — see geist/OFL.txt
+  https://github.com/vercel/geist-font
+
 All are unmodified copies of the published npm packages; see VERSIONS.json
-for the exact versions and regenerate with \`npm run vendor\`.
+for the exact versions and regenerate with \`npm run vendor\` — except Geist,
+which is committed as-is rather than copied from node_modules: its npm package
+declares Next.js as a peer dependency, and this site has no use for Next.js.
 `;
+
+// Not in package.json for the reason the notice gives; bump by hand alongside
+// the two .woff2 files (dist/fonts/geist-{sans,mono}/*-Variable.woff2).
+const GEIST_VERSION = '1.7.0';
 
 if (!existsSync(nm)) {
   console.error('node_modules/ missing — run `npm install` first.');
@@ -102,6 +112,7 @@ writeFileSync(
       'urdf-loader': pkg.devDependencies['urdf-loader'],
       'xacro-parser': pkg.devDependencies['xacro-parser'],
       'expr-eval-fork': pkg.devDependencies['expr-eval-fork'],
+      geist: GEIST_VERSION,
       vendored_at: new Date().toISOString().slice(0, 10),
     },
     null,

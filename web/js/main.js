@@ -3,7 +3,7 @@ import { loadRegistry, byId } from './registry.js';
 import { Gallery } from './gallery.js';
 import { Detail } from './detail.js';
 import { applyChrome, detectLang, setLang, lang, t, pageTitle, LANGS } from './i18n.js';
-import { paintIcons } from './icons.js';
+import { icon, paintIcons } from './icons.js';
 import { theme, toggleTheme } from './theme.js';
 import { applyCustomLang, customEntry, setupCustomPicker } from './custom.js';
 import { Compare } from './compare.js';
@@ -79,8 +79,8 @@ function writeHash(state) {
 function setupTheme() {
   const button = document.getElementById('theme-toggle');
   const render = () => {
-    // Show the theme you would switch *to*, with the reference site's glyphs.
-    button.textContent = theme() === 'light' ? '🌙' : '☀️';
+    // Show the theme you would switch *to*.
+    button.innerHTML = icon(theme() === 'light' ? 'moon' : 'sun');
   };
   render();
   button.addEventListener('click', () => {
@@ -143,9 +143,27 @@ function syncDocumentTitle() {
   } else document.title = pageTitle();
 }
 
+/**
+ * The skip link. Its target is whichever view is on screen, and the address
+ * bar is the router here, so it cannot simply be an anchor: following
+ * `#main` would read as a route. It moves focus instead, without scrolling
+ * the header out of the way of anything.
+ */
+function setupSkipLink() {
+  document.querySelector('.skip-link')?.addEventListener('click', (event) => {
+    event.preventDefault();
+    const view = document.querySelector('main.view:not([hidden])');
+    if (!view) return;
+    view.setAttribute('tabindex', '-1');
+    view.focus({ preventScroll: true });
+    window.scrollTo({ top: view.offsetTop, behavior: 'auto' });
+  });
+}
+
 async function main() {
   setupTheme();
   setupSponsor();
+  setupSkipLink();
   // Language is already on the static nodes: js/i18n-boot.js ran first.
   if (document.documentElement.classList.contains('i18n-pending')) {
     setLang(detectLang());
@@ -171,8 +189,10 @@ async function main() {
   try {
     data = await loadRegistry();
   } catch (err) {
-    document.getElementById('grid').innerHTML =
+    const grid = document.getElementById('grid');
+    grid.innerHTML =
       `<p class="empty">Could not load data/robots.json — run <code>npm run registry</code>.<br><small>${err.message}</small></p>`;
+    grid.removeAttribute('aria-busy');
     return;
   }
 

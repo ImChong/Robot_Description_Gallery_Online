@@ -3,5 +3,6 @@
   "urdf-loader": "0.12.6",
   "xacro-parser": "0.3.11",
   "expr-eval-fork": "3.0.3",
+  "geist": "1.7.0",
   "vendored_at": "2026-08-30"
 }

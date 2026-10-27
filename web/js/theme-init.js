@@ -10,8 +10,12 @@
 (function () {
   var root = document.documentElement;
   try {
+    // An explicit choice wins; until there is one, the system's preference
+    // decides, and dark is the answer where it says nothing.
     var saved = localStorage.getItem('cl-theme');
-    root.setAttribute('data-theme', saved === 'light' ? 'light' : 'dark');
+    var system =
+      window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    root.setAttribute('data-theme', saved === 'light' || saved === 'dark' ? saved : system);
     var lang = localStorage.getItem('cl-lang');
     if (lang !== 'zh' && lang !== 'en') {
       lang = /\bzh\b|zh-/i.test((navigator.languages || [navigator.language || 'en']).join(','))

@@ -38,11 +38,12 @@ jobs:
 
       # The site needs no build step: web/ is already the deployable artifact,
       # and it reads ../data/robots.json, so both directories ship as-is with
-      # the root index.html redirecting into web/.
+      # the root index.html redirecting into web/. 404.html is the page Pages
+      # serves for any address under the site that does not exist.
       - name: Assemble site
         run: |
           mkdir -p _site
-          cp index.html .nojekyll _site/
+          cp index.html 404.html .nojekyll _site/
           cp -r web data _site/
           rm -f _site/data/curation.json
           du -sh _site

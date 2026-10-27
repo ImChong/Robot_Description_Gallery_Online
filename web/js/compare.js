@@ -43,6 +43,7 @@ import { loadUrdfSpec } from './urdf-spec.js';
 import { fetchDescriptionText } from './xacro.js';
 import { align, defaultMode, fingerOrder, limbs, REGION_ORDER, SIDE_ORDER } from './joint-align.js';
 import { CompareStage } from './compare-stage.js';
+import { icon } from './icons.js';
 
 const el = (id) => document.getElementById(id);
 const comparable = (robot) => robot?.formats?.includes('urdf');
@@ -911,7 +912,7 @@ export class Compare {
               ? `<select data-variant-of="${entry.model.id}" aria-label="${esc(entry.model.name)} ${esc(t('version.label'))}">${options}</select>`
               : ''
           }
-          <button type="button" data-drop="${entry.model.id}" aria-label="${esc(t('compare.remove'))}">✕</button>
+          <button type="button" data-drop="${entry.model.id}" aria-label="${esc(t('compare.remove'))}">${icon('close')}</button>
         </span>`;
       })
       .join('');
