@@ -75,17 +75,62 @@ function writeHash(state) {
  * Theme is stamped on <html> before first paint by js/theme-init.js; this only
  * handles the toggle. js/theme.js owns the switch itself, so the 3D stage can
  * hear about it without knowing this button exists.
+ *
+ * The switch itself is the one Robotics_Notebooks makes: the new theme opens
+ * out of the button as a circle until it covers the window. The View
+ * Transitions API holds a picture of the old page underneath while the new
+ * one, live, is clipped to the growing circle — so a stage relit for the new
+ * theme is already relit inside it. Where the API is missing, or the reader
+ * asked for less motion, the theme simply changes.
  */
 function setupTheme() {
   const button = document.getElementById('theme-toggle');
+  const root = document.documentElement;
   const render = () => {
     // Show the theme you would switch *to*.
     button.innerHTML = icon(theme() === 'light' ? 'moon' : 'sun');
   };
-  render();
-  button.addEventListener('click', () => {
+  const flip = () => {
     toggleTheme();
     render();
+  };
+  render();
+  button.addEventListener('click', () => {
+    let reduced = false;
+    try {
+      reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    } catch {
+      /* no matchMedia: treat as no preference */
+    }
+    if (typeof document.startViewTransition !== 'function' || reduced) {
+      flip();
+      return;
+    }
+    // From the button's centre to the farthest corner of the window.
+    const rect = button.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+    // The page's own motion tokens, so the reveal moves like everything else.
+    const style = getComputedStyle(root);
+    const duration = Number.parseFloat(style.getPropertyValue('--dur-move')) || 500;
+    const easing = style.getPropertyValue('--ease').trim() || 'ease-out';
+    // css/app.css turns colour transitions off for the length of the switch:
+    // with them on, the new page would still be fading when it is revealed,
+    // and the edge of the circle would read grey.
+    root.classList.add('is-theme-switching');
+    const transition = document.startViewTransition(flip);
+    transition.ready
+      .then(() => {
+        root.animate(
+          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+          { duration, easing, pseudoElement: '::view-transition-new(root)' },
+        );
+      })
+      .catch(() => {
+        /* skipped: `flip` has already switched the theme */
+      });
+    transition.finished.finally(() => root.classList.remove('is-theme-switching'));
   });
 }
 

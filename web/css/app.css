@@ -293,6 +293,21 @@ body {
   transform: scale(0.98);
 }
 
+/* The theme switch (js/main.js): the new theme opens out of the toggle as a
+ * growing circle, clipped onto the View Transition's new layer. The default
+ * cross-fade is off, and so is every transition while the switch runs, so the
+ * new layer is the finished page rather than one still fading toward it. */
+html.is-theme-switching::view-transition-old(root),
+html.is-theme-switching::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+html.is-theme-switching *,
+html.is-theme-switching *::before,
+html.is-theme-switching *::after {
+  transition: none !important;
+}
+
 a { color: var(--accent); text-decoration: none; transition: color var(--transition); }
 a:hover { color: var(--accent-hover); }
 h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; }
