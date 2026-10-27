@@ -373,7 +373,9 @@ p { text-wrap: pretty; }
   text-overflow: ellipsis;
 }
 .site-title:hover { color: var(--accent); }
-.site-title .icon { width: 24px; height: 24px; color: var(--accent); }
+/* The mark: a wireframe cube with a joint at its centre, white on a tile of
+ * the accent. `currentColor` is the tile, so it follows the theme. */
+.site-title .site-mark { flex: 0 0 auto; width: 24px; height: 24px; color: var(--accent); }
 .site-title-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 
 /* Never shrinks: the title beside it is the flexible half of the row. */
