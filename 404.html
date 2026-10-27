@@ -1,0 +1,99 @@
+<!doctype html>
+<!--
+  GitHub Pages serves this for any address under the site that does not exist,
+  at whatever depth was asked for — so nothing here is a relative path: the
+  styles are inline, the mark is inline, and the way back is absolute.
+  Copied to the site root by .github/workflows/pages.yml.
+-->
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Page not found · Robot Description Gallery Online</title>
+<link rel="icon" href="https://imchong.github.io/Robot_Description_Gallery_Online/web/favicon.svg" type="image/svg+xml">
+<script>
+  // The same keys the gallery itself reads (js/theme-init.js).
+  (function () {
+    var root = document.documentElement;
+    try {
+      var theme = localStorage.getItem('cl-theme');
+      if (theme !== 'light' && theme !== 'dark') {
+        theme = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      }
+      root.setAttribute('data-theme', theme);
+      var lang = localStorage.getItem('cl-lang');
+      if (lang !== 'zh' && lang !== 'en') {
+        lang = /\bzh\b|zh-/i.test((navigator.languages || [navigator.language || 'en']).join(',')) ? 'zh' : 'en';
+      }
+      root.setAttribute('lang', lang === 'zh' ? 'zh-CN' : 'en');
+    } catch (err) {}
+  })();
+</script>
+<style>
+  @font-face {
+    font-family: 'Geist';
+    src: url('https://imchong.github.io/Robot_Description_Gallery_Online/web/vendor/geist/Geist-Variable.woff2') format('woff2');
+    font-weight: 100 900;
+    font-display: swap;
+  }
+  :root {
+    color-scheme: dark;
+    --bg: #181818; --text: #e8e8e4; --muted: #9b9a97; --faint: #7d7c79;
+    --accent: #659eec; --accent-hover: #89b5f0;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  [data-theme='light'] {
+    color-scheme: light;
+    --bg: #ffffff; --text: #37352f; --muted: #787774; --faint: #94938f;
+    --accent: #2d74da; --accent-hover: #1a5bb8;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { background: var(--bg); }
+  body {
+    min-height: 100vh; min-height: 100dvh;
+    display: grid; place-items: center;
+    padding: 48px 16px 64px;
+    color: var(--text);
+    font-family: 'Geist', 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', system-ui, sans-serif;
+    font-size: 16px; line-height: 24px;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 480px; }
+  svg { display: block; width: 40px; height: 40px; fill: var(--accent); }
+  .code { margin-top: 24px; color: var(--faint); font-size: 14px; line-height: 20px; font-variant-numeric: tabular-nums; }
+  h1 {
+    margin-top: 8px;
+    font-size: 30px; line-height: 36px; font-weight: 600; letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p.lede { margin-top: 12px; color: var(--muted); text-wrap: pretty; }
+  a.cta {
+    display: inline-flex; align-items: center; height: 40px; margin-top: 32px; padding: 8px 16px;
+    border-radius: 8px; background: var(--accent); color: #fff;
+    font-weight: 600; text-decoration: none;
+    transition: background 300ms var(--ease), transform 300ms var(--ease);
+  }
+  a.cta:hover { background: var(--accent-hover); }
+  a.cta:active { transform: scale(0.98); }
+  a.cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  [lang^='zh'] .en, :not([lang^='zh']) > body .zh { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <svg viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M200,48H136V16a8,8,0,0,0-16,0V48H56A32,32,0,0,0,24,80V192a32,32,0,0,0,32,32H200a32,32,0,0,0,32-32V80A32,32,0,0,0,200,48Zm16,144a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V80A16,16,0,0,1,56,64H200a16,16,0,0,1,16,16Zm-52-56H92a28,28,0,0,0,0,56h72a28,28,0,0,0,0-56Zm-24,16v24H116V152ZM80,164a12,12,0,0,1,12-12h8v24H92A12,12,0,0,1,80,164Zm84,12h-8V152h8a12,12,0,0,1,0,24ZM72,108a12,12,0,1,1,12,12A12,12,0,0,1,72,108Zm88,0a12,12,0,1,1,12,12A12,12,0,0,1,160,108Z"/></svg>
+  <p class="code">404</p>
+  <div class="en">
+    <h1>This page is not in the gallery</h1>
+    <p class="lede">The address may come from an older version of the site, or from a robot that has since moved. Every model in the collection is one step away.</p>
+    <a class="cta" href="https://imchong.github.io/Robot_Description_Gallery_Online/web/">Open the gallery</a>
+  </div>
+  <div class="zh">
+    <h1>合集里没有这个页面</h1>
+    <p class="lede">这个地址可能来自旧版网站，或者对应的机器人已经移动。合集里的全部模型都可以从首页找到。</p>
+    <a class="cta" href="https://imchong.github.io/Robot_Description_Gallery_Online/web/">打开合集</a>
+  </div>
+</main>
+</body>
+</html>

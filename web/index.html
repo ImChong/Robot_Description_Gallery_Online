@@ -5,8 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>html.i18n-pending body{visibility:hidden}</style>
 <title>Robot Description Gallery Online | 机器人3D模型在线合集</title>
-<meta name="description" content="Browse, preview and compare open-source robot descriptions and 3D models in URDF, MJCF, USD and more, loaded directly from pinned upstream repositories.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🖼️</text></svg>">
+<meta name="description" content="Browse, preview and compare open source robot descriptions and 3D models in URDF, MJCF, USD and more, loaded directly from pinned upstream repositories.">
+<link rel="canonical" href="https://imchong.github.io/Robot_Description_Gallery_Online/web/">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#181818" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<!-- What a shared link unfurls into. Absolute URLs: a crawler does not resolve
+     them against the page. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Robot Description Gallery Online">
+<meta property="og:title" content="Robot Description Gallery Online | 机器人3D模型在线合集">
+<meta property="og:description" content="Browse, preview and compare open source robot descriptions and 3D models in URDF, MJCF, USD and more, loaded directly from pinned upstream repositories.">
+<meta property="og:url" content="https://imchong.github.io/Robot_Description_Gallery_Online/web/">
+<meta property="og:image" content="https://imchong.github.io/Robot_Description_Gallery_Online/web/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The gallery: a grid of humanoid robot models under the site's heading">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Robot Description Gallery Online">
+<meta name="twitter:description" content="Browse, preview and compare open source robot descriptions and 3D models in URDF, MJCF, USD and more, loaded directly from pinned upstream repositories.">
+<meta name="twitter:image" content="https://imchong.github.io/Robot_Description_Gallery_Online/web/og.jpg">
+<!-- The one face every line of the page is set in; fetched before the
+     stylesheet asks for it, so the swap lands before first paint. -->
+<link rel="preload" href="./vendor/geist/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
 <script src="./js/theme-init.js"></script>
 <link rel="stylesheet" href="./css/app.css">
 <script type="importmap">
@@ -24,9 +45,13 @@
 </head>
 <body>
 
+<!-- Straight past the header to whichever view is on screen; js/main.js
+     focuses it, since the address is the router and cannot be an anchor. -->
+<a class="skip-link" href="#main" data-i18n="site.skip">Skip to content</a>
+
 <header class="site-header">
   <div class="header-inner">
-    <a href="./" class="site-title" data-i18n-aria-label="site.home">🖼️ Robot Description Gallery Online | 机器人3D模型在线合集</a>
+    <a href="./" class="site-title" data-i18n-aria-label="site.home"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M200,48H136V16a8,8,0,0,0-16,0V48H56A32,32,0,0,0,24,80V192a32,32,0,0,0,32,32H200a32,32,0,0,0,32-32V80A32,32,0,0,0,200,48Zm16,144a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V80A16,16,0,0,1,56,64H200a16,16,0,0,1,16,16Zm-52-56H92a28,28,0,0,0,0,56h72a28,28,0,0,0,0-56Zm-24,16v24H116V152ZM80,164a12,12,0,0,1,12-12h8v24H92A12,12,0,0,1,80,164Zm84,12h-8V152h8a12,12,0,0,1,0,24ZM72,108a12,12,0,1,1,12,12A12,12,0,0,1,72,108Zm88,0a12,12,0,1,1,12,12A12,12,0,0,1,160,108Z"/></svg><span class="site-title-text">Robot Description Gallery Online | 机器人3D模型在线合集</span></a>
     <div class="header-right">
       <!-- Two labels, one link: the word on wide screens, the mark on phones,
            where the row has no room for it as text (see css/app.css). -->
@@ -35,19 +60,20 @@
         <span class="github-label">GitHub</span>
       </a>
       <label class="search">
-        <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M12.8 12.8 17 17"/></svg>
+        <svg class="icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"/></svg>
         <input id="search" type="search" autocomplete="off" spellcheck="false" data-i18n-placeholder="search.placeholder">
       </label>
       <button id="lang-toggle" class="lang-toggle" aria-label="Switch language">
         <span class="lang-label">中文</span>
       </button>
-      <button id="theme-toggle" class="theme-toggle" data-i18n-title="theme.toggle" aria-label="Toggle dark mode">☀️</button>
+      <button id="theme-toggle" class="theme-toggle" data-i18n-title="theme.toggle" data-i18n-aria-label="theme.toggle"
+              aria-label="Switch theme"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"/></svg></button>
       <!-- Last in the row: the one control here that asks something of the
            visitor rather than changing how the page reads. -->
       <button id="sponsor-toggle" class="sponsor-toggle" type="button"
               data-i18n-title="sponsor.toggle" data-i18n-aria-label="sponsor.toggle"
               aria-haspopup="dialog" aria-controls="sponsor-dialog"
-              aria-label="Support the author">☕</button>
+              aria-label="Support the author"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M80,56V24a8,8,0,0,1,16,0V56a8,8,0,0,1-16,0Zm40,8a8,8,0,0,0,8-8V24a8,8,0,0,0-16,0V56A8,8,0,0,0,120,64Zm32,0a8,8,0,0,0,8-8V24a8,8,0,0,0-16,0V56A8,8,0,0,0,152,64Zm96,56v8a40,40,0,0,1-37.51,39.91,96.59,96.59,0,0,1-27,40.09H208a8,8,0,0,1,0,16H32a8,8,0,0,1,0-16H56.54A96.3,96.3,0,0,1,24,136V88a8,8,0,0,1,8-8H208A40,40,0,0,1,248,120ZM200,96H40v40a80.27,80.27,0,0,0,45.12,72h69.76A80.27,80.27,0,0,0,200,136Zm32,24a24,24,0,0,0-16-22.62V136a95.78,95.78,0,0,1-1.2,15A24,24,0,0,0,232,128Z"/></svg></button>
     </div>
   </div>
 </header>
@@ -83,9 +109,7 @@
            the button, not only inside the dialog it opens. -->
       <div class="hero-action">
         <button id="custom-open" class="primary-btn">
-          <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false" class="upload-mark">
-            <path d="M10 13.5V3.5M10 3.5 6.2 7.3M10 3.5l3.8 3.8M3.5 12.5v2.2a1.8 1.8 0 0 0 1.8 1.8h9.4a1.8 1.8 0 0 0 1.8-1.8v-2.2"/>
-          </svg>
+          <svg class="icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0ZM93.66,77.66,120,51.31V144a8,8,0,0,0,16,0V51.31l26.34,26.35a8,8,0,0,0,11.32-11.32l-40-40a8,8,0,0,0-11.32,0l-40,40A8,8,0,0,0,93.66,77.66Z"/></svg>
           <span data-i18n="custom.cta">预览我自己的 URDF</span>
         </button>
         <!-- The way back to a model already previewed takes the line directly
@@ -95,7 +119,7 @@
              both of them. -->
         <p class="hero-action-current" id="custom-current" hidden></p>
         <p class="hero-action-note">
-          <span aria-hidden="true">🔒</span>
+          <svg class="icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80ZM96,56a32,32,0,0,1,64,0V80H96ZM208,208H48V96H208V208Z"/></svg>
           <span data-i18n="custom.heroNote"></span>
         </p>
       </div>
@@ -105,9 +129,7 @@
            of them to discover that they can be put side by side. -->
       <div class="hero-action">
         <a class="ghost-btn hero-compare-btn" href="#compare=1">
-          <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false" class="compare-mark">
-            <path d="M4 16V8.5M10 16V4M16 16v-5.5"/>
-          </svg>
+          <svg class="icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M224,200h-8V40a8,8,0,0,0-8-8H152a8,8,0,0,0-8,8V80H96a8,8,0,0,0-8,8v40H48a8,8,0,0,0-8,8v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16ZM160,48h40V200H160ZM104,96h40V200H104ZM56,144H88v56H56Z"/></svg>
           <span data-i18n="compare.cta">横向对比多台机器人</span>
         </a>
         <p class="hero-action-note" data-i18n="compare.heroNote"></p>
@@ -120,18 +142,35 @@
   <nav class="filters" id="category-filters" aria-label="Jump to a category"
        data-i18n-aria-label="filters.aria"></nav>
 
-  <div class="sections" id="grid"></div>
-  <p class="empty" id="empty" hidden data-i18n="gallery.empty">No robot matches this filter.</p>
+  <!-- Until the registry arrives, the shape of what is coming: replaced
+       wholesale by the first render (js/gallery.js). -->
+  <div class="sections" id="grid" aria-busy="true">
+    <div class="skeleton" aria-hidden="true">
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line is-short"></div>
+      <div class="skeleton-cards">
+        <div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>
+        <div class="skeleton-card"></div><div class="skeleton-card"></div>
+      </div>
+    </div>
+  </div>
+  <!-- A search that matches nothing: what was searched for, and the way out.
+       js/gallery.js writes the sentence, which carries the query. -->
+  <div class="empty" id="empty" role="status" hidden>
+    <svg class="icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"/></svg>
+    <p id="empty-text"></p>
+    <button type="button" class="ghost-btn" id="empty-clear" data-i18n="gallery.clear">Clear search</button>
+  </div>
 </main>
 
 <!-- ------------------------------- detail -------------------------------- -->
 <main id="view-detail" class="view" hidden>
   <div class="detail-head">
-    <button class="back-btn" id="back-btn" aria-label="Gallery" data-i18n-aria-label="detail.back"><span aria-hidden="true">←</span> <span data-i18n="detail.back">Gallery</span></button>
+    <button class="back-btn" id="back-btn" aria-label="Gallery" data-i18n-aria-label="detail.back"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/></svg><span data-i18n="detail.back">Gallery</span></button>
     <div class="detail-title">
       <h2 id="d-name">—</h2>
       <p id="d-sub" class="muted"></p>
-      <p id="d-local-badge" class="local-badge" hidden><span aria-hidden="true">🔒</span> <span data-i18n="custom.localOnly"></span></p>
+      <p id="d-local-badge" class="local-badge" hidden><svg class="icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80ZM96,56a32,32,0,0,1,64,0V80H96ZM208,208H48V96H208V208Z"/></svg><span data-i18n="custom.localOnly"></span></p>
     </div>
     <div class="detail-nav">
       <!-- Where the pinned MuJoCo Menagerie scene this model also ships can be
@@ -145,8 +184,10 @@
       <button id="add-compare" class="ghost-btn"
               data-i18n="compare.add" data-i18n-title="compare.addTitle"
               title="Compare with others of its kind">对比</button>
-      <button id="prev-robot" class="ghost-btn" title="Previous">←</button>
-      <button id="next-robot" class="ghost-btn" title="Next">→</button>
+      <button id="prev-robot" class="ghost-btn icon-only" title="Previous"
+              data-i18n-aria-label="detail.prev" aria-label="Previous robot"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/></svg></button>
+      <button id="next-robot" class="ghost-btn icon-only" title="Next"
+              data-i18n-aria-label="detail.next" aria-label="Next robot"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></button>
     </div>
   </div>
 
@@ -164,7 +205,7 @@
               aria-label="Which URDF of this model to show"></select>
     </label>
     <label class="version-filter">
-      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M12.8 12.8 17 17"/></svg>
+      <svg class="icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"/></svg>
       <input id="version-filter" type="search" autocomplete="off" spellcheck="false"
              data-i18n-placeholder="version.filter" placeholder="Filter versions">
     </label>
@@ -176,7 +217,6 @@
       <div class="stage">
         <div class="canvas-host" id="canvas-host"></div>
         <div class="stage-loading" id="stage-loading" hidden>
-          <div class="spinner"></div>
           <p id="loading-text" data-i18n="viewer.loading">Loading model…</p>
           <div class="progress"><i id="loading-bar"></i></div>
         </div>
@@ -270,7 +310,7 @@
           <h3 data-i18n="panel.localFiles">Local files</h3>
           <dl class="specs" id="d-local"></dl>
           <p class="local-privacy">
-            <span aria-hidden="true">🔒</span>
+            <svg class="icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80ZM96,56a32,32,0,0,1,64,0V80H96ZM208,208H48V96H208V208Z"/></svg>
             <span data-i18n="custom.privacy"></span>
           </p>
         </section>
@@ -307,7 +347,7 @@
      stage inside the tables, which js/compare-stage.js drives. -->
 <main id="view-compare" class="view" hidden>
   <div class="detail-head">
-    <button class="back-btn" id="compare-back"><span aria-hidden="true">←</span> <span data-i18n="detail.back">Gallery</span></button>
+    <button class="back-btn" id="compare-back"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/></svg><span data-i18n="detail.back">Gallery</span></button>
     <div class="detail-title">
       <h2 data-i18n="compare.title">横向对比</h2>
       <p class="muted" data-i18n="compare.lede"></p>
@@ -333,7 +373,7 @@
                 aria-label="Which kind of robot to compare"></select>
       </label>
       <label class="version-filter">
-        <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M12.8 12.8 17 17"/></svg>
+        <svg class="icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"/></svg>
         <input id="compare-filter" type="search" autocomplete="off" spellcheck="false"
                data-i18n-placeholder="compare.filter" placeholder="Filter this category">
       </label>
@@ -378,7 +418,6 @@
         <!-- One name tag per machine, projected onto the render each frame. -->
         <div class="cmp-stage-tags" id="cmp-stage-tags"></div>
         <div class="stage-loading" id="cmp-stage-loading" hidden>
-          <div class="spinner"></div>
           <p id="cmp-stage-loading-text"></p>
           <div class="progress"><i id="cmp-stage-bar"></i></div>
         </div>
@@ -464,6 +503,13 @@
 <!-- ------------------------------- footer -------------------------------- -->
 <footer class="site-footer">
   <div class="footer-inner">
+    <!-- Main paths only: the source, and the licence the gallery and its
+         registry are published under. Nothing here sets a cookie or collects
+         anything, so there is no consent banner or privacy policy to link. -->
+    <nav class="footer-links" aria-label="Project" data-i18n-aria-label="footer.aria">
+      <a href="https://github.com/ImChong/Robot_Description_Gallery_Online" target="_blank" rel="noopener noreferrer" data-i18n="footer.source">Source</a>
+      <a href="https://github.com/ImChong/Robot_Description_Gallery_Online/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" data-i18n="footer.license">MIT License</a>
+    </nav>
     <p class="footer-text footer-text-en">© <a href="https://imchong.github.io/index.html" class="footer-author-link" target="_blank" rel="noopener noreferrer">Chong Liu</a> <span data-year>2026</span> · Robot Description Gallery Online</p>
     <p class="footer-text footer-text-zh">© <a href="https://imchong.github.io/index.html" class="footer-author-link" target="_blank" rel="noopener noreferrer">刘冲</a> <span data-year>2026</span> · 机器人3D模型在线合集</p>
   </div>
@@ -476,11 +522,11 @@
   <div class="custom-head">
     <h2 id="custom-dialog-title" data-i18n="custom.title">预览我自己的 URDF</h2>
     <button type="button" class="dialog-close" id="custom-cancel"
-            data-i18n-aria-label="custom.close" aria-label="Close">✕</button>
+            data-i18n-aria-label="custom.close" aria-label="Close"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg></button>
   </div>
 
   <p class="custom-privacy">
-    <span class="lock" aria-hidden="true">🔒</span>
+    <svg class="icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80ZM96,56a32,32,0,0,1,64,0V80H96ZM208,208H48V96H208V208Z"/></svg>
     <span data-i18n="custom.privacy"></span>
   </p>
 
@@ -533,7 +579,7 @@
   <div class="custom-head">
     <h2 id="sponsor-dialog-title" data-i18n="sponsor.title">赞助我</h2>
     <button type="button" class="dialog-close" id="sponsor-close"
-            data-i18n-aria-label="sponsor.closeLabel" aria-label="Close">✕</button>
+            data-i18n-aria-label="sponsor.closeLabel" aria-label="Close"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg></button>
   </div>
   <p class="sponsor-hint" data-i18n="sponsor.hint"></p>
   <img class="sponsor-qr" id="sponsor-qr" src="./sponsor/wechat-pay.png"

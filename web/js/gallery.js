@@ -1,6 +1,7 @@
 /** The card grid — one section per category — its jump chips and the hero counters. */
 import { descriptionOf, groupRobots, stats } from './registry.js';
 import { categoryLabel, t } from './i18n.js';
+import { icon } from './icons.js';
 
 const el = (id) => document.getElementById(id);
 
@@ -61,6 +62,32 @@ export class Gallery {
 
     const search = el('search');
     search.addEventListener('input', () => this.setState({ query: search.value }));
+    // The empty state's way out: the search that emptied the page, cleared,
+    // and the box handed back for the next attempt.
+    el('empty-clear').addEventListener('click', () => {
+      search.value = '';
+      this.setState({ query: '' });
+      search.focus();
+    });
+
+    // Each category rises into place the first time it is scrolled to. Only
+    // on the first render — a search re-renders on every keystroke, and the
+    // results of one should not have to fade in again — and only where the
+    // observer exists, so without it the sections are simply there.
+    this.revealed = false;
+    this.observer =
+      'IntersectionObserver' in window
+        ? new IntersectionObserver(
+            (entries) => {
+              for (const entry of entries) {
+                if (!entry.isIntersecting) continue;
+                entry.target.classList.add('is-revealed');
+                this.observer.unobserve(entry.target);
+              }
+            },
+            { rootMargin: '0px 0px -8% 0px' },
+          )
+        : null;
 
     // Reading the page is the other way to move between sections, so the chips
     // follow the scroll as well as drive it.
@@ -135,9 +162,32 @@ export class Gallery {
     if (!this.groups.some((group) => group.id === this.state.category)) this.state.category = 'all';
     this.renderFilters();
     this.emptyEl.hidden = this.groups.length > 0;
+    if (!this.groups.length) {
+      el('empty-text').innerHTML = t('gallery.empty').replace(
+        '{query}',
+        `<strong>${this.state.query.trim().replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`)}</strong>`,
+      );
+    }
     this.gridEl.innerHTML = this.groups.map((group) => this.section(group)).join('');
+    this.gridEl.removeAttribute('aria-busy');
+    this.observeReveal();
     this.syncMakerSpans();
     this.syncActive();
+  }
+
+  /** Hand the fresh sections to the observer — the first time only. */
+  observeReveal() {
+    if (!this.observer) return;
+    if (this.revealed) {
+      // Anything still waiting from the first render was just replaced.
+      this.observer.disconnect();
+      return;
+    }
+    this.revealed = true;
+    for (const section of this.gridEl.querySelectorAll('.cat-section')) {
+      section.classList.add('reveal');
+      this.observer.observe(section);
+    }
   }
 
   section({ id, robots, makers }) {
@@ -297,9 +347,12 @@ export class Gallery {
     // preview image upstream publishes — Menagerie ships one per model — and
     // only then to the placeholder glyph.
     const fallback = robot.assets.upstream_thumbnail;
+    // Quoted for the double-quoted attribute it is written into.
+    const mark = icon('image').replace(/"/g, '&quot;');
+    const placeholder = `this.replaceWith(Object.assign(document.createElement('span'),{className:'placeholder',innerHTML:'${mark}'}))`;
     const onError = fallback
-      ? `if(this.dataset.retried){this.replaceWith(Object.assign(document.createElement('span'),{className:'placeholder',textContent:'🖼️'}))}else{this.dataset.retried='1';this.src='${fallback}'}`
-      : `this.replaceWith(Object.assign(document.createElement('span'),{className:'placeholder',textContent:'🖼️'}))`;
+      ? `if(this.dataset.retried){${placeholder}}else{this.dataset.retried='1';this.src='${fallback}'}`
+      : placeholder;
     return `<a class="card" href="#robot=${robot.id}" data-id="${robot.id}">
       <figure class="card-figure">
         <img src="${thumb}" alt="${robot.name}" loading="lazy" decoding="async"

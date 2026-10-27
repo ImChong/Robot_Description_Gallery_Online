@@ -736,7 +736,7 @@ export class Detail {
 
     const onProgress = (done, total) => {
       const pct = total ? Math.round((done / total) * 100) : 0;
-      fill.style.width = `${pct}%`;
+      fill.style.setProperty('--progress', String(total ? done / total : 0));
       sub.textContent = `${done}/${total} · ${pct}%`;
     };
 
@@ -755,7 +755,7 @@ export class Detail {
       sub.textContent = `${t('dl.failed')}: ${err.message || err}`;
     } finally {
       button.disabled = false;
-      if (fill) fill.style.width = '0';
+      if (fill) fill.style.setProperty('--progress', '0');
     }
   }
 
@@ -892,7 +892,9 @@ export class Detail {
     const error = el('stage-error');
     error.hidden = true;
     loading.hidden = false;
-    bar.style.width = '4%';
+    // A scale rather than a width: css/app.css draws the bar full width and
+    // scales it, so the browser animates a transform instead of a layout.
+    bar.style.setProperty('--progress', '0.04');
 
     // Inertial data is in the raw XML but not in what urdf-loader hands back, so
     // the file is fetched a second time — from the browser cache, since the
@@ -911,7 +913,7 @@ export class Detail {
     try {
       await this.viewer.load(robot, (done, total) => {
         if (isStale()) return;
-        bar.style.width = `${total ? Math.max(4, Math.round((done / total) * 100)) : 8}%`;
+        bar.style.setProperty('--progress', String(total ? Math.max(0.04, done / total) : 0.08));
       });
       if (isStale()) return;
       // Same starting pose as the gallery card, so clicking a card does not
