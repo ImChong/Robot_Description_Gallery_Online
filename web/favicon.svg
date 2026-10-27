@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-  <!-- The site's mark: Phosphor's robot (MIT), in the accent, on the page's own dark. -->
-  <rect width="256" height="256" rx="56" fill="#181818"/>
-  <g transform="translate(32 32) scale(0.75)">
-    <path fill="#659eec" d="M200,48H136V16a8,8,0,0,0-16,0V48H56A32,32,0,0,0,24,80V192a32,32,0,0,0,32,32H200a32,32,0,0,0,32-32V80A32,32,0,0,0,200,48Zm16,144a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V80A16,16,0,0,1,56,64H200a16,16,0,0,1,16,16Zm-52-56H92a28,28,0,0,0,0,56h72a28,28,0,0,0,0-56Zm-24,16v24H116V152ZM80,164a12,12,0,0,1,12-12h8v24H92A12,12,0,0,1,80,164Zm84,12h-8V152h8a12,12,0,0,1,0,24ZM72,108a12,12,0,1,1,12,12A12,12,0,0,1,72,108Zm88,0a12,12,0,1,1,12,12A12,12,0,0,1,160,108Z"/>
-  </g>
+  <!-- The site's mark: a wireframe cube with a joint at its centre, white on
+       the accent. The tile follows the browser's own scheme, so it keeps its
+       contrast on a light tab strip as on a dark one. -->
+  <style>.plate { fill: #659eec; } @media (prefers-color-scheme: light) { .plate { fill: #2d74da; } }</style>
+  <rect width="256" height="256" rx="60" fill="#659eec" class="plate"/><g transform="translate(44 44) scale(0.65625)" fill="none" stroke="#fff" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"><path d="M128 28L216 78V178L128 228L40 178V78Z"/><path d="M40 78L128 128L216 78"/><path d="M128 128V228"/><circle cx="128" cy="128" r="22" fill="#fff" stroke="none"/></g>
 </svg>
