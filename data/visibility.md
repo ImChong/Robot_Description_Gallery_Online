@@ -20,7 +20,7 @@ The gallery fetches this file at startup: rows checked `[x]` are shown, rows lef
 the site matches on; the name, organisation and upstream link after it are for
 human readers.
 
-## 人形 Humanoid · 60
+## 人形 Humanoid · 61
 
 - [x] `g1` **G1** — UNITREE Robotics — [unitreerobotics/unitree_ros](https://github.com/unitreerobotics/unitree_ros/tree/daadf41ee9afce8f90fdc09a98506012691fa122/robots/g1_description)
 - [x] `h1` **H1** — UNITREE Robotics — [unitreerobotics/unitree_ros · h1_description](https://github.com/unitreerobotics/unitree_ros/tree/267182b8521c8d6a631bab1fe63836873237a525/robots/h1_description)
@@ -77,6 +77,7 @@ human readers.
 - [ ] `simple_humanoid` **Simple Humanoid** — — — [laas/simple_humanoid_description · simple_humanoid_description](https://github.com/laas/simple_humanoid_description/tree/4e859aed7df3c29954c9cca2a1ecb94069f7cfce)
 - [x] `op3` **OP3** — ROBOTIS — [ROBOTIS-GIT/ROBOTIS-OP3-Common](https://github.com/ROBOTIS-GIT/ROBOTIS-OP3-Common/tree/0780e54c2064a42089b0cf970d716ae44fec9233/op3_description)
 - [x] `star1` **STAR1** — RobotEra — [roboterax/models](https://github.com/roboterax/models/tree/e8660e664e39e5b80ebb1f252e1b77b0e6929cff/star1)
+- [x] `noetix_bumi` **BUMI** — Noetix Robotics — [Noetix-Robotics/noetix_bumi_lab](https://github.com/Noetix-Robotics/noetix_bumi_lab/tree/2454535c967cd1d6f04dfe0f0289f3c6c608e596/source/NoetixBumi/NoetixBumi/assets/robots/bumi)
 - [x] `noetix_e1` **E1** — Noetix Robotics — [Noetix-Robotics/noetix_e1_lab](https://github.com/Noetix-Robotics/noetix_e1_lab/tree/5a1d62d57d26499f10fc840df7b9f9d0331f5c72/source/NoetixE1/NoetixE1/assets/robots/e1)
 - [x] `noetix_n2` **N2** — Noetix Robotics — [Noetix-Robotics/noetix_n2_gym](https://github.com/Noetix-Robotics/noetix_n2_gym/tree/153aad12dcc44aeafe378efe2f652873b02e0d89/resources/robots/N2)
 - [x] `dr02` **DR02** — DEEP Robotics — [DeepRoboticsLab/deep_robotics_model](https://github.com/DeepRoboticsLab/deep_robotics_model/tree/e6753d2ef25e1e788d387ae3775fd283c199f1a3/DR02/urdf/pro)
