@@ -1,6 +1,6 @@
 {
  "$schema": "./robots.schema.json",
- "generated": "2026-10-25T08:00:00Z",
+ "generated": "2026-11-13T07:24:04Z",
  "generator": "robot_descriptions 3.1.0",
  "categories": [
   {
@@ -16484,6 +16484,156 @@
    "links": {
     "official": "https://www.robotera.com/"
    }
+  },
+  {
+   "id": "noetix_bumi",
+   "name": "BUMI",
+   "maker": "Noetix Robotics",
+   "category": "humanoid",
+   "tags": [
+    "humanoid"
+   ],
+   "dof": 21,
+   "license": "BSD-3-Clause",
+   "formats": [
+    "urdf"
+   ],
+   "notes": "BUMI from Noetix Robotics' Isaac Lab repository: 21 revolute joints on 22 links and 17.294 kg, with six joints per leg, four per arm and one at the waist. Both URDFs describe the same body, joint limits, inertias and 22 STL meshes; only mesh paths and collision coverage differ. Effort and velocity limits are zero in both URDFs; the actuator settings live separately in bumi.py.",
+   "notes_zh": "松延动力 BUMI，来自官方 Isaac Lab 仓库：22 个连杆、21 个转动关节、17.294 kg，每条腿 6 个关节、每条手臂 4 个、腰部 1 个。两份 URDF 的身体、关节限位、惯量和 22 个 STL 网格完全一致，只有网格路径与碰撞体覆盖范围不同。两份 URDF 的力矩和速度上限均写为 0，执行器参数另列在 bumi.py 中。",
+   "pose": null,
+   "loops": null,
+   "preview_frame": null,
+   "measured": {
+    "size": {
+     "x": 0.2172,
+     "y": 0.987,
+     "z": 0.4097
+    },
+    "height_m": 0.987
+   },
+   "urdf": {
+    "xml_name": "BUMI_V3.0_260119",
+    "links": 22,
+    "joints": {
+     "revolute": 21
+    },
+    "moving_joints": 21,
+    "mass_kg": 17.294,
+    "has_collision": true,
+    "has_inertia": true,
+    "bytes": 25060
+   },
+   "assets": {
+    "base": "https://cdn.jsdelivr.net/gh/Noetix-Robotics/noetix_bumi_lab@2454535c967cd1d6f04dfe0f0289f3c6c608e596/",
+    "urdf": "source/NoetixBumi/NoetixBumi/assets/robots/bumi/urdf/bumi.urdf",
+    "packages": {},
+    "mesh_files": 22,
+    "mesh_bytes": 26508298,
+    "mesh_formats": [
+     ".stl"
+    ]
+   },
+   "source": {
+    "description": null,
+    "github": "Noetix-Robotics/noetix_bumi_lab",
+    "commit": "2454535c967cd1d6f04dfe0f0289f3c6c608e596",
+    "repo_url": "https://github.com/Noetix-Robotics/noetix_bumi_lab",
+    "tree_url": "https://github.com/Noetix-Robotics/noetix_bumi_lab/tree/2454535c967cd1d6f04dfe0f0289f3c6c608e596/source/NoetixBumi/NoetixBumi/assets/robots/bumi",
+    "license_url": "https://github.com/Noetix-Robotics/noetix_bumi_lab/blob/2454535c967cd1d6f04dfe0f0289f3c6c608e596/LICENSE.txt",
+    "mirror": null,
+    "mjcf": null
+   },
+   "links": {
+    "official": "https://www.noetixrobotics.com/"
+   },
+   "variants": [
+    {
+     "id": "bumi",
+     "name": "bumi",
+     "deprecated": false,
+     "dof": 21,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "Default: the file loaded by the upstream BUMI_21DOF_CFG training configuration, with relative ../meshes/ paths. All 22 visual meshes are present, but nine collision elements are commented out, leaving 13 collision meshes. The base, shoulder pitch, arm yaw, hip roll and knee links have no active collision geometry.",
+     "notes_zh": "默认版本：上游 BUMI_21DOF_CFG 训练配置实际加载的文件，网格使用 ../meshes/ 相对路径。22 个视觉网格全部保留，9 个碰撞体被注释，剩余 13 个碰撞网格；根连杆和两侧肩 pitch、手臂 yaw、髋 roll、膝关节连杆没有启用碰撞体。",
+     "measured": {
+      "size": {
+       "x": 0.2172,
+       "y": 0.987,
+       "z": 0.4097
+      },
+      "height_m": 0.987
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "BUMI_V3.0_260119",
+      "links": 22,
+      "joints": {
+       "revolute": 21
+      },
+      "moving_joints": 21,
+      "mass_kg": 17.294,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 25060
+     },
+     "assets": {
+      "base": "https://cdn.jsdelivr.net/gh/Noetix-Robotics/noetix_bumi_lab@2454535c967cd1d6f04dfe0f0289f3c6c608e596/",
+      "urdf": "source/NoetixBumi/NoetixBumi/assets/robots/bumi/urdf/bumi.urdf",
+      "packages": {},
+      "mesh_files": 22,
+      "mesh_bytes": 26508298,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    },
+    {
+     "id": "bumi_v3_0_260119",
+     "name": "BUMI_V3.0_260119",
+     "deprecated": false,
+     "dof": 21,
+     "formats": [
+      "urdf"
+     ],
+     "notes": "V3.0 export with package://BUMI_V3.0_260119/ mesh paths. All 22 links use their visual STL again as collision geometry, including the nine collision elements commented out of bumi.urdf. Visuals, joint hierarchy, limits and inertias are unchanged.",
+     "notes_zh": "V3.0 导出版，网格使用 package://BUMI_V3.0_260119/ 路径。22 个连杆全部复用视觉 STL 作为碰撞体，包含 bumi.urdf 中被注释的 9 个碰撞体；视觉模型、关节层级、限位和惯量均未改变。",
+     "measured": {
+      "size": {
+       "x": 0.2172,
+       "y": 0.987,
+       "z": 0.4097
+      },
+      "height_m": 0.987
+     },
+     "mjcf": null,
+     "urdf": {
+      "xml_name": "BUMI_V3.0_260119",
+      "links": 22,
+      "joints": {
+       "revolute": 21
+      },
+      "moving_joints": 21,
+      "mass_kg": 17.294,
+      "has_collision": true,
+      "has_inertia": true,
+      "bytes": 26035
+     },
+     "assets": {
+      "base": "https://cdn.jsdelivr.net/gh/Noetix-Robotics/noetix_bumi_lab@2454535c967cd1d6f04dfe0f0289f3c6c608e596/",
+      "urdf": "source/NoetixBumi/NoetixBumi/assets/robots/bumi/urdf/BUMI_V3.0_260119.urdf",
+      "packages": {
+       "BUMI_V3.0_260119": "source/NoetixBumi/NoetixBumi/assets/robots/bumi"
+      },
+      "mesh_files": 22,
+      "mesh_bytes": 26508298,
+      "mesh_formats": [
+       ".stl"
+      ]
+     }
+    }
+   ]
   },
   {
    "id": "noetix_e1",
