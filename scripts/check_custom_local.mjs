@@ -186,6 +186,7 @@ const CASES = [
     model: 'from_usd',
     pick: 'from_usd.usda',
     joints: 0,
+    height: 0.30,
     files: {
       'from_usd.usda': `#usda 1.0
 (
@@ -206,6 +207,21 @@ def Xform "root"
     },
   },
 ];
+
+// Identical physical boxes authored with different USD stage units.
+const meterStage = CASES.find(({ name }) => name === 'usd').files['from_usd.usda'];
+for (const [suffix, units, scale] of [
+  ['centimeters', '1e-2', 100],
+  ['default', null, 100],
+  ['millimeters', '0.001', 1000],
+]) {
+  const name = 'from_usd_' + suffix;
+  let text = meterStage.replace('    metersPerUnit = 1\n', units === null ? '' : '    metersPerUnit = ' + units + '\n');
+  text = text.replace(/(point3f\[\] points = \[)([^\]]+)(\])/, (_all, open, points, close) =>
+    open + points.replace(/-?\d+(?:\.\d+)?/g, (v) => String(Number(v) * scale)) + close);
+  const file = name + '.usda';
+  CASES.push({ name: 'usd-' + suffix, kind: 'USD', model: name, pick: file, joints: 0, height: 0.30, files: { [file]: text } });
+}
 
 const browser = await launchBrowser();
 const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
@@ -277,6 +293,9 @@ for (const testCase of CASES) {
     );
   }
   if (!(staged.height > 0)) throw new Error(`${testCase.name}: measured no height`);
+  if (testCase.height !== undefined && Math.abs(staged.height - testCase.height) > 1e-6) {
+    throw new Error(`${testCase.name}: measured ${staged.height} m, wanted ${testCase.height} m`);
+  }
   if (staged.sliders !== testCase.joints) {
     throw new Error(
       `${testCase.name}: ${staged.sliders} joint sliders, wanted ${testCase.joints}`,
