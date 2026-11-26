@@ -30,6 +30,29 @@ const USD_CRATE = [0x50, 0x58, 0x52, 0x2d, 0x55, 0x53, 0x44, 0x43];
 const ZIP = [0x50, 0x4b, 0x03, 0x04];
 
 /**
+ * Read the unit of the ASCII root layer, not a property on a prim.
+ * OpenUSD falls back to centimeters when this metadata is unauthored.
+ */
+function usdaStageMetersPerUnit(text) {
+  const tokens = text.matchAll(/"""[\s\S]*?"""|"(?:\\.|[^"\\])*"|@[^@\r\n]*@|#[^\r\n]*|[A-Za-z_][\w:]*|[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?|[^\s]/g);
+  const next = () => {
+    for (const [token] of tokens) if (!token.startsWith('#')) return token;
+    return null;
+  };
+  if (next() !== '(') return 0.01;
+  let depth = 1;
+  for (let token = next(); token !== null && depth > 0; token = next()) {
+    if (depth === 1 && token === 'metersPerUnit' && next() === '=') {
+      const value = Number(next());
+      return Number.isFinite(value) && value > 0 ? value : 0.01;
+    }
+    if ('({['.includes(token)) depth += 1;
+    else if (')}]'.includes(token)) depth -= 1;
+  }
+  return 0.01;
+}
+
+/**
  * The scheme a locally picked model is loaded through.
  *
  * A file the visitor chose off their own disk is reachable only as a `blob:`
@@ -1111,9 +1134,8 @@ export class RobotViewer {
     const bytes = new Uint8Array(await response.arrayBuffer());
     const starts = (magic) => magic.every((byte, index) => bytes[index] === byte);
     if (starts(USD_CRATE)) throw new Error(`USD crate files are not supported: ${path}`);
-    const stage = new USDLoader(manager).parse(
-      starts(ZIP) ? bytes.buffer : new TextDecoder().decode(bytes),
-    );
+    const ascii = starts(ZIP) ? null : new TextDecoder().decode(bytes);
+    const stage = new USDLoader(manager).parse(ascii ?? bytes.buffer);
     onProgress?.(1, 1);
 
     const robot = new URDFRobot();
@@ -1128,6 +1150,8 @@ export class RobotViewer {
     visual.urdfName = 'stage';
     visual.name = 'stage';
     if (entry.assets.usd_up !== 'Z') visual.rotation.x = Math.PI / 2;
+    // Scale the composed world-space stage once, not each authored coordinate.
+    if (ascii !== null) visual.scale.setScalar(usdaStageMetersPerUnit(ascii));
     visual.add(stage);
     robot.add(visual);
     robot.visual.stage = visual;
